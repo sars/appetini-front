@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { IndexLink, Link } from 'react-router';
 import FlatButton from 'material-ui/lib/raised-button';
+import Button from 'react-toolbox/lib/button';
+import DatePicker from 'react-toolbox/lib/date_picker';
 import Helmet from 'react-helmet';
 import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
 import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
@@ -21,6 +23,11 @@ function fetchData(getState, dispatch) {
   return Promise.all(promises);
 }
 
+const datetime = new Date(2015, 10, 16);
+const minDatetime = new Date(new Date(datetime).setDate(8));
+datetime.setHours(17);
+datetime.setMinutes(28);
+
 @connectData(fetchData)
 @connect(
   state => ({user: state.auth.user}),
@@ -37,6 +44,10 @@ export default class App extends Component {
     store: PropTypes.object.isRequired
   };
 
+  state = {
+    date2: datetime
+  };
+
   componentWillReceiveProps(nextProps) {
     if (!this.props.user && nextProps.user) {
       // login
@@ -45,6 +56,12 @@ export default class App extends Component {
       // logout
       this.props.pushState(null, '/');
     }
+  };
+
+  handleChange = (item, value) => {
+    const newState = {};
+    newState[item] = value;
+    this.setState(newState);
   };
 
   handleLogout = (event) => {
@@ -77,6 +94,21 @@ export default class App extends Component {
         </div>
         <InfoBar/>
         <FlatButton label="Primary" primary={true} />
+        <Button label="Hello world" raised mini accent />
+        <section>
+          <DatePicker
+            label="Birthdate"
+            onChange={this.handleChange.bind(this, 'date1')}
+            value={this.state.date1}
+          />
+
+          <DatePicker
+            label="Expiration date"
+            minDate={minDatetime}
+            onChange={this.handleChange.bind(this, 'date2')}
+            value={this.state.date2}
+          />
+        </section>
         <div className="well text-center">
           Have questions? Ask for help <a
           href="https://github.com/erikras/react-redux-universal-hot-example/issues"
