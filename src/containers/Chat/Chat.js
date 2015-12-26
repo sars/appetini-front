@@ -16,18 +16,9 @@ export default class Chat extends Component {
   };
 
   componentDidMount() {
-    if (socket) {
-      socket.on('msg', this.onMessageReceived);
-      setTimeout(() => {
-        socket.emit('history', {offset: 0, length: 100});
-      }, 100);
-    }
   }
 
   componentWillUnmount() {
-    if (socket) {
-      socket.removeListener('msg', this.onMessageReceived);
-    }
   }
 
   onMessageReceived = (data) => {
@@ -36,17 +27,7 @@ export default class Chat extends Component {
     this.setState({messages});
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-
-    const msg = this.state.message;
-
-    this.setState({message: ''});
-
-    socket.emit('msg', {
-      from: this.props.user.name,
-      text: msg
-    });
+  handleSubmit = () => {
   }
 
   render() {

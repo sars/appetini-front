@@ -17,6 +17,7 @@ export default ({getState, dispatch}) => next => action => {
           .then(resolve)
           .catch(error => {
             // TODO: You may want to handle errors for fetchDataDeferred here
+
             console.warn('Warning: Error in fetchDataDeferred', error);
             return resolve();
           });
