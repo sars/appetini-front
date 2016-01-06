@@ -17,7 +17,7 @@ export default class Html extends Component {
     assets: PropTypes.object,
     component: PropTypes.node,
     store: PropTypes.object
-  }
+  };
 
   render() {
     const {assets, component, store} = this.props;
@@ -25,7 +25,7 @@ export default class Html extends Component {
     const head = Helmet.rewind();
 
     return (
-      <html lang="en-us">
+      <html lang="en-us" style={{fontSize: '62.5%'}}>
         <head>
           {head.base.toComponent()}
           {head.title.toComponent()}
@@ -41,13 +41,18 @@ export default class Html extends Component {
                   rel="stylesheet" type="text/css" charSet="UTF-8"/>
           )}
 
+          <link href="https://fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic"
+                rel="stylesheet" type="text/css" />
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+                rel="stylesheet" type="text/css" />
+
           {/* (will be present only in development mode) */}
           {/* outputs a <style/> tag with all bootstrap styles + App.scss + it could be CurrentPage.scss. */}
           {/* can smoothen the initial style flash (flicker) on page load in development mode. */}
           {/* ideally one could also include here the style for the current page (Home.scss, About.scss, etc) */}
           { Object.keys(assets.styles).length === 0 ? <style dangerouslySetInnerHTML={{__html: require('../containers/App/App.scss')._style}}/> : null }
         </head>
-        <body>
+        <body style={{fontFamily: 'Roboto,sans-serif'}}>
           <div id="content" dangerouslySetInnerHTML={{__html: content}}/>
           <script dangerouslySetInnerHTML={{__html: `window.__data=${serialize(store.getState())};`}} charSet="UTF-8"/>
           <script src={assets.javascript.main} charSet="UTF-8"/>

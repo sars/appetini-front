@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { IndexLink, Link } from 'react-router';
-import FlatButton from 'material-ui/lib/raised-button';
 import Button from 'react-toolbox/lib/button';
 import DatePicker from 'react-toolbox/lib/date_picker';
 import Helmet from 'react-helmet';
@@ -93,8 +92,7 @@ export default class App extends Component {
           {this.props.children}
         </div>
         <InfoBar/>
-        <FlatButton label="Primary" primary={true} />
-        <Button label="Hello world" raised mini accent />
+        <Button label="Hello world" onClick={this.handleClick} raised mini accent />
         <section>
           <DatePicker
             label="Birthdate"
