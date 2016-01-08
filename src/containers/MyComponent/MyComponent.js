@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import DocumentMeta from 'react-document-meta';
-import config from '../../config';
+import Helmet from 'react-helmet';
 import Button from 'react-toolbox/lib/button';
 import Dialog from 'react-toolbox/lib/dialog';
 import Input from 'react-toolbox/lib/input';
@@ -23,7 +22,7 @@ export default class MyComponent extends Component {
   render() {
     return (
       <div className="container">
-        <DocumentMeta title={config.app.title + ': About Us'}/>
+        <Helmet title="About Us"/>
         <div>wefwerfwefewf</div>
         <Button label="Login popup" onClick={this.handleToggle} raised mini accent />
         <Dialog actions={this.actions} active={this.state.active}

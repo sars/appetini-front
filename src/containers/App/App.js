@@ -1,15 +1,20 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { IndexLink, Link } from 'react-router';
-import Button from 'react-toolbox/lib/button';
-import DatePicker from 'react-toolbox/lib/date_picker';
+import { IndexLink } from 'react-router';
+import Link from 'react-toolbox/lib/link';
+import Navigation from 'react-toolbox/lib/navigation';
+import { Button as ToolboxButton, IconButton } from 'react-toolbox/lib/button';
+import AppBar from 'react-toolbox/lib/app_bar';
 import Helmet from 'react-helmet';
 import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
 import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
-import { InfoBar } from 'components';
 import { pushState } from 'redux-router';
 import connectData from 'helpers/connectData';
 import config from '../../config';
+import { VkIcon, InstagramIcon, FbIcon } from 'components/icons';
+import Dialog from 'react-toolbox/lib/dialog';
+import Input from 'react-toolbox/lib/input';
+import 'react-toolbox/lib/commons';
 
 function fetchData(getState, dispatch) {
   const promises = [];
@@ -21,11 +26,6 @@ function fetchData(getState, dispatch) {
   }
   return Promise.all(promises);
 }
-
-const datetime = new Date(2015, 10, 16);
-const minDatetime = new Date(new Date(datetime).setDate(8));
-datetime.setHours(17);
-datetime.setMinutes(28);
 
 @connectData(fetchData)
 @connect(
@@ -44,7 +44,7 @@ export default class App extends Component {
   };
 
   state = {
-    date2: datetime
+    loginModalActive: false
   };
 
   componentWillReceiveProps(nextProps) {
@@ -55,6 +55,10 @@ export default class App extends Component {
       // logout
       this.props.pushState(null, '/');
     }
+  }
+
+  toggleModalActive = () => {
+    this.setState({loginModalActive: !this.state.loginModalActive});
   };
 
   handleChange = (item, value) => {
@@ -74,45 +78,59 @@ export default class App extends Component {
 
     return (
       <div className={styles.app}>
+        <AppBar fixed>
+          <IndexLink to="/">
+            <div className={styles.brand}/>
+            <span>{config.app.title}</span>
+          </IndexLink>
+
+          <Navigation className={styles.navigation}>
+            <Link href="http://" label="Меню" />
+            <Link className={styles.navigationLinkActive} href="http://" label="О нас" />
+            <Link href="http://" label="Тарифные планы" />
+            {!user && <ToolboxButton label="Войти" accent onClick={this.toggleModalActive} />}
+            <IconButton icon="search" accent />
+          </Navigation>
+        </AppBar>
+
         <Helmet {...config.app.head}/>
-        <IndexLink to="/" activeStyle={{color: '#33e0ff'}}>
-          <div className={styles.brand}/>
-          <span>{config.app.title}</span>
-        </IndexLink>
-        {user && <Link to="/chat">Chat</Link>}
-
-        <Link to="/widgets">Widgets</Link> /
-        <Link to="/survey">Survey</Link> /
-        <Link to="/about">About Us</Link> /
-
-        {!user && <Link to="/login">Login</Link>}
-        {user && <Link to="/logout">Logout</Link>}
 
         <div className={styles.appContent}>
           {this.props.children}
         </div>
-        <InfoBar/>
-        <Button label="Hello world" onClick={this.handleClick} raised mini accent />
-        <section>
-          <DatePicker
-            label="Birthdate"
-            onChange={this.handleChange.bind(this, 'date1')}
-            value={this.state.date1}
-          />
 
-          <DatePicker
-            label="Expiration date"
-            minDate={minDatetime}
-            onChange={this.handleChange.bind(this, 'date2')}
-            value={this.state.date2}
-          />
-        </section>
-        <div className="well text-center">
-          Have questions? Ask for help <a
-          href="https://github.com/erikras/react-redux-universal-hot-example/issues"
-          target="_blank">on Github</a> or in the <a
-          href="https://discord.gg/0ZcbPKXt5bZZb1Ko" target="_blank">#react-redux-universal</a> Discord channel.
-        </div>
+        <footer className={styles.footer}>
+          <div className={styles.firstLine}>
+            <Navigation>
+              <Link href="http://" label="Условия использования" />
+              <Link href="http://" label="Как это работает" />
+              <Link href="http://" label="Меню" />
+              <Link href="http://" label="О нас" />
+            </Navigation>
+            <div className={styles.auth}>
+              <ToolboxButton label="Войти" accent />
+              <ToolboxButton label="Зарегистрироваться" accent raised />
+            </div>
+          </div>
+
+          <div className={styles.secondLine}>
+            <div className={styles.terms}>
+              2016 Appetini. Все права защищены и соблюдены.
+            </div>
+            <div className={styles.social}>
+              <ToolboxButton floating accent mini><FbIcon /></ToolboxButton>
+              <ToolboxButton floating accent mini><VkIcon /></ToolboxButton>
+              <ToolboxButton floating accent mini><InstagramIcon /></ToolboxButton>
+            </div>
+          </div>
+        </footer>
+
+        <Dialog active={this.state.loginModalActive} title="Login" onOverlayClick={this.toggleModalActive}>
+          <section>
+            <Input type="email" label="Email address" icon="email" value={this.state.email} />
+            <Input type="password" label="Password" icon="lock" value={this.state.password} />
+          </section>
+        </Dialog>
       </div>
     );
   }

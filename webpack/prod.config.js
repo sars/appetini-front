@@ -49,7 +49,7 @@ module.exports = {
       'src',
       'node_modules'
     ],
-    extensions: ['', '.json', '.js', '.jsx']
+    extensions: ['', '.json', '.js', '.jsx', '.scss']
   },
   plugins: [
     new CleanPlugin([relativeAssetsPath]),

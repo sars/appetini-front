@@ -1,9 +1,6 @@
 .app {
   .brand {
-    position: absolute;
     $size: 40px;
-    top: 5px;
-    left: 5px;
     display: inline-block;
     background: #2d2d2d url('../Home/logo.png') no-repeat center center;
     width: $size;
@@ -11,6 +8,7 @@
     background-size: 80%;
     margin: 0 10px 0 0;
     border-radius: $size / 2;
+    vertical-align: middle;
   }
   nav :global(.fa) {
     font-size: 2em;
@@ -18,5 +16,57 @@
   }
 }
 .appContent {
-  margin: 50px 0; // for fixed navbar
+  margin-top: 6.4rem;
+  z-index: 1;
+}
+
+.navigationLinkActive:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: .3rem;
+  content: '';
+  background-color: $palette-green-500;
+}
+
+.navigation {
+  flex: 1;
+  text-align: right;
+  > button, > a {
+    vertical-align: middle;
+  }
+
+  > a {
+    font-size: 1.4rem;
+    padding: 0 1.5rem;
+    line-height: 6.4rem;
+    height: 6.4rem;
+  }
+}
+
+.social {
+  >button {
+    margin-left: 10px;
+  }
+}
+
+.firstLine, .secondLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.firstLine {
+  margin-bottom: 15px;
+}
+
+.terms {
+  padding: 1rem;
+}
+
+.footer {
+  background-color: rgba(180,180,180,0.5);
+  padding: 20px 50px;
 }

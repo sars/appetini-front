@@ -25,13 +25,14 @@ export default class Html extends Component {
     const head = Helmet.rewind();
 
     return (
-      <html lang="en-us" style={{fontSize: '62.5%'}}>
+      <html lang="en-us">
         <head>
-          {head.base.toComponent()}
-          {head.title.toComponent()}
-          {head.meta.toComponent()}
-          {head.link.toComponent()}
-          {head.script.toComponent()}
+          <Helmet />
+          {head && head.base.toComponent()}
+          {head && head.title.toComponent()}
+          {head && head.meta.toComponent()}
+          {head && head.link.toComponent()}
+          {head && head.script.toComponent()}
 
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -52,7 +53,7 @@ export default class Html extends Component {
           {/* ideally one could also include here the style for the current page (Home.scss, About.scss, etc) */}
           { Object.keys(assets.styles).length === 0 ? <style dangerouslySetInnerHTML={{__html: require('../containers/App/App.scss')._style}}/> : null }
         </head>
-        <body style={{fontFamily: 'Roboto,sans-serif'}}>
+        <body>
           <div id="content" dangerouslySetInnerHTML={{__html: content}}/>
           <script dangerouslySetInnerHTML={{__html: `window.__data=${serialize(store.getState())};`}} charSet="UTF-8"/>
           <script src={assets.javascript.main} charSet="UTF-8"/>
