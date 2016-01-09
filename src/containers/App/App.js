@@ -12,9 +12,9 @@ import { pushState } from 'redux-router';
 import connectData from 'helpers/connectData';
 import config from '../../config';
 import { VkIcon, InstagramIcon, FbIcon } from 'components/icons';
-import Dialog from 'react-toolbox/lib/dialog';
-import Input from 'react-toolbox/lib/input';
+import { LoginModal } from 'components';
 import 'react-toolbox/lib/commons';
+import {toggle} from 'redux/modules/loginModal';
 
 function fetchData(getState, dispatch) {
   const promises = [];
@@ -30,12 +30,13 @@ function fetchData(getState, dispatch) {
 @connectData(fetchData)
 @connect(
   state => ({user: state.auth.user}),
-  {logout, pushState})
+  {logout, pushState, toggle})
 export default class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
     user: PropTypes.object,
     logout: PropTypes.func.isRequired,
+    toggle: PropTypes.func.isRequired,
     pushState: PropTypes.func.isRequired
   };
 
@@ -57,8 +58,8 @@ export default class App extends Component {
     }
   }
 
-  toggleModalActive = () => {
-    this.setState({loginModalActive: !this.state.loginModalActive});
+  openLoginModal = () => {
+    this.props.toggle();
   };
 
   handleChange = (item, value) => {
@@ -88,7 +89,7 @@ export default class App extends Component {
             <Link href="http://" label="Меню" />
             <Link className={styles.navigationLinkActive} href="http://" label="О нас" />
             <Link href="http://" label="Тарифные планы" />
-            {!user && <ToolboxButton label="Войти" accent onClick={this.toggleModalActive} />}
+            {!user && <ToolboxButton label="Войти" accent onClick={this.openLoginModal} />}
             <IconButton icon="search" accent />
           </Navigation>
         </AppBar>
@@ -125,12 +126,7 @@ export default class App extends Component {
           </div>
         </footer>
 
-        <Dialog active={this.state.loginModalActive} title="Login" onOverlayClick={this.toggleModalActive}>
-          <section>
-            <Input type="email" label="Email address" icon="email" value={this.state.email} />
-            <Input type="password" label="Password" icon="lock" value={this.state.password} />
-          </section>
-        </Dialog>
+        <LoginModal opened={this.state.loginModalActive} />
       </div>
     );
   }
