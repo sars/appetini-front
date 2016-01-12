@@ -90,6 +90,7 @@ export default class App extends Component {
             <Link className={styles.navigationLinkActive} href="http://" label="О нас" />
             <Link href="http://" label="Тарифные планы" />
             {!user && <ToolboxButton label="Войти" accent onClick={this.openLoginModal} />}
+            {user && <Link label="Выйти" onClick={this.props.logout} /> }
             <IconButton icon="search" accent />
           </Navigation>
         </AppBar>

@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 const LOAD = 'redux-example/auth/LOAD';
 const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/auth/LOAD_FAIL';
@@ -71,7 +73,8 @@ export default function reducer(state = initialState, action = {}) {
     case 'login-modal/LOGIN_SUCCESS':
       return {
         ...state,
-        user: {}
+        user: action.result.resource,
+        loaded: true
       };
     default:
       return state;
@@ -82,10 +85,25 @@ export function isLoaded(globalState) {
   return globalState.auth && globalState.auth.loaded;
 }
 
+function getJwtPayload(token) {
+  if (token && token.split('.').length === 3) {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      return JSON.parse(decodeURIComponent(escape(window.atob(base64))));
+    } catch (exception) {
+      return undefined;
+    }
+  }
+}
+
 export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/api/users/4')
+    promise: (client) => {
+      const data = getJwtPayload(Cookies.get('user_token'));
+      return data ? client.get('/users/' + data.user.id) : Promise.reject();
+    }
   };
 }
 
@@ -103,6 +121,6 @@ export function login(name) {
 export function logout() {
   return {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
-    promise: (client) => client.get('/logout')
+    promise: (client) => client.del('/logout')
   };
 }

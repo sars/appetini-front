@@ -1,3 +1,5 @@
+import Oauth from 'redux/modules/oauth';
+
 const TOGGLE = 'login-modal/TOGGLE';
 const LOGIN = 'login-modal/LOGIN';
 const LOGIN_SUCCESS = 'login-modal/LOGIN_SUCCESS';
@@ -32,8 +34,24 @@ export function toggle() {
 export function submit(user) {
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
-    promise: (client) => client.post('/api/login', {
+    promise: (client) => client.post('/login', {
       data: { user }
     })
+  };
+}
+
+export function oauth(provider) {
+  const oauthClient = new Oauth({
+    facebook: {
+      clientId: '1732728180271989'
+    },
+    vkontakte: {
+      clientId: '5223874'
+    }
+  });
+
+  return {
+    types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
+    promise: () => oauthClient.authenticate(provider)
   };
 }

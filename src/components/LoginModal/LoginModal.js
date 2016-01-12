@@ -1,15 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 import {reduxForm} from 'redux-form';
 import Dialog from 'react-toolbox/lib/dialog';
+import Button from 'react-toolbox/lib/button';
 import Input from 'react-toolbox/lib/input';
-import { toggle, submit } from 'redux/modules/loginModal';
+import { toggle, submit, oauth } from 'redux/modules/loginModal';
 import { connect } from 'react-redux';
 import Checkbox from 'react-toolbox/lib/checkbox';
 import Snackbar from 'react-toolbox/lib/snackbar';
 
 @connect(
   state => ({ ...state.loginModal }),
-  { toggle, submit })
+  { toggle, submit, oauth })
 @reduxForm({
   form: 'login',
   fields: ['email', 'password', 'rememberMe'],
@@ -26,6 +27,7 @@ export default class LoginModal extends Component {
     pristine: PropTypes.bool.isRequired,
     opened: PropTypes.bool.isRequired,
     toggle: PropTypes.func.isRequired,
+    oauth: PropTypes.func.isRequired,
     submit: PropTypes.func.isRequired
   };
 
@@ -37,12 +39,20 @@ export default class LoginModal extends Component {
     { label: 'Cancel', onClick: this.props.toggle },
     { label: 'Login', onClick: () => {
       this.props.handleSubmit(user => {
-        this.props.submit(user).then(() => {
-          this.setState({ snackbarActive: true });
-        });
+        this.props.submit(user).then(this.showSnackbar);
       })();
     } }
   ];
+
+  showSnackbar = () => {
+    this.setState({ snackbarActive: true });
+  };
+
+  oauth(provider) {
+    return () => {
+      this.props.oauth(provider).then(this.showSnackbar);
+    };
+  }
 
   handleSnackbarTimeout = () => {
     this.setState({ snackbarActive: false });
@@ -69,6 +79,8 @@ export default class LoginModal extends Component {
             <Input type="email" label="Email address" icon="email" id={email.name} {...email} />
             <Input type="password" label="Password" icon="lock" id={password.name} {...password} />
             <Checkbox className={styles.rememberMe} label="Remember me" {...rememberMe} />
+            <Button label="FB" onClick={this.oauth('facebook')} />
+            <Button label="VK" onClick={this.oauth('vkontakte')} />
           </section>
         </Dialog>
         <Snackbar icon="done" label="You are successfully logged in"
