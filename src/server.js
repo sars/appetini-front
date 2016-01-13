@@ -1,4 +1,5 @@
 import Express from 'express';
+import cookieParser from 'cookie-parser';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import config from './config';
@@ -19,6 +20,7 @@ import {Provider} from 'react-redux';
 import qs from 'query-string';
 import getRoutes from './routes';
 import getStatusFromRoutes from './helpers/getStatusFromRoutes';
+import tokenPayload from './helpers/tokenPayload'
 
 const pretty = new PrettyError();
 const app = new Express();
@@ -31,6 +33,8 @@ app.use(compression());
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 
 app.use(Express.static(path.join(__dirname, '..', 'static')));
+
+app.use(cookieParser());
 
 // Proxy to API server
 app.use('/api', (req, res) => {
@@ -58,8 +62,9 @@ app.use((req, res) => {
     webpackIsomorphicTools.refresh();
   }
   const client = new ApiClient(req);
+  const data = { auth: { tokenPayload: tokenPayload(req) } };
 
-  const store = createStore(reduxReactRouter, getRoutes, createHistory, client);
+  const store = createStore(reduxReactRouter, getRoutes, createHistory, client, data);
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +

@@ -1,5 +1,3 @@
-import Cookies from 'js-cookie';
-
 const LOAD = 'redux-example/auth/LOAD';
 const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/auth/LOAD_FAIL';
@@ -85,24 +83,12 @@ export function isLoaded(globalState) {
   return globalState.auth && globalState.auth.loaded;
 }
 
-function getJwtPayload(token) {
-  if (token && token.split('.').length === 3) {
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      return JSON.parse(decodeURIComponent(escape(window.atob(base64))));
-    } catch (exception) {
-      return undefined;
-    }
-  }
-}
-
 export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => {
-      const data = getJwtPayload(Cookies.get('user_token'));
-      return data ? client.get('/users/' + data.user.id) : Promise.reject();
+    promise: (client, getState) => {
+      const user = getState().auth.tokenPayload.user;
+      return user ? client.get('/users/' + user.id) : Promise.reject();
     }
   };
 }

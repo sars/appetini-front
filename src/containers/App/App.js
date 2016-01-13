@@ -19,10 +19,10 @@ import {toggle} from 'redux/modules/loginModal';
 function fetchData(getState, dispatch) {
   const promises = [];
   if (!isInfoLoaded(getState())) {
-    promises.push(dispatch(loadInfo()));
+    promises.push(dispatch(loadInfo()).catch(() => console.log('error info loading')));
   }
   if (!isAuthLoaded(getState())) {
-    promises.push(dispatch(loadAuth()));
+    promises.push(dispatch(loadAuth()).catch(() => console.log('error auth loading')));
   }
   return Promise.all(promises);
 }
