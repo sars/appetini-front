@@ -1,0 +1,60 @@
+@import "node_modules/react-toolbox/lib/base";
+
+.bottom {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.rating {
+  :global .rsr-container {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.price {
+  margin-left: auto;
+}
+
+.priceAmount {
+  font-size: 3rem;
+}
+
+.priceCurrency {
+  font-style: italic;
+}
+
+.feedback {
+  margin-left: 1rem;
+  vertical-align: middle;
+}
+
+.lunch {
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+  min-width: 300px;
+
+  &:hover {
+    @include shadow-8dp();
+  }
+}
+
+.dish {
+  padding: 0.7rem 1.3rem;
+  margin: 0.3rem;
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 500px; // http://stackoverflow.com/questions/18794947/capsule-shape-using-border-radius-without-a-set-width-or-height
+  display: inline-block;
+  font-size: 1.2rem;
+}
+
+.dishes {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  padding: 1.2rem;
+}

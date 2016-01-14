@@ -1,0 +1,14 @@
+.lunch {
+  margin: 2rem 0;
+  width: 30%;
+}
+
+.lunchesGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+  h4 {
+    width: 100%;
+  }
+}
