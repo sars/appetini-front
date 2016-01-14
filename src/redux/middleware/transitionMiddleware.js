@@ -5,6 +5,7 @@ const locationsAreEqual = (locA, locB) => (locA.pathname === locB.pathname) && (
 
 export default ({getState, dispatch}) => next => action => {
   if (action.type === ROUTER_DID_CHANGE) {
+    next({type: '@@reduxReactRouter/routerDidChangeStart'});
     if (getState().router && locationsAreEqual(action.payload.location, getState().router.location)) {
       return next(action);
     }

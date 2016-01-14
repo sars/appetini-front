@@ -1,12 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { IndexLink } from 'react-router';
-import Link from 'react-toolbox/lib/link';
+import { IndexLink, Link } from 'react-router';
 import Navigation from 'react-toolbox/lib/navigation';
 import { Button as ToolboxButton, IconButton } from 'react-toolbox/lib/button';
 import AppBar from 'react-toolbox/lib/app_bar';
 import Helmet from 'react-helmet';
-import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
 import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
 import { pushState } from 'redux-router';
 import connectData from 'helpers/connectData';
@@ -15,12 +13,11 @@ import { VkIcon, InstagramIcon, FbIcon } from 'components/icons';
 import { LoginModal } from 'components';
 import 'react-toolbox/lib/commons';
 import {toggle} from 'redux/modules/loginModal';
+import ProgressBar from 'react-toolbox/lib/progress_bar';
+import classNames from 'classnames';
 
 function fetchData(getState, dispatch) {
   const promises = [];
-  if (!isInfoLoaded(getState())) {
-    promises.push(dispatch(loadInfo()).catch(() => console.log('error info loading')));
-  }
   if (!isAuthLoaded(getState())) {
     promises.push(dispatch(loadAuth()).catch(() => console.log('error auth loading')));
   }
@@ -29,7 +26,7 @@ function fetchData(getState, dispatch) {
 
 @connectData(fetchData)
 @connect(
-  state => ({user: state.auth.user}),
+  state => ({user: state.auth.user, routerReducer: state.routerReducer}),
   {logout, pushState, toggle})
 export default class App extends Component {
   static propTypes = {
@@ -37,7 +34,8 @@ export default class App extends Component {
     user: PropTypes.object,
     logout: PropTypes.func.isRequired,
     toggle: PropTypes.func.isRequired,
-    pushState: PropTypes.func.isRequired
+    pushState: PropTypes.func.isRequired,
+    routerReducer: PropTypes.object
   };
 
   static contextTypes = {
@@ -79,6 +77,8 @@ export default class App extends Component {
 
     return (
       <div className={styles.app}>
+        <ProgressBar mode="indeterminate"
+          className={classNames(styles.progress, {[styles.progressActive]: this.props.routerReducer.loading})} />
         <AppBar fixed>
           <IndexLink to="/">
             <div className={styles.brand}/>
@@ -86,11 +86,11 @@ export default class App extends Component {
           </IndexLink>
 
           <Navigation className={styles.navigation}>
-            <Link href="http://" label="Меню" />
-            <Link className={styles.navigationLinkActive} href="http://" label="О нас" />
-            <Link href="http://" label="Тарифные планы" />
+            <IndexLink to="/" activeClassName={styles.activeNavLink}>Меню</IndexLink>
+            <Link to="/about" activeClassName={styles.activeNavLink}>О нас</Link>
+            <Link to="/prices" activeClassName={styles.activeNavLink}>Тарифные планы</Link>
             {!user && <ToolboxButton label="Войти" accent onClick={this.openLoginModal} />}
-            {user && <Link label="Выйти" onClick={this.props.logout} /> }
+            {user && <a onClick={this.props.logout} activeClassName={styles.activeNavLink}>Выйти</a> }
             <IconButton icon="search" accent />
           </Navigation>
         </AppBar>
@@ -104,10 +104,10 @@ export default class App extends Component {
         <footer className={styles.footer}>
           <div className={styles.firstLine}>
             <Navigation>
-              <Link href="http://" label="Условия использования" />
-              <Link href="http://" label="Как это работает" />
-              <Link href="http://" label="Меню" />
-              <Link href="http://" label="О нас" />
+              <Link to="/terms">Условия использования</Link>
+              <Link to="/how-it-works">Как это работает</Link>
+              <IndexLink to="/">Меню</IndexLink>
+              <Link to="/about">О нас</Link>
             </Navigation>
             <div className={styles.auth}>
               <ToolboxButton label="Войти" accent />

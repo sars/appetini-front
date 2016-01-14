@@ -9,6 +9,7 @@ import info from './info';
 import widgets from './widgets';
 import loginModal from './loginModal';
 import lunches from './lunches';
+import routerReducer from './router';
 
 export default combineReducers({
   router: routerStateReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
   info,
   widgets,
   loginModal,
-  lunches
+  lunches,
+  routerReducer
 });
