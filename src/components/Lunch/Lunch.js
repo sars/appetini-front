@@ -22,7 +22,7 @@ const Lunch = ({className, lunch}) => {
       </div>
 
       <div className={styles.bottom}>
-        <Avatar image={cook.main_photo.url} />
+        <Avatar image={cook.main_photo.thumb.url} />
         <div>
           <Link href="/#/components/link" label={cook.first_name + ' ' + cook.last_name} />
           <div className={styles.rating}>

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import multireducer from 'multireducer';
-import { routerStateReducer } from 'redux-router';
+import { routeReducer } from 'redux-simple-router';
 
 import auth from './auth';
 import counter from './counter';
@@ -9,10 +9,9 @@ import info from './info';
 import widgets from './widgets';
 import loginModal from './loginModal';
 import lunches from './lunches';
-import routerReducer from './router';
 
 export default combineReducers({
-  router: routerStateReducer,
+  routing: routeReducer,
   auth,
   form,
   multireducer: multireducer({
@@ -23,6 +22,5 @@ export default combineReducers({
   info,
   widgets,
   loginModal,
-  lunches,
-  routerReducer
+  lunches
 });

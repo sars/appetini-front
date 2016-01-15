@@ -3,7 +3,6 @@ import Helmet from 'react-helmet';
 import { load as loadLunches } from 'redux/modules/lunches';
 import Lunches from 'components/Lunches/Lunches';
 import { connect } from 'react-redux';
-import connectData from 'helpers/connectData';
 import Dropdown from 'react-toolbox/lib/dropdown';
 
 const sortingOptions = [
@@ -12,13 +11,6 @@ const sortingOptions = [
   { value: 'TH-th', label: 'Кулинару' }
 ];
 
-function fetchData(getState, dispatch) {
-  const promises = [];
-  promises.push(dispatch(loadLunches()).catch((data) => console.log(data, 'error lunches loading')));
-  return Promise.all(promises);
-}
-
-@connectData(fetchData)
 @connect(state => ({lunches: state.lunches}))
 export default class Home extends Component {
   static propTypes = {
@@ -28,6 +20,10 @@ export default class Home extends Component {
   state = {
     sorting: 'ES-es'
   };
+
+  static loadProps(params) {
+    return params.store.dispatch(loadLunches());
+  }
 
   handleChangeSorting = (value) => {
     this.setState({sorting: value});

@@ -10,12 +10,12 @@ const Lunches = ({lunches}) => {
 
   return (
     <div className={styles.lunches}>
-      {preparedLunches && Object.keys(preparedLunches).map(date => {
+      {preparedLunches && Object.keys(preparedLunches).map((date, index) => {
         const mDate = moment(date);
         const nextDate = moment(date).add(30, 'minutes');
 
         return (
-          <div className={styles.lunchesGroup}>
+          <div className={styles.lunchesGroup} key={index}>
             <h4>
               <span>{mDate.format('dddd, DD.MM.YYYY, HH:mm-')}</span>
               <span>{nextDate.format('HH:mm')}</span>

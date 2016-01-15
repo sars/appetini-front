@@ -5,9 +5,8 @@ import Navigation from 'react-toolbox/lib/navigation';
 import { Button as ToolboxButton, IconButton } from 'react-toolbox/lib/button';
 import AppBar from 'react-toolbox/lib/app_bar';
 import Helmet from 'react-helmet';
-import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
-import { pushState } from 'redux-router';
-import connectData from 'helpers/connectData';
+import { load as loadAuth, logout } from 'redux/modules/auth';
+import { routeActions } from 'redux-simple-router';
 import config from '../../config';
 import { VkIcon, InstagramIcon, FbIcon } from 'components/icons';
 import { LoginModal } from 'components';
@@ -16,26 +15,19 @@ import {toggle} from 'redux/modules/loginModal';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 import classNames from 'classnames';
 
-function fetchData(getState, dispatch) {
-  const promises = [];
-  if (!isAuthLoaded(getState())) {
-    promises.push(dispatch(loadAuth()).catch(() => console.log('error auth loading')));
-  }
-  return Promise.all(promises);
-}
-
-@connectData(fetchData)
 @connect(
-  state => ({user: state.auth.user, routerReducer: state.routerReducer}),
-  {logout, pushState, toggle})
+  state => ({user: state.auth.user, routerReducer: state.routerReducer, auth: state.auth}),
+  {logout, pushState: routeActions.push, toggle})
 export default class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
     user: PropTypes.object,
+    auth: PropTypes.object,
     logout: PropTypes.func.isRequired,
     toggle: PropTypes.func.isRequired,
     pushState: PropTypes.func.isRequired,
-    routerReducer: PropTypes.object
+    routerReducer: PropTypes.object,
+    loading: PropTypes.bool.isRequired
   };
 
   static contextTypes = {
@@ -49,11 +41,15 @@ export default class App extends Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.user && nextProps.user) {
       // login
-      this.props.pushState(null, '/loginSuccess');
+      this.props.pushState('/loginSuccess');
     } else if (this.props.user && !nextProps.user) {
       // logout
-      this.props.pushState(null, '/');
+      this.props.pushState('/');
     }
+  }
+
+  static loadProps(params) {
+    return params.store.dispatch(loadAuth());
   }
 
   openLoginModal = () => {
@@ -78,7 +74,7 @@ export default class App extends Component {
     return (
       <div className={styles.app}>
         <ProgressBar mode="indeterminate"
-          className={classNames(styles.progress, {[styles.progressActive]: this.props.routerReducer.loading})} />
+          className={classNames(styles.progress, {[styles.progressActive]: this.props.loading})} />
         <AppBar fixed>
           <IndexLink to="/">
             <div className={styles.brand}/>

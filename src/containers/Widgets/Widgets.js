@@ -2,18 +2,9 @@ import React, {Component, PropTypes} from 'react';
 import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
 import * as widgetActions from 'redux/modules/widgets';
-import {isLoaded, load as loadWidgets} from 'redux/modules/widgets';
 import {initializeWithKey} from 'redux-form';
-import connectData from 'helpers/connectData';
 import { WidgetForm } from 'components';
 
-function fetchDataDeferred(getState, dispatch) {
-  if (!isLoaded(getState())) {
-    return dispatch(loadWidgets());
-  }
-}
-
-@connectData(null, fetchDataDeferred)
 @connect(
   state => ({
     widgets: state.widgets.data,
