@@ -87,7 +87,7 @@ app.use((req, res) => {
       res.status(500);
       hydrateOnClient();
     } else if (renderProps) {
-      loadPropsOnServer({...renderProps, params: {store}}, (err, asyncProps) => {
+      loadPropsOnServer({...renderProps, params: {...renderProps.params, store}}, (err, asyncProps) => {
         const component = (
           <Provider store={store} key="provider">
             <AsyncProps {...renderProps} {...asyncProps} />
