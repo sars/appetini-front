@@ -8,6 +8,8 @@ import {reducer as form} from 'redux-form';
 import info from './info';
 import widgets from './widgets';
 import loginModal from './loginModal';
+import modals from './modals';
+import toast from './toast';
 import lunches from './lunches';
 
 export default combineReducers({
@@ -22,5 +24,7 @@ export default combineReducers({
   info,
   widgets,
   loginModal,
-  lunches
+  lunches,
+  modals,
+  toast
 });
