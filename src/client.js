@@ -19,7 +19,9 @@ const dest = document.getElementById('content');
 const store = createStore(getRoutes, browserHistory, client, window.__data);
 
 const component = (
-  <Router render={(props) => <AsyncProps {...props} resolver={asyncPropsResolver} params={{store}} />} history={browserHistory}>
+  <Router render={(props) =>
+        <AsyncProps {...props} resolver={asyncPropsResolver} params={{store, ...props.params}} /> // eslint-disable-line react/prop-types
+      } history={browserHistory}>
     {getRoutes(store)}
   </Router>
 );
