@@ -11,4 +11,6 @@ export InfoBar from './InfoBar/InfoBar';
 export MiniInfoBar from './MiniInfoBar/MiniInfoBar';
 export SurveyForm from './SurveyForm/SurveyForm';
 export WidgetForm from './WidgetForm/WidgetForm';
-export LoginModal from './LoginModal/LoginModal';
+export LoginForm from './LoginForm/LoginForm';
+export Modal from './Modal/Modal';
+export Toast from './Toast/Toast';

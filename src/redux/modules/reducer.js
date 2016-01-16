@@ -11,6 +11,7 @@ import loginModal from './loginModal';
 import modals from './modals';
 import toast from './toast';
 import lunches from './lunches';
+import lunch from './lunch';
 
 export default combineReducers({
   routing: routeReducer,
@@ -26,5 +27,6 @@ export default combineReducers({
   loginModal,
   lunches,
   modals,
-  toast
+  toast,
+  lunch
 });

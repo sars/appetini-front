@@ -9,33 +9,27 @@ import { load as loadAuth, logout } from 'redux/modules/auth';
 import { routeActions } from 'redux-simple-router';
 import config from '../../config';
 import { VkIcon, InstagramIcon, FbIcon } from 'components/icons';
-import { LoginModal } from 'components';
+import { Modal, Toast } from 'components';
 import 'react-toolbox/lib/commons';
-import {toggle} from 'redux/modules/loginModal';
+import {open} from 'redux/modules/modals';
+import {show as showToast} from 'redux/modules/toast';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 import classNames from 'classnames';
 
 @connect(
   state => ({user: state.auth.user, routerReducer: state.routerReducer, auth: state.auth}),
-  {logout, pushState: routeActions.push, toggle})
+  {logout, pushState: routeActions.push, open, showToast})
 export default class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
     user: PropTypes.object,
     auth: PropTypes.object,
     logout: PropTypes.func.isRequired,
-    toggle: PropTypes.func.isRequired,
+    open: PropTypes.func.isRequired,
+    showToast: PropTypes.func.isRequired,
     pushState: PropTypes.func.isRequired,
     routerReducer: PropTypes.object,
     loading: PropTypes.bool.isRequired
-  };
-
-  static contextTypes = {
-    store: PropTypes.object.isRequired
-  };
-
-  state = {
-    loginModalActive: false
   };
 
   componentWillReceiveProps(nextProps) {
@@ -52,8 +46,13 @@ export default class App extends Component {
     return params.store.dispatch(loadAuth());
   }
 
+  logout = (event) => {
+    event.preventDefault();
+    this.props.logout().then(() => this.props.showToast('You are successfully logged out', 'accept', 'done'));
+  };
+
   openLoginModal = () => {
-    this.props.toggle();
+    this.props.open('LoginForm', 'Login');
   };
 
   handleChange = (item, value) => {
@@ -86,7 +85,7 @@ export default class App extends Component {
             <Link to="/about" activeClassName={styles.activeNavLink}>О нас</Link>
             <Link to="/prices" activeClassName={styles.activeNavLink}>Тарифные планы</Link>
             {!user && <ToolboxButton label="Войти" accent onClick={this.openLoginModal} />}
-            {user && <a onClick={this.props.logout} activeClassName={styles.activeNavLink}>Выйти</a> }
+            {user && <a href="#" onClick={this.logout}>Выйти</a> }
             <IconButton icon="search" accent />
           </Navigation>
         </AppBar>
@@ -123,7 +122,8 @@ export default class App extends Component {
           </div>
         </footer>
 
-        <LoginModal opened={this.state.loginModalActive} />
+        <Modal />
+        <Toast />
       </div>
     );
   }

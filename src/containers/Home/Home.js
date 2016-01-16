@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
-import { load as loadLunches } from 'redux/modules/lunches';
+import { load } from 'redux/modules/lunches';
 import Lunches from 'components/Lunches/Lunches';
 import { connect } from 'react-redux';
 import Dropdown from 'react-toolbox/lib/dropdown';
@@ -22,7 +22,7 @@ export default class Home extends Component {
   };
 
   static loadProps(params) {
-    return params.store.dispatch(loadLunches());
+    return params.store.dispatch(load());
   }
 
   handleChangeSorting = (value) => {
