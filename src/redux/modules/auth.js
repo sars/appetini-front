@@ -1,4 +1,4 @@
-import { clearKey } from 'helpers/asyncConnect';
+import { clearKey } from 'redux-async-connect';
 
 const LOAD = 'redux-example/auth/LOAD';
 const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';

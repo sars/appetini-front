@@ -1,5 +1,5 @@
 import Oauth from 'redux/modules/oauth';
-import { loadSuccess as asyncConnectLoad } from 'helpers/asyncConnect';
+import { loadSuccess as asyncConnectLoad } from 'redux-async-connect';
 
 const TOGGLE = 'login-modal/TOGGLE';
 const LOGIN = 'login-modal/LOGIN';

@@ -8,7 +8,7 @@ import createStore from './redux/create';
 import ApiClient from './helpers/ApiClient';
 import {Provider} from 'react-redux';
 import { Router, browserHistory } from 'react-router';
-import ReduxAsyncConnect from './helpers/asyncProps';
+import { ReduxAsyncConnect } from 'redux-async-connect';
 
 import getRoutes from './routes';
 

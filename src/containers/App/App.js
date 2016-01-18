@@ -15,7 +15,7 @@ import {open} from 'redux/modules/modals';
 import {show as showToast} from 'redux/modules/toast';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 import classNames from 'classnames';
-import { asyncConnect } from 'helpers/asyncConnect';
+import { asyncConnect } from 'redux-async-connect';
 
 @asyncConnect({
   user: (params, helpers) => {

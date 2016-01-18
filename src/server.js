@@ -14,7 +14,7 @@ import PrettyError from 'pretty-error';
 import http from 'http';
 
 import {match} from 'react-router';
-import ReduxAsyncConnect, { loadOnServer } from './helpers/asyncProps';
+import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 
 import createHistory from 'history/lib/createMemoryHistory';
 import {Provider} from 'react-redux';

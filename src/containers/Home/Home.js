@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import Lunches from 'components/Lunches/Lunches';
 import Dropdown from 'react-toolbox/lib/dropdown';
-import { asyncConnect } from 'helpers/asyncConnect';
+import { asyncConnect } from 'redux-async-connect';
 
 const sortingOptions = [
   { value: 'EN-gb', label: 'Дате' },

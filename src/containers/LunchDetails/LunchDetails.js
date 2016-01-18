@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
-import { asyncConnect } from 'helpers/asyncConnect';
+import { asyncConnect } from 'redux-async-connect';
 
 @asyncConnect({
   lunch: (params, helpers) => helpers.client.get('/lunches/' + params.lunchId)

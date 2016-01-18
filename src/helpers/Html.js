@@ -16,12 +16,11 @@ export default class Html extends Component {
   static propTypes = {
     assets: PropTypes.object,
     component: PropTypes.node,
-    store: PropTypes.object,
-    asyncProps: PropTypes.object
+    store: PropTypes.object
   };
 
   render() {
-    const {assets, component, store, asyncProps} = this.props;
+    const {assets, component, store} = this.props;
     const content = component ? ReactDOM.renderToString(component) : '';
     const head = Helmet.rewind();
 
