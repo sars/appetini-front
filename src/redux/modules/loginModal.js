@@ -1,4 +1,5 @@
 import Oauth from 'redux/modules/oauth';
+import { loadSuccess as asyncConnectLoad } from 'helpers/asyncConnect';
 
 const TOGGLE = 'login-modal/TOGGLE';
 const LOGIN = 'login-modal/LOGIN';
@@ -34,9 +35,13 @@ export function toggle() {
 export function submit(user) {
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
-    promise: (client) => client.post('/login', {
-      data: { user }
-    })
+    promise: (client, getState, dispatch) => {
+      const promise = client.post('/login', { data: { user }});
+      promise.then(result => {
+        dispatch(asyncConnectLoad('user', result));
+      });
+      return promise;
+    }
   };
 }
 

@@ -62,6 +62,7 @@
     }
   },
   "dependencies": {
+    "redux-async-connect": "0.1.1",
     "async-props": "sars/async-props",
     "babel": "~5.8.29",
     "babel-plugin-typecheck": "^2.0.0",

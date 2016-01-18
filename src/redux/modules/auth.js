@@ -1,3 +1,5 @@
+import { clearKey } from 'helpers/asyncConnect';
+
 const LOAD = 'redux-example/auth/LOAD';
 const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/auth/LOAD_FAIL';
@@ -83,30 +85,13 @@ export function isLoaded(globalState) {
   return globalState.auth && globalState.auth.loaded;
 }
 
-export function load() {
-  return {
-    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client, getState) => {
-      const user = getState().auth.tokenPayload.user;
-      return user ? client.get('/users/' + user.id) : Promise.reject();
-    }
-  };
-}
-
-export function login(name) {
-  return {
-    types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
-    promise: (client) => client.post('/login', {
-      data: {
-        name: name
-      }
-    })
-  };
-}
-
 export function logout() {
   return {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
-    promise: (client) => client.del('/logout')
+    promise: (client, getState, dispatch) => {
+      const promise = client.del('/logout');
+      promise.then(() => dispatch(clearKey('user')));
+      return promise;
+    }
   };
 }

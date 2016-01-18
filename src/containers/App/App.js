@@ -5,7 +5,7 @@ import Navigation from 'react-toolbox/lib/navigation';
 import { Button as ToolboxButton, IconButton } from 'react-toolbox/lib/button';
 import AppBar from 'react-toolbox/lib/app_bar';
 import Helmet from 'react-helmet';
-import { load as loadAuth, logout } from 'redux/modules/auth';
+import { logout } from 'redux/modules/auth';
 import { routeActions } from 'redux-simple-router';
 import config from '../../config';
 import { VkIcon, InstagramIcon, FbIcon } from 'components/icons';
@@ -15,15 +15,25 @@ import {open} from 'redux/modules/modals';
 import {show as showToast} from 'redux/modules/toast';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 import classNames from 'classnames';
+import { asyncConnect } from 'helpers/asyncConnect';
 
-@connect(
-  state => ({user: state.auth.user, routerReducer: state.routerReducer, auth: state.auth}),
+@asyncConnect({
+  user: (params, helpers) => {
+    const state = helpers.store.getState();
+    const user = state.reduxAsyncConnect.user;
+
+    if (!user || !user.loaded) {
+      const userFromToken = state.auth.tokenPayload.user;
+      return userFromToken ? helpers.client.get('/users/' + userFromToken.id) : Promise.reject();
+    }
+  }
+})
+@connect(state => ({loading: state.reduxAsyncConnect.loading}),
   {logout, pushState: routeActions.push, open, showToast})
 export default class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
     user: PropTypes.object,
-    auth: PropTypes.object,
     logout: PropTypes.func.isRequired,
     open: PropTypes.func.isRequired,
     showToast: PropTypes.func.isRequired,
@@ -33,17 +43,13 @@ export default class App extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.user && nextProps.user) {
+    if (!this.props.user.loaded && nextProps.user.loaded) {
       // login
       this.props.pushState('/loginSuccess');
-    } else if (this.props.user && !nextProps.user) {
+    } else if (this.props.user.loaded && !nextProps.user.loaded) {
       // logout
       this.props.pushState('/');
     }
-  }
-
-  static loadProps(params) {
-    return params.store.dispatch(loadAuth());
   }
 
   logout = (event) => {
@@ -67,7 +73,7 @@ export default class App extends Component {
   };
 
   render() {
-    const {user} = this.props;
+    const user = this.props.user.data;
     const styles = require('./App.scss');
 
     return (

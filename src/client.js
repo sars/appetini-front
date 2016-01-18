@@ -8,8 +8,7 @@ import createStore from './redux/create';
 import ApiClient from './helpers/ApiClient';
 import {Provider} from 'react-redux';
 import { Router, browserHistory } from 'react-router';
-import AsyncProps from 'async-props';
-import asyncPropsResolver from './helpers/asyncPropsResolver';
+import ReduxAsyncConnect from './helpers/asyncProps';
 
 import getRoutes from './routes';
 
@@ -20,7 +19,7 @@ const store = createStore(getRoutes, browserHistory, client, window.__data);
 
 const component = (
   <Router render={(props) =>
-        <AsyncProps {...props} resolver={asyncPropsResolver} params={{store, ...props.params}} /> // eslint-disable-line react/prop-types
+        <ReduxAsyncConnect {...props} helpers={{client}} />
       } history={browserHistory}>
     {getRoutes(store)}
   </Router>

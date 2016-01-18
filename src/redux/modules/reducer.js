@@ -10,8 +10,7 @@ import widgets from './widgets';
 import loginModal from './loginModal';
 import modals from './modals';
 import toast from './toast';
-import lunches from './lunches';
-import lunch from './lunch';
+import {reducer as reduxAsyncConnect} from 'helpers/asyncConnect';
 
 export default combineReducers({
   routing: routeReducer,
@@ -25,8 +24,7 @@ export default combineReducers({
   info,
   widgets,
   loginModal,
-  lunches,
   modals,
   toast,
-  lunch
+  reduxAsyncConnect
 });

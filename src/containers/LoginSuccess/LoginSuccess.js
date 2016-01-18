@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import * as authActions from 'redux/modules/auth';
 
 @connect(
-    state => ({user: state.auth.user}),
+    state => ({user: state.reduxAsyncConnect.user}),
     authActions)
 export default
 class LoginSuccess extends Component {

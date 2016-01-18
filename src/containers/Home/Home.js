@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
-import { load } from 'redux/modules/lunches';
 import Lunches from 'components/Lunches/Lunches';
-import { connect } from 'react-redux';
 import Dropdown from 'react-toolbox/lib/dropdown';
+import { asyncConnect } from 'helpers/asyncConnect';
 
 const sortingOptions = [
   { value: 'EN-gb', label: 'Дате' },
@@ -11,7 +10,9 @@ const sortingOptions = [
   { value: 'TH-th', label: 'Кулинару' }
 ];
 
-@connect(state => ({lunches: state.lunches}))
+@asyncConnect({
+  lunches: (params, helpers) => helpers.client.get('/lunches')
+})
 export default class Home extends Component {
   static propTypes = {
     lunches: PropTypes.object
@@ -21,16 +22,13 @@ export default class Home extends Component {
     sorting: 'ES-es'
   };
 
-  static loadProps(params) {
-    return params.store.dispatch(load());
-  }
-
   handleChangeSorting = (value) => {
     this.setState({sorting: value});
   };
 
   render() {
     const styles = require('./Home.scss');
+    const lunches = this.props.lunches;
     return (
       <div className={styles.home}>
         <Helmet title="Home"/>
@@ -40,7 +38,7 @@ export default class Home extends Component {
           <Dropdown className={styles.sortingDropdown} auto onChange={this.handleChangeSorting}
                     source={sortingOptions} value={this.state.sorting} />
         </div>
-        <Lunches lunches={this.props.lunches} />
+        {lunches.loaded && <Lunches lunches={lunches} />}
       </div>
     );
   }

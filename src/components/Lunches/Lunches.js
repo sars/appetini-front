@@ -5,8 +5,7 @@ import Lunch from 'components/Lunch/Lunch';
 
 const Lunches = ({lunches}) => {
   const styles = require('./Lunches.scss');
-
-  const preparedLunches = _.chain(lunches.data).sortBy('ready_by').groupBy('ready_by').value();
+  const preparedLunches = _.chain(lunches.data.resources).sortBy('ready_by').groupBy('ready_by').value();
 
   return (
     <div className={styles.lunches}>
