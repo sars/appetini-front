@@ -18,7 +18,6 @@ import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 
 import createHistory from 'history/lib/createMemoryHistory';
 import {Provider} from 'react-redux';
-import qs from 'query-string';
 import getRoutes from './routes';
 import tokenPayload from './helpers/tokenPayload';
 
@@ -66,7 +65,7 @@ app.use((req, res) => {
   const data = { auth: { tokenPayload: tokenPayload(req) } };
   const history = createHistory();
 
-  const store = createStore(getRoutes, history, client, data);
+  const store = createStore(history, client, data);
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
@@ -86,7 +85,7 @@ app.use((req, res) => {
       res.status(500);
       hydrateOnClient();
     } else if (renderProps) {
-      loadOnServer({...renderProps}, store, {client}).then(() => {
+      loadOnServer(renderProps, store, {client}).then(() => {
         const component = (
           <Provider store={store} key="provider">
             <ReduxAsyncConnect {...renderProps} />
