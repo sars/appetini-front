@@ -1,0 +1,20 @@
+.checkButton {
+  div {
+    display: inline-block;
+    background-color: #5cb85c;
+    border-radius: 500px;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 2px;
+    position: relative;
+  }
+
+  &.checked div {
+    background-color: #d9534f;
+  }
+
+  [data-react-toolbox='ripple'] {
+    overflow: hidden;
+    border-radius: 500px;
+  }
+}

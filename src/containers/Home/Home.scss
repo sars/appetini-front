@@ -1,6 +1,7 @@
 @import "../../theme/variables.scss";
 
 .home {
+  display: flex;
   dd {
     margin-bottom: 15px;
   }
@@ -16,4 +17,12 @@
 
 .sortingDropdown {
   margin-left: 2rem;
+}
+
+.leftSidebar {
+  flex: 1;
+}
+
+.center {
+  flex: 2;
 }
