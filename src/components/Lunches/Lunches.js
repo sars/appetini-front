@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash'; // eslint-disable-line id-length
-import moment from 'moment';
 import Lunch from 'components/Lunch/Lunch';
+import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
 
 const Lunches = ({lunches}) => {
   const styles = require('./Lunches.scss');
@@ -9,17 +9,13 @@ const Lunches = ({lunches}) => {
 
   return (
     <div className={styles.lunches}>
-      {preparedLunches && Object.keys(preparedLunches).map((date, index) => {
-        const mDate = moment(date);
-        const nextDate = moment(date).add(30, 'minutes');
-
+      {preparedLunches && Object.keys(preparedLunches).map((datetime, index) => {
         return (
           <div className={styles.lunchesGroup} key={index}>
             <h4>
-              <span>{mDate.format('dddd, DD.MM.YYYY, HH:mm-')}</span>
-              <span>{nextDate.format('HH:mm')}</span>
+              <DeliveryPeriod time={datetime} />
             </h4>
-            {preparedLunches[date].map(lunch =>
+            {preparedLunches[datetime].map(lunch =>
               <Lunch className={styles.lunch} key={lunch.id} lunch={lunch} />
             )}
           </div>
