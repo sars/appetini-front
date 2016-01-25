@@ -5,8 +5,8 @@ function getJwtPayload(jwt) {
   if (!decoded) { return null; }
   var payload = decoded.payload;
 
-  //try parse the payload
-  if(typeof payload === 'string') {
+  // try parse the payload
+  if (typeof payload === 'string') {
     try {
       var obj = JSON.parse(payload);
       if(typeof obj === 'object') {
