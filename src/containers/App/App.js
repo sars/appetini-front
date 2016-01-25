@@ -28,7 +28,7 @@ import { asyncConnect } from 'redux-async-connect';
     }
   }
 })
-@connect(state => ({loading: state.reduxAsyncConnect.loading}),
+@connect(state => ({loaded: state.reduxAsyncConnect.loaded}),
   {logout, pushState: routeActions.push, open, showToast})
 export default class App extends Component {
   static propTypes = {
@@ -39,7 +39,7 @@ export default class App extends Component {
     showToast: PropTypes.func.isRequired,
     pushState: PropTypes.func.isRequired,
     routerReducer: PropTypes.object,
-    loading: PropTypes.bool.isRequired
+    loaded: PropTypes.bool.isRequired
   };
 
   componentWillReceiveProps(nextProps) {
@@ -79,7 +79,7 @@ export default class App extends Component {
     return (
       <div className={styles.app}>
         <ProgressBar mode="indeterminate"
-          className={classNames(styles.progress, {[styles.progressActive]: this.props.loading})} />
+          className={classNames(styles.progress, {[styles.progressActive]: !this.props.loaded})} />
         <AppBar fixed>
           <IndexLink to="/">
             <div className={styles.brand}/>
@@ -89,7 +89,7 @@ export default class App extends Component {
           <Navigation className={styles.navigation}>
             <IndexLink to="/" activeClassName={styles.activeNavLink}>Меню</IndexLink>
             <Link to="/about" activeClassName={styles.activeNavLink}>О нас</Link>
-            <Link to="/prices" activeClassName={styles.activeNavLink}>Тарифные планы</Link>
+            <Link to="/loginSuccess" activeClassName={styles.activeNavLink}>Тарифные планы</Link>
             {!user && <ToolboxButton label="Войти" accent onClick={this.openLoginModal} />}
             {user && <a href="#" onClick={this.logout}>Выйти</a> }
             <IconButton icon="search" accent />
