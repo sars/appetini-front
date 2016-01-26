@@ -6,7 +6,7 @@ import { Button as ToolboxButton, IconButton } from 'react-toolbox/lib/button';
 import AppBar from 'react-toolbox/lib/app_bar';
 import Helmet from 'react-helmet';
 import { logout } from 'redux/modules/auth';
-import { routeActions } from 'redux-simple-router';
+import { routeActions } from 'react-router-redux';
 import config from '../../config';
 import { VkIcon, InstagramIcon, FbIcon } from 'components/icons';
 import { Modal, Toast } from 'components';
