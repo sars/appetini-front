@@ -15,11 +15,12 @@ import {
 
 export default (store) => {
   const requireLogin = (nextState, replaceState, cb) => {
+    // TODO redo
     function checkAuth() {
       const { reduxAsyncConnect: { user }} = store.getState();
       if (!user) {
         // oops, not logged in, so can't be here!
-        replaceState(null, '/');
+        replaceState('/');
       }
       cb();
     }
