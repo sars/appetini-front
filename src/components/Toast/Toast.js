@@ -13,6 +13,10 @@ export default class Toast extends Component {
     active: PropTypes.bool.isRequired
   };
 
+  shouldComponentUpdate(nextProps) {
+    return this.props !== nextProps;
+  }
+
   render() {
     const {icon, label, type, active} = this.props;
     return (
