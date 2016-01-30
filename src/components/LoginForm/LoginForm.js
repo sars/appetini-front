@@ -2,14 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import {reduxForm} from 'redux-form';
 import Button from 'react-toolbox/lib/button';
 import Input from 'react-toolbox/lib/input';
-import { submit, oauth } from 'redux/modules/loginModal';
+import { login, oauth } from 'redux/modules/auth';
 import { show as showToast } from 'redux/modules/toast';
 import { connect } from 'react-redux';
 import Checkbox from 'react-toolbox/lib/checkbox';
 
-@connect(
-  state => ({ ...state.loginModal }),
-  { submit, oauth, showToast })
+@connect(null, { login, oauth, showToast })
 @reduxForm({
   form: 'login',
   fields: ['email', 'password', 'rememberMe'],
@@ -24,7 +22,7 @@ export default class LoginForm extends Component {
     invalid: PropTypes.bool.isRequired,
     pristine: PropTypes.bool.isRequired,
     oauth: PropTypes.func.isRequired,
-    submit: PropTypes.func.isRequired,
+    login: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
     onError: PropTypes.func,
     showToast: PropTypes.func.isRequired
@@ -37,7 +35,7 @@ export default class LoginForm extends Component {
 
   submit = () => {
     this.props.handleSubmit(user => {
-      this.props.submit(user).then(this.props.onSuccess)
+      this.props.login(user).then(this.props.onSuccess)
         .then(() => this.props.showToast('You are successfully logged in', 'accept', 'done'))
         .catch(this.props.onError);
     })();

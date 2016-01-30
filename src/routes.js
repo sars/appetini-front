@@ -10,34 +10,48 @@ import {
     LoginSuccess,
     Survey,
     NotFound,
-    LunchDetails
+    LunchDetails,
+    AuthorizedApp
   } from 'containers';
+import { setUser } from 'redux/modules/auth';
 
-export default (store) => {
-  const requireLogin = (nextState, replaceState, cb) => {
-    // TODO redo
-    function checkAuth() {
-      const { reduxAsyncConnect: { user }} = store.getState();
-      if (!user) {
-        // oops, not logged in, so can't be here!
-        replaceState('/');
-      }
-      cb();
+export default (store, client) => {
+  const requireLogin = (nextState) => {
+    const { user } = store.getState().auth;
+
+    if (__SERVER__ && !user) {
+      nextState.location.state = {...nextState.location.state, responseStatus: 403};
     }
+  };
 
-    checkAuth();
+  const userLoad = (nextState, replaceState, cb) => {
+    const state = store.getState();
+    const { user } = state.auth;
+    if (!user) {
+      const userFromToken = state.auth.tokenPayload.user;
+      if (userFromToken) {
+        client.get('/users/' + userFromToken.id).then(result => {
+          store.dispatch(setUser(result.resource));
+          cb();
+        }).catch(cb);
+        return;
+      }
+    }
+    cb();
   };
 
   /**
    * Please keep routes in alphabetical order
    */
   return (
-    <Route path="/" component={App}>
-      { /* Home (main) route */ }
-      <IndexRoute component={Home}/>
+    <Route path="/" component={App} onEnter={userLoad}>
+      <Route onEnter={requireLogin} component={AuthorizedApp}>
+        { /* Home (main) route */ }
+        <IndexRoute component={Home}/>
+      </Route>
 
       { /* Routes requiring login */ }
-      <Route onEnter={requireLogin}>
+      <Route onEnter={requireLogin} component={AuthorizedApp}>
         <Route path="chat" component={Chat}/>
         <Route path="loginSuccess" component={LoginSuccess}/>
       </Route>

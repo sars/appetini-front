@@ -77,7 +77,7 @@ app.use((req, res) => {
     return;
   }
 
-  match({ history, routes: getRoutes(store), location: req.originalUrl }, (error, redirectLocation, renderProps) => {
+  match({ history, routes: getRoutes(store, client), location: req.originalUrl }, (error, redirectLocation, renderProps) => {
     if (redirectLocation) {
       res.redirect(redirectLocation.pathname + redirectLocation.search);
     } else if (error) {
@@ -92,7 +92,8 @@ app.use((req, res) => {
           </Provider>
         );
 
-        res.status(200);
+        const status = renderProps.location.state && renderProps.location.state.responseStatus || 200;
+        res.status(status);
 
         global.navigator = {userAgent: req.headers['user-agent']};
 

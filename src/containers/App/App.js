@@ -15,20 +15,8 @@ import {open} from 'redux/modules/modals';
 import {show as showToast} from 'redux/modules/toast';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 import classNames from 'classnames';
-import { asyncConnect } from 'redux-async-connect';
 
-@asyncConnect({
-  user: (params, helpers) => {
-    const state = helpers.store.getState();
-    const user = state.reduxAsyncConnect.user;
-
-    if (!user || !user.loaded) {
-      const userFromToken = state.auth.tokenPayload.user;
-      return userFromToken ? helpers.client.get('/users/' + userFromToken.id) : Promise.reject();
-    }
-  }
-})
-@connect(state => ({loaded: state.reduxAsyncConnect.loaded}),
+@connect(state => ({user: state.auth.user, loaded: state.reduxAsyncConnect.loaded}),
   {logout, pushState: routeActions.push, open, showToast})
 export default class App extends Component {
   static propTypes = {
@@ -42,14 +30,10 @@ export default class App extends Component {
     loaded: PropTypes.bool.isRequired
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.user.loaded && nextProps.user.loaded) {
-      // login
-      this.props.pushState('/loginSuccess');
-    } else if (this.props.user.loaded && !nextProps.user.loaded) {
-      // logout
-      this.props.pushState('/');
-    }
+  componentDidMount() {
+    window.addEventListener('wheel', () => {
+      document.body.style.backgroundPositionY = document.body.scrollTop / 10 + 'px';
+    });
   }
 
   logout = (event) => {
@@ -73,7 +57,7 @@ export default class App extends Component {
   };
 
   render() {
-    const user = this.props.user.data;
+    const user = this.props.user;
     const styles = require('./App.scss');
 
     return (

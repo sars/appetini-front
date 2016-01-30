@@ -7,7 +7,6 @@ import counter from './counter';
 import {reducer as form} from 'redux-form';
 import info from './info';
 import widgets from './widgets';
-import loginModal from './loginModal';
 import modals from './modals';
 import toast from './toast';
 import {reducer as reduxAsyncConnect} from 'redux-async-connect';
@@ -23,7 +22,6 @@ export default combineReducers({
   }),
   info,
   widgets,
-  loginModal,
   modals,
   toast,
   reduxAsyncConnect

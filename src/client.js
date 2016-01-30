@@ -21,7 +21,7 @@ const component = (
   <Router render={(props) =>
         <ReduxAsyncConnect {...props} helpers={{client}} />
       } history={browserHistory}>
-    {getRoutes(store)}
+    {getRoutes(store, client)}
   </Router>
 );
 

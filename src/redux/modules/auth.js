@@ -1,14 +1,12 @@
-import { clearKey } from 'redux-async-connect';
+import Oauth from 'redux/modules/oauth';
 
-const LOAD = 'redux-example/auth/LOAD';
-const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';
-const LOAD_FAIL = 'redux-example/auth/LOAD_FAIL';
-const LOGIN = 'redux-example/auth/LOGIN';
-const LOGIN_SUCCESS = 'redux-example/auth/LOGIN_SUCCESS';
-const LOGIN_FAIL = 'redux-example/auth/LOGIN_FAIL';
-const LOGOUT = 'redux-example/auth/LOGOUT';
-const LOGOUT_SUCCESS = 'redux-example/auth/LOGOUT_SUCCESS';
-const LOGOUT_FAIL = 'redux-example/auth/LOGOUT_FAIL';
+const LOGIN = 'auth/LOGIN';
+const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
+const LOGIN_FAIL = 'auth/LOGIN_FAIL';
+const LOGOUT = 'auth/LOGOUT';
+const LOGOUT_SUCCESS = 'auth/LOGOUT_SUCCESS';
+const LOGOUT_FAIL = 'auth/LOGOUT_FAIL';
+const SET_USER = 'auth/SET_USER';
 
 const initialState = {
   loaded: false
@@ -16,25 +14,6 @@ const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case LOAD:
-      return {
-        ...state,
-        loading: true
-      };
-    case LOAD_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        loaded: true,
-        user: action.result.resource
-      };
-    case LOAD_FAIL:
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-        error: action.error
-      };
     case LOGIN:
       return {
         ...state,
@@ -44,7 +23,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loggingIn: false,
-        user: action.result
+        user: action.result.resource
       };
     case LOGIN_FAIL:
       return {
@@ -70,28 +49,49 @@ export default function reducer(state = initialState, action = {}) {
         loggingOut: false,
         logoutError: action.error
       };
-    case 'login-modal/LOGIN_SUCCESS':
+    case SET_USER:
       return {
         ...state,
-        user: action.result.resource,
-        loaded: true
+        user: action.user
       };
     default:
       return state;
   }
 }
 
-export function isLoaded(globalState) {
-  return globalState.auth && globalState.auth.loaded;
+export function setUser(user) {
+  return {
+    type: SET_USER,
+    user
+  };
 }
 
 export function logout() {
   return {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
-    promise: (client, getState, dispatch) => {
-      const promise = client.del('/logout');
-      promise.then(() => dispatch(clearKey('user')));
-      return promise;
+    promise: (client) => client.del('/logout')
+  };
+}
+
+export function login(user) {
+  return {
+    types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
+    promise: (client) => client.post('/login', { data: { user }})
+  };
+}
+
+export function oauth(provider) {
+  const oauthClient = new Oauth({
+    facebook: {
+      clientId: '1732728180271989'
+    },
+    vkontakte: {
+      clientId: '5223874'
     }
+  });
+
+  return {
+    types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
+    promise: () => oauthClient.authenticate(provider)
   };
 }
