@@ -30,7 +30,7 @@ export default class AuthorizedApp extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state.showChildren !== nextState.showChildren;
+    return this.state.showChildren !== nextState.showChildren || this.props.children !== nextProps.children;
   }
 
   render() {
