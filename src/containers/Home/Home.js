@@ -17,29 +17,20 @@ const deliveryTimeOptions = [
   { value: '13:00', label: '13:00 - 13:30' }
 ];
 
-const preferences = [
-  { value: '0', label: 'Для вегетарианцов' },
-  { value: '1', label: 'Постные' },
-  { value: '2', label: 'Для диабетиков' },
-  { value: '2', label: 'Для спортсменов' }
-];
-
-const lunchComposition = {
-  0: 'Борщ',
-  1: 'Курица',
-  2: 'Морепродукты',
-  3: 'Овощной салат',
-  4: 'Кампот',
-  5: 'Картофель пюре',
-  6: 'Запеканка творожная'
-};
-
 @asyncConnect({
-  lunches: (params, helpers) => helpers.client.get('/lunches')
+  lunches: (params, helpers) => helpers.client.get('/lunches'),
+  preferences: (params, helpers) => helpers.client.get('/food_preferences').then(result => {
+    return result.resources.map(preference => ({value: preference.id, label: preference.name}));
+  }),
+  dishes: (params, helpers) => helpers.client.get('/uniq_dishes?q=*').then(data => {
+    return data.resources.reduce((result, dish) => ({...result, [dish]: dish}), {});
+  })
 })
 export default class Home extends Component {
   static propTypes = {
-    lunches: PropTypes.object
+    lunches: PropTypes.object.isRequired,
+    preferences: PropTypes.object.isRequired,
+    dishes: PropTypes.object.isRequired
   };
 
   state = {
@@ -69,7 +60,7 @@ export default class Home extends Component {
 
   render() {
     const styles = require('./Home.scss');
-    const lunches = this.props.lunches;
+    const {lunches, preferences, dishes} = this.props;
     return (
       <div className={styles.home}>
         <Helmet title="Home"/>
@@ -78,13 +69,13 @@ export default class Home extends Component {
           <Dropdown className={styles.deliveryTimeDropdown} auto onChange={this.handleChangeDeliveryTime}
                     source={deliveryTimeOptions} value={this.state.deliveryTime} />
           <h3>Ваши предпочтения</h3>
-          {preferences.map((preference, index) => {
+          {preferences.data.map((preference, index) => {
             return <CheckButton key={index} label={preference.label} onChange={this.handleChangePreference(preference)} />;
           })}
           <h3>Состав обеда</h3>
           <Autocomplete label="Название блюда" name="composition"
             onChange={this.handleChangeComposition}
-            source={lunchComposition} value={this.state.composition}
+            source={dishes.data} value={this.state.composition}
           />
         </div>
         <div className={styles.center}>
