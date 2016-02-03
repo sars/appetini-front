@@ -1,0 +1,109 @@
+.brand {
+  margin-bottom: 5px;
+  margin-right: 3rem;
+}
+
+.brandIcon {
+  $size: 47px;
+  display: inline-block;
+  background: #FFF url('./main_logo.svg') no-repeat center center;
+  width: $size;
+  height: $size;
+  margin: 0 10px 0 0;
+  vertical-align: bottom;
+}
+
+.brandLabel {
+  display: inline-block;
+  background: #FFF url('./appetini_label.svg') no-repeat center center;
+  width: 125px;
+  height: 35px;
+  vertical-align: bottom;
+}
+
+.navigationRight {
+  flex: 1;
+  text-align: right;
+}
+
+.navigationMenu {
+  display: flex;
+  align-items: center;
+}
+
+.navigation {
+  > * {
+    vertical-align: middle;
+  }
+  > a {
+    font-size: 1.5rem;
+    padding: 0 1.5rem;
+    position: relative;
+    display: inline-block;
+    transition: line-height 300ms ease;
+    line-height: 120%;
+
+    span {
+      display: block;
+      position: relative;
+
+      &:after {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: block;
+        height: 1px;
+        content: '';
+        background-color: #DDD;
+        transition: all 300ms ease;
+      }
+    }
+  }
+}
+
+a.activeNavLink {
+  line-height: 6.4rem;
+
+  span:after {
+    height: .3rem;
+    left: -.3rem;
+    right: -.3rem;
+    background-color: $color-accent;
+  }
+}
+
+.search {
+  display: inline-block;
+  height: 4rem;
+  width: 4rem;
+  border-radius: 500px;
+  border: 1px solid #CCC;
+  transition: width 300ms ease;
+
+  .searchButton:not([disabled]) {
+    color: #777;
+    height: 100%;
+    width: 100%;
+  }
+  input {
+    display: none;
+  }
+
+  &:hover {
+    width: 40rem;
+
+    .searchButton {
+      display: none;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0 none;
+      padding: 0 1.4rem;
+      background: none;
+    }
+  }
+}

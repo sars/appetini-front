@@ -8,28 +8,6 @@ body {
   flex-direction: column;
   min-height: 100vh;
 
-  .brand {
-    margin-bottom: 5px;
-  }
-
-  .brandIcon {
-    $size: 47px;
-    display: inline-block;
-    background: #FFF url('./bg/main_logo.svg') no-repeat center center;
-    width: $size;
-    height: $size;
-    margin: 0 10px 0 0;
-    vertical-align: bottom;
-  }
-
-  .brandLabel {
-    display: inline-block;
-    background: #FFF url('./bg/appetini_label.svg') no-repeat center center;
-    width: 125px;
-    height: 35px;
-    vertical-align: bottom;
-  }
-
   nav :global(.fa) {
     font-size: 2em;
     line-height: 20px;
@@ -39,36 +17,6 @@ body {
   margin-top: 6.4rem;
   z-index: 1;
   flex: 1;
-}
-
-.activeNavLink {
-  &:after {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    display: block;
-    width: 100%;
-    height: .3rem;
-    content: '';
-    background-color: $palette-green-500;
-  }
-}
-
-.navigation {
-  flex: 1;
-  text-align: right;
-  > button, > a {
-    vertical-align: middle;
-  }
-
-  > a {
-    font-size: 1.4rem;
-    padding: 0 1.5rem;
-    line-height: 6.4rem;
-    height: 6.4rem;
-    position: relative;
-    display: inline-block;
-  }
 }
 
 .social {
@@ -106,9 +54,4 @@ body {
 
 .progressActive {
   height: 0.4rem;
-}
-
-.search.searchAccent:not([disabled]) {
-  color: #777;
-  border: 1px solid #CCC;
 }
