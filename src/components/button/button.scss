@@ -1,0 +1,15 @@
+.flat {
+  text-transform: none;
+  height: 4rem;
+  font-size: 1.5rem;
+
+  &.accent:not([disabled]) {
+    background-color: $color-accent;
+    color: #fff;
+    border-radius: 500px;
+
+    &:hover {
+      background-color: scale-color($color-accent, $lightness: 10%);
+    }
+  }
+}

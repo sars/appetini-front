@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react';
-import _ from 'lodash'; // eslint-disable-line id-length
+import sortBy from 'lodash/sortBy';
+import groupBy from 'lodash/groupBy';
 import Lunch from 'components/Lunch/Lunch';
 import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
 
 const Lunches = ({lunches}) => {
   const styles = require('./Lunches.scss');
-  const preparedLunches = _.chain(lunches.data.resources).sortBy('ready_by').groupBy('ready_by').value();
+  const preparedLunches = groupBy(sortBy(lunches.data.resources, 'ready_by'), 'ready_by');
 
   return (
     <div className={styles.lunches}>

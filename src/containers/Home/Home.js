@@ -2,9 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import Lunches from 'components/Lunches/Lunches';
 import CheckButton from 'components/CheckButton/CheckButton';
+import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
 import Dropdown from 'react-toolbox/lib/dropdown';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 import { asyncConnect } from 'redux-async-connect';
+import moment from 'moment';
+import times from 'lodash/times';
+import isEqual from 'lodash/isEqual';
 
 const sortingOptions = [
   { value: 'EN-gb', label: 'Дате' },
@@ -17,73 +21,158 @@ const deliveryTimeOptions = [
   { value: '13:00', label: '13:00 - 13:30' }
 ];
 
+const filterNames = ['preferences', 'dishes', 'dates', 'time', 'sort'];
+
+function valueFromLocationQuery(props, name) {
+  const value = props.location.query && props.location.query[name];
+  return value && JSON.parse(value);
+}
+
+function currentStateName(name) {
+  return 'current' + name.charAt(0).toUpperCase() + name.slice(1);
+}
+
 @asyncConnect({
-  lunches: (params, helpers) => helpers.client.get('/lunches'),
-  preferences: (params, helpers) => helpers.client.get('/food_preferences').then(result => {
-    return result.resources.map(preference => ({value: preference.id, label: preference.name}));
+  lunches: (params, helpers) => {
+    const filters = filterNames.reduce((result, name) => (
+      {...result, [name]: valueFromLocationQuery(helpers.store.getState().routing, name)}
+    ), {});
+
+    const time = (filters.time || deliveryTimeOptions[0].value).split(':');
+    const sort = (filters.sort || sortingOptions[0].value);
+    const dates = (filters.dates || []).map(date => moment([...date.split('-'), ...time]).format());
+
+    return helpers.client.get('/lunches', {params: {
+      'food_preferences_ids[]': filters.preferences,
+      'dishes[]': filters.dishes,
+      'dates[]': dates,
+      'sort': sort
+    }});
+  },
+  preferences: (params, helpers) => helpers.client.get('/food_preferences').then(data => {
+    return data.resources.reduce((result, preference) => ({...result, [preference.id]: preference.name}), {});
   }),
   dishes: (params, helpers) => helpers.client.get('/uniq_dishes?q=*').then(data => {
     return data.resources.reduce((result, dish) => ({...result, [dish]: dish}), {});
-  })
+  }),
+  availability: (params, helpers) => helpers.client.get('/lunches_availability').then(data => data.resources)
 })
 export default class Home extends Component {
   static propTypes = {
     lunches: PropTypes.object.isRequired,
     preferences: PropTypes.object.isRequired,
-    dishes: PropTypes.object.isRequired
+    availability: PropTypes.object.isRequired,
+    dishes: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired
   };
 
-  state = {
-    sorting: sortingOptions[0].value,
-    deliveryTime: deliveryTimeOptions[0].value,
-    composition: ['1', '3']
+  static contextTypes = {
+    router: PropTypes.object.isRequired
   };
 
-  handleChangeSorting = (value) => {
-    this.setState({sorting: value});
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+    filterNames.forEach(name => {
+      this.state[currentStateName(name)] = valueFromLocationQuery(props, name);
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location !== nextProps.location) {
+      const newState = filterNames.reduce((result, name) => {
+        const stateName = currentStateName(name);
+        const value = valueFromLocationQuery(nextProps, name);
+
+        return isEqual(this.state[name], value) ? result : {...result, [stateName]: value};
+      }, null);
+
+      if (newState) {
+        this.setState(newState);
+      }
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps !== this.props || this.state !== nextState;
+  }
+
+  filterChanged = name => newValue => {
+    const stateName = currentStateName(name);
+    this.setState({[stateName]: newValue});
+    const newLocation = this.locationWithNewQuery(name, newValue);
+    this.context.router.push(newLocation);
   };
 
-  handleChangeDeliveryTime = (value) => {
-    this.setState({deliveryTime: value});
-  };
+  locationWithNewQuery = (name, value) => {
+    const location = this.props.location;
 
-  handleChangePreference = (preference) => {
-    return (checked) => {
-      console.log(preference.label, checked);
-    };
-  };
-
-  handleChangeComposition = (value) => {
-    this.setState({composition: value});
-    console.log(value);
+    const newLocation = {...location, query: {...location.query, [name]: JSON.stringify(value)}};
+    delete newLocation.search;
+    if (value.length === 0) {
+      delete newLocation.query[name];
+    }
+    return newLocation;
   };
 
   render() {
     const styles = require('./Home.scss');
-    const {lunches, preferences, dishes} = this.props;
+    const {lunches, preferences, dishes, availability} = this.props;
+    const {currentPreferences = [], currentDishes = [], currentDates = [], currentTime, currentSort} = this.state;
+
     return (
       <div className={styles.home}>
         <Helmet title="Home"/>
         <div className={styles.leftSidebar}>
+          <h3>Дата доставки</h3>
+          <div>
+            <CheckButtonsGroup ref="calendarButtons" onChange={this.filterChanged('dates')} value={currentDates}>
+              <table>
+                <tbody>
+                  <tr>
+                    <th>Пн</th>
+                    <th>Вт</th>
+                    <th>Ср</th>
+                    <th>Чт</th>
+                    <th>Пт</th>
+                    <th>Сб</th>
+                    <th>Вс</th>
+                  </tr>
+                  {times(Math.ceil(availability.data.length / 7), trIndex =>
+                    <tr key={trIndex}>
+                      {times(availability.data.length - trIndex * 7 > 7 ? 7 : availability.data.length - trIndex * 7, tdIndex => {
+                        const value = availability.data[(trIndex * 7) + tdIndex];
+                        return (
+                          <td key={tdIndex}>
+                            <CheckButton className={value.available ? 'jhjhjh' : ''} label={value.date.split('-')[2].toString()} checked={currentDates.indexOf(value.date.toString()) !== -1}
+                                         onChange={checked => this.refs.calendarButtons.handleChange(value.date)(checked)} />
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </CheckButtonsGroup>
+          </div>
           <h3>Время доставки</h3>
-          <Dropdown className={styles.deliveryTimeDropdown} auto onChange={this.handleChangeDeliveryTime}
-                    source={deliveryTimeOptions} value={this.state.deliveryTime} />
+          <Dropdown className={styles.deliveryTimeDropdown} auto onChange={this.filterChanged('time')}
+                    source={deliveryTimeOptions} value={currentTime} />
           <h3>Ваши предпочтения</h3>
-          {preferences.data.map((preference, index) => {
-            return <CheckButton key={index} label={preference.label} onChange={this.handleChangePreference(preference)} />;
-          })}
+          <CheckButtonsGroup source={preferences.data} value={currentPreferences}
+                             onChange={this.filterChanged('preferences')} />
           <h3>Состав обеда</h3>
-          <Autocomplete label="Название блюда" name="composition"
-            onChange={this.handleChangeComposition}
-            source={dishes.data} value={this.state.composition}
+          <Autocomplete label="Название блюда" name="dishes" onChange={this.filterChanged('dishes')}
+                        source={dishes.data} value={currentDishes}
           />
         </div>
         <div className={styles.center}>
           <div className={styles.firstLine}>
             <h1>Обеды на каждый день</h1>
             <span>Сортировать по</span>
-            <Dropdown className={styles.sortingDropdown} auto onChange={this.handleChangeSorting}
-                      source={sortingOptions} value={this.state.sorting} />
+            <Dropdown className={styles.sortingDropdown} auto onChange={this.filterChanged('sort')}
+                      source={sortingOptions} value={currentSort} />
           </div>
           {lunches.loaded && <Lunches lunches={lunches} />}
         </div>

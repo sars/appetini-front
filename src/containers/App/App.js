@@ -32,7 +32,9 @@ export default class App extends Component {
 
   componentDidMount() {
     window.addEventListener('wheel', () => {
-      document.body.style.backgroundPositionY = document.body.scrollTop / 10 + 'px';
+      const y1 = document.body.scrollTop / 2 + 'px';
+      const y2 = document.body.scrollTop / 5 + 'px';
+      document.body.style.backgroundPositionY = y1 + ', ' + y2;
     });
   }
 
@@ -59,24 +61,25 @@ export default class App extends Component {
   render() {
     const user = this.props.user;
     const styles = require('./App.scss');
+    const buttonStyles = require('components/button/button.scss');
 
     return (
       <div className={styles.app}>
         <ProgressBar mode="indeterminate"
           className={classNames(styles.progress, {[styles.progressActive]: !this.props.loaded})} />
         <AppBar fixed>
-          <IndexLink to="/">
-            <div className={styles.brand}/>
-            <span>{config.app.title}</span>
+          <IndexLink className={styles.brand} to="/">
+            <div className={styles.brandIcon}/>
+            <span className={styles.brandLabel}/>
           </IndexLink>
 
           <Navigation className={styles.navigation}>
             <IndexLink to="/" activeClassName={styles.activeNavLink}>Меню</IndexLink>
             <Link to="/about" activeClassName={styles.activeNavLink}>О нас</Link>
             <Link to="/loginSuccess" activeClassName={styles.activeNavLink}>Тарифные планы</Link>
-            {!user && <ToolboxButton label="Войти" accent onClick={this.openLoginModal} />}
+            {!user && <ToolboxButton className={classNames(buttonStyles.flat, buttonStyles.accent)} label="Войти" accent onClick={this.openLoginModal} />}
             {user && <a href="#" onClick={this.logout}>Выйти</a> }
-            <IconButton icon="search" accent />
+            <IconButton className={classNames(styles.search, styles.searchAccent)} icon="search" />
           </Navigation>
         </AppBar>
 

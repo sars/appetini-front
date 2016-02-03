@@ -12,34 +12,20 @@ export default class CheckButton extends Component {
     label: PropTypes.string.isRequired
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {checked: props.checked || false};
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.checked !== undefined) {
-      this.setState({checked: nextProps.checked});
-    }
-  }
-
   handleChange = () => {
-    const checked = !this.state.checked;
-    this.setState({checked});
-
     if (this.props.onChange) {
-      this.props.onChange(checked);
+      this.props.onChange(!this.props.checked);
     }
   };
 
   render() {
     const styles = require('./CheckButton.scss');
-    const classname = classNames(styles.checkButton, {
-      [styles.checked]: this.state.checked
+    const classname = classNames(styles.checkButton, this.props.className, {
+      [styles.checked]: this.props.checked
     });
 
     return (
-      <label {...this.props} className={classname}>
+      <label className={classname}>
         <div onClick={this.handleChange}>
           {this.props.children}
           {this.props.label}
