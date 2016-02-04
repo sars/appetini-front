@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import Lunches from 'components/Lunches/Lunches';
-import CheckButton from 'components/CheckButton/CheckButton';
 import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
+import FilterCalendar from 'components/FilterCalendar/FilterCalendar';
 import Dropdown from 'react-toolbox/lib/dropdown';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
+import Card, { CardText } from 'react-toolbox/lib/card';
 import { asyncConnect } from 'redux-async-connect';
 import moment from 'moment';
-import times from 'lodash/times';
 import isEqual from 'lodash/isEqual';
 
 const sortingOptions = [
@@ -125,47 +125,22 @@ export default class Home extends Component {
       <div className={styles.home}>
         <Helmet title="Home"/>
         <div className={styles.leftSidebar}>
-          <h3>Дата доставки</h3>
-          <div>
-            <CheckButtonsGroup ref="calendarButtons" onChange={this.filterChanged('dates')} value={currentDates}>
-              <table>
-                <tbody>
-                  <tr>
-                    <th>Пн</th>
-                    <th>Вт</th>
-                    <th>Ср</th>
-                    <th>Чт</th>
-                    <th>Пт</th>
-                    <th>Сб</th>
-                    <th>Вс</th>
-                  </tr>
-                  {times(Math.ceil(availability.data.length / 7), trIndex =>
-                    <tr key={trIndex}>
-                      {times(availability.data.length - trIndex * 7 > 7 ? 7 : availability.data.length - trIndex * 7, tdIndex => {
-                        const value = availability.data[(trIndex * 7) + tdIndex];
-                        return (
-                          <td key={tdIndex}>
-                            <CheckButton className={value.available ? 'jhjhjh' : ''} label={value.date.split('-')[2].toString()} checked={currentDates.indexOf(value.date.toString()) !== -1}
-                                         onChange={checked => this.refs.calendarButtons.handleChange(value.date)(checked)} />
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </CheckButtonsGroup>
-          </div>
-          <h3>Время доставки</h3>
-          <Dropdown className={styles.deliveryTimeDropdown} auto onChange={this.filterChanged('time')}
-                    source={deliveryTimeOptions} value={currentTime} />
-          <h3>Ваши предпочтения</h3>
-          <CheckButtonsGroup source={preferences.data} value={currentPreferences}
-                             onChange={this.filterChanged('preferences')} />
-          <h3>Состав обеда</h3>
-          <Autocomplete label="Название блюда" name="dishes" onChange={this.filterChanged('dishes')}
-                        source={dishes.data} value={currentDishes}
-          />
+          <Card>
+            <CardText>
+              <h3>Дата доставки</h3>
+              <FilterCalendar onChange={this.filterChanged('dates')} availability={availability.data} dates={currentDates}/>
+              <h3>Время доставки</h3>
+              <Dropdown className={styles.deliveryTimeDropdown} auto onChange={this.filterChanged('time')}
+                        source={deliveryTimeOptions} value={currentTime} />
+              <h3>Ваши предпочтения</h3>
+              <CheckButtonsGroup source={preferences.data} value={currentPreferences}
+                                 onChange={this.filterChanged('preferences')} />
+              <h3>Состав обеда</h3>
+              <Autocomplete label="Название блюда" name="dishes" onChange={this.filterChanged('dishes')}
+                            source={dishes.data} value={currentDishes}
+              />
+            </CardText>
+          </Card>
         </div>
         <div className={styles.center}>
           <div className={styles.firstLine}>

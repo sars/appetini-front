@@ -2,10 +2,12 @@
 
 .home {
   display: flex;
+  align-items: flex-start;
   dd {
     margin-bottom: 15px;
   }
 }
+
 .firstLine {
   display: flex;
   align-items: center;
@@ -21,8 +23,19 @@
 
 .leftSidebar {
   flex: 1;
+  background-color: #FFF;
+  margin: 0 2.5rem;
+
+  h3:not(:first-child) {
+    margin-top: 1.4rem;
+  }
+
+  h3 {
+    margin-bottom: 1.4rem;
+  }
 }
 
 .center {
   flex: 2;
+  margin: 0 3rem 0 0
 }

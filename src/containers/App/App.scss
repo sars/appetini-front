@@ -3,6 +3,23 @@ body {
   background-image: url('./bg/p2.png'), url('./bg/p1.png');
 }
 
+h1, h2, h3 {
+  color: #685c50;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2.4rem;
+}
+
+h3 {
+  font-size: 1.8rem;
+}
+
 .app {
   display: flex;
   flex-direction: column;

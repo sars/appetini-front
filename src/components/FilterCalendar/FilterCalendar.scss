@@ -1,0 +1,44 @@
+.calendar {
+  width: 100%;
+
+  .checkButton {
+    div {
+      padding: 0;
+      width: 4.6rem;
+      height: 4.6rem;
+      text-align: center;
+      color: #555;
+      font: 1.6rem/4.6rem 'Open Sans', 'Arial', sans-serif;
+      font-weight: 600;
+      background-color: #FFF;
+      border: 1px solid #FFF;
+      transition: border 300ms ease;
+      margin: 0.4rem;
+    }
+    &.current:not(.checked) div {
+      border-style: dashed;
+      border-color: #CCC;
+    }
+    &.checked div {
+      color: #FFF;
+      background-color: $color-accent;
+    }
+    &:hover:not(.disabled) div {
+      border-color: $color-accent;
+    }
+    &.disabled {
+      cursor: inherit;
+      div {
+        opacity: 0.4;
+      }
+    }
+  }
+  th {
+    font: 1rem 'Open Sans', 'Arial', sans-serif;
+    font-weight: 600;
+    font-style: italic;
+    color: #7cb342;
+    padding-bottom: 0.8rem;
+    text-align: center;
+  }
+}

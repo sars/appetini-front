@@ -9,11 +9,14 @@ export default class CheckButton extends Component {
     checked: PropTypes.bool,
     onChange: PropTypes.func,
     className: PropTypes.string,
+    checkedClass: PropTypes.string,
+    disabledClass: PropTypes.string,
+    disabled: PropTypes.bool,
     label: PropTypes.string.isRequired
   };
 
   handleChange = () => {
-    if (this.props.onChange) {
+    if (this.props.onChange && !this.props.disabled) {
       this.props.onChange(!this.props.checked);
     }
   };
@@ -21,7 +24,10 @@ export default class CheckButton extends Component {
   render() {
     const styles = require('./CheckButton.scss');
     const classname = classNames(styles.checkButton, this.props.className, {
-      [styles.checked]: this.props.checked
+      [styles.checked]: this.props.checked,
+      [this.props.checkedClass]: this.props.checked && this.props.checkedClass,
+      [styles.disabled]: this.props.disabled,
+      [this.props.disabledClass]: this.props.disabled && this.props.disabledClass
     });
 
     return (
