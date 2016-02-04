@@ -1,3 +1,7 @@
+.root:not(.flat) {
+  box-shadow: 0 2px 4px rgba(221, 213, 205, 0.85);
+}
+
 .brand {
   margin-bottom: 5px;
   margin-right: 3rem;
@@ -6,7 +10,7 @@
 .brandIcon {
   $size: 47px;
   display: inline-block;
-  background: #FFF url('./main_logo.svg') no-repeat center center;
+  background: #FFF url('../MainLogo/main_logo.svg') no-repeat center center;
   width: $size;
   height: $size;
   margin: 0 10px 0 0;
@@ -24,53 +28,6 @@
 .navigationRight {
   flex: 1;
   text-align: right;
-}
-
-.navigationMenu {
-  display: flex;
-  align-items: center;
-}
-
-.navigation {
-  > * {
-    vertical-align: middle;
-  }
-  > a {
-    font-size: 1.5rem;
-    padding: 0 1.5rem;
-    position: relative;
-    display: inline-block;
-    transition: line-height 300ms ease;
-    line-height: 120%;
-
-    span {
-      display: block;
-      position: relative;
-
-      &:after {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: block;
-        height: 1px;
-        content: '';
-        background-color: #DDD;
-        transition: all 300ms ease;
-      }
-    }
-  }
-}
-
-a.activeNavLink {
-  line-height: 6.4rem;
-
-  span:after {
-    height: .3rem;
-    left: -.3rem;
-    right: -.3rem;
-    background-color: $color-accent;
-  }
 }
 
 .search {
@@ -106,4 +63,8 @@ a.activeNavLink {
       background: none;
     }
   }
+}
+
+.logout {
+  margin-right: 3rem;
 }

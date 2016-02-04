@@ -7,41 +7,13 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-
-  nav :global(.fa) {
-    font-size: 2em;
-    line-height: 20px;
-  }
 }
+
 .appContent {
   margin-top: 6.4rem;
+  padding: 2.5rem 0;
   z-index: 1;
   flex: 1;
-}
-
-.social {
-  >button {
-    margin-left: 10px;
-  }
-}
-
-.firstLine, .secondLine {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.firstLine {
-  margin-bottom: 15px;
-}
-
-.terms {
-  padding: 1rem;
-}
-
-.footer {
-  background-color: rgba(180,180,180,0.5);
-  padding: 20px 50px;
 }
 
 .progress {

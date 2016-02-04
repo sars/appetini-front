@@ -1,13 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { IndexLink, Link } from 'react-router';
-import Navigation from 'react-toolbox/lib/navigation';
-import { Button as ToolboxButton } from 'react-toolbox/lib/button';
 import Helmet from 'react-helmet';
 import { routeActions } from 'react-router-redux';
 import config from '../../config';
-import { VkIcon, InstagramIcon, FbIcon } from 'components/icons';
-import { Modal, Toast, Header } from 'components';
+import { Modal, Toast, Header, Footer } from 'components';
 import 'react-toolbox/lib/commons';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 import classNames from 'classnames';
@@ -52,31 +48,7 @@ export default class App extends Component {
           {this.props.children}
         </div>
 
-        <footer className={styles.footer}>
-          <div className={styles.firstLine}>
-            <Navigation>
-              <Link to="/terms">Условия использования</Link>
-              <Link to="/how-it-works">Как это работает</Link>
-              <IndexLink to="/">Меню</IndexLink>
-              <Link to="/about">О нас</Link>
-            </Navigation>
-            <div className={styles.auth}>
-              <ToolboxButton label="Войти" accent />
-              <ToolboxButton label="Зарегистрироваться" accent raised />
-            </div>
-          </div>
-
-          <div className={styles.secondLine}>
-            <div className={styles.terms}>
-              2016 Appetini. Все права защищены и соблюдены.
-            </div>
-            <div className={styles.social}>
-              <ToolboxButton floating accent mini><FbIcon /></ToolboxButton>
-              <ToolboxButton floating accent mini><VkIcon /></ToolboxButton>
-              <ToolboxButton floating accent mini><InstagramIcon /></ToolboxButton>
-            </div>
-          </div>
-        </footer>
+        <Footer />
 
         <Modal />
         <Toast />

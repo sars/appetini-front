@@ -1,0 +1,42 @@
+.navigation {
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  color: #000;
+  font-size: 1.5rem;
+  padding: 0 1.5rem;
+  position: relative;
+  display: inline-block;
+  transition: line-height 300ms ease;
+  line-height: 120%;
+
+  span {
+    display: block;
+    position: relative;
+
+    &:after {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: block;
+      height: 1px;
+      content: '';
+      background-color: #DDD;
+      transition: all 300ms ease;
+    }
+  }
+}
+
+.activeNavLink {
+  line-height: 6.4rem;
+
+  span:after {
+    height: .3rem;
+    left: -.3rem;
+    right: -.3rem;
+    background-color: $color-accent;
+  }
+}
