@@ -3,8 +3,9 @@ import CheckButton from 'components/CheckButton/CheckButton';
 
 export default class CheckButtonsGroup extends Component {
   static propTypes = {
-    source: PropTypes.object,
-    children: PropTypes.any,
+    source: PropTypes.object.isRequired,
+    template: PropTypes.func,
+    checkButtonProps: PropTypes.func,
     value: PropTypes.array,
     onChange: PropTypes.func
   };
@@ -37,14 +38,16 @@ export default class CheckButtonsGroup extends Component {
   };
 
   render() {
-    const {value, source} = this.props;
+    const {value, source, template, checkButtonProps} = this.props;
+    const checkButtons = Object.keys(source || {}).map((sourceValue, index) =>
+      <CheckButton {...(checkButtonProps && checkButtonProps(sourceValue))}
+                   checked={value.indexOf(sourceValue.toString()) !== -1} key={index}
+                   label={source[sourceValue]} onChange={this.handleChange(sourceValue)} />
+    );
 
-    return (this.props.children ? <div>{this.props.children}</div> :
+    return (
       <div>
-        {Object.keys(source || {}).map((sourceValue, index) =>
-          <CheckButton checked={value.indexOf(sourceValue.toString()) !== -1} key={index}
-                       label={source[sourceValue]} onChange={this.handleChange(sourceValue)} />
-        )}
+        {template ? template(checkButtons) : checkButtons}
       </div>
     );
   }

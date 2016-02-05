@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
-import CheckButton from 'components/CheckButton/CheckButton';
 import times from 'lodash/times';
 import moment from 'moment';
 import classNames from 'classnames';
+import groupBy from 'lodash/groupBy';
 
 export default class FilterCalendar extends Component {
   static propTypes = {
@@ -12,46 +12,59 @@ export default class FilterCalendar extends Component {
     availability: PropTypes.array.isRequired
   };
 
+  buttonsGroupTemplate(checkButtons) {
+    const styles = require('./FilterCalendar.scss');
+
+    return (
+      <table className={styles.calendar}>
+        <tbody>
+        <tr>
+          <th>Пн</th>
+          <th>Вт</th>
+          <th>Ср</th>
+          <th>Чт</th>
+          <th>Пт</th>
+          <th>Сб</th>
+          <th>Вс</th>
+        </tr>
+        {times(Math.ceil(checkButtons.length / 7), trIndex =>
+          <tr key={trIndex}>
+            {times(checkButtons.length - trIndex * 7 > 7 ? 7 : checkButtons.length - trIndex * 7, tdIndex => {
+              return (
+                <td key={tdIndex}>
+                  {checkButtons[trIndex * 7 + tdIndex]}
+                </td>
+              );
+            })}
+          </tr>
+        )}
+        </tbody>
+      </table>
+    );
+  }
+
   render() {
     const styles = require('./FilterCalendar.scss');
     const currentDate = moment().startOf('day');
     const {onChange, dates, availability} = this.props;
 
-    return (
-      <CheckButtonsGroup ref="calendarButtons" onChange={onChange} value={dates}>
-        <table className={styles.calendar}>
-          <tbody>
-          <tr>
-            <th>Пн</th>
-            <th>Вт</th>
-            <th>Ср</th>
-            <th>Чт</th>
-            <th>Пт</th>
-            <th>Сб</th>
-            <th>Вс</th>
-          </tr>
-          {times(Math.ceil(availability.length / 7), trIndex =>
-            <tr key={trIndex}>
-              {times(availability.length - trIndex * 7 > 7 ? 7 : availability.length - trIndex * 7, tdIndex => {
-                const value = availability[(trIndex * 7) + tdIndex];
-                const date = moment(value.date);
+    const checkButtons = availability.reduce((result, item) => ({...result, [item.date]: item.date.split('-')[2]}), {});
+    const availabilityGrouped = groupBy(availability, 'date');
 
-                return (
-                  <td key={tdIndex}>
-                    <CheckButton className={classNames(styles.checkButton, {[styles.current]: date.isSame(currentDate)})}
-                                 checkedClass={styles.checked} disabledClass={styles.disabled}
-                                 disabled={!value.available || date.isBefore(currentDate)}
-                                 checked={dates.indexOf(value.date.toString()) !== -1}
-                                 label={value.date.split('-')[2].toString()}
-                                 onChange={checked => this.refs.calendarButtons.handleChange(value.date)(checked)} />
-                  </td>
-                );
-              })}
-            </tr>
-          )}
-          </tbody>
-        </table>
-      </CheckButtonsGroup>
+    const checkButtonProps = (value) => {
+      const date = moment(value);
+
+      return {
+        className: classNames(styles.checkButton, {[styles.current]: date.isSame(currentDate)}),
+        checkedClass: styles.checked,
+        disabledClass: styles.disabled,
+        disabled: availabilityGrouped[value].available || date.isBefore(currentDate)
+      };
+    };
+
+    return (
+      <CheckButtonsGroup ref="calendarButtons" onChange={onChange} source={checkButtons}
+                         checkButtonProps={checkButtonProps} value={dates} template={this.buttonsGroupTemplate} />
     );
   }
 }
