@@ -11,8 +11,8 @@ const Lunch = ({className, lunch}) => {
   const toolboxStyles = require('react-toolbox/lib/card/style.scss');
 
   return (
-    <Link to={`/lunches/${lunch.id}`}>
-      <Card className={classNames(styles.lunch, className)}>
+    <Link to={`/lunches/${lunch.id}`} className={classNames(styles.lunch, className)}>
+      <Card>
         <div style={{backgroundImage: `url('${lunch.photos[0].url}')`}}
              className={classNames(toolboxStyles.cardMedia, toolboxStyles.wide)}>
           <div className={styles.dishes}>
@@ -25,9 +25,9 @@ const Lunch = ({className, lunch}) => {
         <div className={styles.bottom}>
           <Avatar image={cook.main_photo.thumb.url} />
           <div>
-            <span>{cook.first_name + ' ' + cook.last_name}</span>
+            <div className={styles.cookName}>{cook.first_name + ' ' + cook.last_name}</div>
             <div className={styles.rating}>
-              <StarRating className={styles.starRating} name="cook-rating" totalStars={5} editing={false} rating={3} size={20} />
+              <StarRating className={styles.starRating} name="cook-rating" totalStars={5} editing={false} rating={3} size={13} />
               <span className={styles.feedback}>31 отзыв</span>
             </div>
           </div>

@@ -10,6 +10,8 @@ const DeliveryPeriod = ({className, time}) => {
 
   return (
     <span className={classNames(styles.period, className)}>
+      <i className="fa fa-calendar" />
+      &nbsp;
       <span>{originalDate.format('dddd, DD.MM.YYYY, HH:mm-')}</span>
       <span>{nextDate.format('HH:mm')}</span>
     </span>

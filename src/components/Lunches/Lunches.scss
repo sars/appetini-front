@@ -1,14 +1,21 @@
-.lunch {
-  margin: 2rem 0;
-  width: 30%;
+.lunches {
+  h4 {
+    color: #a4958b;
+    font-size: 1.6rem;
+    line-height: 120%;
+    margin: 2rem 0;
+  }
 }
 
-.lunchesGroup {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+.lunchContainer {
+  width: 50%;
+  display: inline-block;
+}
 
-  h4 {
-    width: 100%;
-  }
+.lunch {
+  margin: 1rem;
+}
+
+.lunchesGroupContent {
+  margin: 0 -1rem;
 }

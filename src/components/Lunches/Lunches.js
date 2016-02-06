@@ -16,9 +16,13 @@ const Lunches = ({lunches}) => {
             <h4>
               <DeliveryPeriod time={datetime} />
             </h4>
-            {preparedLunches[datetime].map(lunch =>
-              <Lunch className={styles.lunch} key={lunch.id} lunch={lunch} />
-            )}
+            <div className={styles.lunchesGroupContent}>
+              {preparedLunches[datetime].map(lunch =>
+                <div className={styles.lunchContainer} key={lunch.id}>
+                  <Lunch className={styles.lunch} lunch={lunch} />
+                </div>
+              )}
+            </div>
           </div>
         );
       })}

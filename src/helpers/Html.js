@@ -42,7 +42,7 @@ export default class Html extends Component {
                   rel="stylesheet" type="text/css" charSet="UTF-8"/>
           )}
 
-          <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&subset=latin,cyrillic"
+          <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&subset=latin,cyrillic"
                 rel="stylesheet" type="text/css" />
           <link href="https://fonts.googleapis.com/css?family=Open+Sans:600italic,600&subset=latin,cyrillic"
                 rel="stylesheet" type="text/css" />

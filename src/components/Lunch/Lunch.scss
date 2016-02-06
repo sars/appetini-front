@@ -18,22 +18,34 @@
 }
 
 .priceAmount {
-  font-size: 3rem;
+  font-size: 5.3rem;
+  font-weight: 300;
 }
 
 .priceCurrency {
-  font-style: italic;
+  font-size: 1.6rem;
+  color: #a18e7f;
 }
 
 .feedback {
   margin-left: 1rem;
   vertical-align: middle;
+  color: #a18e7f;
+  font-size: 1.2rem;
 }
 
 .lunch {
   transition: box-shadow 0.3s ease;
   cursor: pointer;
   min-width: 300px;
+  display: block;
+  color: #000;
+
+  [data-react-toolbox="avatar"] {
+    margin-right: 1rem;
+    width: 5rem;
+    height: 5rem;
+  }
 
   &:hover {
     @include shadow-8dp();
@@ -47,6 +59,7 @@
   border-radius: 500px; // http://stackoverflow.com/questions/18794947/capsule-shape-using-border-radius-without-a-set-width-or-height
   display: inline-block;
   font-size: 1.2rem;
+  color: #1b1b1b;
 }
 
 .dishes {
@@ -57,4 +70,10 @@
   width: 100%;
   overflow: hidden;
   padding: 1.2rem;
+}
+
+.cookName {
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+  font-size: 1.8rem;
 }

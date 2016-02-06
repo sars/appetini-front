@@ -147,8 +147,8 @@ export default class Home extends Component {
         <div className={styles.center}>
           <div className={styles.firstLine}>
             <h1>Обеды на каждый день</h1>
-            <span>Сортировать по</span>
-            <Dropdown className={styles.sortingDropdown} auto onChange={this.filterChanged('sort')}
+            <span className={styles.sortLabel}>Сортировать по</span>
+            <Dropdown className={dropdownStyles.dropdown} auto onChange={this.filterChanged('sort')}
                       source={sortingOptions} value={currentSort} />
           </div>
           {lunches.loaded && <Lunches lunches={lunches} />}

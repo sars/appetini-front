@@ -1,5 +1,6 @@
 .dropdown {
   > [data-react-toolbox="input"] {
+    background-color: #FFF;
     border: 1px solid #e4d9cf;
     border-radius: 500px;
     padding: 0;
@@ -41,6 +42,7 @@
     padding: 1rem 0;
     border-radius: 1.8rem;
     margin-top: -1rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 
     > *:hover {
       background-color: #F1EAE5;
