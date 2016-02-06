@@ -17,7 +17,7 @@ const sortingOptions = [
 ];
 
 const deliveryTimeOptions = [
-  { value: '12:30', label: '12:30 - 13:00' },
+  { value: '12:00', label: '12:00 - 13:00' },
   { value: '13:00', label: '13:00 - 13:30' }
 ];
 
@@ -40,12 +40,12 @@ function currentStateName(name) {
 
     const time = (filters.time || deliveryTimeOptions[0].value).split(':');
     const sort = (filters.sort || sortingOptions[0].value);
-    const dates = (filters.dates || []).map(date => moment([...date.split('-'), ...time]).format());
+    const dates = (filters.dates || []).map(date => moment(date).set({hours: time[0], minutes: time[1]}).format());
 
     return helpers.client.get('/lunches', {params: {
       'food_preferences_ids[]': filters.preferences,
       'dishes[]': filters.dishes,
-      'dates[]': dates,
+      'ready_by[]': dates,
       'sort': sort
     }});
   },
