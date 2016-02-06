@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Card } from 'react-toolbox/lib/card';
+import Card from 'components/Card/Card';
 import Avatar from 'react-toolbox/lib/avatar';
 import StarRating from 'react-star-rating';
 import classNames from 'classnames';
@@ -12,7 +12,7 @@ const Lunch = ({className, lunch}) => {
 
   return (
     <Link to={`/lunches/${lunch.id}`} className={classNames(styles.lunch, className)}>
-      <Card>
+      <Card className={styles.card}>
         <div style={{backgroundImage: `url('${lunch.photos[0].url}')`}}
              className={classNames(toolboxStyles.cardMedia, toolboxStyles.wide)}>
           <div className={styles.dishes}>

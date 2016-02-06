@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import Navigation from 'react-toolbox/lib/navigation';
-import { Button, IconButton } from 'react-toolbox/lib/button';
+import { Button } from 'react-toolbox/lib/button';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { open as openModal } from 'redux/modules/modals';
 import HeaderMenu from 'components/HeaderMenu/HeaderMenu';
-import { VkIcon, InstagramIcon, FbIcon } from 'components/icons';
+import SocialButton from 'components/SocialButton/SocialButton';
 
 const menuLinks = [
   {to: '/terms', label: 'Условия использования'},
@@ -46,9 +46,9 @@ export default class Footer extends Component {
           </div>
           <Navigation className={styles.social}>
             <span className={styles.socialLabel}>Присоединяйтесь к нам: </span>
-            <IconButton className={styles.socialButton}><FbIcon /></IconButton>
-            <IconButton className={styles.socialButton}><VkIcon /></IconButton>
-            <IconButton className={styles.socialButton}><InstagramIcon /></IconButton>
+            <SocialButton name="vk" />
+            <SocialButton name="fb" />
+            <SocialButton className={styles.socialButton} name="instagram" />
           </Navigation>
         </div>
       </footer>

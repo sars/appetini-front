@@ -5,7 +5,8 @@ import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
 import FilterCalendar from 'components/FilterCalendar/FilterCalendar';
 import Dropdown from 'react-toolbox/lib/dropdown';
 import Autocomplete from 'components/AsyncAutocomplete/AsyncAutocomplete';
-import Card, { CardText } from 'react-toolbox/lib/card';
+import Card, { CardContent } from 'components/Card/Card';
+import Layout2Col from 'components/Layout2Col/Layout2Col';
 import { asyncConnect } from 'redux-async-connect';
 import moment from 'moment';
 import isEqual from 'lodash/isEqual';
@@ -160,38 +161,37 @@ export default class Home extends Component {
     const {lunches, preferences, dishes, availability} = this.props;
     const {currentPreferences = [], currentDishes = [], currentDates = [], currentTime, currentSort} = this.state;
 
+    const leftSidebar = (
+      <Card className={styles.card}>
+        <CardContent>
+          <h3>Дата доставки</h3>
+          <FilterCalendar onChange={this.filterChanged('dates')} availability={availability.data} dates={currentDates}/>
+          <h3>Время доставки</h3>
+          <Dropdown className={dropdownStyles.dropdown} auto onChange={this.filterChanged('time')}
+                    source={deliveryTimeOptions} value={currentTime} />
+          <h3>Ваши предпочтения</h3>
+          <CheckButtonsGroup source={preferences.data} value={currentPreferences}
+                             onChange={this.filterChanged('preferences')} />
+          <h3>Состав обеда</h3>
+          <Autocomplete className={autocompleteStyles.autocomplete} name="dishes" direction="down"
+                        onUpdateSuggestions={this.requestDishes}
+                        onChange={this.filterChanged('dishes')} source={dishes ? dishes.data : []} value={currentDishes}
+          />
+        </CardContent>
+      </Card>
+    );
+
     return (
-      <div className={styles.home}>
-        <Helmet title="Home"/>
-        <div className={styles.leftSidebar}>
-          <Card className={styles.card}>
-            <CardText>
-              <h3>Дата доставки</h3>
-              <FilterCalendar onChange={this.filterChanged('dates')} availability={availability.data} dates={currentDates}/>
-              <h3>Время доставки</h3>
-              <Dropdown className={dropdownStyles.dropdown} auto onChange={this.filterChanged('time')}
-                        source={deliveryTimeOptions} value={currentTime} />
-              <h3>Ваши предпочтения</h3>
-              <CheckButtonsGroup source={preferences.data} value={currentPreferences}
-                                 onChange={this.filterChanged('preferences')} />
-              <h3>Состав обеда</h3>
-              <Autocomplete className={autocompleteStyles.autocomplete} name="dishes" direction="down"
-                            onUpdateSuggestions={this.requestDishes}
-                            onChange={this.filterChanged('dishes')} source={dishes ? dishes.data : []} value={currentDishes}
-              />
-            </CardText>
-          </Card>
+      <Layout2Col leftSidebar={leftSidebar}>
+        <div className={styles.firstLine}>
+          <Helmet title="Home"/>
+          <h1>Обеды на каждый день</h1>
+          <span className={styles.sortLabel}>Сортировать по</span>
+          <Dropdown className={dropdownStyles.dropdown} auto onChange={this.filterChanged('sort')}
+                    source={sortingOptions} value={currentSort} />
         </div>
-        <div className={styles.center}>
-          <div className={styles.firstLine}>
-            <h1>Обеды на каждый день</h1>
-            <span className={styles.sortLabel}>Сортировать по</span>
-            <Dropdown className={dropdownStyles.dropdown} auto onChange={this.filterChanged('sort')}
-                      source={sortingOptions} value={currentSort} />
-          </div>
-          {lunches.loaded && <Lunches lunches={lunches} />}
-        </div>
-      </div>
+        {lunches.loaded && <Lunches lunches={lunches} />}
+      </Layout2Col>
     );
   }
 }

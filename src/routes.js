@@ -33,7 +33,9 @@ export default (store, client) => {
         client.get('/users/' + userFromToken.id).then(result => {
           store.dispatch(setUser(result.resource));
           cb();
-        }).catch(cb);
+        }).catch(() => {
+          cb();
+        });
         return;
       }
     }

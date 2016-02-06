@@ -1,0 +1,82 @@
+.avatarContainer {
+  margin: 1rem;
+  img {
+    border-radius: 500px;
+    border: 0.4rem solid #c29872;
+  }
+}
+
+.leftSidebarCard {
+  text-align: center;
+
+  .cookName {
+    font-weight: 500;
+    font-size: 2.4rem;
+    color: #685c50;
+    margin: 1rem 0 0.4rem 0;
+  }
+}
+
+.ratingContainer {
+  :global(.rsr-root), :global(.rsr-container) {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .feedback {
+    vertical-align: middle;
+    margin-left: 1rem;
+    color: $color-accent;
+    text-decoration: underline;
+    font-size: 1.4rem;
+  }
+}
+
+.sanitaryBookContainer {
+  margin: 2rem 0;
+}
+
+.sanitaryBook {
+  padding: 1.2rem 3rem;
+  border-radius: 500px;
+  display: inline-block;
+  border: 1px solid $color-accent;
+  font-size: 1.6rem;
+  color: $color-accent;
+
+  a {
+    color: $color-accent;
+    text-decoration: underline;
+  }
+}
+
+.otherPhotosContainer, .socialContainer {
+  text-align: left;
+}
+
+.otherPhotosContainer {
+  img {
+    border-radius: 4px;
+    margin-right: 1rem;
+    width: 100%;
+  }
+}
+
+.otherPhotoContainer {
+  width: 25%;
+  display: inline-block;
+  padding: 0.4rem;
+  margin-bottom: 2rem;
+}
+
+.otherPhotos {
+  margin: 0 -0.4rem;
+}
+
+.socialButton {
+  margin: 0 0.5rem;
+}
+
+.socialButtons {
+  margin: 0 -0.5rem;
+}

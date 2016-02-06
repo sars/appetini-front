@@ -40,26 +40,3 @@
 .terms {
   padding: 0 2rem;
 }
-
-.social {
-  .socialButton {
-    opacity: 0.4;
-    border-radius: 500px;
-    height: 3.3rem;
-    width: 3.3rem;
-    background-color: #c5af9b;
-    transition: opacity 300ms ease;
-
-    &:not([disabled]) {
-      color: #FFF;
-    }
-    &:hover {
-      opacity: 1;
-    }
-
-    svg {
-      width: 0.9em;
-      height: 0.9em;
-    }
-  }
-}
