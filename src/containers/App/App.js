@@ -15,8 +15,17 @@ export default class App extends Component {
     children: PropTypes.object.isRequired,
     pushState: PropTypes.func.isRequired,
     routerReducer: PropTypes.object,
+    route: PropTypes.object.isRequired,
     loaded: PropTypes.bool.isRequired
   };
+
+  static childContextTypes = {
+    client: PropTypes.object.isRequired
+  };
+
+  getChildContext() {
+    return { client: this.props.route.client };
+  }
 
   componentDidMount() {
     window.addEventListener('wheel', () => {

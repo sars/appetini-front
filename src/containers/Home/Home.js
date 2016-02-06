@@ -4,11 +4,14 @@ import Lunches from 'components/Lunches/Lunches';
 import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
 import FilterCalendar from 'components/FilterCalendar/FilterCalendar';
 import Dropdown from 'react-toolbox/lib/dropdown';
-import Autocomplete from 'react-toolbox/lib/autocomplete';
+import Autocomplete from 'components/AsyncAutocomplete/AsyncAutocomplete';
 import Card, { CardText } from 'react-toolbox/lib/card';
 import { asyncConnect } from 'redux-async-connect';
 import moment from 'moment';
 import isEqual from 'lodash/isEqual';
+import debounce from 'lodash/debounce';
+import { loadSuccess } from 'redux-async-connect';
+import { connect } from 'react-redux';
 
 const sortingOptions = [
   { value: 'EN-gb', label: 'Дате' },
@@ -62,9 +65,14 @@ function racKeyLoaded(store, key) {
   },
   dishes: (params, helpers) => {
     if (!racKeyLoaded(helpers.store, 'dishes')) {
-      return helpers.client.get('/uniq_dishes?q=*').then(data => {
-        return data.resources.reduce((result, dish) => ({...result, [dish]: dish}), {});
-      });
+      const currentDishes = valueFromLocationQuery(helpers.store.getState().routing, 'dishes');
+      if (currentDishes) {
+        return helpers.client.get('/uniq_dishes', {
+          params: { q: '*', 'include[]': currentDishes }
+        }).then(data => {
+          return data.resources.reduce((result, dish) => ({...result, [dish]: dish}), {});
+        });
+      }
     }
   },
   availability: (params, helpers) => {
@@ -73,17 +81,20 @@ function racKeyLoaded(store, key) {
     }
   }
 })
+@connect(null, { loadSuccess })
 export default class Home extends Component {
   static propTypes = {
     lunches: PropTypes.object.isRequired,
     preferences: PropTypes.object.isRequired,
     availability: PropTypes.object.isRequired,
-    dishes: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired
+    dishes: PropTypes.object,
+    location: PropTypes.object.isRequired,
+    loadSuccess: PropTypes.func.isRequired
   };
 
   static contextTypes = {
-    router: PropTypes.object.isRequired
+    router: PropTypes.object.isRequired,
+    client: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -132,6 +143,16 @@ export default class Home extends Component {
     return newLocation;
   };
 
+  requestDishes = debounce((query) => {
+    this.context.client.get('/uniq_dishes', {params: {
+      q: (query || '*'),
+      'include[]': this.state.currentDishes
+    }}).then(data => {
+      const dishes = data.resources.reduce((result, dish) => ({...result, [dish]: dish}), {});
+      this.props.loadSuccess('dishes', dishes);
+    });
+  }, 200);
+
   render() {
     const styles = require('./Home.scss');
     const dropdownStyles = require('components/dropdown/dropdown.scss');
@@ -155,7 +176,8 @@ export default class Home extends Component {
                                  onChange={this.filterChanged('preferences')} />
               <h3>Состав обеда</h3>
               <Autocomplete className={autocompleteStyles.autocomplete} name="dishes" direction="down"
-                            onChange={this.filterChanged('dishes')} source={dishes.data} value={currentDishes}
+                            onUpdateSuggestions={this.requestDishes}
+                            onChange={this.filterChanged('dishes')} source={dishes ? dishes.data : []} value={currentDishes}
               />
             </CardText>
           </Card>

@@ -44,7 +44,7 @@ export default (store, client) => {
    * Please keep routes in alphabetical order
    */
   return (
-    <Route path="/" component={App} onEnter={userLoad}>
+    <Route path="/" component={App} onEnter={userLoad} client={client}>
       <Route onEnter={requireLogin} component={AuthorizedApp}>
         { /* Home (main) route */ }
         <IndexRoute component={Home}/>

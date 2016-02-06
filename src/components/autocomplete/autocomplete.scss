@@ -33,8 +33,10 @@
     padding: 1rem 0;
     border-radius: 1.8rem;
 
-    > *:hover {
-      background-color: #F1EAE5;
+    &:not(.noSuggestions) {
+      > *:hover {
+        background-color: #F1EAE5;
+      }
     }
   }
 
