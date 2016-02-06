@@ -1,22 +1,24 @@
 .checkButton {
-  div {
-    display: inline-block;
-    background-color: #f1eae5;
-    border-radius: 500px;
-    padding: 5px 10px;
-    margin: 2px;
-    position: relative;
-  }
+  display: inline-block;
+  background-color: #f1eae5;
+  position: relative;
 
-  &:not(.disabled) div {
+  padding: 0.5rem 0.75rem;
+  margin: 0.25rem 0.5rem 0.25rem 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 0.2rem;
+
+  &:not(.disabled) {
     cursor: pointer;
   }
 
-  &.checked div {
+  &.checked {
     background-color: $color-accent;
+    color: #FFF;
   }
 
-  [data-react-toolbox='ripple'] {
+  > [data-react-toolbox='ripple'] {
     overflow: hidden;
     border-radius: 500px;
   }

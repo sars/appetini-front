@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import CheckButton from 'components/CheckButton/CheckButton';
+import classNames from 'classnames';
 
 export default class CheckButtonsGroup extends Component {
   static propTypes = {
@@ -39,11 +40,17 @@ export default class CheckButtonsGroup extends Component {
 
   render() {
     const {value, source, template, checkButtonProps} = this.props;
-    const checkButtons = Object.keys(source || {}).map((sourceValue, index) =>
-      <CheckButton {...(checkButtonProps && checkButtonProps(sourceValue))}
-                   checked={value.indexOf(sourceValue.toString()) !== -1} key={index}
-                   label={source[sourceValue]} onChange={this.handleChange(sourceValue)} />
-    );
+    const styles = require('./CheckButtonsGroup.scss');
+
+    const checkButtons = Object.keys(source || {}).map((sourceValue, index) => {
+      let props = (checkButtonProps && checkButtonProps(sourceValue));
+      props = {...props, className: classNames(props && props.className, styles.checkButton)};
+      return (
+        <CheckButton {...props}
+          checked={value.indexOf(sourceValue.toString()) !== -1} key={index}
+          label={source[sourceValue]} onChange={this.handleChange(sourceValue)}/>
+      );
+    });
 
     return (
       <div>

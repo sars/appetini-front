@@ -25,6 +25,16 @@
   flex: 1;
   background-color: #FFF;
   margin: 0 2.5rem;
+  $color: #685c50;
+  color: $color;
+
+  input {
+    color: $color;
+  }
+
+  .card {
+    overflow: visible;
+  }
 
   h3:not(:first-child) {
     margin-top: 1.4rem;

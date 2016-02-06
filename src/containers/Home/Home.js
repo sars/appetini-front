@@ -118,6 +118,8 @@ export default class Home extends Component {
 
   render() {
     const styles = require('./Home.scss');
+    const dropdownStyles = require('components/dropdown/dropdown.scss');
+    const autocompleteStyles = require('components/autocomplete/autocomplete.scss');
     const {lunches, preferences, dishes, availability} = this.props;
     const {currentPreferences = [], currentDishes = [], currentDates = [], currentTime, currentSort} = this.state;
 
@@ -125,19 +127,19 @@ export default class Home extends Component {
       <div className={styles.home}>
         <Helmet title="Home"/>
         <div className={styles.leftSidebar}>
-          <Card>
+          <Card className={styles.card}>
             <CardText>
               <h3>Дата доставки</h3>
               <FilterCalendar onChange={this.filterChanged('dates')} availability={availability.data} dates={currentDates}/>
               <h3>Время доставки</h3>
-              <Dropdown className={styles.deliveryTimeDropdown} auto onChange={this.filterChanged('time')}
+              <Dropdown className={dropdownStyles.dropdown} auto onChange={this.filterChanged('time')}
                         source={deliveryTimeOptions} value={currentTime} />
               <h3>Ваши предпочтения</h3>
               <CheckButtonsGroup source={preferences.data} value={currentPreferences}
                                  onChange={this.filterChanged('preferences')} />
               <h3>Состав обеда</h3>
-              <Autocomplete label="Название блюда" name="dishes" onChange={this.filterChanged('dishes')}
-                            source={dishes.data} value={currentDishes}
+              <Autocomplete className={autocompleteStyles.autocomplete} name="dishes" direction="down"
+                            onChange={this.filterChanged('dishes')} source={dishes.data} value={currentDishes}
               />
             </CardText>
           </Card>

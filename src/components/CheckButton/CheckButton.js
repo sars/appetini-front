@@ -22,20 +22,19 @@ export default class CheckButton extends Component {
   };
 
   render() {
+    const {className, checked, checkedClass, disabled, disabledClass, ...others} = this.props;
     const styles = require('./CheckButton.scss');
-    const classname = classNames(styles.checkButton, this.props.className, {
-      [styles.checked]: this.props.checked,
-      [this.props.checkedClass]: this.props.checked && this.props.checkedClass,
-      [styles.disabled]: this.props.disabled,
-      [this.props.disabledClass]: this.props.disabled && this.props.disabledClass
+    const classname = classNames(styles.checkButton, className, {
+      [styles.checked]: checked,
+      [this.props.checkedClass]: checked && checkedClass,
+      [styles.disabled]: disabled,
+      [this.props.disabledClass]: disabled && disabledClass
     });
 
     return (
-      <label className={classname}>
-        <div onClick={this.handleChange}>
-          {this.props.children}
-          {this.props.label}
-        </div>
+      <label {...others} className={classname} onClick={this.handleChange}>
+        {this.props.children}
+        {this.props.label}
       </label>
     );
   }

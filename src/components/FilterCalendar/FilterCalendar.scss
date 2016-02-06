@@ -2,35 +2,33 @@
   width: 100%;
 
   .checkButton {
-    div {
-      padding: 0;
-      width: 4.6rem;
-      height: 4.6rem;
-      text-align: center;
-      color: #555;
-      font: 1.6rem/4.6rem 'Open Sans', 'Arial', sans-serif;
-      font-weight: 600;
-      background-color: #FFF;
-      border: 1px solid #FFF;
-      transition: border 300ms ease;
-      margin: 0.4rem;
-    }
-    &.current:not(.checked) div {
+    padding: 0;
+    width: 4.6rem;
+    height: 4.6rem;
+    text-align: center;
+    color: #555;
+    font: 1.6rem/4.6rem 'Open Sans', 'Arial', sans-serif;
+    font-weight: 600;
+    background-color: #FFF;
+    border: 1px solid #FFF;
+    transition: border 300ms ease;
+    margin: 0.4rem;
+    border-radius: 500px;
+
+    &.current:not(.checked) {
       border-style: dashed;
       border-color: #CCC;
     }
-    &.checked div {
+    &.checked {
       color: #FFF;
       background-color: $color-accent;
     }
-    &:hover:not(.disabled) div {
+    &:hover:not(.disabled) {
       border-color: $color-accent;
     }
     &.disabled {
       cursor: inherit;
-      div {
-        opacity: 0.4;
-      }
+      opacity: 0.4;
     }
   }
   th {
