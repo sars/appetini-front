@@ -32,6 +32,10 @@ function currentStateName(name) {
   return 'current' + name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+function racKeyLoaded(store, key) {
+  return Boolean(store.getState().reduxAsyncConnect[key]);
+}
+
 @asyncConnect({
   lunches: (params, helpers) => {
     const filters = filterNames.reduce((result, name) => (
@@ -49,13 +53,25 @@ function currentStateName(name) {
       'sort': sort
     }});
   },
-  preferences: (params, helpers) => helpers.client.get('/food_preferences').then(data => {
-    return data.resources.reduce((result, preference) => ({...result, [preference.id]: preference.name}), {});
-  }),
-  dishes: (params, helpers) => helpers.client.get('/uniq_dishes?q=*').then(data => {
-    return data.resources.reduce((result, dish) => ({...result, [dish]: dish}), {});
-  }),
-  availability: (params, helpers) => helpers.client.get('/lunches_availability').then(data => data.resources)
+  preferences: (params, helpers) => {
+    if (!racKeyLoaded(helpers.store, 'preferences')) {
+      return helpers.client.get('/food_preferences').then(data => {
+        return data.resources.reduce((result, preference) => ({...result, [preference.id]: preference.name}), {});
+      });
+    }
+  },
+  dishes: (params, helpers) => {
+    if (!racKeyLoaded(helpers.store, 'dishes')) {
+      return helpers.client.get('/uniq_dishes?q=*').then(data => {
+        return data.resources.reduce((result, dish) => ({...result, [dish]: dish}), {});
+      });
+    }
+  },
+  availability: (params, helpers) => {
+    if (!racKeyLoaded(helpers.store, 'availability')) {
+      return helpers.client.get('/lunches_availability').then(data => data.resources);
+    }
+  }
 })
 export default class Home extends Component {
   static propTypes = {
