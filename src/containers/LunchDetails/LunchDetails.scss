@@ -50,11 +50,11 @@
   }
 }
 
-.otherPhotosContainer, .socialContainer {
+.otherCookPhotosContainer, .socialContainer {
   text-align: left;
 }
 
-.otherPhotosContainer {
+.otherCookPhotosContainer {
   img {
     border-radius: 4px;
     margin-right: 1rem;
@@ -62,14 +62,14 @@
   }
 }
 
-.otherPhotoContainer {
+.otherCookPhotoContainer {
   width: 25%;
   display: inline-block;
   padding: 0.4rem;
   margin-bottom: 2rem;
 }
 
-.otherPhotos {
+.otherCookPhotos {
   margin: 0 -0.4rem;
 }
 
@@ -79,4 +79,116 @@
 
 .socialButtons {
   margin: 0 -0.5rem;
+}
+
+.mainPhoto, .otherPhotos {
+  width: 50%;
+  display: inline-block;
+  padding: 0 1rem;
+  vertical-align: top;
+
+  img {
+    width: 100%;
+    border-radius: 5px;
+  }
+}
+
+.otherPhotosContent {
+  margin: -1rem;
+}
+
+.photoContainer {
+  width: 50%;
+  display: inline-block;
+  padding: 1rem;
+}
+
+.photos {
+  margin: 0 -1rem 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0 1.5rem 0;
+}
+
+.deliveryPeriod {
+  color: #4a4a4a;
+}
+
+.dishesContainer, .priceContainer {
+  width: 50%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.dishesContainer {
+  padding-right: 1rem;
+}
+
+.priceContainer {
+  padding-left: 1rem;
+}
+
+.dish {
+  list-style-type: none;
+  display: flex;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  font-size: 1.6rem;
+  color: #685c50;
+}
+
+.dishDots {
+  flex: 1;
+  border-bottom: 1px dotted currentColor;
+  margin: 0 0.5rem;
+}
+
+.dishSize {
+  color: $color-accent;
+  font-weight: 500;
+}
+
+.priceAmount {
+  font-weight: 300;
+  font-size: 7rem;
+}
+
+.priceCurrency {
+  color: #979797;
+  font-size: 1.6rem;
+}
+
+.priceContainer {
+  display: inline-flex;
+  vertical-align: middle;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.center, .leftSidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.dishAndPriceCard {
+  flex: 1;
+}
+
+.otherLunches {
+  margin: 2rem;
+}
+
+.moreContainer {
+  text-align: center;
+  margin: 3rem 0 2rem;
+
+  .moreButton:not([disabled]) {
+    padding: 0 3rem;
+    height: 4.5rem;
+    color: #554a40;
+  }
 }

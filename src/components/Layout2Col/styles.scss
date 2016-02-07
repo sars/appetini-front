@@ -1,11 +1,9 @@
 .root {
   display: flex;
-  align-items: flex-start;
 }
 
 .leftSidebar {
   flex: 1;
-  background-color: #FFF;
   margin: 0 2.5rem;
   $color: #685c50;
   color: $color;
@@ -29,5 +27,11 @@
 
 .center {
   flex: 2;
-  margin: 0 3rem 0 0
+  margin: 0 2.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    margin: 0.5rem auto 1rem 0;
+  }
 }

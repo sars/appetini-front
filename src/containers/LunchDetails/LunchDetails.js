@@ -7,6 +7,10 @@ import { Link } from 'react-router';
 import Card, { CardContent } from 'components/Card/Card';
 import Layout2Col from 'components/Layout2Col/Layout2Col';
 import SocialButton from 'components/SocialButton/SocialButton';
+import times from 'lodash/times';
+import { Button } from 'react-toolbox/lib/button';
+import classNames from 'classnames';
+import Lunches from 'components/Lunches/Lunches';
 
 @asyncConnect({
   lunch: (params, helpers) => helpers.client.get('/lunches/' + params.lunchId)
@@ -21,6 +25,8 @@ export default class LunchDetails extends Component {
     const styles = require('./LunchDetails.scss');
     const {resource: lunch} = this.props.lunch.data;
     const {cook} = lunch;
+    const buttonStyles = require('components/button/button.scss');
+    const otherLunches = {data: {resources: times(5, index => ({...lunch, id: index}))}};
 
     const leftSidebar = (
       <Card className={styles.leftSidebarCard}>
@@ -44,11 +50,11 @@ export default class LunchDetails extends Component {
               </Link>
             </div>
           </div>
-          <div className={styles.otherPhotosContainer}>
+          <div className={styles.otherCookPhotosContainer}>
             <h3>Фотографии кухни</h3>
-            <div className={styles.otherPhotos}>
+            <div className={styles.otherCookPhotos}>
               {cook.other_photos.map((photo, index) =>
-                <div className={styles.otherPhotoContainer} key={index}>
+                <div className={styles.otherCookPhotoContainer} key={index}>
                   <img src={photo.thumb.url} />
                 </div>
               )}
@@ -67,30 +73,64 @@ export default class LunchDetails extends Component {
     );
 
     return (
-      <Layout2Col leftSidebar={leftSidebar}>
-        <div>
-          <h1>Обед от {cook.first_name} {cook.last_name}</h1>
-          <DeliveryPeriod time={lunch.ready_by} />
+      <div>
+        <Layout2Col leftSidebar={leftSidebar}>
+          <div className={styles.header}>
+            <h1>Обед от {cook.first_name} {cook.last_name}</h1>
+            <DeliveryPeriod className={styles.deliveryPeriod} time={lunch.ready_by} />
+          </div>
+          <div className={styles.photos}>
+            <div className={styles.mainPhoto}>
+              <img src={lunch.photos[0].url} width="300" />
+            </div>
+            <div className={styles.otherPhotos}>
+              <div className={styles.otherPhotosContent}>
+                {times(lunch.photos.length - 1, index => {
+                  return (
+                    <div className={styles.photoContainer} key={index}>
+                      <img src={lunch.photos[index + 1].url} width="300" />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+          <Card className={styles.dishAndPriceCard}>
+            <CardContent>
+              <div className={styles.dishesContainer}>
+                <h3>Состав обеда:</h3>
+                <ul>
+                  {lunch.dishes.map(dish => {
+                    return (
+                      <li className={styles.dish} key={dish.id}>
+                        <span>{dish.name}</span>
+                        <span className={styles.dishDots} />
+                        <span className={styles.dishSize}>{dish.size}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              <div className={styles.priceContainer}>
+                <div className={styles.price}>
+                  <span className={styles.priceAmount}>280</span>
+                  <span className={styles.priceCurrency}>грн</span>
+                </div>
+                <div className={styles.buyContainer}>
+                  <Button className={classNames(buttonStyles.flat, buttonStyles.accent)} label="Купить сейчас" accent />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Layout2Col>
+        <div className={styles.otherLunches}>
+          <h2>Обеды на другое время от {cook.first_name} {cook.last_name}</h2>
+          <Lunches lunches={otherLunches} columns={3} />
+          <div className={styles.moreContainer}>
+            <Button className={classNames(styles.moreButton, buttonStyles.flat, buttonStyles.outlined)} label="Показать еще" />
+          </div>
         </div>
-        <div className="photos">
-          {lunch.photos.map((photo, index) => {
-            return <img key={index} src={photo.url} width="300" />;
-          })}
-        </div>
-        <div className="composition">
-          <h3>Состав обеда</h3>
-          <ul>
-            {lunch.dishes.map(dish => {
-              return (
-                <li key={dish.id}>
-                  <span>{dish.name}</span>
-                  <span>{dish.size}</span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </Layout2Col>
+      </div>
     );
   }
 }

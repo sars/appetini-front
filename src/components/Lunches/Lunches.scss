@@ -10,6 +10,10 @@
 .lunchContainer {
   width: 50%;
   display: inline-block;
+
+  .columns3 & {
+    width: 33.33%;
+  }
 }
 
 .lunch {
