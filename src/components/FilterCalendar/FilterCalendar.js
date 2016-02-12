@@ -58,7 +58,7 @@ export default class FilterCalendar extends Component {
         className: classNames(styles.checkButton, {[styles.current]: date.isSame(currentDate)}),
         checkedClass: styles.checked,
         disabledClass: styles.disabled,
-        disabled: availabilityGrouped[value].available || date.isBefore(currentDate)
+        disabled: !availabilityGrouped[value][0].available || date.isBefore(currentDate)
       };
     };
 
