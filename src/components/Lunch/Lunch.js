@@ -8,13 +8,12 @@ import { Link } from 'react-router';
 const Lunch = ({className, lunch}) => {
   const {cook} = lunch;
   const styles = require('./Lunch.scss');
-  const toolboxStyles = require('react-toolbox/lib/card/style.scss');
 
   return (
     <Link to={`/lunches/${lunch.id}`} className={classNames(styles.lunch, className)}>
       <Card className={styles.card}>
-        <div style={{backgroundImage: `url('${lunch.photos[0].url}')`}}
-             className={classNames(toolboxStyles.cardMedia, toolboxStyles.wide)}>
+        <div className={styles.photoWrapper}>
+          <img className={styles.photo} src={lunch.photos[0].url} />
           <div className={styles.dishes}>
             {lunch.dishes.map(dish =>
               <div key={dish.id} className={styles.dish}>{dish.name}</div>
