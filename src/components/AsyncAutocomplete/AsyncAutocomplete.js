@@ -5,6 +5,16 @@ import classNames from 'classnames';
 import autocompleteStyles from 'components/autocomplete/autocomplete.scss';
 
 export default class AsyncAutocomplete extends Autocomplete {
+  constructor(...args) {
+    super(...args);
+
+    const _handleQueryFocus = this.handleQueryFocus;
+    this.handleQueryFocus = () => {
+      this.props.onUpdateSuggestions(this.state.query);
+      _handleQueryFocus();
+    };
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.onUpdateSuggestions && this.state.query !== nextState.query) {
       this.props.onUpdateSuggestions(nextState.query);
