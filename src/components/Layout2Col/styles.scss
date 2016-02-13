@@ -1,9 +1,10 @@
 .root {
   display: flex;
+  padding: 0 1.2rem;
 }
 
 .leftSidebar {
-  padding: 0 1.2rem 0 2.4rem;
+  padding: 0 1.2rem;
   $color: #685c50;
   color: $color;
   width: 33.33%;
@@ -22,7 +23,7 @@
 }
 
 .center {
-  padding: 0 2.4rem 0 1.2rem;
+  padding: 0 1.2rem;
   display: inline-flex;
   flex-direction: column;
   width: 66.66%;

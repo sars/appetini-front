@@ -40,3 +40,31 @@
 .terms {
   padding: 0 2rem;
 }
+
+.loginSignUp {
+  white-space: nowrap;
+}
+
+.menu {
+  flex-wrap: wrap;
+}
+
+.socialButtons {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+
+  button {
+    margin: 0 0.5rem;
+  }
+}
+
+.footer {
+  display: none;
+}
+
+@media (min-width: 700px) {
+  .footer {
+    display: flex;
+  }
+}

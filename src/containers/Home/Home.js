@@ -5,13 +5,13 @@ import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
 import Dropdown from 'react-toolbox/lib/dropdown';
 import Autocomplete from 'components/AsyncAutocomplete/AsyncAutocomplete';
 import Card, { CardContent } from 'components/Card/Card';
-import Layout2Col from 'components/Layout2Col/Layout2Col';
 import { asyncConnect } from 'redux-async-connect';
 import moment from 'moment';
 import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import { loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 
 const deliveryTimeOptions = [
   { value: '12:00', label: '12:00 - 13:00' },
@@ -146,32 +146,36 @@ export default class Home extends Component {
     const {lunches, preferences, dishes} = this.props;
     const {currentPreferences = [], currentDishes = [], currentTime} = this.state;
 
-    const leftSidebar = (
-      <Card className={styles.card}>
-        <CardContent>
-          <h3>Время доставки</h3>
-          <Dropdown className={dropdownStyles.dropdown} auto onChange={this.filterChanged('time')}
-                    source={deliveryTimeOptions} value={currentTime} />
-          <h3>Ваши предпочтения</h3>
-          <CheckButtonsGroup source={preferences} value={currentPreferences}
-                             onChange={this.filterChanged('preferences')} />
-          <h3>Состав обеда</h3>
-          <Autocomplete className={autocompleteStyles.autocomplete} name="dishes" direction="down"
-                        onUpdateSuggestions={this.requestDishes}
-                        onChange={this.filterChanged('dishes')} source={dishes || []} value={currentDishes}
-          />
-        </CardContent>
-      </Card>
-    );
-
     return (
-      <Layout2Col leftSidebar={leftSidebar}>
-        <div className={styles.firstLine}>
-          <Helmet title="Home"/>
-          <h1>Обеды на каждый день</h1>
+      <div className={styles.root}>
+        <div className={styles.filters}>
+          <Card className={styles.card}>
+            <CardContent className={styles.cardContent}>
+              <div className={styles.dishesWrapper}>
+                <h3>Состав обеда</h3>
+                <Autocomplete className={autocompleteStyles.autocomplete} name="dishes" direction="down"
+                              onUpdateSuggestions={this.requestDishes}
+                              onChange={this.filterChanged('dishes')} source={dishes || []} value={currentDishes}
+                />
+              </div>
+              <div className={styles.preferencesWrapper}>
+                <h3>Ваши предпочтения</h3>
+                <CheckButtonsGroup source={preferences} value={currentPreferences}
+                                   onChange={this.filterChanged('preferences')} />
+              </div>
+            </CardContent>
+          </Card>
         </div>
-        {lunches && <Lunches className={styles.lunches} lunches={lunches} />}
-      </Layout2Col>
+        <div>
+          <Helmet title="Home"/>
+          <div className={styles.firstLine}>
+            <h1>Обеды на каждый день</h1>
+            <Dropdown className={classNames(dropdownStyles.dropdown, styles.timeDropdown)} auto onChange={this.filterChanged('time')}
+                      source={deliveryTimeOptions} value={currentTime} size="15" />
+          </div>
+          {lunches && <Lunches className={styles.lunches} lunches={lunches} />}
+        </div>
+      </div>
     );
   }
 }

@@ -31,9 +31,9 @@ export default class Footer extends Component {
     return (
       <footer className={styles.footer}>
         <div className={styles.firstLine}>
-          <HeaderMenu links={menuLinks}/>
+          <HeaderMenu className={styles.menu} links={menuLinks}/>
 
-          <Navigation>
+          <Navigation className={styles.loginSignUp}>
             <Button className={classNames(buttonStyles.flat, buttonStyles.accent)} label="Войти" accent
                     onClick={this.openLoginModal} />
             <Button className={classNames(buttonStyles.flat, buttonStyles.outlined)} label="Зарегистрироваться" accent />
@@ -46,9 +46,11 @@ export default class Footer extends Component {
           </div>
           <Navigation className={styles.social}>
             <span className={styles.socialLabel}>Присоединяйтесь к нам: </span>
-            <SocialButton name="vk" />
-            <SocialButton name="fb" />
-            <SocialButton className={styles.socialButton} name="instagram" />
+            <div className={styles.socialButtons}>
+              <SocialButton name="vk" />
+              <SocialButton name="fb" />
+              <SocialButton className={styles.socialButton} name="instagram" />
+            </div>
           </Navigation>
         </div>
       </footer>

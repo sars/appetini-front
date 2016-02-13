@@ -13,7 +13,7 @@ import HeaderMenu from 'components/HeaderMenu/HeaderMenu';
 const menuLinks = [
   {to: '/', label: 'Меню', index: true},
   {to: '/about', label: 'О Нас'},
-  { to: '/loginSuccess', label: 'Тарифные планы'}
+  {to: '/loginSuccess', label: 'Тарифные планы'}
 ];
 
 @connect(state => ({user: state.auth.user}), {logout, showToast, openModal})
@@ -47,7 +47,7 @@ export default class Header extends Component {
           <span className={styles.brandLabel}></span>
         </IndexLink>
 
-        <HeaderMenu links={menuLinks} showActive />
+        <HeaderMenu className={styles.desktopMenu} links={menuLinks} showActive />
 
         <Navigation className={cx('navigation', 'navigationRight')}>
           {!user && <Button className={buttonCx('flat', 'accent')} label="Войти" accent onClick={this.openLoginModal}/>}

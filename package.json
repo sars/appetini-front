@@ -96,7 +96,7 @@
     "react-router-redux": "^2.1.0",
     "react-star-rating": "^1.4.2",
     "react-tap-event-plugin": "^0.2.1",
-    "react-toolbox": "^0.14.0",
+    "react-toolbox": "^0.14.1",
     "redux": "^3.0.5",
     "redux-async-connect": "^1.0.0-rc1",
     "redux-form": "^4.1.4",
@@ -107,7 +107,7 @@
     "superagent": "^1.7.1",
     "url-loader": "^0.5.7",
     "warning": "^2.1.0",
-    "webpack-isomorphic-tools": "^2.2.26"
+    "webpack-isomorphic-tools": "^2.2.29"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.1.0",

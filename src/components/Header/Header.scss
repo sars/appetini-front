@@ -68,3 +68,13 @@
 .logout {
   margin-right: 3rem;
 }
+
+.root .desktopMenu {
+  display: none;
+}
+
+@media (min-width: 700px) {
+  .root .desktopMenu {
+    display: initial;
+  }
+}

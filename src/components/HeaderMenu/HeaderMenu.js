@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react';
 import Navigation from 'react-toolbox/lib/navigation';
 import { IndexLink, Link } from 'react-router';
+import classNames from 'classnames';
 
-const HeaderMenu = ({links, showActive}) => {
+const HeaderMenu = ({links, showActive, className}) => {
   const styles = require('./HeaderMenu.scss');
 
   return (
-    <Navigation className={styles.navigation}>
+    <Navigation className={classNames(styles.navigation, className)}>
       {links.map((link, index) => {
         return React.createElement(
           link.index ? IndexLink : Link,
@@ -25,7 +26,8 @@ const HeaderMenu = ({links, showActive}) => {
 
 HeaderMenu.propTypes = {
   links: PropTypes.array.isRequired,
-  showActive: PropTypes.bool
+  showActive: PropTypes.bool,
+  className: PropTypes.string
 };
 
 export default HeaderMenu;
