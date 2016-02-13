@@ -4,6 +4,7 @@ import groupBy from 'lodash/groupBy';
 import Lunch from 'components/Lunch/Lunch';
 import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
 import classNames from 'classnames';
+import times from 'lodash/times';
 
 const Lunches = ({lunches, columns}) => {
   const styles = require('./Lunches.scss');
@@ -25,6 +26,9 @@ const Lunches = ({lunches, columns}) => {
                 <div className={styles.lunchContainer} key={lunch.id}>
                   <Lunch className={styles.lunch} lunch={lunch} />
                 </div>
+              )}
+              {times(5, (key) =>
+                <div className={styles.lunchContainer} key={key}></div>
               )}
             </div>
           </div>

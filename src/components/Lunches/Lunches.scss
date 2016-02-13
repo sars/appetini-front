@@ -8,12 +8,10 @@
 }
 
 .lunchContainer {
-  width: 50%;
+  max-width: 450px;
+  min-width: 350px;
   display: inline-block;
-
-  .columns3 & {
-    width: 33.33%;
-  }
+  flex: 1 1 auto;
 }
 
 .lunch {
@@ -22,4 +20,7 @@
 
 .lunchesGroupContent {
   margin: 0 -1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
