@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import Lunches from 'components/Lunches/Lunches';
 import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
-import FilterCalendar from 'components/FilterCalendar/FilterCalendar';
 import Dropdown from 'react-toolbox/lib/dropdown';
 import Autocomplete from 'components/AsyncAutocomplete/AsyncAutocomplete';
 import Card, { CardContent } from 'components/Card/Card';
@@ -13,7 +12,6 @@ import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import { loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 
 const deliveryTimeOptions = [
   { value: '12:00', label: '12:00 - 13:00' },
@@ -68,11 +66,6 @@ function racKeyLoaded(store, key) {
         });
       }
     }
-  }},
-  {key: 'availability', promise: ({helpers, store}) => {
-    if (!racKeyLoaded(store, 'availability')) {
-      return helpers.client.get('/lunches_availability').then(data => data.resources);
-    }
   }}
 ])
 @connect(null, { loadSuccess })
@@ -80,7 +73,6 @@ export default class Home extends Component {
   static propTypes = {
     lunches: PropTypes.object,
     preferences: PropTypes.object.isRequired,
-    availability: PropTypes.array.isRequired,
     dishes: PropTypes.object,
     location: PropTypes.object.isRequired,
     loadSuccess: PropTypes.func.isRequired
@@ -151,14 +143,12 @@ export default class Home extends Component {
     const styles = require('./Home.scss');
     const dropdownStyles = require('components/dropdown/dropdown.scss');
     const autocompleteStyles = require('components/autocomplete/autocomplete.scss');
-    const {lunches, preferences, dishes, availability} = this.props;
-    const {currentPreferences = [], currentDishes = [], currentDates = [], currentTime} = this.state;
+    const {lunches, preferences, dishes} = this.props;
+    const {currentPreferences = [], currentDishes = [], currentTime} = this.state;
 
     const leftSidebar = (
       <Card className={styles.card}>
         <CardContent>
-          <h3>Дата доставки</h3>
-          <FilterCalendar onChange={this.filterChanged('dates')} availability={availability} dates={currentDates}/>
           <h3>Время доставки</h3>
           <Dropdown className={dropdownStyles.dropdown} auto onChange={this.filterChanged('time')}
                     source={deliveryTimeOptions} value={currentTime} />
