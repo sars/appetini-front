@@ -40,10 +40,10 @@ function racKeyLoaded(store, key) {
   return Boolean(store.getState().reduxAsyncConnect[key]);
 }
 
-@asyncConnect({
-  lunches: (params, helpers) => {
+@asyncConnect([
+  {key: 'lunches', promise: ({helpers, store}) => {
     const filters = filterNames.reduce((result, name) => (
-      {...result, [name]: valueFromLocationQuery(helpers.store.getState().routing, name)}
+      {...result, [name]: valueFromLocationQuery(store.getState().routing, name)}
     ), {});
 
     const time = (filters.time || deliveryTimeOptions[0].value).split(':');
@@ -56,17 +56,17 @@ function racKeyLoaded(store, key) {
       'ready_by[]': dates,
       'sort': sort
     }});
-  },
-  preferences: (params, helpers) => {
-    if (!racKeyLoaded(helpers.store, 'preferences')) {
+  }},
+  {key: 'preferences', promise: ({helpers, store}) => {
+    if (!racKeyLoaded(store, 'preferences')) {
       return helpers.client.get('/food_preferences').then(data => {
         return data.resources.reduce((result, preference) => ({...result, [preference.id]: preference.name}), {});
       });
     }
-  },
-  dishes: (params, helpers) => {
-    if (!racKeyLoaded(helpers.store, 'dishes')) {
-      const currentDishes = valueFromLocationQuery(helpers.store.getState().routing, 'dishes');
+  }},
+  {key: 'dishes', promise: ({helpers, store}) => {
+    if (!racKeyLoaded(store, 'dishes')) {
+      const currentDishes = valueFromLocationQuery(store.getState().routing, 'dishes');
       if (currentDishes) {
         return helpers.client.get('/uniq_dishes', {
           params: { q: '*', 'include[]': currentDishes }
@@ -75,19 +75,19 @@ function racKeyLoaded(store, key) {
         });
       }
     }
-  },
-  availability: (params, helpers) => {
-    if (!racKeyLoaded(helpers.store, 'availability')) {
+  }},
+  {key: 'availability', promise: ({helpers, store}) => {
+    if (!racKeyLoaded(store, 'availability')) {
       return helpers.client.get('/lunches_availability').then(data => data.resources);
     }
-  }
-})
+  }}
+])
 @connect(null, { loadSuccess })
 export default class Home extends Component {
   static propTypes = {
-    lunches: PropTypes.object.isRequired,
+    lunches: PropTypes.object,
     preferences: PropTypes.object.isRequired,
-    availability: PropTypes.object.isRequired,
+    availability: PropTypes.array.isRequired,
     dishes: PropTypes.object,
     location: PropTypes.object.isRequired,
     loadSuccess: PropTypes.func.isRequired
@@ -144,7 +144,7 @@ export default class Home extends Component {
     return newLocation;
   };
 
-  requestDishes = debounce((query) => {
+  requestDishes = debounce(query => {
     this.context.client.get('/uniq_dishes', {params: {
       q: (query || '*'),
       'include[]': this.state.currentDishes
@@ -165,17 +165,17 @@ export default class Home extends Component {
       <Card className={styles.card}>
         <CardContent>
           <h3>Дата доставки</h3>
-          <FilterCalendar onChange={this.filterChanged('dates')} availability={availability.data} dates={currentDates}/>
+          <FilterCalendar onChange={this.filterChanged('dates')} availability={availability} dates={currentDates}/>
           <h3>Время доставки</h3>
           <Dropdown className={dropdownStyles.dropdown} auto onChange={this.filterChanged('time')}
                     source={deliveryTimeOptions} value={currentTime} />
           <h3>Ваши предпочтения</h3>
-          <CheckButtonsGroup source={preferences.data} value={currentPreferences}
+          <CheckButtonsGroup source={preferences} value={currentPreferences}
                              onChange={this.filterChanged('preferences')} />
           <h3>Состав обеда</h3>
           <Autocomplete className={autocompleteStyles.autocomplete} name="dishes" direction="down"
                         onUpdateSuggestions={this.requestDishes}
-                        onChange={this.filterChanged('dishes')} source={dishes ? dishes.data : []} value={currentDishes}
+                        onChange={this.filterChanged('dishes')} source={dishes || []} value={currentDishes}
           />
         </CardContent>
       </Card>
@@ -190,7 +190,7 @@ export default class Home extends Component {
           <Dropdown className={dropdownStyles.dropdown} auto onChange={this.filterChanged('sort')}
                     source={sortingOptions} value={currentSort} />
         </div>
-        {lunches.loaded && <Lunches lunches={lunches} />}
+        {lunches && <Lunches lunches={lunches} />}
       </Layout2Col>
     );
   }

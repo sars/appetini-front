@@ -7,7 +7,7 @@ import classNames from 'classnames';
 
 const Lunches = ({lunches, columns}) => {
   const styles = require('./Lunches.scss');
-  const preparedLunches = groupBy(sortBy(lunches.data.resources, 'ready_by'), 'ready_by');
+  const preparedLunches = groupBy(sortBy(lunches.resources, 'ready_by'), 'ready_by');
   const classes = classNames(styles.lunches, {
     [styles.columns3]: columns === 3
   });

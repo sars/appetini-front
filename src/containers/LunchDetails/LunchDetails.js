@@ -12,9 +12,9 @@ import { Button } from 'react-toolbox/lib/button';
 import classNames from 'classnames';
 import Lunches from 'components/Lunches/Lunches';
 
-@asyncConnect({
-  lunch: (params, helpers) => helpers.client.get('/lunches/' + params.lunchId)
-})
+@asyncConnect([
+  {key: 'lunch', promise: ({params, helpers}) => helpers.client.get('/lunches/' + params.lunchId)}
+])
 @connect(state => ({auth: state.auth}))
 export default class LunchDetails extends Component {
   static propTypes = {
@@ -23,10 +23,10 @@ export default class LunchDetails extends Component {
 
   render() {
     const styles = require('./LunchDetails.scss');
-    const {resource: lunch} = this.props.lunch.data;
+    const {resource: lunch} = this.props.lunch;
     const {cook} = lunch;
     const buttonStyles = require('components/button/button.scss');
-    const otherLunches = {data: {resources: times(5, index => ({...lunch, id: index}))}};
+    const otherLunches = {resources: times(5, index => ({...lunch, id: index}))};
 
     const leftSidebar = (
       <Card className={styles.leftSidebarCard}>
