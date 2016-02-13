@@ -13,19 +13,14 @@ import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import { loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
-
-const sortingOptions = [
-  { value: 'EN-gb', label: 'Дате' },
-  { value: 'ES-es', label: 'Цене'},
-  { value: 'TH-th', label: 'Кулинару' }
-];
+import classNames from 'classnames';
 
 const deliveryTimeOptions = [
   { value: '12:00', label: '12:00 - 13:00' },
   { value: '13:00', label: '13:00 - 13:30' }
 ];
 
-const filterNames = ['preferences', 'dishes', 'dates', 'time', 'sort'];
+const filterNames = ['preferences', 'dishes', 'dates', 'time'];
 
 function valueFromLocationQuery(props, name) {
   const value = props.location.query && props.location.query[name];
@@ -47,14 +42,12 @@ function racKeyLoaded(store, key) {
     ), {});
 
     const time = (filters.time || deliveryTimeOptions[0].value).split(':');
-    const sort = (filters.sort || sortingOptions[0].value);
     const dates = (filters.dates || []).map(date => moment(date).set({hours: time[0], minutes: time[1]}).format());
 
     return helpers.client.get('/lunches', {params: {
       'food_preferences_ids[]': filters.preferences,
       'dishes[]': filters.dishes,
-      'ready_by[]': dates,
-      'sort': sort
+      'ready_by[]': dates
     }});
   }},
   {key: 'preferences', promise: ({helpers, store}) => {
@@ -159,7 +152,7 @@ export default class Home extends Component {
     const dropdownStyles = require('components/dropdown/dropdown.scss');
     const autocompleteStyles = require('components/autocomplete/autocomplete.scss');
     const {lunches, preferences, dishes, availability} = this.props;
-    const {currentPreferences = [], currentDishes = [], currentDates = [], currentTime, currentSort} = this.state;
+    const {currentPreferences = [], currentDishes = [], currentDates = [], currentTime} = this.state;
 
     const leftSidebar = (
       <Card className={styles.card}>
@@ -186,11 +179,8 @@ export default class Home extends Component {
         <div className={styles.firstLine}>
           <Helmet title="Home"/>
           <h1>Обеды на каждый день</h1>
-          <span className={styles.sortLabel}>Сортировать по</span>
-          <Dropdown className={dropdownStyles.dropdown} auto onChange={this.filterChanged('sort')}
-                    source={sortingOptions} value={currentSort} />
         </div>
-        {lunches && <Lunches lunches={lunches} />}
+        {lunches && <Lunches className={styles.lunches} lunches={lunches} />}
       </Layout2Col>
     );
   }
