@@ -6,7 +6,6 @@ import {
     Widgets,
     About,
     LoginSuccess,
-    Survey,
     NotFound,
     LunchDetails,
     AuthorizedApp
@@ -54,7 +53,6 @@ export default (store, client) => {
 
       { /* Routes */ }
       <Route path="about" component={About}/>
-      <Route path="survey" component={Survey}/>
       <Route path="widgets" component={Widgets}/>
 
       <Route path="lunches/:lunchId" component={LunchDetails}/>
