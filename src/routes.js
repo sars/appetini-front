@@ -2,7 +2,6 @@ import React from 'react';
 import {IndexRoute, Route} from 'react-router';
 import {
     App,
-    Chat,
     Home,
     Widgets,
     About,
@@ -47,14 +46,10 @@ export default (store, client) => {
    */
   return (
     <Route path="/" component={App} onEnter={userLoad} client={client}>
+      { /* Routes requiring login */ }
       <Route onEnter={requireLogin} component={AuthorizedApp}>
         { /* Home (main) route */ }
         <IndexRoute component={Home}/>
-      </Route>
-
-      { /* Routes requiring login */ }
-      <Route onEnter={requireLogin} component={AuthorizedApp}>
-        <Route path="chat" component={Chat}/>
         <Route path="loginSuccess" component={LoginSuccess}/>
       </Route>
 
