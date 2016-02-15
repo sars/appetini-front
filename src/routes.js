@@ -3,7 +3,6 @@ import {IndexRoute, Route} from 'react-router';
 import {
     App,
     Home,
-    Widgets,
     About,
     LoginSuccess,
     NotFound,
@@ -53,7 +52,6 @@ export default (store, client) => {
 
       { /* Routes */ }
       <Route path="about" component={About}/>
-      <Route path="widgets" component={Widgets}/>
 
       <Route path="lunches/:lunchId" component={LunchDetails}/>
 
