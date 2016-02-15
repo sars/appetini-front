@@ -6,9 +6,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import createStore from './redux/create';
 import ApiClient from './helpers/ApiClient';
-import {Provider} from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { ReduxAsyncConnect } from 'redux-async-connect';
+import rootComponent from 'helpers/rootComponent';
 
 import getRoutes from './routes';
 
@@ -26,9 +26,7 @@ const component = (
 );
 
 ReactDOM.render(
-  <Provider store={store} key="provider">
-    {component}
-  </Provider>,
+  rootComponent(store, component),
   dest
 );
 
@@ -43,12 +41,12 @@ if (process.env.NODE_ENV !== 'production') {
 if (__DEVTOOLS__ && !window.devToolsExtension) {
   const DevTools = require('./containers/DevTools/DevTools');
   ReactDOM.render(
-    <Provider store={store} key="provider">
+    rootComponent(store, (
       <div>
         {component}
         <DevTools />
       </div>
-    </Provider>,
+    )),
     dest
   );
 }

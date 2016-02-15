@@ -4,6 +4,7 @@ import Avatar from 'react-toolbox/lib/avatar';
 import StarRating from 'react-star-rating';
 import classNames from 'classnames';
 import { Link } from 'react-router';
+import {FormattedPlural} from 'react-intl';
 
 const Lunch = ({className, lunch}) => {
   const {cook} = lunch;
@@ -26,12 +27,17 @@ const Lunch = ({className, lunch}) => {
           <div>
             <div className={styles.cookName}>{cook.first_name + ' ' + cook.last_name}</div>
             <div className={styles.rating}>
-              <StarRating className={styles.starRating} name="cook-rating" totalStars={5} editing={false} rating={3} size={13} />
-              <span className={styles.feedback}>31 отзыв</span>
+              <StarRating className={styles.starRating} name="cook-rating" totalStars={5}
+                          editing={false} rating={cook.rating} size={13} />
+              <span className={styles.feedback}>
+                {cook.reviews_count}
+                &nbsp;
+                <FormattedPlural value={cook.reviews_count} one="отзыв" few="отзыва" many="отзывов" other="отзывов" />
+              </span>
             </div>
           </div>
           <div className={styles.price}>
-            <span className={styles.priceAmount}>40</span>
+            <span className={styles.priceAmount}>{Number(lunch.price)}</span>
             <span className={styles.priceCurrency}>грн</span>
           </div>
         </div>

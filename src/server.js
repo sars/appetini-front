@@ -12,12 +12,12 @@ import ApiClient from './helpers/ApiClient';
 import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
+import rootComponent from 'helpers/rootComponent';
 
 import { match } from 'react-router';
 import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 
 import createHistory from 'react-router/lib/createMemoryHistory';
-import { Provider } from 'react-redux';
 import getRoutes from './routes';
 import tokenPayload from './helpers/tokenPayload';
 
@@ -85,11 +85,7 @@ app.use((req, res) => {
       hydrateOnClient();
     } else if (renderProps) {
       loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
-        const component = (
-          <Provider store={store} key="provider">
-            <ReduxAsyncConnect {...renderProps} />
-          </Provider>
-        );
+        const component = rootComponent(store, <ReduxAsyncConnect {...renderProps} />);
 
         const status = renderProps.location.state && renderProps.location.state.responseStatus || 200;
         res.status(status);
