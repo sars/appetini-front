@@ -73,6 +73,15 @@
   display: none;
 }
 
+.userMenu {
+  position: relative;
+  display: inline-block;
+  > .menuComponent {
+    top: 100%;
+    margin-top: 1rem;
+  }
+}
+
 @media (min-width: 700px) {
   .root .desktopMenu {
     display: initial;

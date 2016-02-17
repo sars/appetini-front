@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import { show as showToast } from 'redux/modules/toast';
 import { open as openModal } from 'redux/modules/modals';
 import HeaderMenu from 'components/HeaderMenu/HeaderMenu';
+import Menu from 'components/Menu/Menu';
+import { MenuItem, MenuDivider } from 'react-toolbox';
 
 const menuLinks = [
   {to: '/', label: 'Меню', index: true},
@@ -25,8 +27,15 @@ export default class Header extends Component {
     showToast: PropTypes.func.isRequired
   };
 
-  logout = (event) => {
-    event.preventDefault();
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
+  state = {
+    userMenuOpened: false
+  };
+
+  logout = () => {
     this.props.logout().then(() => this.props.showToast('You are successfully logged out', 'accept', 'done'));
   };
 
@@ -34,8 +43,14 @@ export default class Header extends Component {
     this.props.openModal('LoginForm', 'Login');
   };
 
+  openMenu(event) {
+    event.preventDefault();
+    this.refs.userMenu.show();
+  }
+
   render() {
     const {user} = this.props;
+    const {push} = this.context.router;
     const styles = require('./Header.scss');
     const cx = classNames.bind(styles);
     const buttonCx = classNames.bind(require('components/button/button.scss'));
@@ -51,7 +66,18 @@ export default class Header extends Component {
 
         <Navigation className={cx('navigation', 'navigationRight')}>
           {!user && <Button className={buttonCx('flat', 'accent')} label="Войти" accent onClick={this.openLoginModal}/>}
-          {user && <a className={styles.logout} href="#" onClick={this.logout}>Выйти</a> }
+          {user &&
+            <div className={styles.userMenu}>
+              <a className={styles.logout} href="#" onClick={::this.openMenu}>
+                {user.email}
+              </a>
+              <Menu position="top-left" menuRipple ref="userMenu" className={styles.menuComponent}>
+                {user.role === 'admin' && <MenuItem caption="Админка" onClick={() => push('/admin')}/>}
+                <MenuDivider />
+                <MenuItem caption="Выйти" onClick={this.logout}/>
+              </Menu>
+            </div>
+          }
           <div className={styles.search}>
             <IconButton className={styles.searchButton} icon="search"/>
             <input type="text"/>

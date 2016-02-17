@@ -7,7 +7,9 @@ import {
     LoginSuccess,
     NotFound,
     LunchDetails,
-    AuthorizedApp
+    AuthorizedApp,
+    AdminDashboard,
+    AdminLunchesNew
   } from 'containers';
 import { setUser } from 'redux/modules/auth';
 
@@ -54,6 +56,11 @@ export default (store, client) => {
       <Route path="about" component={About}/>
 
       <Route path="lunches/:lunchId" component={LunchDetails}/>
+
+      <Route path="admin" onEnter={requireLogin} component={AuthorizedApp} authCondition={user => user.role === 'admin'}>
+        <IndexRoute component={AdminDashboard}/>
+        <Route path="lunches/new" component={AdminLunchesNew}/>
+      </Route>
 
       { /* Catch all route */ }
       <Route path="*" component={NotFound} status={404} />

@@ -8,13 +8,14 @@ export default class AuthorizedApp extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
+    route: PropTypes.object.isRequired,
     user: PropTypes.object,
     pushState: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
-    this.state = {showChildren: Boolean(props.user)};
+    this.state = {showChildren: this.authCondition(props.user)};
   }
 
   componentWillReceiveProps(nextProps) {
@@ -25,12 +26,16 @@ export default class AuthorizedApp extends Component {
 
     if (this.props.location !== nextProps.location) {
       // We should update showChildren only after redirect is completed
-      this.setState({showChildren: Boolean(nextProps.user)});
+      this.setState({showChildren: this.authCondition(nextProps.user)});
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return this.state.showChildren !== nextState.showChildren || this.props.children !== nextProps.children;
+  }
+
+  authCondition(...args) {
+    return (this.props.route.authCondition || Boolean)(...args);
   }
 
   render() {

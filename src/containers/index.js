@@ -1,4 +1,6 @@
 export App from './App/App';
+export AdminDashboard from './Admin/Dashboard/Dashboard';
+export AdminLunchesNew from './Admin/Lunches/New/New';
 export AuthorizedApp from './AuthorizedApp/AuthorizedApp';
 export Home from './Home/Home';
 export About from './About/About';
