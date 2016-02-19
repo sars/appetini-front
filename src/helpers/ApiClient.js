@@ -22,11 +22,17 @@ function formatUrl(path) {
 class _ApiClient {
   constructor(req) {
     methods.forEach((method) =>
-      this[method] = (path, { params, data } = {}) => new Promise((resolve, reject) => {
+      this[method] = (path, { params, data, attach } = {}) => new Promise((resolve, reject) => {
         const request = superagent[method](formatUrl(path));
 
         if (params) {
           request.query(params);
+        }
+
+        if (attach) {
+          for (const [fieldName, file] of Object.entries(attach)) {
+            request.attach(fieldName, file);
+          }
         }
 
         if (__SERVER__ && req.get('cookie')) {
