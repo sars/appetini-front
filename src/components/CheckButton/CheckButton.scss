@@ -9,6 +9,10 @@
   cursor: pointer;
   border-radius: 0.2rem;
 
+  > span[data-react-toolbox="ripple"] {
+    border-radius: 0.2rem;
+  }
+
   &:not(.disabled) {
     cursor: pointer;
   }
