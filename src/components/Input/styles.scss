@@ -1,0 +1,92 @@
+$unit: 1rem;
+
+$input-field-padding: .8 * $unit;
+$input-field-font-size: 1.6 * $unit;
+$input-label-font-size: 1.2 * $unit;
+$input-text-label-color: rgba(0, 0, 0, 0.26) !default;
+$input-text-highlight-color: $color-primary !default;
+$input-text-disabled-text-color: $input-text-label-color !default;
+$input-text-error-color: rgb(222, 50, 38) !default;
+$input-underline-height:  2 * $unit;
+
+.root {
+  padding: 0;
+  position: relative;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  padding: $input-field-padding 0;
+  font-size: $input-field-font-size;
+  color: $color-text;
+  background-color: #FFF;
+  border: 1px solid #e4d9cf;
+  border-radius: 500px;
+  padding-left: 1.4rem;
+  padding-right: 1.4rem;
+  &:focus {
+    ~ .bar:before, ~ .bar:after {
+      width: 50%;
+    }
+  }
+}
+
+.inputWrapper {
+  border-radius: 500px;
+  overflow: hidden;
+}
+
+.bar {
+  position: relative;
+  display: block;
+  width: 100%;
+  &:before, &:after {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: .2s;
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    content: "";
+    background-color: $input-text-highlight-color;
+    transition-property: width, background-color;
+  }
+  &:before {
+    left: 50%;
+  }
+  &:after {
+    right: 50%;
+  }
+}
+
+.error {
+  margin-bottom: - $input-underline-height;
+  font-size: $input-label-font-size;
+  line-height: $input-underline-height;
+  color: $input-text-error-color;
+}
+
+.disabled > .input {
+  color: $input-text-disabled-text-color;
+  border-bottom-style: dotted;
+}
+
+.errored {
+  padding-bottom: 0;
+  .input {
+    border-bottom-color: $input-text-error-color;
+    &:focus {
+      ~ .bar:before, ~ .bar:after {
+        background-color: $input-text-error-color;
+      }
+    }
+  }
+  > .label {
+    color: $input-text-error-color;
+  }
+}
+
+.hidden {
+  display: none;
+}
