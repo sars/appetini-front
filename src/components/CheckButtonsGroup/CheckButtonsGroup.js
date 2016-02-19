@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 export default class CheckButtonsGroup extends Component {
   static propTypes = {
-    source: PropTypes.object.isRequired,
+    source: PropTypes.object,
     template: PropTypes.func,
     checkButtonProps: PropTypes.func,
     value: PropTypes.array,
