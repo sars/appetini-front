@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import AppBar from 'react-toolbox/lib/app_bar';
 import Navigation from 'react-toolbox/lib/navigation';
-import { Button, IconButton } from 'react-toolbox/lib/button';
+import { IconButton } from 'react-toolbox/lib/button';
+import Button from 'components/Button/Button';
 import { IndexLink } from 'react-router';
 import classNames from 'classnames/bind';
 import { logout } from 'redux/modules/auth';
@@ -53,7 +54,6 @@ export default class Header extends Component {
     const {push} = this.context.router;
     const styles = require('./Header.scss');
     const cx = classNames.bind(styles);
-    const buttonCx = classNames.bind(require('components/button/button.scss'));
 
     return (
       <AppBar fixed className={styles.root}>
@@ -65,7 +65,7 @@ export default class Header extends Component {
         <HeaderMenu className={styles.desktopMenu} links={menuLinks} showActive />
 
         <Navigation className={cx('navigation', 'navigationRight')}>
-          {!user && <Button className={buttonCx('flat', 'accent')} label="Войти" accent onClick={this.openLoginModal}/>}
+          {!user && <Button flat accent label="Войти" onClick={this.openLoginModal}/>}
           {user &&
             <div className={styles.userMenu}>
               <a className={styles.logout} href="#" onClick={::this.openMenu}>

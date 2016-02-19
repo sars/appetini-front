@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Navigation from 'react-toolbox/lib/navigation';
-import { Button } from 'react-toolbox/lib/button';
-import classNames from 'classnames';
+import Button from 'components/Button/Button';
 import { connect } from 'react-redux';
 import { open as openModal } from 'redux/modules/modals';
 import HeaderMenu from 'components/HeaderMenu/HeaderMenu';
@@ -26,7 +25,6 @@ export default class Footer extends Component {
 
   render() {
     const styles = require('./Footer.scss');
-    const buttonStyles = require('components/button/button.scss');
 
     return (
       <footer className={styles.footer}>
@@ -34,9 +32,8 @@ export default class Footer extends Component {
           <HeaderMenu className={styles.menu} links={menuLinks}/>
 
           <Navigation className={styles.loginSignUp}>
-            <Button className={classNames(buttonStyles.flat, buttonStyles.accent)} label="Войти" accent
-                    onClick={this.openLoginModal} />
-            <Button className={classNames(buttonStyles.flat, buttonStyles.outlined)} label="Зарегистрироваться" accent />
+            <Button flat accent label="Войти" onClick={this.openLoginModal} />
+            <Button flat outlined label="Зарегистрироваться" />
           </Navigation>
         </div>
 
