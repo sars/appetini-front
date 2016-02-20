@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import Lunches from 'components/Lunches/Lunches';
 import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
-import Dropdown from 'react-toolbox/lib/dropdown';
+import Dropdown from 'components/Dropdown/Dropdown';
 import Autocomplete from 'components/AsyncAutocomplete/AsyncAutocomplete';
 import Card, { CardContent } from 'components/Card/Card';
 import { asyncConnect } from 'redux-async-connect';
@@ -11,11 +11,10 @@ import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import { loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 
 const deliveryTimeOptions = [
-  { value: '12:00', label: '12:00 - 13:00' },
-  { value: '13:00', label: '13:00 - 13:30' }
+  { value: '12:30', label: '12:30 - 13:00' },
+  { value: '13:30', label: '13:30 - 14:00' }
 ];
 
 const filterNames = ['preferences', 'dishes', 'dates', 'time'];
@@ -141,7 +140,6 @@ export default class Home extends Component {
 
   render() {
     const styles = require('./Home.scss');
-    const dropdownStyles = require('components/dropdown/dropdown.scss');
     const autocompleteStyles = require('components/autocomplete/autocomplete.scss');
     const {lunches, preferences, dishes} = this.props;
     const {currentPreferences = [], currentDishes = [], currentTime} = this.state;
@@ -170,7 +168,7 @@ export default class Home extends Component {
           <Helmet title="Home"/>
           <div className={styles.firstLine}>
             <h1>Обеды на каждый день</h1>
-            <Dropdown className={classNames(dropdownStyles.dropdown, styles.timeDropdown)} auto onChange={this.filterChanged('time')}
+            <Dropdown className={styles.timeDropdown} auto onChange={this.filterChanged('time')}
                       source={deliveryTimeOptions} value={currentTime} size="15" />
           </div>
           {lunches && <Lunches className={styles.lunches} lunches={lunches} />}

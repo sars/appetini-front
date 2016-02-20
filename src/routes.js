@@ -57,7 +57,7 @@ export default (store, client) => {
 
       <Route path="lunches/:lunchId" component={LunchDetails}/>
 
-      <Route path="admin" onEnter={requireLogin} component={AuthorizedApp} authCondition={user => user.role === 'admin'}>
+      <Route path="admin" onEnter={requireLogin} component={AuthorizedApp} authCondition={user => user && user.role === 'admin'}>
         <IndexRoute component={AdminDashboard}/>
         <Route path="lunches/new" component={AdminLunchesNew}/>
       </Route>
