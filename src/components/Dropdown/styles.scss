@@ -24,8 +24,13 @@
   }
 }
 
-.value:after {
-  display: none;
+.value {
+  input {
+    cursor: pointer;
+  }
+  &:after {
+    display: none;
+  }
 }
 
 .values {
