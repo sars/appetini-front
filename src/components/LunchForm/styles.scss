@@ -20,6 +20,32 @@
 .dishesTable {
   width: 100%;
 
+  tr {
+    transition: all 300ms ease;
+
+    &:global {
+      &.dish-tr-enter {
+        height: 0;
+        transform: scaleY(0);
+      }
+
+      &.dish-tr-enter-active {
+        height: 5rem;
+        transform: scaleY(1);
+      }
+
+      &.dish-tr-leave {
+        height: 5rem;
+        transform: scaleY(1);
+      }
+
+      &.dish-tr-leave-active {
+        height: 0;
+        transform: scaleY(0);
+      }
+    }
+  }
+
   th {
     font-weight: 500;
   }
@@ -88,5 +114,14 @@
   > div {
     width: 50%;
     padding: 0 0.5rem;
+  }
+}
+
+.removeDishTd {
+  text-align: center;
+  a {
+    color: #000;
+    font-size: 1.4rem;
+    border-bottom: 1px dashed #AAA;
   }
 }

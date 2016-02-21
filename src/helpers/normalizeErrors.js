@@ -48,6 +48,8 @@ export default function normalizeErrors(errors) {
 
         if (currentKey.isArray) {
           const newArray = currentPart || [];
+          const lengthDiff = currentKey.val - newArray.length;
+          newArray.push.apply(newArray, new Array(lengthDiff < 0 ? 0 : lengthDiff));
           newArray.splice(currentKey.val, 1, children);
           return newArray;
         } else { // eslint-disable-line no-else-return

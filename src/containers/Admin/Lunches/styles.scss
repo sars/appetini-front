@@ -1,0 +1,38 @@
+.root {
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+.mainTable {
+  margin: 1rem 0;
+  width: 100%;
+
+  a {
+    color: #000;
+    border-bottom: 1px dashed rgba(104, 92, 80, 0.7);
+  }
+
+  th, td {
+    padding: 0.5rem;
+    vertical-align: middle;
+  }
+
+  th {
+    text-align: left;
+    font-weight: 500;
+    background-color: rgba(104, 92, 80, 0.3);
+    color: $color-primary;
+  }
+
+  tr:nth-child(odd) {
+    td {
+      background-color: rgba(241, 234, 229, 0.4);
+    }
+  }
+}
+
+.firstLine {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 2rem 0;
+}

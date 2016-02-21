@@ -36,7 +36,7 @@ export default class Dropdown extends _Dropdown {
           onMouseDown={this.handleMouseDown}
           readOnly
           type={template ? 'hidden' : null}
-          value={selected.label}
+          value={selected && selected.label}
           styles={inputStyles}
         />
         {template ? this.renderTemplateValue(selected) : null}

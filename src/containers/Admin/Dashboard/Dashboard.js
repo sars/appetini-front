@@ -10,7 +10,7 @@ export default class Dashboard extends Component {
         <ul>
           <li><Link to="/admin/cooks">Кулинары</Link></li>
           <li><Link to="/admin/users">Подписчики</Link></li>
-          <li><Link to="/admin/lunches/new">Создать обед</Link></li>
+          <li><Link to="/admin/lunches">Обеды</Link></li>
         </ul>
       </div>
     );

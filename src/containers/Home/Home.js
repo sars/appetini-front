@@ -6,23 +6,12 @@ import Dropdown from 'components/Dropdown/Dropdown';
 import Autocomplete from 'components/AsyncAutocomplete/AsyncAutocomplete';
 import Card, { CardContent } from 'components/Card/Card';
 import { asyncConnect } from 'redux-async-connect';
-import moment from 'moment';
 import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import { loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
-
-const deliveryTimeOptions = [
-  { value: '12:30', label: '12:30 - 13:00' },
-  { value: '13:30', label: '13:30 - 14:00' }
-];
-
-const filterNames = ['preferences', 'dishes', 'dates', 'time'];
-
-function valueFromLocationQuery(props, name) {
-  const value = props.location.query && props.location.query[name];
-  return value && JSON.parse(value);
-}
+import { request as requestLunches, filterNames, deliveryTimeOptions } from 'helpers/lunchesFilters';
+import valueFromLocationQuery from 'helpers/valueFromLocationQuery';
 
 function currentStateName(name) {
   return 'current' + name.charAt(0).toUpperCase() + name.slice(1);
@@ -33,20 +22,7 @@ function racKeyLoaded(store, key) {
 }
 
 @asyncConnect([
-  {key: 'lunches', promise: ({helpers, store}) => {
-    const filters = filterNames.reduce((result, name) => (
-      {...result, [name]: valueFromLocationQuery(store.getState().routing, name)}
-    ), {});
-
-    const time = (filters.time || deliveryTimeOptions[0].value).split(':');
-    const dates = (filters.dates || []).map(date => moment(date).set({hours: time[0], minutes: time[1]}).format());
-
-    return helpers.client.get('/lunches', {params: {
-      'food_preferences_ids[]': filters.preferences,
-      'dishes[]': filters.dishes,
-      'ready_by[]': dates
-    }});
-  }},
+  {key: 'lunches', promise: requestLunches},
   {key: 'preferences', promise: ({helpers, store}) => {
     if (!racKeyLoaded(store, 'preferences')) {
       return helpers.client.get('/food_preferences').then(data => {

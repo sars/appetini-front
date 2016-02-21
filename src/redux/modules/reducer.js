@@ -15,7 +15,18 @@ import {reducer as reduxAsyncConnect} from 'redux-async-connect';
 export default combineReducers({
   routing: routeReducer,
   auth,
-  form,
+  form: form.normalize({
+    lunchForm: {
+      cook_id: value => value && value.toString(),
+      ready_by_date: value => value && new Date(value),
+      ready_by_time: value => {
+        const date = value && new Date(value);
+        return date && new Date(2000, 0, 1, date.getHours(), date.getMinutes()).toString();
+      },
+      food_preference_ids: value => value && value.map(item => item.toString()),
+      removing_photos: value => value || []
+    }
+  }),
   multireducer: multireducer({
     counter1: counter,
     counter2: counter,

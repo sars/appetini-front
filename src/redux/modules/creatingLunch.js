@@ -47,3 +47,10 @@ export function createLunch(lunch) {
     promise: client => client.post('/lunches', { data: { resource: lunch}})
   };
 }
+
+export function updateLunch(lunch) {
+  return {
+    types: [CREATE_LUNCH, CREATE_LUNCH_SUCCESS, CREATE_LUNCH_FAIL],
+    promise: client => client.put(`/lunches/${lunch.id}`, { data: { resource: lunch}})
+  };
+}
