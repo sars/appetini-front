@@ -1,5 +1,4 @@
 import normalizeErrors from 'helpers/normalizeErrors';
-import moment from 'moment';
 
 export default function submit(lunch, submitFn) {
   lunch.dishes_attributes = lunch.dishes;
