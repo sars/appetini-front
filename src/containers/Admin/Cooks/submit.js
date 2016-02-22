@@ -1,10 +1,8 @@
 import normalizeErrors from 'helpers/normalizeErrors';
 
-export default function submit(lunch, submitFn) {
-  lunch.dishes_attributes = lunch.dishes;
-
+export default function submit(cook, submitFn) {
   return new Promise((resolve, reject) => {
-    submitFn(lunch).then(response => {
+    submitFn(cook).then(response => {
       resolve(response);
     }).catch(response => {
       const errors = normalizeErrors(response.errors);

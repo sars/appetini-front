@@ -5,9 +5,8 @@ import DatePicker from 'components/DatePicker/DatePicker';
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
 import Checkbox from 'react-toolbox/lib/checkbox';
-import Dropzone from 'react-dropzone';
+import MultiImagesField from 'components/ImageField/MultiImagesField';
 import { reduxForm } from 'redux-form';
-import { addTempImage, removeTempImage } from 'redux/modules/creatingLunch';
 import { getCooks, getFoodPreferences } from 'redux/modules/common';
 import classNames from 'classnames';
 import styles from './styles.scss';
@@ -42,11 +41,10 @@ const deliveryTimeOptions = [
   state => ({
     cooks: state.common.cooks,
     cookLoadState: state.common.loadState.cooks || {},
-    tempImages: state.creatingLunch.tempImages,
     foodPreferences: state.common.foodPreferences,
     foodPreferencesLoadState: state.common.loadState.foodPreferences || {}
   }),
-  {addTempImage, removeTempImage, getCooks, getFoodPreferences}
+  {getCooks, getFoodPreferences}
 )
 export default class LunchForm extends Component {
   static propTypes = {
@@ -55,22 +53,14 @@ export default class LunchForm extends Component {
     cookLoadState: PropTypes.object,
     foodPreferencesLoadState: PropTypes.object,
     fields: PropTypes.object.isRequired,
-    tempImages: PropTypes.array.isRequired,
     getCooks: PropTypes.func.isRequired,
     getFoodPreferences: PropTypes.func.isRequired,
-    addTempImage: PropTypes.func.isRequired,
-    removeTempImage: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     error: PropTypes.object,
     acceptRules: PropTypes.bool,
     submitting: PropTypes.bool,
     title: PropTypes.string.isRequired,
     sendLabel: PropTypes.string.isRequired
-  };
-
-
-  static contextTypes = {
-    client: PropTypes.object.isRequired
   };
 
   componentDidMount() {
@@ -81,20 +71,6 @@ export default class LunchForm extends Component {
     if (!this.props.foodPreferences && !this.props.foodPreferencesLoadState.loading) {
       this.props.getFoodPreferences();
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.tempImages !== nextProps.tempImages) {
-      nextProps.fields.photos_temp_image_ids.onChange(nextProps.tempImages.map(item => item.id));
-    }
-  }
-
-  onDrop(files) {
-    files.forEach(file => {
-      this.context.client.post('/temp_images', { attach: {'resource[image]': file} }).then(responce => {
-        this.props.addTempImage(responce.resource);
-      }).catch(error => console.log(error));
-    });
   }
 
   getCooks() {
@@ -108,12 +84,6 @@ export default class LunchForm extends Component {
   getPreferences() {
     const { foodPreferences } = this.props;
     return foodPreferences && foodPreferences.reduce((result, preference) => ({...result, [preference.id]: preference.name}), {});
-  }
-
-  removeTempImage(tempImage) {
-    return () => {
-      this.props.removeTempImage(tempImage);
-    };
   }
 
   addDish() {
@@ -142,11 +112,12 @@ export default class LunchForm extends Component {
     };
   }
 
-  removePhoto(index) {
-    return () => {
-      const { fields } = this.props;
-      fields.removing_photos.onChange([...fields.removing_photos.value, index]);
-    };
+  removePhoto(index, photos) {
+    this.props.fields.removing_photos.onChange(photos);
+  }
+
+  handleTempImages(tempImages) {
+    this.props.fields.photos_temp_image_ids.onChange(tempImages.map(item => item.id));
   }
 
   errorsFor(fieldName) {
@@ -187,24 +158,10 @@ export default class LunchForm extends Component {
         </div>
         <div className={styles.section}>
           <h3>Фотографии</h3>
-          <Dropzone ref="dropzone" onDrop={::this.onDrop} className={styles.dropzone} activeClassName={styles.activeDropzone}>
-            <div>Try dropping some files here, or click to select files to upload.</div>
-          </Dropzone>
-          <div className={styles.imagesPreviews}>
-            {this.props.tempImages.map(tempImage =>
-              <div className={styles.imagePreview} key={tempImage.id}>
-                <img src={tempImage.image.thumb.url}/>
-                <Button className={styles.imagePreviewRemove} icon="remove" accent mini onClick={::this.removeTempImage(tempImage)} />
-              </div>
-            )}
-            {fields.photos.value && fields.photos.value.map((photo, index) =>
-              fields.removing_photos.value.indexOf(index) === -1 && <div className={styles.imagePreview} key={index}>
-                <img src={photo.thumb.url}/>
-                <Button className={styles.imagePreviewRemove} icon="remove" accent mini onClick={::this.removePhoto(index)} />
-              </div>
-            )}
-          </div>
-          {this.errorsFor('photos_temp_image_ids')}
+          <MultiImagesField onRemove={::this.removePhoto} onTempImages={::this.handleTempImages}
+                            value={fields.photos.value} removingImages={fields.removing_photos.value}
+          />
+          {this.errorsFor('photos')}
         </div>
         <div className={styles.section}>
           <h3>Состав обеда</h3>

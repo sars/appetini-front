@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import LunchForm from 'components/LunchForm/LunchForm';
-import { updateLunch } from 'redux/modules/creatingLunch';
+import { updateLunch } from 'redux/modules/common';
 import { show as showToast } from 'redux/modules/toast';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';

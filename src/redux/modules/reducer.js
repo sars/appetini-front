@@ -9,7 +9,6 @@ import info from './info';
 import modals from './modals';
 import toast from './toast';
 import common from './common';
-import creatingLunch from './creatingLunch';
 import {reducer as reduxAsyncConnect} from 'redux-async-connect';
 
 export default combineReducers({
@@ -36,6 +35,5 @@ export default combineReducers({
   modals,
   toast,
   common,
-  creatingLunch,
   reduxAsyncConnect
 });

@@ -1,0 +1,34 @@
+.dropzone {
+  width: 100%;
+  border: 2px dashed $color-primary;
+  border-radius: 5px;
+  padding: 2rem 1rem;
+  text-align: center;
+  transition: all 200ms ease;
+}
+
+.activeDropzone {
+  border-color: $color-accent;
+  padding: 4rem 1rem;
+}
+
+.imagesPreviews {
+  margin: 1rem 0;
+}
+
+.imagePreview {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  margin-right: 1rem;
+
+  img {
+    border-radius: 0.3rem;
+  }
+}
+
+.imagePreviewRemove {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

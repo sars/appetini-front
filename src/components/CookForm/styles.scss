@@ -1,0 +1,29 @@
+.root {
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+.submitContainer {
+  margin-top: 2rem;
+}
+
+.section {
+  margin-bottom: 1rem;
+}
+
+.error {
+  font-size: 1.2rem;
+  line-height: 2rem;
+  color: #de3226;
+}
+
+.twoColSection {
+  display: flex;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  width: 100%;
+  > div {
+    width: 50%;
+    padding: 0 0.5rem;
+  }
+}

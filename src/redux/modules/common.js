@@ -4,6 +4,12 @@ const GET_COOK_FAIL = 'common/GET_COOK_FAIL';
 const GET_FOOD_PREFERENCES = 'common/GET_FOOD_PREFERENCES';
 const GET_FOOD_PREFERENCES_SUCCESS = 'common/GET_FOOD_PREFERENCES_SUCCESS';
 const GET_FOOD_PREFERENCES_FAIL = 'common/GET_FOOD_PREFERENCES_FAIL';
+const CREATE_COOK = 'common/CREATE_LUNCH';
+const CREATE_COOK_SUCCESS = 'common/CREATE_LUNCH_SUCCESS';
+const CREATE_COOK_FAIL = 'common/CREATE_LUNCH_FAIL';
+const CREATE_LUNCH = 'common/CREATE_LUNCH';
+const CREATE_LUNCH_SUCCESS = 'common/CREATE_LUNCH_SUCCESS';
+const CREATE_LUNCH_FAIL = 'common/CREATE_LUNCH_FAIL';
 
 const initialState = {
   loadState: {}
@@ -95,5 +101,33 @@ export function getFoodPreferences() {
   return {
     types: [GET_FOOD_PREFERENCES, GET_FOOD_PREFERENCES_SUCCESS, GET_FOOD_PREFERENCES_FAIL],
     promise: client => client.get('/food_preferences')
+  };
+}
+
+export function createCook(cook) {
+  return {
+    types: [CREATE_COOK, CREATE_COOK_SUCCESS, CREATE_COOK_FAIL],
+    promise: client => client.post('/cooks', { data: { resource: cook}})
+  };
+}
+
+export function updateCook(cook) {
+  return {
+    types: [CREATE_COOK, CREATE_COOK_SUCCESS, CREATE_COOK_FAIL],
+    promise: client => client.put(`/cooks/${cook.id}`, { data: { resource: cook}})
+  };
+}
+
+export function createLunch(lunch) {
+  return {
+    types: [CREATE_LUNCH, CREATE_LUNCH_SUCCESS, CREATE_LUNCH_FAIL],
+    promise: client => client.post('/lunches', { data: { resource: lunch}})
+  };
+}
+
+export function updateLunch(lunch) {
+  return {
+    types: [CREATE_LUNCH, CREATE_LUNCH_SUCCESS, CREATE_LUNCH_FAIL],
+    promise: client => client.put(`/lunches/${lunch.id}`, { data: { resource: lunch}})
   };
 }

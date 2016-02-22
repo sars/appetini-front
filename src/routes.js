@@ -12,7 +12,9 @@ import {
     AdminLunches,
     AdminLunchesNew,
     AdminLunchesEdit,
-    AdminCooks
+    AdminCooks,
+    AdminCooksNew,
+    AdminCooksEdit
   } from 'containers';
 import { setUser } from 'redux/modules/auth';
 
@@ -66,6 +68,8 @@ export default (store, client) => {
         <Route path="lunches/:lunchId/edit" component={AdminLunchesEdit}/>
         <Route path="lunches/new" component={AdminLunchesNew}/>
         <Route path="cooks" component={AdminCooks}/>
+        <Route path="cooks/:cookId/edit" component={AdminCooksEdit}/>
+        <Route path="cooks/new" component={AdminCooksNew}/>
       </Route>
 
       { /* Catch all route */ }
