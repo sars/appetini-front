@@ -3,18 +3,14 @@ import sortBy from 'lodash/sortBy';
 import groupBy from 'lodash/groupBy';
 import Lunch from 'components/Lunch/Lunch';
 import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
-import classNames from 'classnames';
 import times from 'lodash/times';
 
-const Lunches = ({lunches, columns}) => {
+const Lunches = ({lunches}) => {
   const styles = require('./Lunches.scss');
   const preparedLunches = groupBy(sortBy(lunches.resources, 'ready_by'), 'ready_by');
-  const classes = classNames(styles.lunches, {
-    [styles.columns3]: columns === 3
-  });
 
   return (
-    <div className={classes}>
+    <div className={styles.lunches}>
       {preparedLunches && Object.keys(preparedLunches).map((datetime, index) => {
         return (
           <div className={styles.lunchesGroup} key={index}>
@@ -39,8 +35,7 @@ const Lunches = ({lunches, columns}) => {
 };
 
 Lunches.propTypes = {
-  lunches: PropTypes.object,
-  columns: PropTypes.number
+  lunches: PropTypes.object
 };
 
 export default Lunches;

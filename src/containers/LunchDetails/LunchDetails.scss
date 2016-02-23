@@ -1,195 +1,74 @@
-.avatarContainer {
-  width: 70%;
-  margin: 1rem auto;
-  padding-top: 70%;
-  position: relative;
+$unit: 1px;
+$column-width: 310;
+$page-paddings: 14;
+$big-screen: ($column-width * 4 + $page-paddings * 2) * $unit;
+$medium-screen: ($column-width * 3 + $page-paddings * 2) * $unit;
+$small-screen: ($column-width * 2 + $page-paddings * 2) * $unit;
 
-  img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    border-radius: 500px;
-    border: 0.4rem solid #c29872;
+.root {
+  margin: 0 auto;
+
+  :global {
+    .overlay-enter {
+      opacity: 0;
+    }
+    .overlay-enter-active {
+      opacity: 0.6;
+    }
+    .overlay-leave {
+      opacity: 0.6;
+    }
+    .overlay-leave-active {
+      opacity: 0;
+    }
   }
 }
 
-.leftSidebarCard {
-  text-align: center;
-
-  .cookName {
-    font-weight: 500;
-    font-size: 2.4rem;
-    color: #685c50;
-    margin: 1rem 0 0.4rem 0;
-  }
-}
-
-.ratingContainer {
-  :global(.rsr-root), :global(.rsr-container) {
-    display: inline-block;
-    vertical-align: middle;
-  }
-
-  .feedback {
-    vertical-align: middle;
-    margin-left: 1rem;
-    color: $color-accent;
-    text-decoration: underline;
-    font-size: 1.4rem;
-  }
-}
-
-.sanitaryBookContainer {
-  margin: 2rem 0;
-}
-
-.sanitaryBook {
-  padding: 1.2rem 3rem;
-  border-radius: 500px;
-  display: inline-block;
-  border: 1px solid $color-accent;
-  font-size: 1.6rem;
-  color: $color-accent;
-
-  a {
-    color: $color-accent;
-    text-decoration: underline;
-  }
-}
-
-.otherCookPhotosContainer, .socialContainer {
-  text-align: left;
-}
-
-.otherCookPhotosContainer {
-  img {
-    border-radius: 4px;
-    margin-right: 1rem;
-    width: 100%;
-  }
-}
-
-.otherCookPhotoContainer {
-  width: 25%;
-  display: inline-block;
-  padding: 0.4rem;
-  margin-bottom: 2rem;
-}
-
-.otherCookPhotos {
-  margin: 0 -0.4rem;
-}
-
-.socialButton {
-  margin: 0 0.5rem;
-}
-
-.socialButtons {
-  margin: 0 -0.5rem;
-}
-
-.mainPhoto, .otherPhotos {
-  width: 50%;
-  display: inline-block;
-  padding: 0 1rem;
-  vertical-align: top;
-
-  img {
-    width: 100%;
-    border-radius: 5px;
-  }
-}
-
-.otherPhotosContent {
-  margin: -1rem;
-}
-
-.photoContainer {
-  width: 50%;
-  display: inline-block;
-  padding: 1rem;
-  vertical-align: top;
+.overlay {
+  opacity: 0.6;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  z-index: 1;
+  position: fixed;
+  transition: opacity 300ms ease;
 }
 
 .photos {
-  margin: 0 -1rem 2rem;
+  margin: 0 0 2rem;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0.5rem 0 1.5rem 0;
+  margin: 0.5rem 0;
+  flex-wrap: wrap;
+}
+
+.previewsContainer {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.cookPreview {
+  flex: 1 1 0;
 }
 
 .deliveryPeriod {
   color: #4a4a4a;
 }
 
-.dishesContainer, .priceContainer {
-  width: 50%;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.dishesContainer {
-  padding-right: 1rem;
-}
-
-.priceContainer {
-  padding-left: 1rem;
-}
-
-.dish {
-  list-style-type: none;
-  display: flex;
-  align-items: baseline;
-  padding: 0.5rem 0;
-  font-size: 1.6rem;
-  color: #685c50;
-}
-
-.dishDots {
-  flex: 1;
-  border-bottom: 1px dotted currentColor;
-  margin: 0 0.5rem;
-}
-
-.dishSize {
-  color: $color-accent;
-  font-weight: 500;
-}
-
-.priceAmount {
-  font-weight: 300;
-  font-size: 7rem;
-}
-
-.priceCurrency {
-  color: #979797;
-  font-size: 1.6rem;
-}
-
-.priceContainer {
-  display: inline-flex;
-  vertical-align: middle;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.center, .leftSidebar {
-  display: flex;
-  flex-direction: column;
-}
-
-.dishAndPriceCard {
-  flex: 1;
+.buyContent {
+  padding: 0 1rem;
 }
 
 .otherLunches {
-  margin: 2rem;
+  margin: 2.4rem;
 }
 
 .moreContainer {
@@ -200,5 +79,110 @@
     padding: 0 3rem;
     height: 4.5rem;
     color: #554a40;
+  }
+}
+
+.middlePart {
+  margin: 0 2.4rem;
+  position: relative;
+}
+
+.middlePartContent {
+  margin: 0 -1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.leftSidebar {
+  max-width: $column-width * $unit;
+  width: $column-width * $unit;
+  padding: 0 1rem;
+}
+
+.lunchContainer {
+  width: $column-width * 3 * $unit;
+  max-width: $column-width * 3 * $unit;
+  padding: 0 1rem;
+}
+
+.lunch {
+  margin: 0 -1rem;
+  display: flex;
+}
+
+.lunchContent {
+  flex: 2 2 0;
+}
+
+.buyContainer {
+  flex: 1 1 0;
+  width: $column-width * $unit;
+  max-width: $column-width * $unit;
+}
+
+.lunchContentInner {
+  padding: 0 1rem;
+}
+
+@mixin collapsingContainer($opened, $inner) {
+  position: absolute;
+  visibility: hidden;
+  transition: visibility 0ms ease;
+  transition-delay: 410ms;
+
+  .#{$inner} {
+    z-index: 2;
+    position: relative;
+    transform: rotateY(90deg);
+    transition: transform 200ms ease;
+    transition-delay: 200ms;
+  }
+
+  &.#{$opened} {
+    visibility: visible;
+    transition-delay: 0ms;
+
+    .#{$inner} {
+      transform: rotateY(0deg);
+    }
+  }
+}
+
+@media (max-width: $big-screen - 1 ) {
+  .leftSidebar {
+    @include collapsingContainer(leftSidebarOpened, cookContainer);
+  }
+}
+
+@media (max-width: $medium-screen - 1 ) {
+  .buyContainer {
+    @include collapsingContainer(buyContainerOpened, buyContent);
+    margin-left: -$column-width * $unit;
+  }
+}
+
+@media (min-width: $small-screen) {
+  .root {
+    max-width: $small-screen;
+  }
+}
+
+@media (min-width: $medium-screen) {
+  .root {
+    max-width: $medium-screen;
+  }
+
+  .purchasePreview {
+    display: none;
+  }
+}
+
+@media (min-width: $big-screen ) {
+  .root {
+    max-width: $big-screen;
+  }
+
+  .cookPreview {
+    display: none;
   }
 }

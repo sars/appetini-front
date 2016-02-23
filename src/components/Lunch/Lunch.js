@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import Card from 'components/Card/Card';
-import Avatar from 'react-toolbox/lib/avatar';
 import StarRating from 'react-star-rating';
 import classNames from 'classnames';
 import { Link } from 'react-router';
@@ -23,12 +22,14 @@ const Lunch = ({className, lunch}) => {
         </div>
 
         <div className={styles.bottom}>
-          <Avatar image={cook.main_photo.thumb.url} />
+          <div className={styles.avatar}>
+            <img src={cook.main_photo.thumb.url}/>
+          </div>
           <div>
             <div className={styles.cookName}>{cook.first_name + ' ' + cook.last_name}</div>
             <div className={styles.rating}>
               <StarRating className={styles.starRating} name="cook-rating" totalStars={5}
-                          editing={false} rating={cook.rating} size={13} />
+                          editing={false} rating={cook.rating} size={12} />
               <span className={styles.feedback}>
                 {cook.reviews_count}
                 &nbsp;

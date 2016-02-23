@@ -1,11 +1,10 @@
 import valueFromLocationQuery from 'helpers/valueFromLocationQuery';
-import moment from 'moment';
 
 export const filterNames = ['preferences', 'dishes', 'dates', 'time'];
 
 export const deliveryTimeOptions = [
-  { value: '12:30', label: '12:30 - 13:00' },
-  { value: '13:30', label: '13:30 - 14:00' }
+  { value: '10:30:00', label: '12:30 - 13:00' }, // value in UTC
+  { value: '11:30:00', label: '13:30 - 14:00' }  // value in UTC
 ];
 
 export function request({helpers, store}) {
@@ -13,12 +12,10 @@ export function request({helpers, store}) {
   {...result, [name]: valueFromLocationQuery(store.getState().routing, name)}
   ), {});
 
-  const time = (filters.time || deliveryTimeOptions[0].value).split(':');
-  const dates = (filters.dates || []).map(date => moment(date).set({hours: time[0], minutes: time[1]}).format());
-
   return helpers.client.get('/lunches', {params: {
     'food_preferences_ids[]': filters.preferences,
     'dishes[]': filters.dishes,
-    'ready_by[]': dates
+    'ready_dy_date[]': filters.dates,
+    'ready_by_time': filters.time || deliveryTimeOptions[0].value
   }});
 }

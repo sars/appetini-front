@@ -1,0 +1,105 @@
+.root {
+  text-align: center;
+}
+
+.price {
+  color: $color-primary;
+  margin: 2rem 0;
+}
+
+.priceAmount {
+  font-weight: 500;
+  font-size: 7.2rem;
+}
+
+.priceCurrency {
+  font-size: 2.4rem;
+}
+
+.separator {
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0;
+  vertical-align: bottom;
+  margin-bottom: -3px;
+
+  > i {
+    width: 5px;
+    height: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 1px;
+    background-color: #fdfaf7;
+    box-shadow: inset 2px 2px 2px rgba(166, 149, 135, 0.35);
+
+    &:first-child {
+      margin-left: -1px;
+    }
+  }
+}
+
+.subscribeContainer {
+  background-color: #fffad9;
+
+  .buttonHint {
+    color: #745b2f;
+  }
+}
+
+.root .button {
+  width: 100%;
+  font-size: 1.8rem;
+  font-weight: 500;
+  height: 5.4rem;
+}
+
+.root .button.subscribeButton:not([disabled]) {
+  background-color: #f8a900;
+
+  &:hover {
+    background-color: scale-color(#f8a900, $lightness: 10%);
+  }
+}
+
+.buttonMinorLabel {
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+}
+
+.cardContent {
+  padding: 2.4rem;
+}
+
+.buttonHint {
+  font-size: 1.7rem;
+  color: #4a4a4a;
+  margin-bottom: 0.7rem;
+}
+
+.root .amountButton {
+  min-width: 4.4rem;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  text-align: center;
+
+  > span:first-child {
+    margin: 0;
+  }
+}
+
+.amountContainer {
+  margin-top: 1rem;
+}
+
+.amountText {
+  margin: 0 1rem;
+  color: #4a4a4a;
+  vertical-align: middle;
+  font-size: 2.4rem;
+}
+
+.amountLabel {
+  font-size: 1.7rem;
+}
