@@ -51,12 +51,11 @@ export default class App extends Component {
         <ProgressBar mode="indeterminate"
           className={classNames(styles.progress, {[styles.progressActive]: !this.props.loaded})} />
 
-        <Header />
-
         <div className={styles.appContent}>
           {this.props.children}
         </div>
 
+        <Header />
         <Footer />
 
         <Modal />

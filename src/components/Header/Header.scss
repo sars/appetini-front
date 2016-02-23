@@ -1,5 +1,6 @@
 .root:not(.flat) {
   box-shadow: 0 2px 4px rgba(221, 213, 205, 0.85);
+  z-index: initial;
 }
 
 .brand {
