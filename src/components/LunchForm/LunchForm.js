@@ -186,14 +186,14 @@ export default class LunchForm extends Component {
                     <td className={styles.dishSizeCol}><Input {...dishField.size}/></td>
                     <td className={styles.dishTypeCol}><Dropdown source={dishTypes} {...dishField.dish_type}/></td>
                     <td>
-                      {fields.dishes.length > 0 && <Button icon="remove" floating accent mini onClick={::this.removeDish(index)}/>}
+                      {fields.dishes.length > 0 && <Button type="button" icon="remove" floating accent mini onClick={::this.removeDish(index)}/>}
                     </td>
                   </tr>
               )}
             </ReactCSSTransitionGroup>
           </table>
 
-          <Button flat outlined label="Добавить" onClick={::this.addDish}/>
+          <Button type="button" flat outlined label="Добавить" onClick={::this.addDish}/>
           {this.errorsFor('dishes_count')}
         </div>
         <div className={styles.section}>
