@@ -1,11 +1,5 @@
 @import "../../theme/variables.scss";
 
-.root {
-  padding: 0 2.4rem;
-  display: flex;
-  flex-direction: column;
-}
-
 .lunches {
   margin-top: -1rem;
 }
@@ -20,18 +14,14 @@
 }
 
 .filters {
-  margin-bottom: 2rem;
+  margin: 1.5rem 0 2rem 0;
 }
 
-@media (min-width: 800px) {
-  .root {
-    flex-direction: row;
-  }
+.dishesFilter {
+  min-width: 15rem;
+  margin-bottom: 1rem;
 
-  .filters {
-    margin-right: 2.4rem;
-    margin-bottom: 0;
-    min-width: 33rem;
-    max-width: 33rem;
+  [data-react-toolbox="input"] {
+    max-width: 40rem;
   }
 }

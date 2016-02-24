@@ -11,6 +11,7 @@ import toast from './toast';
 import common from './common';
 import purchase from './purchase';
 import {reducer as reduxAsyncConnect} from 'redux-async-connect';
+import moment from 'moment';
 
 export default combineReducers({
   routing: routeReducer,
@@ -19,10 +20,7 @@ export default combineReducers({
     lunchForm: {
       cook_id: value => value && value.toString(),
       ready_by_date: value => value && new Date(value),
-      ready_by_time: value => {
-        const date = value && new Date(value);
-        return date && new Date(2000, 0, 1, date.getHours(), date.getMinutes()).toString();
-      },
+      ready_by_time: value => value && moment(value, ['HH:mmZ', moment.ISO_8601]).utc().format('HH:mm\\Z'),
       food_preference_ids: value => value && value.map(item => item.toString()),
       removing_photos: value => value || []
     }

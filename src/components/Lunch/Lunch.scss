@@ -5,6 +5,8 @@
 }
 
 .rating {
+  white-space: nowrap;
+
   :global .rsr-container {
     display: inline-block;
     vertical-align: middle;

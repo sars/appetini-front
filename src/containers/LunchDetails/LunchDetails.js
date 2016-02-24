@@ -5,6 +5,7 @@ import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
 import times from 'lodash/times';
 import Button from 'components/Button/Button';
 import Lunches from 'components/Lunches/Lunches';
+import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import Dishes from './Dishes/Dishes';
 import Cook from './Cook/Cook';
 import CookPreview from './Cook/Preview/Preview';
@@ -43,7 +44,7 @@ export default class LunchDetails extends Component {
     });
 
     return (
-      <div className={styles.root}>
+      <ColumnLayout className={styles.root}>
         <div className={styles.middlePart}>
           <div className={styles.middlePartContent}>
             <div className={leftSidebarClasses}>
@@ -93,7 +94,7 @@ export default class LunchDetails extends Component {
             <Button flat outlined className={styles.moreButton} label="Показать еще" />
           </div>
         </div>
-      </div>
+      </ColumnLayout>
     );
   }
 }

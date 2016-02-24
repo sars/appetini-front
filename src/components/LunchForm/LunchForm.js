@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Dropdown from 'components/Dropdown/Dropdown';
 import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
+import DeliveryTimeDropdown from 'components/DeliveryTimeDropdown/DeliveryTimeDropdown';
 import DatePicker from 'components/DatePicker/DatePicker';
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
@@ -18,12 +19,6 @@ const dishTypes = [
   { label: 'Суп', value: 'soup' },
   { label: 'Основное', value: 'main' },
   { label: 'Гарнир', value: 'side' }
-];
-
-const deliveryTimeOptions = [
-  { label: 'Выберите время' },
-  { value: new Date(2000, 0, 1, 12, 30).toString(), label: '12:30 - 13:00' },
-  { value: new Date(2000, 0, 1, 13, 30).toString(), label: '13:30 - 14:00' }
 ];
 
 @reduxForm(
@@ -147,7 +142,7 @@ export default class LunchForm extends Component {
           </div>
           <div>
             <h3>Время</h3>
-            <Dropdown auto source={deliveryTimeOptions} size="15" {...fields.ready_by_time}/>
+            <DeliveryTimeDropdown {...fields.ready_by_time}/>
           </div>
         </div>
         <div className={classNames(styles.section, styles.twoColSection)}>

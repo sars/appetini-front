@@ -2,15 +2,16 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import Lunches from 'components/Lunches/Lunches';
 import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
-import Dropdown from 'components/Dropdown/Dropdown';
 import Autocomplete from 'components/AsyncAutocomplete/AsyncAutocomplete';
+import DeliveryTimeDropdown from 'components/DeliveryTimeDropdown/DeliveryTimeDropdown';
+import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import Card, { CardContent } from 'components/Card/Card';
 import { asyncConnect } from 'redux-async-connect';
 import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import { loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
-import { request as requestLunches, filterNames, deliveryTimeOptions } from 'helpers/lunchesFilters';
+import { request as requestLunches, filterNames } from 'helpers/lunchesFilters';
 import valueFromLocationQuery from 'helpers/valueFromLocationQuery';
 
 function currentStateName(name) {
@@ -98,7 +99,7 @@ export default class Home extends Component {
 
     const newLocation = {...location, query: {...location.query, [name]: JSON.stringify(value)}};
     delete newLocation.search;
-    if (value.length === 0) {
+    if (Array.isArray(value) && value.length === 0) {
       delete newLocation.query[name];
     }
     return newLocation;
@@ -121,11 +122,17 @@ export default class Home extends Component {
     const {currentPreferences = [], currentDishes = [], currentTime} = this.state;
 
     return (
-      <div className={styles.root}>
+      <ColumnLayout className={styles.root}>
+        <Helmet title="Home"/>
+        <div className={styles.firstLine}>
+          <h1>Обеды на каждый день</h1>
+          <DeliveryTimeDropdown className={styles.timeDropdown} onChange={this.filterChanged('time')} value={currentTime}/>
+        </div>
+
         <div className={styles.filters}>
           <Card className={styles.card}>
-            <CardContent className={styles.cardContent}>
-              <div className={styles.dishesWrapper}>
+            <CardContent className={styles.filterContent}>
+              <div className={styles.dishesFilter}>
                 <h3>Состав обеда</h3>
                 <Autocomplete className={autocompleteStyles.autocomplete} name="dishes" direction="down"
                               onUpdateSuggestions={this.requestDishes}
@@ -140,16 +147,9 @@ export default class Home extends Component {
             </CardContent>
           </Card>
         </div>
-        <div>
-          <Helmet title="Home"/>
-          <div className={styles.firstLine}>
-            <h1>Обеды на каждый день</h1>
-            <Dropdown className={styles.timeDropdown} auto onChange={this.filterChanged('time')}
-                      source={deliveryTimeOptions} value={currentTime} size="15" />
-          </div>
-          {lunches && <Lunches className={styles.lunches} lunches={lunches} />}
-        </div>
-      </div>
+
+        {lunches && <Lunches className={styles.lunches} lunches={lunches} />}
+      </ColumnLayout>
     );
   }
 }
