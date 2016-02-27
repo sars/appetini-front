@@ -1,3 +1,68 @@
 .rememberMe {
-  margin-left: 1.6rem;
+  margin: 0;
+}
+
+.socialButtons {
+  text-align: center;
+}
+
+.socialButton {
+  margin: 0 0.5rem;
+}
+
+.separator {
+  margin: 2rem auto;
+  width: 70%;
+  text-align: center;
+  color: #afa49d;
+
+  &:before, &:after {
+    content: '';
+    display: inline-block;
+    width: 20%;
+    border-bottom: 1px solid;
+    vertical-align: middle;
+  }
+}
+
+.separatorLabel {
+  margin: 0 1rem;
+  font-size: 1.4rem;
+}
+
+.buttons, .recoveryContainer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.6rem;
+
+  [data-role="label"] {
+    font-size: 1.6rem;
+  }
+}
+
+.recoveryContainer {
+  margin: 1rem 0 2rem;
+}
+
+.root .input {
+  margin: 1rem 0;
+  input {
+    font-size: 2rem;
+    line-height: 3.4rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.root .button {
+  height: 5.2rem;
+  font-size: 1.8rem;
+  font-weight: 400;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.forgotLink {
+  color: $color-accent;
+  text-decoration: underline;
 }

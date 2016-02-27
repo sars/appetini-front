@@ -12,3 +12,4 @@ export About from './About/About';
 export LoginSuccess from './LoginSuccess/LoginSuccess';
 export NotFound from './NotFound/NotFound';
 export LunchDetails from './LunchDetails/LunchDetails';
+export Tariffs from './Tariffs/Tariffs';

@@ -45,7 +45,7 @@ export default class AuthorizedApp extends Component {
     return (
       showChildren ? this.props.children :
         <div className={styles.unauthorized}>
-          <h1>Access denied</h1>
+          <h1>Доступ запрещен</h1>
           <LoginForm />
         </div>
     );

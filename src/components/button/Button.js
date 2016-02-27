@@ -7,7 +7,8 @@ export default class extends Component {
     className: PropTypes.string,
     flat: PropTypes.bool,
     accent: PropTypes.bool,
-    outlined: PropTypes.bool
+    outlined: PropTypes.bool,
+    big: PropTypes.bool
   };
 
   render() {
@@ -15,7 +16,8 @@ export default class extends Component {
     const classNames = cx(this.props.className, {
       [styles.flat]: this.props.flat,
       [styles.accent]: this.props.accent,
-      [styles.outlined]: this.props.outlined
+      [styles.outlined]: this.props.outlined,
+      [styles.big]: this.props.big
     });
     return <Button {...this.props} className={classNames}/>;
   }

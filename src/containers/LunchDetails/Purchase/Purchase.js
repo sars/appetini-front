@@ -16,6 +16,10 @@ export default class Purchase extends Component {
     amount: PropTypes.number.isRequired
   };
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
   render() {
     const { lunch, amount } = this.props;
 
@@ -43,7 +47,7 @@ export default class Purchase extends Component {
 
           <div>
             <div className={styles.buttonHint}>+ доставка 30грн</div>
-            <Button className={classNames(styles.button, styles.buyButton)} flat accent label="Купить сейчас"/>
+            <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Купить сейчас"/>
           </div>
 
         </CardContent>
@@ -54,7 +58,8 @@ export default class Purchase extends Component {
 
         <CardContent className={classNames(styles.subscribeContainer, styles.cardContent)}>
           <div className={styles.buttonHint}>+ доставка 10грн</div>
-          <Button flat accent className={classNames(styles.button, styles.subscribeButton)}>
+          <Button big flat accent className={classNames(styles.button, styles.subscribeButton)}
+                  onClick={() => this.context.router.push('/tariffs')}>
             <div>Подписаться</div>
             <div className={styles.buttonMinorLabel}>и купить</div>
           </Button>

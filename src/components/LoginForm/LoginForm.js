@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import {reduxForm} from 'redux-form';
-import Button from 'react-toolbox/lib/button';
-import Input from 'react-toolbox/lib/input';
+import Button from 'components/Button/Button';
+import Input from 'components/Input/Input';
 import { login, oauth } from 'redux/modules/auth';
 import { show as showToast } from 'redux/modules/toast';
 import { connect } from 'react-redux';
 import Checkbox from 'react-toolbox/lib/checkbox';
+import { Link } from 'react-router';
+import SocialButton from 'components/SocialButton/SocialButton';
 
 @connect(null, { login, oauth, showToast })
 @reduxForm({
@@ -59,14 +61,33 @@ export default class LoginForm extends Component {
     const styles = require('./LoginForm.scss');
 
     return (
-      <section>
-        <Input type="email" label="Email address" icon="email" id={email.name} {...email} />
-        <Input type="password" label="Password" icon="lock" id={password.name} {...password} />
-        <Checkbox className={styles.rememberMe} label="Remember me" {...rememberMe} />
-        <Button label="FB" onClick={this.oauth('facebook')} />
-        <Button label="VK" onClick={this.oauth('vkontakte')} />
-        <Button label="Login" onClick={this.submit} />
-      </section>
+      <div className={styles.root}>
+        <Input className={styles.input} type="email" {...email}/>
+        <Input className={styles.input} type="password" {...password}/>
+
+        <div className={styles.recoveryContainer}>
+          <Checkbox className={styles.rememberMe} label="Запомнить меня" {...rememberMe} />
+          <Link className={styles.forgotLink} to="/recovery">
+            Забыли пароль?
+          </Link>
+        </div>
+
+        <div className={styles.buttons}>
+          <Button className={styles.button} accent flat label="Войти" onClick={this.submit}/>
+          <Button className={styles.button} outlined flat label="Зарегистрироваться"/>
+        </div>
+
+        <div className={styles.separator}>
+          <span className={styles.separatorLabel}>
+            или войти через соцсети
+          </span>
+        </div>
+
+        <div className={styles.socialButtons}>
+          <SocialButton className={styles.socialButton} name="vk" size="medium"/>
+          <SocialButton className={styles.socialButton} name="fb" size="medium"/>
+        </div>
+      </div>
 
     );
   }
