@@ -6,6 +6,10 @@ $shadow-hover: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 
 
 .root {
   padding: $header-height 0 0;
+
+  .card {
+    font-size: 1rem; // to override
+  }
 }
 
 .card {
@@ -55,7 +59,7 @@ $shadow-hover: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 
 }
 
 .amount {
-  font-size: 2.4rem;
+  font-size: 2.4em;
   color: $main-text-color;
   text-align: center;
   font-weight: 300;
@@ -63,10 +67,12 @@ $shadow-hover: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 
 }
 
 .price {
-  font-size: 7.2rem;
+  font-size: 7.2em;
   line-height: 7.5rem;
   color: $main-text-color;
   text-align: center;
+  margin: 0 0.05em;
+  overflow: hidden;
 
   > span {
     position: relative;
@@ -74,7 +80,7 @@ $shadow-hover: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 
       content: '';
       background-color: #e1ded6;
       height: 1px;
-      width: 5rem;
+      width: 0.7em;
       position: absolute;
       top: 50%;
       margin: 0 1.5rem;
@@ -91,7 +97,7 @@ $shadow-hover: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 
 .currency {
   text-align: center;
   color: rgba(104, 92, 80, 0.7);
-  font-size: 1.8rem;
+  font-size: 1.8em;
 }
 
 .currencyDelivery {
@@ -107,24 +113,24 @@ $shadow-hover: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 
   background-color: #fdfbf9;
   border-top: 1px solid #e1d3c3;
   border-bottom: 1px solid #e1d3c3;
-  padding: 3rem 0 3.5rem;
+  padding: 3em 0 3.5em;
 }
 
 .totalContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  padding: 2.4rem 3rem;
+  padding: 2.4em 1em;
 }
 
 .totalPriceAmount {
-  font-size: 3.6rem;
+  font-size: 3.6em;
   color: #8c7967;
   font-weight: 500;
 }
 
 .totalPriceCurrency {
-  font-size: 1.4rem;
+  font-size: 1.4em;
   color: rgba(104, 92, 80, 0.7);
 }
 
@@ -155,5 +161,38 @@ $shadow-hover: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 
   .priceContainer {
     background-color: #fffef7;
     border-color: #ffdd83;
+  }
+}
+
+$one-column-min-width: 580px;
+
+.root {
+  width: 33%;
+  margin: 2rem auto 0;
+}
+
+@media (min-width: $one-column-min-width) and (max-width: 770px) {
+  .root .totalContainer .button {
+    font-size: 1.5rem;
+    font-weight: 400;
+    height: 4rem;
+    min-width: 9rem;
+  }
+
+  .root .card {
+    font-size: 0.85rem;
+  }
+}
+
+@media (min-width: $one-column-min-width) and (max-width: 650px) {
+  .root .card {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: $one-column-min-width + 1) {
+  .root {
+    width: 100%;
+    max-width: 350px;
   }
 }

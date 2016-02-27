@@ -2,14 +2,29 @@ import React, { Component, PropTypes } from 'react';
 import { asyncConnect } from 'redux-async-connect';
 import styles from './styles.scss';
 import Tariff from './Tariff/Tariff';
+import { addOrderItem } from 'redux/modules/purchase';
+import { connect } from 'react-redux';
 
 @asyncConnect([
   {key: 'tariffs', promise: ({helpers}) => helpers.client.get('/delivery_tariffs').then(tariffs => tariffs.resources)}
 ])
+@connect(null, { addOrderItem })
 export default class Tariffs extends Component {
   static propTypes = {
-    tariffs: PropTypes.array.isRequired
+    tariffs: PropTypes.array.isRequired,
+    addOrderItem: PropTypes.func.isRequired
   };
+
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
+  purchase(tariff) {
+    return () => {
+      this.props.addOrderItem('DeliveryTariff', tariff);
+      this.context.router.push('/checkout');
+    };
+  }
 
   render() {
     const {tariffs} = this.props;
@@ -23,7 +38,7 @@ export default class Tariffs extends Component {
         </div>
         <div className={styles.tariffs}>
           {tariffs.map((tariff, index) =>
-            <Tariff tariff={tariff} key={index} className={styles.tariff}/>
+            <Tariff tariff={tariff} key={index} onBuyClick={::this.purchase(tariff)}/>
           )}
         </div>
         <div>* Оплата производится с помощью LiqPay, вы будете перенаправлены...</div>

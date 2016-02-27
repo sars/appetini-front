@@ -4,7 +4,7 @@ import Button from 'components/Button/Button';
 import classNames from 'classnames';
 import styles from './styles.scss';
 
-const Tariff = ({tariff, className, ...rest}) => {
+const Tariff = ({tariff, className, onBuyClick, ...rest}) => {
   const classes = classNames(styles.root, className, {
     [styles.featured]: tariff.featured
   });
@@ -33,7 +33,7 @@ const Tariff = ({tariff, className, ...rest}) => {
               <span className={styles.totalPriceAmount}>{Number(tariff.price)}</span>
               <span className={styles.totalPriceCurrency}>грн</span>
             </div>
-            <Button big accent flat label="Купить"/>
+            <Button className={styles.button} big accent flat label="Купить" onClick={onBuyClick}/>
           </div>
         </div>
       </Card>
@@ -43,6 +43,7 @@ const Tariff = ({tariff, className, ...rest}) => {
 
 Tariff.propTypes = {
   tariff: PropTypes.object.isRequired,
+  onBuyClick: PropTypes.func,
   className: PropTypes.string
 };
 
