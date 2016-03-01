@@ -18,7 +18,7 @@ export default class ResourcesIndex extends Component {
   static propTypes = {
     resources: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
-    createTitle: PropTypes.string.isRequired,
+    createTitle: PropTypes.string,
     urlName: PropTypes.string.isRequired,
     fields: PropTypes.array.isRequired
   };
@@ -38,7 +38,7 @@ export default class ResourcesIndex extends Component {
       <div className={styles.root}>
         <div className={styles.firstLine}>
           <h1>{title}</h1>
-          <Button flat accent label={createTitle} onClick={::this.goToCreate}/>
+          {createTitle && <Button flat accent label={createTitle} onClick={::this.goToCreate}/>}
         </div>
         <table className={styles.mainTable}>
           <tbody>

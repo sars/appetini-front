@@ -6,7 +6,7 @@ import ResourcesIndex from 'components/ResourcesIndex/ResourcesIndex';
 @asyncConnect([
   {key: 'cooks', promise: ({ helpers }) => helpers.client.get('/cooks')}
 ])
-export default class Lunches extends Component {
+export default class Cooks extends Component {
   static propTypes = {
     cooks: PropTypes.object.isRequired
   };

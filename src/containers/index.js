@@ -4,6 +4,7 @@ export AdminLunches from './Admin/Lunches/Lunches';
 export AdminLunchesNew from './Admin/Lunches/New/New';
 export AdminLunchesEdit from './Admin/Lunches/Edit/Edit';
 export AdminCooks from './Admin/Cooks/Cooks';
+export AdminOrders from './Admin/Orders/Orders';
 export AdminCooksNew from './Admin/Cooks/New/New';
 export AdminCooksEdit from './Admin/Cooks/Edit/Edit';
 export AuthorizedApp from './AuthorizedApp/AuthorizedApp';
