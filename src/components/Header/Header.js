@@ -16,7 +16,7 @@ import { MenuItem, MenuDivider } from 'react-toolbox';
 const menuLinks = [
   {to: '/', label: 'Меню', index: true},
   {to: '/about', label: 'О Нас'},
-  {to: '/loginSuccess', label: 'Тарифные планы'}
+  {to: '/tariffs', label: 'Тарифные планы'}
 ];
 
 @connect(state => ({user: state.auth.user}), {logout, showToast, openModal})
@@ -69,7 +69,7 @@ export default class Header extends Component {
           {user &&
             <div className={styles.userMenu}>
               <a className={styles.logout} href="#" onClick={::this.openMenu}>
-                {user.email}
+                {user.name}
               </a>
               <Menu position="top-left" menuRipple ref="userMenu" className={styles.menuComponent}>
                 {user.role === 'admin' && <MenuItem caption="Админка" onClick={() => push('/admin')}/>}

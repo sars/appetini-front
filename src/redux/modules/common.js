@@ -10,6 +10,9 @@ const CREATE_COOK_FAIL = 'common/CREATE_LUNCH_FAIL';
 const CREATE_LUNCH = 'common/CREATE_LUNCH';
 const CREATE_LUNCH_SUCCESS = 'common/CREATE_LUNCH_SUCCESS';
 const CREATE_LUNCH_FAIL = 'common/CREATE_LUNCH_FAIL';
+const CREATE_ORDER = 'common/CREATE_ORDER';
+const CREATE_ORDER_SUCCESS = 'common/CREATE_ORDER_SUCCESS';
+const CREATE_ORDER_FAIL = 'common/CREATE_ORDER_FAIL';
 
 const initialState = {
   loadState: {}
@@ -129,5 +132,12 @@ export function updateLunch(lunch) {
   return {
     types: [CREATE_LUNCH, CREATE_LUNCH_SUCCESS, CREATE_LUNCH_FAIL],
     promise: client => client.put(`/lunches/${lunch.id}`, { data: { resource: lunch}})
+  };
+}
+
+export function createOrder(order) {
+  return {
+    types: [CREATE_ORDER, CREATE_ORDER_SUCCESS, CREATE_ORDER_FAIL],
+    promise: client => client.post('/orders', { data: { resource: order}})
   };
 }

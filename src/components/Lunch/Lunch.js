@@ -3,11 +3,11 @@ import Card from 'components/Card/Card';
 import StarRating from 'react-star-rating';
 import classNames from 'classnames';
 import { Link } from 'react-router';
-import {FormattedPlural} from 'react-intl';
+import { FormattedPlural } from 'react-intl';
+import styles from './styles.scss';
 
 const Lunch = ({className, lunch}) => {
-  const {cook} = lunch;
-  const styles = require('./Lunch.scss');
+  const { cook } = lunch;
 
   return (
     <Link to={`/lunches/${lunch.id}`} className={classNames(styles.lunch, className)}>
@@ -33,7 +33,7 @@ const Lunch = ({className, lunch}) => {
               <span className={styles.feedback}>
                 {cook.reviews_count}
                 &nbsp;
-                <FormattedPlural value={cook.reviews_count} one="отзыв" few="отзыва" many="отзывов" other="отзывов" />
+                <FormattedPlural value={cook.reviews_count} one="отзыв" few="отзыва" many="отзывов" other="отзывов"/>
               </span>
             </div>
           </div>

@@ -3,32 +3,46 @@ import Card, { CardContent } from 'components/Card/Card';
 import Button from 'components/Button/Button';
 import times from 'lodash/times';
 import classNames from 'classnames';
-import { incrementAmount } from 'redux/modules/purchase';
+import { addOrderItem } from 'redux/modules/purchase';
 import { connect } from 'react-redux';
 import { FormattedPlural } from 'react-intl';
 import styles from './styles.scss';
 
-@connect(state => ({ amount: state.purchase.amount }), { incrementAmount })
+@connect(null, { addOrderItem })
 export default class Purchase extends Component {
   static propTypes = {
     lunch: PropTypes.object.isRequired,
-    incrementAmount: PropTypes.func.isRequired,
-    amount: PropTypes.number.isRequired
+    addOrderItem: PropTypes.func.isRequired
   };
 
   static contextTypes = {
     router: PropTypes.object.isRequired
   };
 
+  state = {
+    amount: 1
+  };
+
+  purchase() {
+    this.props.addOrderItem('Lunch', this.props.lunch, this.state.amount);
+    this.context.router.push('/tariffs');
+  }
+
+  incrementAmount(step) {
+    const newAmount = this.state.amount + step;
+    this.setState({amount: newAmount < 1 ? 1 : newAmount});
+  }
+
   render() {
-    const { lunch, amount } = this.props;
+    const { lunch } = this.props;
+    const { amount } = this.state;
 
     return (
       <Card className={styles.root}>
         <CardContent className={styles.cardContent}>
           <div className={styles.amountContainer}>
             <Button className={styles.amountButton} type="button" icon="remove" outlined mini flat
-                    onClick={() => this.props.incrementAmount(-1)}/>
+                    onClick={() => this.incrementAmount(-1)}/>
             <span className={styles.amountText}>
               <span className={styles.amount}>{amount}</span>
               &nbsp;
@@ -37,7 +51,7 @@ export default class Purchase extends Component {
               </span>
             </span>
             <Button className={styles.amountButton} type="button" icon="add" outlined mini flat
-                    onClick={() => this.props.incrementAmount(1)}/>
+                    onClick={() => this.incrementAmount(1)}/>
           </div>
 
           <div className={styles.price}>
@@ -59,7 +73,7 @@ export default class Purchase extends Component {
         <CardContent className={classNames(styles.subscribeContainer, styles.cardContent)}>
           <div className={styles.buttonHint}>+ доставка 10грн</div>
           <Button big flat accent className={classNames(styles.button, styles.subscribeButton)}
-                  onClick={() => this.context.router.push('/tariffs')}>
+                  onClick={::this.purchase}>
             <div>Подписаться</div>
             <div className={styles.buttonMinorLabel}>и купить</div>
           </Button>

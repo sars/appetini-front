@@ -15,7 +15,8 @@ import {
     AdminCooks,
     AdminCooksNew,
     AdminCooksEdit,
-    Tariffs
+    Tariffs,
+    Checkout
   } from 'containers';
 import { setUser } from 'redux/modules/auth';
 
@@ -64,6 +65,7 @@ export default (store, client) => {
       <Route path="lunches/:lunchId" component={LunchDetails}/>
 
       <Route path="tariffs" component={Tariffs}/>
+      <Route path="checkout" component={Checkout}/>
 
       <Route path="admin" onEnter={requireLogin} component={AuthorizedApp} authCondition={user => user && user.role === 'admin'}>
         <IndexRoute component={AdminDashboard}/>
