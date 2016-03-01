@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
+import MaskedInput from 'react-maskedinput';
 
 export default class extends Component {
   static propTypes = {
@@ -15,7 +16,8 @@ export default class extends Component {
     required: PropTypes.bool,
     type: PropTypes.string,
     value: PropTypes.any,
-    styles: PropTypes.object
+    styles: PropTypes.object,
+    mask: PropTypes.string
   };
 
   static defaultProps = {
@@ -39,7 +41,7 @@ export default class extends Component {
 
   render() {
     const styles = this.props.styles || require('./styles.scss');
-    const { disabled, error, label, multiline, type, value, ...others} = this.props;
+    const { disabled, error, label, multiline, type, value, mask, ...others} = this.props;
     const labelClassName = styles.label;
 
     const className = classNames(styles.root, {
@@ -48,7 +50,9 @@ export default class extends Component {
       [styles.hidden]: type === 'hidden'
     }, this.props.className);
 
-    const InputElement = React.createElement(multiline ? 'textarea' : 'input', {
+    const element = multiline ? 'textarea' : (mask ? MaskedInput : 'input'); // eslint-disable-line no-nested-ternary
+
+    const InputElement = React.createElement(element, {
       ...others,
       className: classNames(styles.input, {[styles.filled]: value}),
       onChange: ::this.handleChange,
@@ -56,7 +60,8 @@ export default class extends Component {
       role: 'input',
       disabled,
       type,
-      value
+      value,
+      mask
     });
 
     return (

@@ -94,6 +94,7 @@
     "react-helmet": "^2.3.1",
     "react-inline-css": "^2.1.0",
     "react-intl": "^2.0.0-beta-2",
+    "react-maskedinput": "^3.1.0",
     "react-redux": "^4.0.6",
     "react-router": "2.0.0",
     "react-router-redux": "^2.1.0",
