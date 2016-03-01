@@ -10,6 +10,13 @@ const types = {
   Lunch
 };
 
+function removable(items, item) {
+  if (item.resource_type === 'DeliveryTariff') {
+    return items.filter(_item => _item.resource_type === 'DeliveryTariff').length > 1;
+  }
+  return true;
+}
+
 const OrderItems = ({items, onRemove, ...rest}) => {
   const totalPrice = items.reduce((result, item) => Number(item.resource.price) * item.amount + result, 0);
   return (
@@ -20,7 +27,7 @@ const OrderItems = ({items, onRemove, ...rest}) => {
             ...item,
             ...rest,
             key: index,
-            removable: true,
+            removable: removable(items, item),
             onRemove: () => onRemove && onRemove(item)
           })
         )}

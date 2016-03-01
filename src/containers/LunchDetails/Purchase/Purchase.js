@@ -12,6 +12,7 @@ import styles from './styles.scss';
 export default class Purchase extends Component {
   static propTypes = {
     lunch: PropTypes.object.isRequired,
+    individualTariff: PropTypes.object.isRequired,
     addOrderItem: PropTypes.func.isRequired
   };
 
@@ -23,9 +24,15 @@ export default class Purchase extends Component {
     amount: 1
   };
 
-  purchase() {
+  subscribe() {
     this.props.addOrderItem('Lunch', this.props.lunch, this.state.amount);
     this.context.router.push('/tariffs');
+  }
+
+  buy() {
+    this.props.addOrderItem('Lunch', this.props.lunch, this.state.amount);
+    this.props.addOrderItem('DeliveryTariff', this.props.individualTariff);
+    this.context.router.push('/checkout');
   }
 
   incrementAmount(step) {
@@ -34,7 +41,7 @@ export default class Purchase extends Component {
   }
 
   render() {
-    const { lunch } = this.props;
+    const { lunch, individualTariff } = this.props;
     const { amount } = this.state;
 
     return (
@@ -60,8 +67,9 @@ export default class Purchase extends Component {
           </div>
 
           <div>
-            <div className={styles.buttonHint}>+ доставка 30грн</div>
-            <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Купить сейчас"/>
+            <div className={styles.buttonHint}>+ доставка {Number(individualTariff.price)}грн</div>
+            <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Купить сейчас"
+                    onClick={::this.buy}/>
           </div>
 
         </CardContent>
@@ -73,7 +81,7 @@ export default class Purchase extends Component {
         <CardContent className={classNames(styles.subscribeContainer, styles.cardContent)}>
           <div className={styles.buttonHint}>+ доставка 10грн</div>
           <Button big flat accent className={classNames(styles.button, styles.subscribeButton)}
-                  onClick={::this.purchase}>
+                  onClick={::this.subscribe}>
             <div>Подписаться</div>
             <div className={styles.buttonMinorLabel}>и купить</div>
           </Button>

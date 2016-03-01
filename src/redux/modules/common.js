@@ -141,3 +141,10 @@ export function createOrder(order) {
     promise: client => client.post('/orders', { data: { resource: order}})
   };
 }
+
+export function updateOrder(order) {
+  return {
+    types: [CREATE_ORDER, CREATE_ORDER_SUCCESS, CREATE_ORDER_FAIL],
+    promise: client => client.put(`/orders/${order.id}`, { data: { resource: order}})
+  };
+}

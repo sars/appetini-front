@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
 import times from 'lodash/times';
+import find from 'lodash/find';
 import Button from 'components/Button/Button';
 import Lunches from 'components/Lunches/Lunches';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
@@ -16,12 +17,18 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import classNames from 'classnames';
 
 @asyncConnect([
-  {key: 'lunch', promise: ({params, helpers}) => helpers.client.get('/lunches/' + params.lunchId)}
+  {key: 'lunch', promise: ({params, helpers}) => helpers.client.get('/lunches/' + params.lunchId)},
+  {key: 'tariffs', promise: ({helpers, store}) => {
+    if (!store.getState().reduxAsyncConnect.tariffs) {
+      return helpers.client.get('/delivery_tariffs').then(tariffs => tariffs.resources);
+    }
+  }}
 ])
 @connect(state => ({auth: state.auth}))
 export default class LunchDetails extends Component {
   static propTypes = {
-    lunch: PropTypes.object.isRequired
+    lunch: PropTypes.object.isRequired,
+    tariffs: PropTypes.array.isRequired
   };
 
   state = {
@@ -34,6 +41,7 @@ export default class LunchDetails extends Component {
     const {resource: lunch} = this.props.lunch;
     const {cook} = lunch;
     const otherLunches = {resources: times(5, index => ({...lunch, id: index}))};
+    const individualTariff = find(this.props.tariffs, {individual: true});
 
     const leftSidebarClasses = classNames(styles.leftSidebar, {
       [styles.leftSidebarOpened]: this.state.cookOpened
@@ -80,7 +88,7 @@ export default class LunchDetails extends Component {
                                                        onClick={() => this.setState({purchaseOpened: false})}></div>}
                   </ReactCSSTransitionGroup>
                   <div className={styles.buyContent}>
-                    <Purchase lunch={lunch}/>
+                    <Purchase lunch={lunch} individualTariff={individualTariff}/>
                   </div>
                 </div>
               </div>

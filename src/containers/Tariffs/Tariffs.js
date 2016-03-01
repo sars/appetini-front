@@ -6,7 +6,11 @@ import { addOrderItem } from 'redux/modules/purchase';
 import { connect } from 'react-redux';
 
 @asyncConnect([
-  {key: 'tariffs', promise: ({helpers}) => helpers.client.get('/delivery_tariffs').then(tariffs => tariffs.resources)}
+  {key: 'tariffs', promise: ({helpers, store}) => {
+    if (!store.getState().reduxAsyncConnect.tariffs) {
+      return helpers.client.get('/delivery_tariffs').then(tariffs => tariffs.resources);
+    }
+  }}
 ])
 @connect(null, { addOrderItem })
 export default class Tariffs extends Component {
@@ -38,7 +42,7 @@ export default class Tariffs extends Component {
         </div>
         <div className={styles.tariffs}>
           {tariffs.map((tariff, index) =>
-            <Tariff tariff={tariff} key={index} onBuyClick={::this.purchase(tariff)}/>
+            !tariff.individual && <Tariff tariff={tariff} key={index} onBuyClick={::this.purchase(tariff)}/>
           )}
         </div>
         <div>* Оплата производится с помощью LiqPay, вы будете перенаправлены...</div>
