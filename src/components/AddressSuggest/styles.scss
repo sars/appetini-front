@@ -24,10 +24,18 @@ $input-field-font-size: 1.6 * $unit;
     border-radius: 500px;
     padding-left: 1.4rem;
     padding-right: 1.4rem;
+
     &:focus {
       ~ .bar:before, ~ .bar:after {
         width: 50%;
       }
+    }
+
+    &[disabled] {
+      background-color: rgba(253,250,247,0.8);
+      color: #a29c95;
+      border-color: rgba(228, 217, 207, 0.7);
+      font-weight: 400;
     }
   }
   .geosuggest__input:focus {

@@ -20,8 +20,8 @@ export default class AddressSuggest extends Component {
     const cityLatLng = (typeof google === 'object') && new google.maps.LatLng(50.907777, 34.797297999999955); // eslint-disable-line no-undef
 
     return (
-      <Geosuggest country="ua" types={['address']} onSuggestSelect={::this.handleSuggestSelect}
-                  radius={10000} location={cityLatLng} {...this.props}
+      <Geosuggest country="ua" types={['address']} radius={10000} location={cityLatLng}
+                  {...this.props} onSuggestSelect={::this.handleSuggestSelect}
       />
     );
   }
