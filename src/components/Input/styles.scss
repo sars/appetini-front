@@ -35,6 +35,9 @@ $input-underline-height:  2 * $unit;
 .inputWrapper {
   border-radius: 500px;
   overflow: hidden;
+  // this fixes the overflow:hidden in Chrome
+  // http://stackoverflow.com/questions/5736503/how-to-make-css3-rounded-corners-hide-overflow-in-chrome-opera
+  opacity: 0.99;
 }
 
 .bar {

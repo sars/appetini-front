@@ -11,23 +11,27 @@
 }
 
 .separator {
-  margin: 2rem auto;
-  width: 70%;
+  margin: 0 auto 2rem;
   text-align: center;
   color: #afa49d;
+  display: flex;
+  align-items: center;
 
   &:before, &:after {
     content: '';
-    display: inline-block;
-    width: 20%;
-    border-bottom: 1px solid;
-    vertical-align: middle;
+    flex: 1;
+    border-bottom: 1px solid #efe8e2;
+    height: 1px;
   }
 }
 
 .separatorLabel {
   margin: 0 1rem;
   font-size: 1.4rem;
+}
+
+.buttons {
+  margin: 2.5rem 0;
 }
 
 .buttons, .recoveryContainer {
@@ -41,7 +45,7 @@
 }
 
 .recoveryContainer {
-  margin: 1rem 0 2rem;
+  margin: 1.5rem 0 2.5rem;
 }
 
 .root .input {

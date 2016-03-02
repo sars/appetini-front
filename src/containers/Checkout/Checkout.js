@@ -9,18 +9,20 @@ import normalizeErrors from 'helpers/normalizeErrors';
 export default class Checkout extends Component {
   static propTypes = {
     orderItems: PropTypes.array.isRequired,
-    user: PropTypes.object.isRequired,
+    user: PropTypes.object,
     createOrder: PropTypes.func.isRequired
   };
 
   state = {};
 
   createOrder(orderAttrs) {
+    const { user } = this.props;
     return new Promise((resolve, reject) => {
       this.props.createOrder({
         ...orderAttrs,
+        user_attributes: orderAttrs.user,
         order_items_attributes: this.props.orderItems,
-        user_id: this.props.user.id
+        user_id: user && user.id
       }).then(response => {
         const order = response.resource;
         this.setState({order});

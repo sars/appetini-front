@@ -20,7 +20,7 @@ export default class Footer extends Component {
   };
 
   openLoginModal = () => {
-    this.props.openModal('LoginForm', 'Login');
+    this.props.openModal('LoginForm', 'Авторизация');
   };
 
   render() {

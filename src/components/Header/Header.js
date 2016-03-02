@@ -12,6 +12,7 @@ import { open as openModal } from 'redux/modules/modals';
 import HeaderMenu from 'components/HeaderMenu/HeaderMenu';
 import Menu from 'components/Menu/Menu';
 import { MenuItem, MenuDivider } from 'react-toolbox';
+import { FormattedPlural } from 'react-intl';
 
 const menuLinks = [
   {to: '/', label: 'Меню', index: true},
@@ -41,7 +42,7 @@ export default class Header extends Component {
   };
 
   openLoginModal = () => {
-    this.props.openModal('LoginForm', 'Login');
+    this.props.openModal('LoginForm', 'Авторизация');
   };
 
   openMenu(event) {
@@ -54,6 +55,17 @@ export default class Header extends Component {
     const {push} = this.context.router;
     const styles = require('./Header.scss');
     const cx = classNames.bind(styles);
+
+    const menuItems = user && [
+      <MenuItem key="deliveries" disabled caption="">
+        {user.deliveries_available}
+        &nbsp;
+        <FormattedPlural value={user.deliveries_available} one="доставка" few="доставки" many="доставок" other="доставок"/>
+      </MenuItem>,
+      user.role === 'admin' && <MenuItem key="admin" caption="Админка" onClick={() => push('/admin')}/>,
+      <MenuDivider key="devider" />,
+      <MenuItem key="logout" caption="Выйти" onClick={this.logout}/>
+    ];
 
     return (
       <AppBar fixed className={styles.root}>
@@ -72,17 +84,14 @@ export default class Header extends Component {
                 {user.name}
               </a>
               <Menu position="top-left" menuRipple ref="userMenu" className={styles.menuComponent}>
-                <MenuItem caption={`${user.deliveries_available} доставок`} disabled/>
-                {user.role === 'admin' && <MenuItem caption="Админка" onClick={() => push('/admin')}/>}
-                <MenuDivider />
-                <MenuItem caption="Выйти" onClick={this.logout}/>
+                {menuItems.filter(item => item)}
               </Menu>
             </div>
           }
-          <div className={styles.search}>
+          {false && <div className={styles.search}>
             <IconButton className={styles.searchButton} icon="search"/>
             <input type="text"/>
-          </div>
+          </div>}
         </Navigation>
       </AppBar>
     );

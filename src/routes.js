@@ -55,16 +55,13 @@ export default (store, client) => {
     <Route path="/" component={App} onEnter={userLoad} client={client}>
       { /* Routes requiring login */ }
       <Route onEnter={requireLogin} component={AuthorizedApp}>
-        { /* Home (main) route */ }
-        <IndexRoute component={Home}/>
         <Route path="loginSuccess" component={LoginSuccess}/>
       </Route>
 
-      { /* Routes */ }
+      <IndexRoute component={Home}/>
+
       <Route path="about" component={About}/>
-
       <Route path="lunches/:lunchId" component={LunchDetails}/>
-
       <Route path="tariffs" component={Tariffs}/>
       <Route path="checkout" component={Checkout}/>
 

@@ -12,7 +12,8 @@ import styles from './styles.scss';
 @reduxForm(
   {
     form: 'orderForm',
-    fields: ['id', 'phone', 'location_attributes', 'location', 'payment_type']
+    fields: ['id', 'phone', 'location_attributes', 'location', 'order_items', 'payment_type',
+             'user.name', 'user.phone', 'user.email', 'user.password']
   }, state => ({user: state.auth.user, orderItems: state.purchase.orderItems}),
   { showToast, removeOrderItem, clearOrderItems }
 )
@@ -64,16 +65,26 @@ export default class OrderForm extends Component {
 
         <div>
           <h3>Имя</h3>
-          <Input value={user.name} disabled/>
+          <Input disabled={Boolean(user)} {...fields.user.name}/>
         </div>
 
         <div>
           <h3>Телефон</h3>
-          <Input value={user.phone} disabled/>
+          <Input disabled={Boolean(user)} {...fields.user.phone}/>
         </div>
 
+        {!user && <div>
+          <h3>Email</h3>
+          <Input type="email" {...fields.user.email}/>
+        </div>}
+
+        {!user && <div>
+          <h3>Password</h3>
+          <Input type="password" {...fields.user.password}/>
+        </div>}
+
         {hasLunches && <div>
-          <h3>Адресс</h3>
+          <h3>Адресс доставки</h3>
           <AddressSuggest onSuggestSelect={::this.handleSuggestSelect} disabled={Boolean(order)}
                           initialValue={fields.location.value && fields.location.value.full_address}
           />
@@ -83,6 +94,7 @@ export default class OrderForm extends Component {
         <div>
           <h3>Ваш заказ:</h3>
           <OrderItems items={orderItems} user={user} onRemove={::this.handleRemoveItem}/>
+          {this.errorsFor('order_items')}
         </div>
 
         <div>
