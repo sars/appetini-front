@@ -1,10 +1,18 @@
 import React, { Component, PropTypes } from 'react';
 import Checkbox from 'react-toolbox/lib/checkbox';
+import Dropdown from 'components/Dropdown/Dropdown';
 import ResourcesIndex from 'components/ResourcesIndex/ResourcesIndex';
 import { updateOrder } from 'redux/modules/common';
 import { asyncConnect } from 'redux-async-connect';
 import { connect } from 'react-redux';
 import styles from './styles.scss';
+
+const statuses = [
+  {label: 'Pending', value: 'pending' },
+  {label: 'Approved', value: 'approved' },
+  {label: 'Handled', value: 'handled' },
+  {label: 'Canceled', value: 'canceled' }
+];
 
 @asyncConnect([
   {key: 'orders', promise: ({ helpers }) => helpers.client.get('/orders')}
@@ -16,12 +24,23 @@ export default class Orders extends Component {
     updateOrder: PropTypes.func.isRequired
   };
 
+  updateOrder(order, attrs) {
+    this.props.updateOrder({...attrs, id: order.id});
+  }
+
   payedContent(order) {
     const yesNo = order.payed ? 'Да' : 'Нет';
     return order.payment_type === 'cash' ? <Checkbox className={styles.checkbox}
       checked={order.payed}
-      onChange={checked => this.props.updateOrder({payed: checked, id: order.id})}
+      onChange={payed => this.updateOrder(order, { payed })}
     /> : yesNo;
+  }
+
+  statusComponent(order) {
+    return (
+      <Dropdown auto source={statuses} size="15" value={order.status}
+                onChange={status => this.updateOrder(order, { status })}/>
+    );
   }
 
   render() {
@@ -30,6 +49,7 @@ export default class Orders extends Component {
       { title: 'ID', value: order => order.id },
       { title: 'Тип оплаты', value: order => order.payment_type },
       { title: 'Оплачен', value: ::this.payedContent },
+      { title: 'Статус', value: ::this.statusComponent },
       { title: 'Цена', value: order => Number(order.total_price) + 'грн' }
     ];
 

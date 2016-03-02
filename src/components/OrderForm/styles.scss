@@ -2,6 +2,9 @@
 
 .submitContainer {
   margin-top: 2rem;
+  > button:not(:last-child) {
+    margin-right: 2rem;
+  }
 }
 
 .section {

@@ -5,7 +5,7 @@ import AddressSuggest from 'components/AddressSuggest/AddressSuggest';
 import OrderItems from 'components/OrderItems/OrderItems';
 import { RadioGroup, RadioButton } from 'react-toolbox';
 import { show as showToast } from 'redux/modules/toast';
-import { removeOrderItem } from 'redux/modules/purchase';
+import { removeOrderItem, clearOrderItems } from 'redux/modules/purchase';
 import { reduxForm } from 'redux-form';
 import styles from './styles.scss';
 
@@ -14,7 +14,7 @@ import styles from './styles.scss';
     form: 'orderForm',
     fields: ['id', 'phone', 'location_attributes', 'location', 'payment_type']
   }, state => ({user: state.auth.user, orderItems: state.purchase.orderItems}),
-  { showToast, removeOrderItem }
+  { showToast, removeOrderItem, clearOrderItems }
 )
 export default class OrderForm extends Component {
   static propTypes = {
@@ -22,11 +22,16 @@ export default class OrderForm extends Component {
     handleSubmit: PropTypes.func.isRequired,
     showToast: PropTypes.func.isRequired,
     removeOrderItem: PropTypes.func.isRequired,
+    clearOrderItems: PropTypes.func.isRequired,
     error: PropTypes.object,
     submitting: PropTypes.bool,
     user: PropTypes.object,
     orderItems: PropTypes.array.isRequired,
     order: PropTypes.object
+  };
+
+  static contextTypes = {
+    router: PropTypes.object.isRequired
   };
 
   handleSuggestSelect(suggest) {
@@ -43,9 +48,15 @@ export default class OrderForm extends Component {
     this.props.removeOrderItem(item);
   }
 
+  clearOrderItems() {
+    this.props.clearOrderItems();
+    this.context.router.push('/');
+  }
+
   render() {
     const { fields, handleSubmit, submitting, user, orderItems, order } = this.props;
     const submitLabel = fields.payment_type.value === 'liqpay' ? 'Оплатить' : 'Оформить заказ';
+    const hasLunches = orderItems.some(item => item.resource_type === 'Lunch');
 
     return (
       <form className={styles.root} onSubmit={handleSubmit}>
@@ -61,17 +72,17 @@ export default class OrderForm extends Component {
           <Input value={user.phone} disabled/>
         </div>
 
-        <div>
+        {hasLunches && <div>
           <h3>Адресс</h3>
           <AddressSuggest onSuggestSelect={::this.handleSuggestSelect} disabled={Boolean(order)}
                           initialValue={fields.location.value && fields.location.value.full_address}
           />
           {this.errorsFor('location')}
-        </div>
+        </div>}
 
         <div>
           <h3>Ваш заказ:</h3>
-          <OrderItems items={orderItems} onRemove={::this.handleRemoveItem}/>
+          <OrderItems items={orderItems} user={user} onRemove={::this.handleRemoveItem}/>
         </div>
 
         <div>
@@ -85,6 +96,7 @@ export default class OrderForm extends Component {
 
         {!order && <div className={styles.submitContainer}>
           <Button flat accent label={submitLabel} type="submit" disabled={submitting}/>
+          <Button flat outlined label="Отменить и вернуться к меню" type="button" onClick={::this.clearOrderItems}/>
         </div>}
 
       </form>

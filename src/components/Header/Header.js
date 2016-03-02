@@ -72,6 +72,7 @@ export default class Header extends Component {
                 {user.name}
               </a>
               <Menu position="top-left" menuRipple ref="userMenu" className={styles.menuComponent}>
+                <MenuItem caption={`${user.deliveries_available} доставок`} disabled/>
                 {user.role === 'admin' && <MenuItem caption="Админка" onClick={() => push('/admin')}/>}
                 <MenuDivider />
                 <MenuItem caption="Выйти" onClick={this.logout}/>

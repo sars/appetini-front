@@ -10,14 +10,15 @@ const types = {
   Lunch
 };
 
-function removable(items, item) {
-  if (item.resource_type === 'DeliveryTariff') {
+function removable(items, item, user) {
+  const hasDeliveries = user && user.deliveries_available > 0;
+  if (!hasDeliveries && item.resource_type === 'DeliveryTariff') {
     return items.filter(_item => _item.resource_type === 'DeliveryTariff').length > 1;
   }
   return true;
 }
 
-const OrderItems = ({items, onRemove, ...rest}) => {
+const OrderItems = ({items, onRemove, user, ...rest}) => {
   const totalPrice = items.reduce((result, item) => Number(item.resource.price) * item.amount + result, 0);
   return (
     <Card>
@@ -27,7 +28,7 @@ const OrderItems = ({items, onRemove, ...rest}) => {
             ...item,
             ...rest,
             key: index,
-            removable: removable(items, item),
+            removable: removable(items, item, user),
             onRemove: () => onRemove && onRemove(item)
           })
         )}
@@ -39,6 +40,7 @@ const OrderItems = ({items, onRemove, ...rest}) => {
 
 OrderItems.propTypes = {
   items: PropTypes.array.isRequired,
+  user: PropTypes.object,
   onRemove: PropTypes.func
 };
 

@@ -8,10 +8,11 @@ import { connect } from 'react-redux';
 import { FormattedPlural } from 'react-intl';
 import styles from './styles.scss';
 
-@connect(null, { addOrderItem })
+@connect(state => ({user: state.auth.user}), { addOrderItem })
 export default class Purchase extends Component {
   static propTypes = {
     lunch: PropTypes.object.isRequired,
+    user: PropTypes.object,
     individualTariff: PropTypes.object.isRequired,
     addOrderItem: PropTypes.func.isRequired
   };
@@ -31,7 +32,9 @@ export default class Purchase extends Component {
 
   buy() {
     this.props.addOrderItem('Lunch', this.props.lunch, this.state.amount);
-    this.props.addOrderItem('DeliveryTariff', this.props.individualTariff);
+    if (!this.userHasDeliveries()) {
+      this.props.addOrderItem('DeliveryTariff', this.props.individualTariff);
+    }
     this.context.router.push('/checkout');
   }
 
@@ -40,9 +43,14 @@ export default class Purchase extends Component {
     this.setState({amount: newAmount < 1 ? 1 : newAmount});
   }
 
+  userHasDeliveries() {
+    return this.props.user && this.props.user.deliveries_available > 0;
+  }
+
   render() {
     const { lunch, individualTariff } = this.props;
     const { amount } = this.state;
+    const hasDeliveries = this.userHasDeliveries();
 
     return (
       <Card className={styles.root}>
@@ -67,25 +75,30 @@ export default class Purchase extends Component {
           </div>
 
           <div>
-            <div className={styles.buttonHint}>+ доставка {Number(individualTariff.price)}грн</div>
+            {hasDeliveries ?
+              <div className={styles.buttonHint}>
+                1 доставка будет списана при заказе с вашего счета
+              </div> :
+              <div className={styles.buttonHint}>+ доставка {Number(individualTariff.price)}грн</div>
+            }
             <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Купить сейчас"
                     onClick={::this.buy}/>
           </div>
 
         </CardContent>
 
-        <div className={styles.separator}>
+        {!hasDeliveries && <div className={styles.separator}>
           {times(50, (index) => <i key={index}/>)}
-        </div>
+        </div>}
 
-        <CardContent className={classNames(styles.subscribeContainer, styles.cardContent)}>
+        {!hasDeliveries && <CardContent className={classNames(styles.subscribeContainer, styles.cardContent)}>
           <div className={styles.buttonHint}>+ доставка 10грн</div>
           <Button big flat accent className={classNames(styles.button, styles.subscribeButton)}
                   onClick={::this.subscribe}>
             <div>Подписаться</div>
             <div className={styles.buttonMinorLabel}>и купить</div>
           </Button>
-        </CardContent>
+        </CardContent>}
       </Card>
     );
   }

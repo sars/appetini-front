@@ -3,6 +3,7 @@ import without from 'lodash/without';
 
 const ADD_ORDER_ITEM = 'purchase/ADD_ORDER_ITEM';
 const REMOVE_ORDER_ITEM = 'purchase/REMOVE_ORDER_ITEM';
+const CLEAR_ORDER_ITEMS = 'purchase/CLEAR_ORDER_ITEMS';
 
 const initialState = {
   orderItems: []
@@ -22,6 +23,12 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         orderItems: without(state.orderItems, action.payload.orderItem)
+      };
+
+    case CLEAR_ORDER_ITEMS:
+      return {
+        ...state,
+        orderItems: []
       };
 
     default:
@@ -45,5 +52,11 @@ export function removeOrderItem(orderItem) {
   return {
     type: REMOVE_ORDER_ITEM,
     payload: { orderItem }
+  };
+}
+
+export function clearOrderItems() {
+  return {
+    type: CLEAR_ORDER_ITEMS
   };
 }
