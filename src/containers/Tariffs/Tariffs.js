@@ -36,7 +36,7 @@ export default class Tariffs extends Component {
     return (
       <div className={styles.root}>
         <h1>Тарифные планы</h1>
-        <div>
+        <div className={styles.description}>
           Экономьте на доставке, подписавшись. Вы сможете использовать купленные вами доставки
           в любое удобное для вас время в течении месяца
         </div>
@@ -45,7 +45,7 @@ export default class Tariffs extends Component {
             !tariff.individual && <Tariff tariff={tariff} key={index} onBuyClick={::this.purchase(tariff)}/>
           )}
         </div>
-        <div>* Оплата производится с помощью LiqPay, вы будете перенаправлены...</div>
+        <div className={styles.comment}>* Оплата производится с помощью LiqPay, вы будете перенаправлены...</div>
       </div>
     );
   }
