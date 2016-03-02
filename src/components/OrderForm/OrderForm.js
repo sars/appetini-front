@@ -5,6 +5,7 @@ import AddressSuggest from 'components/AddressSuggest/AddressSuggest';
 import OrderItems from 'components/OrderItems/OrderItems';
 import { RadioGroup, RadioButton } from 'react-toolbox';
 import { show as showToast } from 'redux/modules/toast';
+import { open as openModal } from 'redux/modules/modals';
 import { removeOrderItem, clearOrderItems } from 'redux/modules/purchase';
 import { reduxForm } from 'redux-form';
 import styles from './styles.scss';
@@ -15,13 +16,14 @@ import styles from './styles.scss';
     fields: ['id', 'phone', 'location_attributes', 'location', 'order_items', 'payment_type',
              'user.name', 'user.phone', 'user.email', 'user.password']
   }, state => ({user: state.auth.user, orderItems: state.purchase.orderItems}),
-  { showToast, removeOrderItem, clearOrderItems }
+  { openModal, showToast, removeOrderItem, clearOrderItems }
 )
 export default class OrderForm extends Component {
   static propTypes = {
     fields: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     showToast: PropTypes.func.isRequired,
+    openModal: PropTypes.func.isRequired,
     removeOrderItem: PropTypes.func.isRequired,
     clearOrderItems: PropTypes.func.isRequired,
     error: PropTypes.object,
@@ -62,6 +64,11 @@ export default class OrderForm extends Component {
     return (
       <form className={styles.root} onSubmit={handleSubmit}>
         <h1>Оформление заказа</h1>
+
+        {!user && <div>
+          <Button flat accent label="У меня есть аккаунт" type="button"
+                  onClick={() => this.props.openModal('LoginForm', 'Авторизация')}/>
+        </div>}
 
         <div>
           <h3>Имя</h3>

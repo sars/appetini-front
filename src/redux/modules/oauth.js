@@ -158,7 +158,7 @@ export default class Oauth {
     const providerConfig = this.config[provider];
     const popupWindow = openPopup(providerConfig);
 
-    return pollPopup(popupWindow).then((oauthData) => apiRequest(type, oauthData, providerConfig));
+    return pollPopup(popupWindow).then(oauthData => apiRequest(type, oauthData, providerConfig));
   }
 
   retrieveData(provider) {

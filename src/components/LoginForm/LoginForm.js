@@ -45,7 +45,9 @@ export default class LoginForm extends Component {
 
   oauth(provider) {
     return () => {
-      this.props.oauth(provider).then(() => this.props.showToast('You are successfully logged in', 'accept', 'done'));
+      this.props.oauth(provider).then(this.props.onSuccess)
+        .then(() => this.props.showToast('You are successfully logged in', 'accept', 'done'))
+        .catch(this.props.onError);
     };
   }
 
@@ -62,8 +64,8 @@ export default class LoginForm extends Component {
 
     return (
       <div className={styles.root}>
-        <Input className={styles.input} type="email" {...email}/>
-        <Input className={styles.input} type="password" {...password}/>
+        <Input big className={styles.input} type="email" {...email}/>
+        <Input big className={styles.input} type="password" {...password}/>
 
         <div className={styles.recoveryContainer}>
           <Checkbox className={styles.rememberMe} label="Запомнить меня" {...rememberMe} />
@@ -84,8 +86,8 @@ export default class LoginForm extends Component {
         </div>
 
         <div className={styles.socialButtons}>
-          <SocialButton className={styles.socialButton} name="vk" size="medium"/>
-          <SocialButton className={styles.socialButton} name="fb" size="medium"/>
+          <SocialButton className={styles.socialButton} name="vk" size="medium" onClick={::this.oauth('vkontakte')}/>
+          <SocialButton className={styles.socialButton} name="fb" size="medium" onClick={::this.oauth('facebook')}/>
         </div>
       </div>
 

@@ -17,7 +17,8 @@ export default class extends Component {
     type: PropTypes.string,
     value: PropTypes.any,
     styles: PropTypes.object,
-    mask: PropTypes.string
+    mask: PropTypes.string,
+    big: PropTypes.bool
   };
 
   static defaultProps = {
@@ -41,13 +42,14 @@ export default class extends Component {
 
   render() {
     const styles = this.props.styles || require('./styles.scss');
-    const { disabled, error, label, multiline, type, value, mask, ...others} = this.props;
+    const { disabled, error, label, multiline, type, value, mask, big, ...others} = this.props;
     const labelClassName = styles.label;
 
     const className = classNames(styles.root, {
       [styles.disabled]: disabled,
       [styles.errored]: error,
-      [styles.hidden]: type === 'hidden'
+      [styles.hidden]: type === 'hidden',
+      [styles.big]: big
     }, this.props.className);
 
     const element = multiline ? 'textarea' : (mask ? MaskedInput : 'input'); // eslint-disable-line no-nested-ternary

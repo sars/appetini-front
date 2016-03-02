@@ -48,8 +48,14 @@
   margin: 1.5rem 0 2.5rem;
 }
 
-.input {
+.root .input {
   margin: 1rem 0;
+  input {
+    font-size: 2rem;
+    line-height: 3.4rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
 .root .button {

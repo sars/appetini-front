@@ -1,4 +1,5 @@
 import Oauth from 'redux/modules/oauth';
+import tokenPayload from 'helpers/tokenPayload';
 
 const LOGIN = 'auth/LOGIN';
 const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
@@ -7,6 +8,9 @@ const LOGOUT = 'auth/LOGOUT';
 const LOGOUT_SUCCESS = 'auth/LOGOUT_SUCCESS';
 const LOGOUT_FAIL = 'auth/LOGOUT_FAIL';
 const SET_USER = 'auth/SET_USER';
+const RECOVERY_SENT = 'auth/RECOVERY_SENT';
+const RECOVERY_PASSWORD_CHANGED = 'auth/RECOVERY_PASSWORD_CHANGED';
+const SET_TOKEN = 'auth/SET_TOKEN';
 
 const initialState = {
   loaded: false
@@ -54,6 +58,11 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         user: action.user
       };
+    case SET_TOKEN:
+      return {
+        ...state,
+        tokenPayload: action.tokenPayload
+      };
     default:
       return state;
   }
@@ -77,6 +86,35 @@ export function login(user) {
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
     promise: (client) => client.post('/login', { data: { user }})
+  };
+}
+
+export function setToken(token) {
+  return {
+    type: SET_TOKEN,
+    tokenPayload: tokenPayload(token)
+  };
+}
+
+export function sendRecovery(user) {
+  return (dispatch, client) => {
+    return client.post('/passwords', { data: { user }}).then(response => {
+      dispatch({
+        type: RECOVERY_SENT
+      });
+      return response;
+    });
+  };
+}
+
+export function recoveryPasswordChange(user) {
+  return (dispatch, client) => {
+    return client.put('/passwords', { data: { user }}).then(response => {
+      dispatch({
+        type: RECOVERY_PASSWORD_CHANGED
+      });
+      return response;
+    });
   };
 }
 

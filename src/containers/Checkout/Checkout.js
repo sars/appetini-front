@@ -39,9 +39,10 @@ export default class Checkout extends Component {
 
   render() {
     const { order } = this.state;
+    const initialOrderValues = {...order, user: this.props.user};
     return (
       <div className={styles.root}>
-        <OrderForm order={order} onSubmit={::this.createOrder}/>
+        <OrderForm order={order} onSubmit={::this.createOrder} initialValues={initialOrderValues}/>
 
         {order &&
           <div className={styles.payment}>

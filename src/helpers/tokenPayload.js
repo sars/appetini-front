@@ -1,28 +1,28 @@
-var jws = require('jws');
+import jws from 'jws';
 
 function getJwtPayload(jwt) {
-  var decoded = jws.decode(jwt);
+  const decoded = jws.decode(jwt);
   if (!decoded) { return null; }
-  var payload = decoded.payload;
+  let payload = decoded.payload;
 
   // try parse the payload
   if (typeof payload === 'string') {
     try {
-      var obj = JSON.parse(payload);
-      if(typeof obj === 'object') {
+      const obj = JSON.parse(payload);
+      if (typeof obj === 'object') {
         payload = obj;
       }
-    } catch (e) { }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return payload;
 }
 
-export default function tokenPayload(req) {
-  const token = req.cookies.user_token;
-
+export default function tokenPayload(encodedToken) {
   return {
-    token,
-    ...getJwtPayload(token)
+    encodedToken,
+    ...getJwtPayload(encodedToken)
   };
 }

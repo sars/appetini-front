@@ -17,7 +17,8 @@ import {
     AdminCooksNew,
     AdminCooksEdit,
     Tariffs,
-    Checkout
+    Checkout,
+    Recovery
   } from 'containers';
 import { setUser } from 'redux/modules/auth';
 
@@ -59,6 +60,9 @@ export default (store, client) => {
       </Route>
 
       <IndexRoute component={Home}/>
+
+      <Route path="recovery" component={Recovery}/>
+      <Route path="recovery/:token" component={Recovery.Password}/>
 
       <Route path="about" component={About}/>
       <Route path="lunches/:lunchId" component={LunchDetails}/>

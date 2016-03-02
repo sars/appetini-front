@@ -100,3 +100,12 @@ $input-underline-height:  2 * $unit;
   border-color: rgba(228, 217, 207, 0.7);
   font-weight: 400;
 }
+
+.big {
+  .input {
+    font-size: 2rem;
+    line-height: 3.4rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}

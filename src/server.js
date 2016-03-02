@@ -19,7 +19,7 @@ import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 
 import createHistory from 'react-router/lib/createMemoryHistory';
 import getRoutes from './routes';
-import tokenPayload from './helpers/tokenPayload';
+import { setToken } from 'redux/modules/auth';
 
 const pretty = new PrettyError();
 const app = new Express();
@@ -62,9 +62,10 @@ app.use((req, res) => {
     webpackIsomorphicTools.refresh();
   }
   const client = new ApiClient(req);
-  const data = { auth: { tokenPayload: tokenPayload(req) } };
   const history = createHistory(req.originalUrl);
-  const store = createStore(history, client, data);
+  const store = createStore(history, client);
+
+  store.dispatch(setToken(req.cookies.user_token));
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
