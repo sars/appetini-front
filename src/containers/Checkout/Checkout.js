@@ -4,13 +4,19 @@ import { connect } from 'react-redux';
 import OrderForm from 'components/OrderForm/OrderForm';
 import { createOrder } from 'redux/modules/common';
 import normalizeErrors from 'helpers/normalizeErrors';
+import { setUser, setToken } from 'redux/modules/auth';
 
-@connect(state => ({orderItems: state.purchase.orderItems, user: state.auth.user}), { createOrder })
+@connect(
+  state => ({orderItems: state.purchase.orderItems, user: state.auth.user}),
+  { createOrder, setUser, setToken }
+)
 export default class Checkout extends Component {
   static propTypes = {
     orderItems: PropTypes.array.isRequired,
     user: PropTypes.object,
-    createOrder: PropTypes.func.isRequired
+    createOrder: PropTypes.func.isRequired,
+    setUser: PropTypes.func.isRequired,
+    setToken: PropTypes.func.isRequired
   };
 
   state = {};
@@ -25,6 +31,10 @@ export default class Checkout extends Component {
         user_id: user && user.id
       }).then(response => {
         const order = response.resource;
+
+        this.props.setUser(order.user);
+        this.props.setToken(response.auth_token);
+
         this.setState({order});
         resolve(response);
         if (order.payment_type === 'liqpay') {
