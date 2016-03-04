@@ -2,10 +2,10 @@ import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
-import times from 'lodash/times';
 import find from 'lodash/find';
 import Button from 'components/Button/Button';
-import Lunches from 'components/Lunches/Lunches';
+import Lunch from 'components/Lunch/Lunch';
+import Boxes from 'components/Boxes/Boxes';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import Dishes from './Dishes/Dishes';
 import Cook from './Cook/Cook';
@@ -31,16 +31,33 @@ export default class LunchDetails extends Component {
     tariffs: PropTypes.array.isRequired
   };
 
+  static contextTypes = {
+    client: PropTypes.object.isRequired
+  };
+
   state = {
     cookOpened: false,
-    purchaseOpened: false
+    purchaseOpened: false,
+    otherLunches: []
   };
+
+  componentDidMount() {
+    this.context.client.get('/lunches', { params: {
+      cook_id: this.props.lunch.resource.cook_id
+    }}).then(response => {
+      this.setState({otherLunches: response.resources});
+    });
+  }
 
   render() {
     const styles = require('./LunchDetails.scss');
     const {resource: lunch} = this.props.lunch;
     const {cook} = lunch;
-    const otherLunches = {resources: times(5, index => ({...lunch, id: index}))};
+    const otherLunches = this.state.otherLunches;
+    const boxes = otherLunches.map(otherLunch => ({
+      component: <Lunch lunch={otherLunch}/>
+    }));
+
     const individualTariff = find(this.props.tariffs, {individual: true});
 
     const leftSidebarClasses = classNames(styles.leftSidebar, {
@@ -97,10 +114,10 @@ export default class LunchDetails extends Component {
         </div>
         <div className={styles.otherLunches}>
           <h2>Обеды на другое время от {cook.first_name} {cook.last_name}</h2>
-          <Lunches lunches={otherLunches} />
-          <div className={styles.moreContainer}>
+          <Boxes boxes={boxes}/>
+          {null && <div className={styles.moreContainer}>
             <Button flat outlined className={styles.moreButton} label="Показать еще" />
-          </div>
+          </div>}
         </div>
       </ColumnLayout>
     );

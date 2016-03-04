@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Card from 'components/Card/Card';
+import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
 import StarRating from 'react-star-rating';
 import classNames from 'classnames';
 import { Link } from 'react-router';
@@ -10,7 +11,8 @@ const Lunch = ({className, lunch}) => {
   const { cook } = lunch;
 
   return (
-    <Link to={`/lunches/${lunch.id}`} className={classNames(styles.lunch, className)}>
+    <Link to={`/lunches/${lunch.id}`} className={classNames(styles.root, className)}>
+      <DeliveryPeriod className={styles.readyBy} time={lunch.ready_by}/>
       <Card className={styles.card}>
         <div className={styles.photoWrapper}>
           <img className={styles.photo} src={lunch.photos[0].url} />

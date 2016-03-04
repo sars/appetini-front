@@ -1,0 +1,11 @@
+.root {
+  >:global(.fa) {
+    margin-right: 0.4rem;
+  }
+}
+
+.unit {
+  &:not(:last-child):after {
+    content: ', ';
+  }
+}

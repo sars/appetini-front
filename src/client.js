@@ -9,13 +9,15 @@ import ApiClient from './helpers/ApiClient';
 import { Router, browserHistory } from 'react-router';
 import { ReduxAsyncConnect } from 'redux-async-connect';
 import rootComponent from 'helpers/rootComponent';
+import useScroll from 'scroll-behavior/lib/useStandardScroll';
 
 import getRoutes from './routes';
 
 const client = new ApiClient();
 
+const history = useScroll(() => browserHistory)();
 const dest = document.getElementById('content');
-const store = createStore(browserHistory, client, window.__data);
+const store = createStore(history, client, window.__data);
 
 const component = (
   <Router render={(props) =>

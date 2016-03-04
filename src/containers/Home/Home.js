@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
-import Lunches from 'components/Lunches/Lunches';
+import Lunch from 'components/Lunch/Lunch';
+import Boxes from 'components/Boxes/Boxes';
 import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
 import Autocomplete from 'components/AsyncAutocomplete/AsyncAutocomplete';
 import DeliveryTimeDropdown from 'components/DeliveryTimeDropdown/DeliveryTimeDropdown';
@@ -121,6 +122,35 @@ export default class Home extends Component {
     const {lunches, preferences, dishes} = this.props;
     const {currentPreferences = [], currentDishes = [], currentTime} = this.state;
 
+    const filters = {
+      component: (
+        <Card className={styles.filtersCard}>
+          <CardContent className={styles.filterContent}>
+            <div className={styles.dishesFilter}>
+              <h3>Состав обеда</h3>
+              <Autocomplete className={autocompleteStyles.autocomplete} name="dishes" direction="down"
+                            onUpdateSuggestions={this.requestDishes}
+                            onChange={this.filterChanged('dishes')} source={dishes || []} value={currentDishes}
+              />
+            </div>
+            <div className={styles.preferencesWrapper}>
+              <h3>Ваши предпочтения</h3>
+              <CheckButtonsGroup source={preferences} value={currentPreferences}
+                                 onChange={this.filterChanged('preferences')}/>
+            </div>
+          </CardContent>
+        </Card>
+      ),
+      span: 2
+    };
+
+    const boxes = lunches.resources && [
+      filters,
+      ...lunches.resources.map(lunch => ({
+        component: <Lunch lunch={lunch}/>
+      }))
+    ];
+
     return (
       <ColumnLayout className={styles.root}>
         <Helmet title="Home"/>
@@ -128,27 +158,7 @@ export default class Home extends Component {
           <h1>Обеды на каждый день</h1>
           <DeliveryTimeDropdown className={styles.timeDropdown} onChange={this.filterChanged('time')} value={currentTime}/>
         </div>
-
-        <div className={styles.filters}>
-          <Card className={styles.card}>
-            <CardContent className={styles.filterContent}>
-              <div className={styles.dishesFilter}>
-                <h3>Состав обеда</h3>
-                <Autocomplete className={autocompleteStyles.autocomplete} name="dishes" direction="down"
-                              onUpdateSuggestions={this.requestDishes}
-                              onChange={this.filterChanged('dishes')} source={dishes || []} value={currentDishes}
-                />
-              </div>
-              <div className={styles.preferencesWrapper}>
-                <h3>Ваши предпочтения</h3>
-                <CheckButtonsGroup source={preferences} value={currentPreferences}
-                                   onChange={this.filterChanged('preferences')} />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {lunches && <Lunches className={styles.lunches} lunches={lunches} />}
+        {boxes && <Boxes boxes={boxes}/>}
       </ColumnLayout>
     );
   }
