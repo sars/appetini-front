@@ -19,6 +19,10 @@ export default class App extends Component {
     loaded: PropTypes.bool.isRequired
   };
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
   static childContextTypes = {
     client: PropTypes.object.isRequired
   };
@@ -33,6 +37,12 @@ export default class App extends Component {
       const y2 = document.body.scrollTop / 5 + 'px';
       document.body.style.backgroundPositionY = y1 + ', ' + y2;
     });
+
+    this.context.router.setRouteLeaveHook(this.props.route, this.routerWillLeave);
+  }
+
+  routerWillLeave() {
+    console.log(arguments);
   }
 
   handleChange = (item, value) => {
@@ -45,7 +55,7 @@ export default class App extends Component {
     const styles = require('./App.scss');
 
     return (
-      <div className={styles.app}>
+      <div className={styles.app} data-react-toolbox="app">
         <Helmet {...config.app.head}/>
 
         <ProgressBar mode="indeterminate"
