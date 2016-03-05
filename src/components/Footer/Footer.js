@@ -19,6 +19,10 @@ export default class Footer extends Component {
     openModal: PropTypes.func.isRequired
   };
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
   openLoginModal = () => {
     this.props.openModal('LoginForm', 'Авторизация');
   };
@@ -33,7 +37,7 @@ export default class Footer extends Component {
 
           <Navigation className={styles.loginSignUp}>
             <Button flat accent label="Войти" onClick={this.openLoginModal} />
-            <Button flat outlined label="Зарегистрироваться" />
+            <Button flat outlined label="Зарегистрироваться" onClick={() => this.context.router.push('/join')}/>
           </Navigation>
         </div>
 

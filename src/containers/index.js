@@ -16,3 +16,4 @@ export LunchDetails from './LunchDetails/LunchDetails';
 export Tariffs from './Tariffs/Tariffs';
 export Checkout from './Checkout/Checkout';
 export Recovery from './Recovery/Recovery';
+export Registration from './Registration/Registration';

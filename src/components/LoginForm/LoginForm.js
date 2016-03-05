@@ -30,6 +30,10 @@ export default class LoginForm extends Component {
     showToast: PropTypes.func.isRequired
   };
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
   static defaultProps = {
     onSuccess: (result) => result,
     onError: (error) => error
@@ -76,7 +80,8 @@ export default class LoginForm extends Component {
 
         <div className={styles.buttons}>
           <Button className={styles.button} accent flat label="Войти" onClick={this.submit}/>
-          <Button className={styles.button} outlined flat label="Зарегистрироваться"/>
+          <Button className={styles.button} outlined flat label="Зарегистрироваться"
+                  onClick={() => this.context.router.push('/join')}/>
         </div>
 
         <div className={styles.separator}>

@@ -18,7 +18,8 @@ import {
     AdminCooksEdit,
     Tariffs,
     Checkout,
-    Recovery
+    Recovery,
+    Registration
   } from 'containers';
 import { setUser } from 'redux/modules/auth';
 
@@ -61,6 +62,7 @@ export default (store, client) => {
 
       <IndexRoute component={Home}/>
 
+      <Route path="join" component={Registration}/>
       <Route path="recovery" component={Recovery}/>
       <Route path="recovery/:token" component={Recovery.Password}/>
 
