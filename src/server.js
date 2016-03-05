@@ -12,7 +12,7 @@ import ApiClient from './helpers/ApiClient';
 import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
-import rootComponent from 'helpers/rootComponent';
+import rootComponent from './helpers/rootComponent';
 import getVal from 'lodash/get';
 
 import { match } from 'react-router';
