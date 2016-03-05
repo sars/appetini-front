@@ -12,15 +12,11 @@ import classNames from 'classnames';
   {pushState: routeActions.push})
 export default class App extends Component {
   static propTypes = {
-    children: PropTypes.object.isRequired,
+    children: PropTypes.object,
     pushState: PropTypes.func.isRequired,
     routerReducer: PropTypes.object,
     route: PropTypes.object.isRequired,
     loaded: PropTypes.bool.isRequired
-  };
-
-  static contextTypes = {
-    router: PropTypes.object.isRequired
   };
 
   static childContextTypes = {
@@ -37,12 +33,6 @@ export default class App extends Component {
       const y2 = document.body.scrollTop / 5 + 'px';
       document.body.style.backgroundPositionY = y1 + ', ' + y2;
     });
-
-    this.context.router.setRouteLeaveHook(this.props.route, this.routerWillLeave);
-  }
-
-  routerWillLeave() {
-    console.log(arguments);
   }
 
   handleChange = (item, value) => {

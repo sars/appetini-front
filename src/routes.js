@@ -1,5 +1,6 @@
 import React from 'react';
-import {IndexRoute, Route} from 'react-router';
+import { IndexRoute, Route } from 'react-router';
+import hooks from './routerHooks';
 import {
     App,
     Home,
@@ -21,34 +22,9 @@ import {
     Recovery,
     Registration
   } from 'containers';
-import { setUser } from 'redux/modules/auth';
 
 export default (store, client) => {
-  const requireLogin = (nextState) => {
-    const { user } = store.getState().auth;
-
-    if (__SERVER__ && !user) {
-      nextState.location.state = {...nextState.location.state, responseStatus: 403};
-    }
-  };
-
-  const userLoad = (nextState, replaceState, cb) => {
-    const state = store.getState();
-    const { user } = state.auth;
-    if (!user) {
-      const userFromToken = state.auth.tokenPayload.user;
-      if (userFromToken) {
-        client.get('/users/' + userFromToken.id).then(result => {
-          store.dispatch(setUser(result.resource));
-          cb();
-        }).catch(() => {
-          cb();
-        });
-        return;
-      }
-    }
-    cb();
-  };
+  const { userLoad, confirmEmail, requireLogin } = hooks(store, client);
 
   /**
    * Please keep routes in alphabetical order
@@ -61,6 +37,8 @@ export default (store, client) => {
       </Route>
 
       <IndexRoute component={Home}/>
+
+      <Route path="users/confirm/:token" onEnter={confirmEmail}/>
 
       <Route path="join" component={Registration}/>
       <Route path="recovery" component={Recovery}/>

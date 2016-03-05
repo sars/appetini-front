@@ -13,6 +13,7 @@ import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
 import rootComponent from 'helpers/rootComponent';
+import getVal from 'lodash/get';
 
 import { match } from 'react-router';
 import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
@@ -77,7 +78,7 @@ app.use((req, res) => {
     return;
   }
 
-  match({ history, routes: getRoutes(store, client), location: req.originalUrl }, (error, redirectLocation, renderProps) => {
+  match({ history, routes: getRoutes(store, client), location: req.originalUrl }, (error, redirectLocation, renderProps, ...args) => {
     if (redirectLocation) {
       res.redirect(redirectLocation.pathname + redirectLocation.search);
     } else if (error) {
@@ -87,8 +88,7 @@ app.use((req, res) => {
     } else if (renderProps) {
       loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
         const component = rootComponent(store, <ReduxAsyncConnect {...renderProps} />);
-
-        const status = renderProps.location.state && renderProps.location.state.responseStatus || 200;
+        const status = getVal(renderProps, 'location.state.responseStatus', 200);
         res.status(status);
 
         global.navigator = {userAgent: req.headers['user-agent']};
