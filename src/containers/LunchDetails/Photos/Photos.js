@@ -16,7 +16,7 @@ const Photos = ({lunch, className}) => {
           {times(lunch.photos.length - 1, index => {
             return (
               <div className={styles.photoContainer} key={index}>
-                <img src={lunch.photos[index + 1].url} />
+                <img src={lunch.photos[index + 1].thumb.url} />
               </div>
             );
           })}

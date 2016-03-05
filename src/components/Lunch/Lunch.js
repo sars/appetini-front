@@ -15,7 +15,7 @@ const Lunch = ({className, lunch}) => {
       <DeliveryPeriod className={styles.readyBy} time={lunch.ready_by}/>
       <Card className={styles.card}>
         <div className={styles.photoWrapper}>
-          <img className={styles.photo} src={lunch.photos[0].url} />
+          <img className={styles.photo} src={lunch.photos[0].thumb.url} />
           <div className={styles.dishes}>
             {lunch.dishes.map(dish =>
               <div key={dish.id} className={styles.dish}>{dish.name}</div>
