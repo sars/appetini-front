@@ -1,0 +1,175 @@
+.bottom {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.rating {
+  white-space: nowrap;
+
+  :global .rsr-container {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.price {
+  margin-left: auto;
+}
+
+.priceAmount {
+  font-size: 4.2rem;
+  font-weight: 300;
+}
+
+.priceCurrency {
+  font-size: 1.2rem;
+  color: #a18e7f;
+}
+
+.feedback {
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  color: #a18e7f;
+  font-size: 1.2rem;
+}
+
+.root {
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+  display: block;
+  color: #000;
+
+  [data-react-toolbox="avatar"] {
+    margin-right: 1rem;
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
+.card:hover {
+  box-shadow: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 78, 47, 0.12), 0 5px 5px -3px rgba(109, 78, 47, 0.2);
+
+  .photo {
+    transform: rotate(4deg) scale(1.2, 1.2);
+  }
+
+  .dish {
+    transform: translateX(0);
+  }
+}
+
+.dish {
+  padding: 0.7rem 1.3rem;
+  margin: 0.3rem;
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 500px; // http://stackoverflow.com/questions/18794947/capsule-shape-using-border-radius-without-a-set-width-or-height
+  display: inline-block;
+  font-size: 1.2rem;
+  color: #1b1b1b;
+
+  transition: transform 200ms ease;
+}
+
+.dishes {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  padding: 1.2rem;
+
+  .dish {
+    transform: translateX(-400px);
+
+    &:nth-child(2) {
+      transition-delay: 100ms;
+    }
+
+    &:nth-child(3) {
+      transition-delay: 200ms;
+    }
+
+    &:nth-child(4) {
+      transition-delay: 300ms;
+    }
+  }
+}
+
+.cookName {
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+  font-size: 1.5rem;
+}
+
+.photoWrapper {
+  padding-top: 75%;
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+}
+
+.photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(0deg) scale(1, 1);
+  transition: transform 160ms ease;
+  object-fit: cover;
+}
+
+.avatar {
+  position: relative;
+  display: inline-block;
+  margin-right: 1rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 500px;
+
+  > img {
+    display: block;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 500px;
+    object-fit: cover;
+  }
+}
+
+.root .readyBy {
+  color: #a4958b;
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: baseline;
+
+  > :global(.fa) {
+    display: none;
+  }
+
+  > [role="day"], > [role="date"] {
+    margin-right: 0.4rem;
+
+    &:after {
+      display: none;
+    }
+  }
+
+  > [role="day"] {
+    background-color: #958C82;
+    padding: 0 0.4rem;
+    line-height: 1.4em;
+    color: #E9E3DE;
+    border-radius: 2px;
+  }
+
+  > [role="date"] {
+    font-size: 0.8em;
+  }
+
+  > [role="time"] {
+    margin-left: auto;
+    font-weight: 500;
+  }
+}

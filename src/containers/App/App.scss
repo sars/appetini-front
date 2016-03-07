@@ -1,22 +1,46 @@
-.app {
-  .brand {
-    position: absolute;
-    $size: 40px;
-    top: 5px;
-    left: 5px;
-    display: inline-block;
-    background: #2d2d2d url('../Home/logo.png') no-repeat center center;
-    width: $size;
-    height: $size;
-    background-size: 80%;
-    margin: 0 10px 0 0;
-    border-radius: $size / 2;
-  }
-  nav :global(.fa) {
-    font-size: 2em;
-    line-height: 20px;
-  }
+body {
+  background-color: #fdfaf7;
+  background-image: url('./bg/p2.png'), url('./bg/p1.png');
 }
+
+h1, h2, h3 {
+  color: $color-primary;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2.4rem;
+}
+
+h3 {
+  font-size: 1.8rem;
+  line-height: 3rem;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .appContent {
-  margin: 50px 0; // for fixed navbar
+  margin-top: 6.4rem;
+  padding: 2.4rem 0;
+  flex: 1;
+}
+
+.progress {
+  position: fixed;
+  z-index: 101;
+  top: 0;
+  height: 0;
+  transition: height 0.5s ease;
+}
+
+.progressActive {
+  height: 0.4rem;
 }

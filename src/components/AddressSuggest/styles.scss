@@ -1,0 +1,81 @@
+@import "node_modules/react-toolbox/lib/base";
+@import "node_modules/react-toolbox/lib/dropdown/config";
+
+$unit: 1rem;
+
+$input-field-padding: .8 * $unit;
+$input-field-font-size: 1.6 * $unit;
+
+:global {
+  /**
+ * The geosuggest module
+ */
+  .geosuggest {
+    position: relative;;
+  }
+  .geosuggest__input {
+    display: block;
+    width: 100%;
+    padding: $input-field-padding 0;
+    font-size: $input-field-font-size;
+    color: $color-text;
+    background-color: #FFF;
+    border: 1px solid #e4d9cf;
+    border-radius: 500px;
+    padding-left: 1.4rem;
+    padding-right: 1.4rem;
+
+    &:focus {
+      ~ .bar:before, ~ .bar:after {
+        width: 50%;
+      }
+    }
+
+    &[disabled] {
+      background-color: rgba(253,250,247,0.8);
+      color: #a29c95;
+      border-color: rgba(228, 217, 207, 0.7);
+      font-weight: 400;
+    }
+  }
+  .geosuggest__input:focus {
+    border-bottom: 1px solid $color-primary;
+    box-shadow: 0 0 0 transparent;
+  }
+  .geosuggest__suggests {
+    @include no-webkit-scrollbar;
+    position: absolute;
+    z-index: $z-index-high;
+    width: 100%;
+    overflow-y: auto;
+    list-style: none;
+    background-color: $dropdown-color-white;
+    transition-timing-function: $animation-curve-default;
+    transition-duration: $animation-duration;
+    transition-property: max-height, box-shadow;
+    border-radius: 1.8rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+    margin-top: 0.1rem;
+  }
+
+  .geosuggest__suggests--hidden {
+     display: none;
+  }
+
+  /**
+   * A geosuggest item
+   */
+  .geosuggest-item {
+    position: relative;
+    padding: $unit;
+    overflow: hidden;
+    cursor: pointer;
+    &:hover, &focus {
+      background-color: $dropdown-value-hover-background;
+    }
+  }
+
+  .geosuggest-item--active {
+    background-color: darken($dropdown-value-hover-background, 5%);
+  }
+}

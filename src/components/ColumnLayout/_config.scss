@@ -1,0 +1,9 @@
+$unit: 1px;
+$column-width: 310;
+$page-paddings: 14;
+$giant-screen: ($column-width * 7 + $page-paddings * 2) * $unit;
+$mega-screen: ($column-width * 6 + $page-paddings * 2) * $unit;
+$huge-screen: ($column-width * 5 + $page-paddings * 2) * $unit;
+$big-screen: ($column-width * 4 + $page-paddings * 2) * $unit;
+$medium-screen: ($column-width * 3 + $page-paddings * 2) * $unit;
+$small-screen: ($column-width * 2 + $page-paddings * 2) * $unit;

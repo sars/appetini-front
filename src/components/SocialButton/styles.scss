@@ -1,0 +1,29 @@
+.root.root {
+  border-radius: 500px;
+  height: 3.3rem;
+  width: 3.3rem;
+  background-color: #E8DFD7;
+  transition: background-color 300ms ease;
+
+  &.medium {
+    height: 4.5rem;
+    width: 4.5rem;
+
+    svg {
+      width: 1.3em;
+      height: 1.3em;
+    }
+  }
+
+  &:not([disabled]) {
+    color: #FFF;
+  }
+  &:hover {
+    background-color: $color-accent;
+  }
+
+  svg {
+    width: 0.9em;
+    height: 0.9em;
+  }
+}

@@ -4,49 +4,31 @@
 import 'babel/polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createHistory from 'history/lib/createBrowserHistory';
-import useScroll from 'scroll-behavior/lib/useStandardScroll';
 import createStore from './redux/create';
 import ApiClient from './helpers/ApiClient';
-import io from 'socket.io-client';
-import {Provider} from 'react-redux';
-import {reduxReactRouter, ReduxRouter} from 'redux-router';
+import { Router, browserHistory } from 'react-router';
+import { ReduxAsyncConnect } from 'redux-async-connect';
+import rootComponent from 'helpers/rootComponent';
+import useScroll from 'scroll-behavior/lib/useStandardScroll';
 
 import getRoutes from './routes';
-import makeRouteHooksSafe from './helpers/makeRouteHooksSafe';
 
 const client = new ApiClient();
 
-// Three different types of scroll behavior available.
-// Documented here: https://github.com/rackt/scroll-behavior
-const scrollableHistory = useScroll(createHistory);
-
+const history = useScroll(() => browserHistory)();
 const dest = document.getElementById('content');
-const store = createStore(reduxReactRouter, makeRouteHooksSafe(getRoutes), scrollableHistory, client, window.__data);
-
-function initSocket() {
-  const socket = io('', {path: '/api/ws', transports: ['polling']});
-  socket.on('news', (data) => {
-    console.log(data);
-    socket.emit('my other event', { my: 'data from client' });
-  });
-  socket.on('msg', (data) => {
-    console.log(data);
-  });
-
-  return socket;
-}
-
-global.socket = initSocket();
+const store = createStore(history, client, window.__data);
 
 const component = (
-  <ReduxRouter routes={getRoutes(store)} />
+  <Router render={(props) =>
+        <ReduxAsyncConnect {...props} helpers={{client}} />
+      } history={browserHistory}>
+    {getRoutes(store, client)}
+  </Router>
 );
 
 ReactDOM.render(
-  <Provider store={store} key="provider">
-    {component}
-  </Provider>,
+  rootComponent(store, component),
   dest
 );
 
@@ -61,12 +43,12 @@ if (process.env.NODE_ENV !== 'production') {
 if (__DEVTOOLS__ && !window.devToolsExtension) {
   const DevTools = require('./containers/DevTools/DevTools');
   ReactDOM.render(
-    <Provider store={store} key="provider">
+    rootComponent(store, (
       <div>
         {component}
         <DevTools />
       </div>
-    </Provider>,
+    )),
     dest
   );
 }

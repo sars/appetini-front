@@ -1,0 +1,76 @@
+.dialog {
+  border-radius: 0.5rem;
+  [role="body"] {
+    padding: 3rem;
+  }
+
+  [role="navigation"] {
+    display: none;
+  }
+
+  width: 50rem;
+}
+
+.close {
+  $size: 43px;
+  width: $size;
+  height: $size;
+  border: 2px solid #fff;
+  background-color: #d1cbc6;
+  border-radius: 500px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-right: -$size/3;
+  margin-top: -$size/3;
+  transition: background-color 300ms ease;
+
+  &:hover {
+    background-color: #b3aba4;
+    cursor: pointer;
+  }
+
+  &:after, &:before {
+    content: '';
+    width: 64.1026%;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -32.0513%;
+    background-color: #fff;
+  }
+
+  &:after {
+    transform: rotate(45deg);
+  }
+
+  &:before {
+    transform: rotate(-45deg);
+  }
+}
+
+.title {
+  text-align: center;
+  color: $color-primary;
+  font-size: 3.6rem;
+  margin: 1rem 0 3.6rem;
+  font-weight: 500;
+
+  > span {
+    padding-bottom: 3rem;
+    position: relative;
+    display: inline-block;
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      height: 1px;
+      width: 60%;
+      top: 100%;
+      left: 20%;
+      background-color: #efe8e2;
+    }
+  }
+}

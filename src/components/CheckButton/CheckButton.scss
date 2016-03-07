@@ -1,0 +1,29 @@
+.checkButton {
+  display: inline-block;
+  background-color: #f1eae5;
+  position: relative;
+
+  padding: 0.5rem 0.75rem;
+  margin: 0.25rem 0.5rem 0.25rem 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 0.2rem;
+
+  > span[data-react-toolbox="ripple"] {
+    border-radius: 0.2rem;
+  }
+
+  &:not(.disabled) {
+    cursor: pointer;
+  }
+
+  &.checked {
+    background-color: $color-accent;
+    color: #FFF;
+  }
+
+  > [data-react-toolbox='ripple'] {
+    overflow: hidden;
+    border-radius: 500px;
+  }
+}

@@ -1,0 +1,56 @@
+.autocomplete {
+  padding: 0;
+
+  > [data-react-toolbox="input"] {
+    border: 1px solid #e4d9cf;
+    border-radius: 500px;
+    padding: 0;
+    margin-top: 0.2rem;
+
+    > input {
+      border: 0 none;
+      padding-left: 1.4rem;
+      padding-right: 1.4rem;
+    }
+
+    > span:first-of-type {
+      display: none;
+    }
+
+    &:after {
+      content: "\f002";
+      font-family: FontAwesome;
+      border: 0 none;
+      transform: translateY(-50%);
+      width: auto;
+      height: auto;
+      right: 1rem;
+    }
+  }
+
+  ul:last-of-type {
+    margin-top: 0.4rem;
+    padding: 1rem 0;
+    border-radius: 1.8rem;
+
+    &:not(.noSuggestions) {
+      > *:hover {
+        background-color: #F1EAE5;
+      }
+    }
+  }
+
+  ul:first-of-type {
+    padding: 0;
+    > li {
+      background-color: $color-accent;
+      color: #FFF;
+      margin: 0 0.5rem 0.5rem 0;
+
+      &:after {
+        content: '×';
+        margin-left: 0.6rem;
+      }
+    }
+  }
+}

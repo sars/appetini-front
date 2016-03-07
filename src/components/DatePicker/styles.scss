@@ -1,0 +1,13 @@
+.wrapper {
+  [data-react-toolbox="input"] {
+    padding: 0;
+  }
+
+  input {
+    background-color: #FFF;
+    border: 1px solid #e4d9cf;
+    border-radius: 500px;
+    padding-left: 1.4rem;
+    padding-right: 1.4rem;
+  }
+}

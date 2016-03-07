@@ -1,0 +1,70 @@
+.footer {
+  background-color: #FFF;
+  padding: 0 2.4rem 0 13rem;
+  height: 12.8rem;
+  box-shadow: 0 -2px 4px rgba(221, 213, 205, 0.85);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+
+  &:before {
+    content: '';
+    width: 10rem;
+    position: absolute;
+    left: 2.4rem;
+    top: 0;
+    bottom: 0;
+    background: transparent url('../MainLogo/main_logo.svg') no-repeat center center;
+    background-size: 10rem;
+    opacity: 0.2;
+  }
+}
+
+.firstLine, .secondLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.firstLine {
+  margin-bottom: 5px;
+}
+
+.socialLabel, .terms {
+  color: #929292;
+  font-size: 1.3rem;
+  margin-right: 1rem;
+}
+
+.terms {
+  padding: 0 2rem;
+}
+
+.loginSignUp {
+  white-space: nowrap;
+}
+
+.menu {
+  flex-wrap: wrap;
+}
+
+.socialButtons {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+
+  button {
+    margin: 0 0.5rem;
+  }
+}
+
+.footer {
+  display: none;
+}
+
+@media (min-width: 700px) {
+  .footer {
+    display: flex;
+  }
+}

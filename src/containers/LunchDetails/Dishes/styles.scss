@@ -1,0 +1,19 @@
+.dish {
+  list-style-type: none;
+  display: flex;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  font-size: 1.6rem;
+  color: $color-primary;
+}
+
+.dots {
+  flex: 1;
+  border-bottom: 1px dotted currentColor;
+  margin: 0 0.5rem;
+}
+
+.size {
+  color: $color-accent;
+  font-weight: 500;
+}

@@ -1,0 +1,19 @@
+.boxContainer {
+  width: 310px;
+  max-width: 310px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  &[span="2"] {
+    width: 620px;
+    max-width: 620px;
+  }
+}
+
+.boxesContent {
+  margin: -1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

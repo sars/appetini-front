@@ -1,0 +1,42 @@
+@import "./config";
+
+.root {
+  padding: 0 2.4rem;
+  margin: 0 auto;
+}
+
+@media (min-width: $small-screen) {
+  .root {
+    max-width: $small-screen;
+  }
+}
+
+@media (min-width: $medium-screen) {
+  .root {
+    max-width: $medium-screen;
+  }
+}
+
+@media (min-width: $big-screen ) {
+  .root {
+    max-width: $big-screen;
+  }
+}
+
+@media (min-width: $huge-screen ) {
+  .root {
+    max-width: $huge-screen;
+  }
+}
+
+@media (min-width: $mega-screen ) {
+  .root {
+    max-width: $mega-screen;
+  }
+}
+
+@media (min-width: $giant-screen ) {
+  .root {
+    max-width: $giant-screen;
+  }
+}

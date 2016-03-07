@@ -1,0 +1,199 @@
+$border-color: #d2c8be;
+$main-text-color: $color-primary;
+$header-height: 42px;
+$header-width: 124px;
+$shadow-hover: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 78, 47, 0.12), 0 5px 5px -3px rgba(109, 78, 47, 0.2);
+
+.root {
+  padding: $header-height 0 0;
+
+  .card {
+    font-size: 1rem; // to override
+  }
+}
+
+.card {
+  margin: 0 1rem;
+  position: relative;
+  border: 1px solid $border-color;
+
+  &:hover {
+    box-shadow: $shadow-hover;
+
+    .cardHeader:before {
+      box-shadow: $shadow-hover;
+    }
+  }
+
+  .cardHeader {
+    display: block;
+    position: absolute;
+    width: $header-width;
+    height: $header-height;
+    top: -$header-height;
+    left: 50%;
+    margin-left: -$header-width/2;
+    overflow: hidden;
+
+    &:before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: $header-width;
+      background-color: #FFF;
+      border-radius: 500px;
+      border: 1px solid $border-color;
+      box-shadow: 0 2px 2px 0 rgba(109, 78, 47, 0.14), 0 3px 1px -2px rgba(109, 78, 47, 0.2), 0 1px 5px 0 rgba(109, 78, 47, 0.12);
+      transition: box-shadow 200ms ease;
+    }
+  }
+}
+
+.icon {
+  text-align: center;
+  margin-top: -15px;
+  height: 50px;
+}
+
+.content {
+  position: relative;
+}
+
+.amount {
+  font-size: 2.4em;
+  color: $main-text-color;
+  text-align: center;
+  font-weight: 300;
+  margin: 1.5rem 0;
+}
+
+.price {
+  font-size: 7.2em;
+  line-height: 7.5rem;
+  color: $main-text-color;
+  text-align: center;
+  margin: 0 0.05em;
+  overflow: hidden;
+
+  > span {
+    position: relative;
+    &:before, &:after {
+      content: '';
+      background-color: #e1ded6;
+      height: 1px;
+      width: 0.7em;
+      position: absolute;
+      top: 50%;
+      margin: 0 1.5rem;
+    }
+    &:before {
+      left: 100%;
+    }
+    &:after {
+      right: 100%;
+    }
+  }
+}
+
+.currency {
+  text-align: center;
+  color: rgba(104, 92, 80, 0.7);
+  font-size: 1.8em;
+}
+
+.currencyDelivery {
+  border-top: 1px solid rgba(104, 92, 80, 0.2);
+}
+
+.currencyName {
+  display: inline-block;
+  padding: 0 0 0.3rem;
+}
+
+.priceContainer {
+  background-color: #fdfbf9;
+  border-top: 1px solid #e1d3c3;
+  border-bottom: 1px solid #e1d3c3;
+  padding: 3em 0 3.5em;
+}
+
+.totalContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2.4em 1em;
+}
+
+.totalPriceAmount {
+  font-size: 3.6em;
+  color: #8c7967;
+  font-weight: 500;
+}
+
+.totalPriceCurrency {
+  font-size: 1.4em;
+  color: rgba(104, 92, 80, 0.7);
+}
+
+.featured {
+  .card {
+    background-color: #fffad9;
+    border-color: #ffc62e;
+
+    &:hover {
+      .cardHeader:before {
+        filter: drop-shadow(0 2px 2px rgba(109, 78, 47, 0.14)) drop-shadow(0 1px 2px rgba(109, 78, 47, 0.2));
+      }
+    }
+  }
+
+  .cardHeader {
+    width: $header-width + 4px;
+    &:before {
+      border: 0 none;
+      background: transparent top center url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMzQuNSIgaGVpZ2h0PSI1MS41Ij48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZT0iI0ZGQzYyRSIgZmlsbD0iI0ZGRkFEOSIgZD0iTTQuOTI1IDUwLjM5NmwtMy44Ni03LjQxNCA1LjM4Ni0xLjk3LTEuMjItNS42MDggNS41OC0xLjMzMi0uNTI4LTUuNjkgNS42OS0uNjY3LjE0LTUuNzE4IDUuNzQ3LjAyNy44MzItNS42OSA1LjY5LjY5NCAxLjQ3Mi01LjUyNCA1LjU4IDEuMzYgMi4xMS01LjMwMiA1LjM4NiAyIDIuNzUtNS4wMjYgNS4wOCAyLjYzNyAzLjMzLTQuNjYzIDQuNzQ4IDMuMjIgMy44My00LjI0N0w2NyA1LjI1OGw0LjMzLTMuNzc1IDMuODYgNC4yNDcgNC43NDctMy4yMiAzLjMwNCA0LjY2MyA1LjExLTIuNjM3IDIuNzIgNS4wMjUgNS4zODYtMS45OTggMi4xMzcgNS4zMDIgNS41NTItMS4zNiAxLjUgNS41MjQgNS42OS0uNjk0LjgwNiA1LjY5IDUuNzQ4LS4wMjcuMTM4IDUuNzE4IDUuNjkyLjY2Ni0uNTI4IDUuNjkyIDUuNTggMS4zMzItMS4xOTMgNS42MDggNS4zODUgMS45Ny0zLjg4NyA3LjQxNCIvPjwvc3ZnPg==');
+      box-shadow: none;
+      border-radius: 0;
+      filter: drop-shadow(0 2px 1px rgba(109, 78, 47, 0.14)) drop-shadow(0 1px 1px rgba(109, 78, 47, 0.2));
+      transition: filter 200ms ease;
+    }
+  }
+
+  .priceContainer {
+    background-color: #fffef7;
+    border-color: #ffdd83;
+  }
+}
+
+$one-column-min-width: 580px;
+
+.root {
+  width: 33%;
+  margin: 2rem auto 0;
+}
+
+@media (min-width: $one-column-min-width) and (max-width: 770px) {
+  .root .totalContainer .button {
+    font-size: 1.5rem;
+    font-weight: 400;
+    height: 4rem;
+    min-width: 9rem;
+  }
+
+  .root .card {
+    font-size: 0.85rem;
+  }
+}
+
+@media (min-width: $one-column-min-width) and (max-width: 650px) {
+  .root .card {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: $one-column-min-width + 1) {
+  .root {
+    width: 100%;
+    max-width: 350px;
+  }
+}

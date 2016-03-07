@@ -1,0 +1,172 @@
+@import "src/components/ColumnLayout/config";
+
+.root {
+  :global {
+    .overlay-enter {
+      opacity: 0;
+    }
+    .overlay-enter-active {
+      opacity: 0.6;
+    }
+    .overlay-leave {
+      opacity: 0.6;
+    }
+    .overlay-leave-active {
+      opacity: 0;
+    }
+  }
+}
+
+.overlay {
+  opacity: 0.6;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  z-index: 1;
+  position: fixed;
+  transition: opacity 300ms ease;
+}
+
+.photos {
+  margin: 0 0 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0;
+  flex-wrap: wrap;
+}
+
+.previewsContainer {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.cookPreview {
+  flex: 1 1 0;
+}
+
+.deliveryPeriod {
+  color: #4a4a4a;
+}
+
+.buyContent {
+  padding: 0 1rem;
+}
+
+.otherLunches {
+  margin: 2.4rem 0;
+}
+
+.moreContainer {
+  text-align: center;
+  margin: 3rem 0 2rem;
+
+  .moreButton:not([disabled]) {
+    padding: 0 3rem;
+    height: 4.5rem;
+    color: #554a40;
+  }
+}
+
+.middlePart {
+  position: relative;
+}
+
+.middlePartContent {
+  margin: 0 -1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.leftSidebar {
+  max-width: $column-width * $unit;
+  width: $column-width * $unit;
+  padding: 0 1rem;
+}
+
+.lunchContainer {
+  width: $column-width * 3 * $unit;
+  max-width: $column-width * 3 * $unit;
+  padding: 0 1rem;
+}
+
+.lunch {
+  margin: 0 -1rem;
+  display: flex;
+}
+
+.lunchContent {
+  flex: 2 2 0;
+}
+
+.buyContainer {
+  flex: 1 1 0;
+  width: $column-width * $unit;
+  max-width: $column-width * $unit;
+}
+
+.lunchContentInner {
+  padding: 0 1rem;
+}
+
+@mixin collapsingContainer($opened, $inner) {
+  position: absolute;
+  visibility: hidden;
+  transition: visibility 0ms ease;
+  transition-delay: 410ms;
+
+  .#{$inner} {
+    z-index: 2;
+    position: relative;
+    transform: rotateY(90deg);
+    transition: transform 200ms ease;
+    transition-delay: 200ms;
+  }
+
+  &.#{$opened} {
+    visibility: visible;
+    transition-delay: 0ms;
+
+    .#{$inner} {
+      transform: rotateY(0deg);
+    }
+  }
+}
+
+@media (max-width: $big-screen - 1 ) {
+  .leftSidebar {
+    @include collapsingContainer(leftSidebarOpened, cookContainer);
+  }
+}
+
+@media (max-width: $medium-screen - 1 ) {
+  .buyContainer {
+    @include collapsingContainer(buyContainerOpened, buyContent);
+    margin-left: -$column-width * $unit;
+  }
+}
+
+@media (min-width: $medium-screen) {
+  .purchasePreview {
+    display: none;
+  }
+}
+
+@media (min-width: $big-screen ) {
+  .cookPreview {
+    display: none;
+  }
+}
+
+@media (min-width: $huge-screen ) {
+  .root {
+    max-width: $huge-screen !important;
+  }
+}

@@ -1,0 +1,17 @@
+.price, .button {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.price {
+  margin-right: 0.5rem;
+}
+
+.priceAmount {
+  font-size: 3.2rem;
+}
+
+.currency {
+  color: #979797;
+  font-size: 1.2rem;
+}

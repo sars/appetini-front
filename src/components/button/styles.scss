@@ -1,0 +1,37 @@
+.flat {
+  text-transform: none;
+  height: 4rem;
+  font-size: 1.5rem;
+  border-radius: 500px;
+
+  &.big {
+    font-size: 1.8rem;
+    font-weight: 500;
+    height: 5.4rem;
+    min-width: 12rem;
+  }
+
+  > [data-react-toolbox="ripple"] {
+    border-radius: 500px;
+  }
+
+  &.accent:not([disabled]) {
+    background-color: $color-accent;
+    color: #fff;
+
+    &:hover {
+      background-color: scale-color($color-accent, $lightness: 10%);
+    }
+  }
+
+  &.outlined:not([disabled]) {
+    color: #333;
+    border: 1px solid #CCC;
+    transition: border 300ms ease;
+
+    &:hover {
+      border: 1px solid #888;
+      background-color: transparent;
+    }
+  }
+}

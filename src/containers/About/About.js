@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
-import DocumentMeta from 'react-document-meta';
-import { MiniInfoBar } from 'components';
-import config from '../../config';
+import Helmet from 'react-helmet';
 
 export default class About extends Component {
 
   state = {
     showKitten: false
-  }
+  };
 
   handleToggleKitten = () => this.setState({showKitten: !this.state.showKitten});
 
@@ -17,7 +15,7 @@ export default class About extends Component {
     return (
       <div className="container">
         <h1>About Us</h1>
-        <DocumentMeta title={config.app.title + ': About Us'}/>
+        <Helmet title="About Us"/>
 
         <p>This project was originally created by Erik Rasmussen
           (<a href="https://twitter.com/erikras" target="_blank">@erikras</a>), but has since seen many contributions
@@ -30,8 +28,6 @@ export default class About extends Component {
 
         <p>Hey! You found the mini info bar! The following component is display-only. Note that it shows the same
           time as the info bar.</p>
-
-        <MiniInfoBar/>
 
         <h3>Images</h3>
 

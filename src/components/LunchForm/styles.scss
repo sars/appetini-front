@@ -1,0 +1,92 @@
+.root {
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+.dishesTable {
+  width: 100%;
+
+  tr {
+    transition: all 300ms ease;
+
+    &:global {
+      &.dish-tr-enter {
+        height: 0;
+        transform: scaleY(0);
+      }
+
+      &.dish-tr-enter-active {
+        height: 5rem;
+        transform: scaleY(1);
+      }
+
+      &.dish-tr-leave {
+        height: 5rem;
+        transform: scaleY(1);
+      }
+
+      &.dish-tr-leave-active {
+        height: 0;
+        transform: scaleY(0);
+      }
+    }
+  }
+
+  th {
+    font-weight: 500;
+  }
+
+  td, th {
+    padding: 0.5rem;
+    vertical-align: top;
+
+    &:first-child {
+      padding-left: 0;
+    }
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+}
+
+.dishSizeCol {
+  width: 10rem;
+}
+
+.dishTypeCol {
+  width: 16rem;
+}
+
+.acceptRules {
+  margin-top: 2rem;
+}
+
+.section {
+  margin-bottom: 1rem;
+}
+
+.error {
+  font-size: 1.2rem;
+  line-height: 2rem;
+  color: #de3226;
+}
+
+.twoColSection {
+  display: flex;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  width: 100%;
+  > div {
+    width: 50%;
+    padding: 0 0.5rem;
+  }
+}
+
+.removeDishTd {
+  text-align: center;
+  a {
+    color: #000;
+    font-size: 1.4rem;
+    border-bottom: 1px dashed #AAA;
+  }
+}
