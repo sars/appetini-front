@@ -12,7 +12,7 @@ import classNames from 'classnames';
   {pushState: routeActions.push})
 export default class App extends Component {
   static propTypes = {
-    children: PropTypes.object.isRequired,
+    children: PropTypes.object,
     pushState: PropTypes.func.isRequired,
     routerReducer: PropTypes.object,
     route: PropTypes.object.isRequired,
@@ -45,7 +45,7 @@ export default class App extends Component {
     const styles = require('./App.scss');
 
     return (
-      <div className={styles.app}>
+      <div className={styles.app} data-react-toolbox="app">
         <Helmet {...config.app.head}/>
 
         <ProgressBar mode="indeterminate"

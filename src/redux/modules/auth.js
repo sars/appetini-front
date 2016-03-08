@@ -8,6 +8,7 @@ const LOGOUT = 'auth/LOGOUT';
 const LOGOUT_SUCCESS = 'auth/LOGOUT_SUCCESS';
 const LOGOUT_FAIL = 'auth/LOGOUT_FAIL';
 const SET_USER = 'auth/SET_USER';
+const REGISTRATION = 'auth/REGISTRATION';
 const RECOVERY_SENT = 'auth/RECOVERY_SENT';
 const RECOVERY_PASSWORD_CHANGED = 'auth/RECOVERY_PASSWORD_CHANGED';
 const SET_TOKEN = 'auth/SET_TOKEN';
@@ -101,6 +102,17 @@ export function sendRecovery(user) {
     return client.post('/passwords', { data: { user }}).then(response => {
       dispatch({
         type: RECOVERY_SENT
+      });
+      return response;
+    });
+  };
+}
+
+export function join(user) {
+  return (dispatch, client) => {
+    return client.post('/registration', { data: { user }}).then(response => {
+      dispatch({
+        type: REGISTRATION
       });
       return response;
     });

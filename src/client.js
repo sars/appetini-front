@@ -10,6 +10,7 @@ import { Router, browserHistory } from 'react-router';
 import { ReduxAsyncConnect } from 'redux-async-connect';
 import rootComponent from 'helpers/rootComponent';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
+import { close as closeModal } from './redux/modules/modals';
 
 import getRoutes from './routes';
 
@@ -20,7 +21,7 @@ const dest = document.getElementById('content');
 const store = createStore(history, client, window.__data);
 
 const component = (
-  <Router render={(props) =>
+  <Router onUpdate={() => store.dispatch(closeModal())} render={(props) =>
         <ReduxAsyncConnect {...props} helpers={{client}} />
       } history={browserHistory}>
     {getRoutes(store, client)}
