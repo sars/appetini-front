@@ -11,6 +11,16 @@ export default class Dropdown extends _Dropdown {
     }
   }
 
+  getSelectedItem = () => {
+    if (this.props.value) {
+      for (const item of this.props.source) {
+        if (item.value === this.props.value) return item;
+      }
+    } else {
+      return this.props.source[0];
+    }
+  };
+
   render() {
     const styles = require('./styles.scss');
     const toolboxStyles = require('react-toolbox/lib/dropdown/style.scss');
@@ -35,11 +45,11 @@ export default class Dropdown extends _Dropdown {
           className={classNames(toolboxStyles.value, styles.value)}
           onMouseDown={this.handleMouseDown}
           readOnly
-          type={template ? 'hidden' : null}
+          type={template && selected ? 'hidden' : null}
           value={selected && selected.label}
           styles={inputStyles}
         />
-        {template ? this.renderTemplateValue(selected) : null}
+        {template && selected ? this.renderTemplateValue(selected) : null}
         <ul className={classNames(toolboxStyles.values, styles.values)} ref="values">
           {source.map(this.renderValue.bind(this))}
         </ul>
