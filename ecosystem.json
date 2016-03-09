@@ -10,7 +10,8 @@
       name      : "appetini-front",
       script    : "bin/server.js",
       env: {
-        COMMON_VARIABLE: "true"
+        COMMON_VARIABLE: "true",
+        NODE_PATH : "./src"
       },
       env_production : {
         NODE_ENV: "production"
