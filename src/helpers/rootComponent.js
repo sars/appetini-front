@@ -1,7 +1,7 @@
 import React from 'react';
-import {Provider} from 'react-redux';
-import {IntlProvider, addLocaleData} from 'react-intl';
-import ruLocaleData from 'react-intl/lib/locale-data/ru';
+import { Provider } from 'react-redux';
+import { IntlProvider, addLocaleData } from 'react-intl';
+import ruLocaleData from 'react-intl/locale-data/ru';
 
 addLocaleData(ruLocaleData);
 
