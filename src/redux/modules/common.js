@@ -13,6 +13,8 @@ const CREATE_LUNCH_FAIL = 'common/CREATE_LUNCH_FAIL';
 const CREATE_ORDER = 'common/CREATE_ORDER';
 const CREATE_ORDER_SUCCESS = 'common/CREATE_ORDER_SUCCESS';
 const CREATE_ORDER_FAIL = 'common/CREATE_ORDER_FAIL';
+const GET_REVIEWS_SUCCESS = 'common/GET_REVIEWS_SUCCESS';
+const CREATE_REVIEWS_SUCCESS = 'common/CREATE_REVIEWS_SUCCESS';
 
 const initialState = {
   loadState: {}
@@ -20,6 +22,19 @@ const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+    case CREATE_REVIEWS_SUCCESS:
+      return {
+        ...state,
+        reviews: {
+          ...state.reviews,
+          resources: [action.result.resource, ...state.reviews.resources]
+        }
+      };
+    case GET_REVIEWS_SUCCESS:
+      return {
+        ...state,
+        reviews: action.result
+      };
     case GET_COOKS:
       return {
         ...state,
@@ -146,5 +161,29 @@ export function updateOrder(order) {
   return {
     types: [CREATE_ORDER, CREATE_ORDER_SUCCESS, CREATE_ORDER_FAIL],
     promise: client => client.put(`/orders/${order.id}`, { data: { resource: order}})
+  };
+}
+
+export function getReviews(cookId, page) {
+  return (dispatch, client) => {
+    return client.get('/reviews', { params: {cook_id: cookId, page: page} }).then(response => {
+      dispatch({
+        type: GET_REVIEWS_SUCCESS,
+        result: response
+      });
+      return response;
+    });
+  };
+}
+
+export function createReview(review) {
+  return (dispatch, client) => {
+    return client.post('/reviews', { data: {resource: review} }).then(response => {
+      dispatch({
+        type: CREATE_REVIEWS_SUCCESS,
+        result: response
+      });
+      return response;
+    });
   };
 }

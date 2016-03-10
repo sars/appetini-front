@@ -17,17 +17,30 @@ $input-underline-height:  2 * $unit;
 .input {
   display: block;
   width: 100%;
-  padding: $input-field-padding 0;
+  padding: $input-field-padding 1.4rem;
   font-size: $input-field-font-size;
   color: $color-text;
   background-color: #FFF;
   border: 1px solid #e4d9cf;
   border-radius: 500px;
-  padding-left: 1.4rem;
-  padding-right: 1.4rem;
   &:focus {
     ~ .bar:before, ~ .bar:after {
       width: 50%;
+    }
+  }
+}
+
+.multiline {
+  .inputWrapper {
+    border-radius: 2.7rem;
+  }
+  .input {
+    min-height: 10rem;
+    padding: 1.2rem 1.8rem;
+    border-radius: 2.7rem;
+
+    &:focus {
+      outline: 0 none;
     }
   }
 }

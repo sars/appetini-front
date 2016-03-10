@@ -49,7 +49,8 @@ export default class extends Component {
       [styles.disabled]: disabled,
       [styles.errored]: error,
       [styles.hidden]: type === 'hidden',
-      [styles.big]: big
+      [styles.big]: big,
+      [styles.multiline]: multiline
     }, this.props.className);
 
     const element = multiline ? 'textarea' : (mask ? MaskedInput : 'input'); // eslint-disable-line no-nested-ternary
@@ -62,7 +63,7 @@ export default class extends Component {
       role: 'input',
       disabled,
       type,
-      value,
+      value: multiline ? value || '' : value, // https://github.com/erikras/redux-form/issues/394
       mask
     });
 

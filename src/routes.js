@@ -45,7 +45,7 @@ export default (store, client) => {
       <Route path="recovery/:token" component={Recovery.Password}/>
 
       <Route path="about" component={About}/>
-      <Route path="lunches/:lunchId" component={LunchDetails}/>
+      <Route path="lunches/:lunchId(/reviews)" component={LunchDetails}/>
       <Route path="tariffs" component={Tariffs}/>
       <Route path="checkout" component={Checkout}/>
 

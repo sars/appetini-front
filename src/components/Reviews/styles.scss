@@ -1,0 +1,47 @@
+.root h3 {
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: $color-primary;
+}
+
+.ratingWrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+}
+
+.createdAt {
+  color: #b7aaa1;
+}
+
+.body {
+  font-size: 1.5rem;
+}
+
+.review {
+  margin: 2.5rem 0;
+}
+
+.buttons {
+  margin: 2rem 0;
+}
+
+.reviewField {
+  textarea {
+  }
+}
+
+.ratingFieldInner {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.ratingFieldContainer {
+  margin: 0 0 0.5rem;
+}
+
+.error {
+  font-size: 1.2rem;
+  line-height: 2rem;
+  color: #de3226;
+}

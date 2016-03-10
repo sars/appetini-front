@@ -15,12 +15,16 @@
     border-radius: 500px;
   }
 
-  &.accent:not([disabled]) {
+  &.accent:not(.xxx) { // :not(.xxx) to make selector more specific
     background-color: $color-accent;
     color: #fff;
 
     &:hover {
       background-color: scale-color($color-accent, $lightness: 10%);
+    }
+
+    &[disabled] {
+      opacity: 0.5;
     }
   }
 

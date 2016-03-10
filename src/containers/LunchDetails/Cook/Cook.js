@@ -7,7 +7,7 @@ import { FormattedPlural } from 'react-intl';
 import classNames from 'classnames';
 import styles from './styles.scss';
 
-const Cook = ({cook, className}) => {
+const Cook = ({cook, lunch, className}) => {
   return (
     <Card className={classNames(styles.root, className)}>
       <CardContent>
@@ -18,8 +18,8 @@ const Cook = ({cook, className}) => {
           {cook.first_name} {cook.last_name}
         </h3>
         <div className={styles.ratingContainer}>
-          <StarRating name="cook-rating" totalStars={5} editing={false} rating={3} size={18}/>
-          <Link className={styles.feedbackLink} to="/">
+          <StarRating name="cook-rating" totalStars={5} editing={false} rating={cook.rating} size={18}/>
+          <Link className={styles.feedbackLink} to={`/lunches/${lunch.id}/reviews`}>
             {cook.reviews_count}
             &nbsp;
             <FormattedPlural value={cook.reviews_count} one="отзыв" few="отзыва" many="отзывов" other="отзывов"/>
@@ -59,6 +59,7 @@ const Cook = ({cook, className}) => {
 
 Cook.propTypes = {
   cook: PropTypes.object.isRequired,
+  lunch: PropTypes.object.isRequired,
   className: PropTypes.string
 };
 

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import Dialog from 'react-toolbox/lib/dialog';
+import ToolboxDialog from 'react-toolbox/lib/dialog';
 import { close } from 'redux/modules/modals';
 import { connect } from 'react-redux';
 import * as Components from 'components'; // TODO move to App
@@ -29,6 +29,33 @@ class Provider extends Component {
   }
 }
 
+class Dialog extends Component {
+  static propTypes = {
+    children: PropTypes.any,
+    title: PropTypes.string,
+    onClose: PropTypes.func.isRequired,
+    active: PropTypes.bool.isRequired
+  };
+
+  static contextTypes = contextTypes;
+
+  render() {
+    const { title, active, children, onClose } = this.props;
+
+    return (
+      <ToolboxDialog className={styles.dialog} active={active} onOverlayClick={onClose}>
+        <div className={styles.close} onClick={onClose}></div>
+        <h6 className={styles.title}>
+          <span>{title}</span>
+        </h6>
+        <Provider context={this.context}>
+          {children}
+        </Provider>
+      </ToolboxDialog>
+    );
+  }
+}
+
 @connect(state => ({ ...state.modals }), {close})
 export default class Modal extends Component {
   static propTypes = {
@@ -38,21 +65,14 @@ export default class Modal extends Component {
     active: PropTypes.bool.isRequired
   };
 
-  static contextTypes = contextTypes;
+  static Dialog = Dialog;
 
   render() {
-    const {title, component, active} = this.props;
-
+    const { component } = this.props;
     return (
-      <Dialog className={styles.dialog} active={active} onOverlayClick={this.props.close}>
-        <div className={styles.close} onClick={::this.props.close}></div>
-        <h6 className={styles.title}>
-          <span>{title}</span>
-        </h6>
-        <Provider context={this.context}>
-          {component && React.createElement(Components[component], {onSuccess: this.props.close})}
-        </Provider>
-      </Dialog>
+      <Modal.Dialog onClose={::this.props.close} {...this.props}>
+        {component && React.createElement(Components[component], {onSuccess: this.props.close})}
+      </Modal.Dialog>
     );
   }
 }

@@ -6,6 +6,8 @@ import find from 'lodash/find';
 import Button from 'components/Button/Button';
 import Lunch from 'components/Lunch/Lunch';
 import Boxes from 'components/Boxes/Boxes';
+import Modal from 'components/Modal/Modal';
+import Reviews from 'components/Reviews/Reviews';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import Dishes from './Dishes/Dishes';
 import Cook from './Cook/Cook';
@@ -14,10 +16,26 @@ import Purchase from './Purchase/Purchase';
 import PurchasePreview from './Purchase/Preview/Preview';
 import Photos from './Photos/Photos';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { getReviews } from 'redux/modules/common';
 import classNames from 'classnames';
 
+function isReviews(location) {
+  return /\/reviews$/.test(location.pathname);
+}
+
 @asyncConnect([
-  {key: 'lunch', promise: ({params, helpers}) => helpers.client.get('/lunches/' + params.lunchId)},
+  {key: 'lunch', promise: ({params, helpers, location, store: { dispatch, getState }}) => {
+    const oldLunch = getState().reduxAsyncConnect.lunch;
+    return Promise.resolve(
+      oldLunch && (oldLunch.id.toString() === params.lunchId)
+        ? oldLunch
+        : helpers.client.get('/lunches/' + params.lunchId).then(response => response.resource)
+    ).then(lunch => {
+      return isReviews(location)
+        ? dispatch(getReviews(lunch.cook.id, params.page)).then(() => lunch)
+        : lunch;
+    });
+  }},
   {key: 'tariffs', promise: ({helpers, store}) => {
     if (!store.getState().reduxAsyncConnect.tariffs) {
       return helpers.client.get('/delivery_tariffs').then(tariffs => tariffs.resources);
@@ -28,11 +46,13 @@ import classNames from 'classnames';
 export default class LunchDetails extends Component {
   static propTypes = {
     lunch: PropTypes.object.isRequired,
-    tariffs: PropTypes.array.isRequired
+    tariffs: PropTypes.array.isRequired,
+    location: PropTypes.object.isRequired
   };
 
   static contextTypes = {
-    client: PropTypes.object.isRequired
+    client: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired
   };
 
   state = {
@@ -43,16 +63,20 @@ export default class LunchDetails extends Component {
 
   componentDidMount() {
     this.context.client.get('/lunches', { params: {
-      cook_id: this.props.lunch.resource.cook_id
+      cook_id: this.props.lunch.cook_id
     }}).then(response => {
       this.setState({otherLunches: response.resources});
     });
   }
 
+  handleReviewsClose() {
+    this.context.router.push(`/lunches/${this.props.lunch.id}`);
+  }
+
   render() {
     const styles = require('./LunchDetails.scss');
-    const {resource: lunch} = this.props.lunch;
-    const {cook} = lunch;
+    const { lunch, location } = this.props;
+    const { cook } = lunch;
     const otherLunches = this.state.otherLunches;
     const boxes = otherLunches.map(otherLunch => ({
       component: <Lunch lunch={otherLunch}/>
@@ -70,6 +94,9 @@ export default class LunchDetails extends Component {
 
     return (
       <ColumnLayout className={styles.root}>
+        <Modal.Dialog active={isReviews(location)} title="Отзывы о кулинаре" onClose={::this.handleReviewsClose}>
+          {isReviews(location) && <Reviews/>}
+        </Modal.Dialog>
         <div className={styles.middlePart}>
           <div className={styles.middlePartContent}>
             <div className={leftSidebarClasses}>
@@ -78,7 +105,7 @@ export default class LunchDetails extends Component {
                                                onClick={() => this.setState({cookOpened: false})}></div>}
               </ReactCSSTransitionGroup>
               <div className={styles.cookContainer}>
-                <Cook cook={cook}/>
+                <Cook cook={cook} lunch={lunch}/>
               </div>
             </div>
             <div className={styles.lunchContainer}>

@@ -20,8 +20,12 @@ const history = useScroll(() => browserHistory)();
 const dest = document.getElementById('content');
 const store = createStore(history, client, window.__data);
 
+history.listenBefore(() => {
+  store.dispatch(closeModal());
+});
+
 const component = (
-  <Router onUpdate={() => store.dispatch(closeModal())} render={(props) =>
+  <Router render={(props) =>
         <ReduxAsyncConnect {...props} helpers={{client}} />
       } history={browserHistory}>
     {getRoutes(store, client)}
