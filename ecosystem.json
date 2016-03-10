@@ -3,18 +3,18 @@
    * Application configuration section
    * http://pm2.keymetrics.io/docs/usage/application-declaration/
    */
-  apps : [
+  "apps" : [
 
     // First application
     {
-      name      : "appetini-front",
-      script    : "bin/server.js",
-      env: {
-        COMMON_VARIABLE: "true",
-        NODE_PATH : "./src"
+      "name"      : "appetini-front",
+      "script"    : "bin/server.js",
+      "env": {
+        "COMMON_VARIABLE": "true",
+        "NODE_PATH" : "./src"
       },
-      env_production : {
-        NODE_ENV: "production"
+      "env_production" : {
+        "NODE_ENV": "production"
       }
     }
   ],
@@ -23,13 +23,13 @@
    * Deployment section
    * http://pm2.keymetrics.io/docs/usage/deployment/
    */
-  deploy : {
-    production : {
-      user : "site",
-      host : "46.101.100.147",
-      ref  : "origin/master",
-      repo : "git@github.com:sars/appetini-front.git",
-      path : "/home/site/www/site-front",
+  "deploy" : {
+    "production" : {
+      "user" : "site",
+      "host" : "46.101.100.147",
+      "ref"  : "origin/master",
+      "repo" : "git@github.com:sars/appetini-front.git",
+      "path" : "/home/site/www/site-front",
       "post-deploy" : "npm install ; pm2 startOrRestart ecosystem.json --env production"
     }
   }
