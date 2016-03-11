@@ -7,11 +7,7 @@ import Form from './Form/Form';
 import normalizeErrors from 'helpers/normalizeErrors';
 import { createReview } from 'redux/modules/common';
 
-@connect(state => ({
-  reviews: state.common.reviews,
-  user: state.auth.user,
-  cook: state.reduxAsyncConnect.lunch.cook
-}), { createReview })
+@connect(state => ({ user: state.auth.user }), { createReview })
 export default class Reviews extends Component {
   static propTypes = {
     reviews: PropTypes.object.isRequired,

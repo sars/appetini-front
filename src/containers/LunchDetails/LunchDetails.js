@@ -42,12 +42,15 @@ function isReviews(location) {
     }
   }}
 ])
-@connect(state => ({auth: state.auth}))
+@connect(state => ({
+  reviews: state.common.reviews
+}))
 export default class LunchDetails extends Component {
   static propTypes = {
     lunch: PropTypes.object.isRequired,
     tariffs: PropTypes.array.isRequired,
-    location: PropTypes.object.isRequired
+    location: PropTypes.object.isRequired,
+    reviews: PropTypes.object
   };
 
   static contextTypes = {
@@ -75,7 +78,7 @@ export default class LunchDetails extends Component {
 
   render() {
     const styles = require('./LunchDetails.scss');
-    const { lunch, location } = this.props;
+    const { lunch, location, reviews } = this.props;
     const { cook } = lunch;
     const otherLunches = this.state.otherLunches;
     const boxes = otherLunches.map(otherLunch => ({
@@ -95,7 +98,7 @@ export default class LunchDetails extends Component {
     return (
       <ColumnLayout className={styles.root}>
         <Modal.Dialog active={isReviews(location)} title="Отзывы о кулинаре" onClose={::this.handleReviewsClose}>
-          {isReviews(location) && <Reviews/>}
+          {reviews && <Reviews reviews={reviews} cook={cook}/>}
         </Modal.Dialog>
         <div className={styles.middlePart}>
           <div className={styles.middlePartContent}>
