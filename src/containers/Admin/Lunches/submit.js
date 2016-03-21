@@ -8,6 +8,7 @@ export default function submit(lunch, submitFn) {
       resolve(response);
     }).catch(response => {
       const errors = normalizeErrors(response.errors);
+      errors.photos_temp_image_ids = errors.photos;
       reject({...errors, _error: errors});
     });
   });

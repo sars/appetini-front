@@ -5,7 +5,7 @@ import styles from './styles.scss';
 
 const fieldTypes = {
   label: value => value,
-  image: value => <img src={value}/>
+  image: value => <img className={styles.img} src={value}/>
 };
 
 const renderField = resource => (field, index) => (

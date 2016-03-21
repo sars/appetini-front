@@ -19,6 +19,10 @@ export default class Checkout extends Component {
     setToken: PropTypes.func.isRequired
   };
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
   state = {};
 
   createOrder(orderAttrs) {
@@ -32,14 +36,19 @@ export default class Checkout extends Component {
       }).then(response => {
         const order = response.resource;
 
+        // TODO this.props.loginSuccess(response) instead of setUser and setToken
         this.props.setUser(order.user);
         this.props.setToken(response.auth_token);
 
         this.setState({order});
-        resolve(response);
+
         if (order.payment_type === 'liqpay') {
           this.refs.payForm.submit();
+        } else {
+          this.context.router.push(`/order/${order.id}/success`);
         }
+
+        resolve(response);
       }).catch(response => {
         const errors = normalizeErrors(response.errors);
         reject({...errors, _error: errors});
@@ -52,20 +61,13 @@ export default class Checkout extends Component {
     const initialOrderValues = {...order, user: this.props.user};
     return (
       <div className={styles.root}>
-        <OrderForm order={order} onSubmit={::this.createOrder} initialValues={initialOrderValues}/>
+        <OrderForm onSubmit={::this.createOrder} initialValues={initialOrderValues}/>
 
         {order &&
-          <div className={styles.payment}>
-            <div>
-              № Вашего заказа: {order.id}
-            </div>
-
-            <form ref="payForm" className={styles.paymentButton} method="post"
-                  action="https://www.liqpay.com/api/3/checkout" acceptCharset="utf-8">
-              <input type="hidden" name="data" value={order.liqpay_data.data}/>
-              <input type="hidden" name="signature" value={order.liqpay_data.signature}/>
-            </form>
-          </div>
+          <form ref="payForm" method="post" action="https://www.liqpay.com/api/3/checkout" acceptCharset="utf-8">
+            <input type="hidden" name="data" value={order.liqpay_data.data}/>
+            <input type="hidden" name="signature" value={order.liqpay_data.signature}/>
+          </form>
         }
 
       </div>

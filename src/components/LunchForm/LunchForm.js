@@ -156,7 +156,7 @@ export default class LunchForm extends Component {
           <MultiImagesField onRemove={::this.removePhoto} onTempImages={::this.handleTempImages}
                             value={fields.photos.value} removingImages={fields.removing_photos.value}
           />
-          {this.errorsFor('photos')}
+          {this.errorsFor('photos_temp_image_ids')}
         </div>
         <div className={styles.section}>
           <h3>Состав обеда</h3>
