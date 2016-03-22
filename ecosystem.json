@@ -4,9 +4,22 @@
    * http://pm2.keymetrics.io/docs/usage/application-declaration/
    */
   "apps" : [
-
-    // First application
     {
+      "name"      : "prod-appetini-front",
+      "script"    : "bin/server.js",
+      "env": {
+        "COMMON_VARIABLE" : "true",
+        "NODE_PATH"       : "./src",
+        "APIHOST"         : "localhost"
+      },
+      "env_production" : {
+        "NODE_ENV"        : "production",
+        "PORT"            : 3011,
+        "APIPORT"         : 3001
+      }
+    },
+    {
+      "name"      : "appetini-front",
       "script"    : "bin/server.js",
       "env": {
         "COMMON_VARIABLE" : "true",
@@ -17,11 +30,6 @@
         "NODE_ENV"        : "production",
         "PORT"            : 3010,
         "APIPORT"         : 3000
-      },
-      "env_production" : {
-        "NODE_ENV"        : "production",
-        "PORT"            : 3011,
-        "APIPORT"         : 3001
       }
     }
   ],
@@ -37,7 +45,7 @@
       "ref"  : "origin/master",
       "repo" : "git@github.com:sars/appetini-front.git",
       "path" : "/home/site/www/site-front",
-      "post-deploy" : "npm install ; pm2 startOrRestart ecosystem.json --env staging"
+      "post-deploy" : "npm install ; pm2 startOrRestart ecosystem.json --env staging --only appetini-front"
     },
     "production" : {
       "user" : "site",
@@ -45,7 +53,7 @@
       "ref"  : "origin/master",
       "repo" : "git@github.com:sars/appetini-front.git",
       "path" : "/home/site/www/prod-site-front",
-      "post-deploy" : "npm install ; pm2 startOrRestart ecosystem.json --env production"
+      "post-deploy" : "npm install ; pm2 startOrRestart ecosystem.json --env production --only prod-appetini-front"
     }
   }
 }
