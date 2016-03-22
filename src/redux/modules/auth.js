@@ -12,9 +12,13 @@ const REGISTRATION = 'auth/REGISTRATION';
 const RECOVERY_SENT = 'auth/RECOVERY_SENT';
 const RECOVERY_PASSWORD_CHANGED = 'auth/RECOVERY_PASSWORD_CHANGED';
 const SET_TOKEN = 'auth/SET_TOKEN';
+const OAUTH_SIGN_UP = 'auth/OAUTH_SIGN_UP';
+const OAUTH_SIGN_UP_SUCCESS = 'auth/OAUTH_SIGN_UP_SUCCESS';
+const OAUTH_SIGN_UP_FAIL = 'auth/OAUTH_SIGN_UP_FAIL';
 
 const initialState = {
-  loaded: false
+  tokenPayload: null,
+  user: null
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -46,7 +50,8 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loggingOut: false,
-        user: null
+        user: null,
+        tokenPayload: null
       };
     case LOGOUT_FAIL:
       return {
@@ -76,6 +81,20 @@ export function setUser(user) {
   };
 }
 
+export function clearToken() {
+  return {
+    type: SET_TOKEN,
+    tokenPayload: null
+  };
+}
+
+export function setToken(token) {
+  return {
+    type: SET_TOKEN,
+    tokenPayload: tokenPayload(token)
+  };
+}
+
 export function logout() {
   return {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
@@ -86,14 +105,10 @@ export function logout() {
 export function login(user) {
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
-    promise: (client) => client.post('/login', { data: { user }})
-  };
-}
-
-export function setToken(token) {
-  return {
-    type: SET_TOKEN,
-    tokenPayload: tokenPayload(token)
+    promise: (client, getState, dispatch) => client.post('/login', { data: { user }}).then(response => {
+      dispatch(setToken(response.auth_token));
+      return response;
+    })
   };
 }
 
@@ -143,5 +158,21 @@ export function oauth(provider) {
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
     promise: () => oauthClient.authenticate(provider)
+  };
+}
+
+export function oauthSingUp(provider) {
+  const oauthClient = new Oauth({
+    facebook: {
+      clientId: '1732728180271989'
+    },
+    vkontakte: {
+      clientId: '5223874'
+    }
+  });
+
+  return {
+    types: [OAUTH_SIGN_UP, OAUTH_SIGN_UP_SUCCESS, OAUTH_SIGN_UP_FAIL],
+    promise: () => oauthClient.retrieveData(provider)
   };
 }

@@ -67,6 +67,7 @@ app.use((req, res) => {
   const store = createStore(history, client);
 
   store.dispatch(setToken(req.cookies.user_token));
+  client.setStore(store);
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +

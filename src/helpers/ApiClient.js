@@ -1,5 +1,7 @@
 import superagent from 'superagent';
 import config from '../config';
+import { setUser, clearToken } from 'redux/modules/auth';
+import { show as showToast } from 'redux/modules/toast';
 
 const methods = ['get', 'post', 'put', 'patch', 'del'];
 
@@ -43,8 +45,20 @@ class _ApiClient {
           request.send(data);
         }
 
-        request.end((err, { body } = {}) => err ? reject(body || err) : resolve(body));
+        request.end((err, { body, headers } = {}) => {
+          if (headers['x-remove-user-token'] === 'yes') {
+            const { dispatch } = this.store;
+            dispatch(clearToken());
+            dispatch(setUser());
+            dispatch(showToast('Время сессии истекло - необходимо войти снова', 'cancel', 'error'));
+          }
+          return err ? reject(body || err) : resolve(body);
+        });
       }));
+  }
+
+  setStore(store) {
+    this.store = store;
   }
 }
 
