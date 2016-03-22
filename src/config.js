@@ -1,4 +1,7 @@
 require('babel/polyfill');
+const moment = require('moment');
+
+moment.locale('ru');
 
 const environment = {
   development: {
