@@ -48,8 +48,8 @@ export default class Footer extends Component {
           <Navigation className={styles.social}>
             <span className={styles.socialLabel}>Присоединяйтесь к нам: </span>
             <div className={styles.socialButtons}>
-              <SocialButton name="vk" />
-              <SocialButton name="fb" />
+              <SocialButton name="vk" href="http://vk.com/appetini"/>
+              <SocialButton name="fb" href="https://www.facebook.com/appetinicom/"/>
               <SocialButton className={styles.socialButton} name="instagram" />
             </div>
           </Navigation>
