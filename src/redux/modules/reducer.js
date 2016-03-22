@@ -19,8 +19,8 @@ export default combineReducers({
   form: form.normalize({
     lunchForm: {
       cook_id: value => value && value.toString(),
-      ready_by_date: value => value && new Date(value),
-      ready_by_time: value => value && moment(value, ['HH:mmZ', moment.ISO_8601]).utc().format('HH:mm\\Z'),
+      ready_by_date: value => value ? new Date(value) : null,
+      ready_by_time: value => value ? moment(value, ['HH:mmZ', moment.ISO_8601]).utc().format('HH:mm\\Z') : null,
       food_preference_ids: value => value && value.map(item => item.toString()),
       removing_photos: value => value || []
     }
