@@ -10,11 +10,19 @@
       "name"      : "appetini-front",
       "script"    : "bin/server.js",
       "env": {
-        "COMMON_VARIABLE": "true",
-        "NODE_PATH" : "./src"
+        "COMMON_VARIABLE" : "true",
+        "NODE_PATH"       : "./src",
+        "APIHOST"         : "localhost"
+      },
+      "env_staging" : {
+        "NODE_ENV"        : "production",
+        "PORT"            : 3010,
+        "APIPORT"         : 3000
       },
       "env_production" : {
-        "NODE_ENV": "production"
+        "NODE_ENV"        : "production",
+        "PORT"            : 3011,
+        "APIPORT"         : 3001
       }
     }
   ],
@@ -30,14 +38,14 @@
       "ref"  : "origin/master",
       "repo" : "git@github.com:sars/appetini-front.git",
       "path" : "/home/site/www/site-front",
-      "post-deploy" : "npm install ; pm2 startOrRestart ecosystem.json --env production"
+      "post-deploy" : "npm install ; pm2 startOrRestart ecosystem.json --env staging"
     },
     "production" : {
       "user" : "site",
       "host" : "46.101.100.147",
       "ref"  : "origin/master",
       "repo" : "git@github.com:sars/appetini-front.git",
-      "path" : "/home/site/www/site-front-prod",
+      "path" : "/home/site/www/prod-site-front",
       "post-deploy" : "npm install ; pm2 startOrRestart ecosystem.json --env production"
     }
   }
