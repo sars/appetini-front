@@ -13,7 +13,8 @@ import styles from './styles.scss';
   {
     form: 'cookForm',
     fields: ['id', 'main_photo_temp_image_id', 'other_photos_temp_image_ids', 'removing_other_photos',
-      'first_name', 'last_name', 'other_photos', 'main_photo', 'location_attributes', 'location']
+      'first_name', 'last_name', 'other_photos', 'main_photo', 'location_attributes', 'location',
+      'user.id', 'user.phone', 'user.email', 'user.password', 'user.facebook', 'user.vkontakte']
   }, null, {showToast}
 )
 export default class CookForm extends Component {
@@ -71,6 +72,34 @@ export default class CookForm extends Component {
           <div>
             <h3>Фамилия</h3>
             <Input {...fields.last_name}/>
+          </div>
+        </div>
+
+        <input type="hidden" {...fields.user.id}/>
+
+        <div className={styles.section}>
+          <h3>Телефон</h3>
+          <Input {...fields.user.phone}/>
+        </div>
+
+        <div className={styles.section}>
+          <h3>Email</h3>
+          <Input type="email" {...fields.user.email}/>
+        </div>
+
+        <div className={styles.section}>
+          <h3>Password</h3>
+          <Input type="password" {...fields.user.password}/>
+        </div>
+
+        <div className={classNames(styles.section, styles.twoColSection)}>
+          <div>
+            <h3>Facebook</h3>
+            <Input {...fields.user.facebook}/>
+          </div>
+          <div>
+            <h3>Vkontakte</h3>
+            <Input {...fields.user.vkontakte}/>
           </div>
         </div>
 

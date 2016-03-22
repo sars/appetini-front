@@ -7,7 +7,7 @@ import { FormattedPlural } from 'react-intl';
 import classNames from 'classnames';
 import styles from './styles.scss';
 
-const Cook = ({cook, lunch, className}) => {
+const Cook = ({cook, cook: { user: { facebook, vkontakte, instagram } }, lunch, className}) => {
   return (
     <Card className={classNames(styles.root, className)}>
       <CardContent>
@@ -44,14 +44,14 @@ const Cook = ({cook, lunch, className}) => {
             )}
           </div>
         </div>
-        <div className={styles.socialContainer}>
+        {(vkontakte || facebook || instagram) && <div className={styles.socialContainer}>
           <h3>В соцсетях</h3>
           <div className={styles.socialButtons}>
-            <SocialButton className={styles.socialButton} name="vk"/>
-            <SocialButton className={styles.socialButton} name="fb"/>
-            <SocialButton className={styles.socialButton} name="instagram"/>
+            {vkontakte && <SocialButton target="_blank" className={styles.socialButton} name="vk" href={'http://vk.com/id' + vkontakte}/>}
+            {facebook && <SocialButton target="_blank" className={styles.socialButton} name="fb" href={'http://facebook.com/profile.php?id=' + facebook}/>}
+            {instagram && <SocialButton target="_blank" className={styles.socialButton} name="instagram" href={'http://instagram.com/' + instagram}/>}
           </div>
-        </div>
+        </div>}
       </CardContent>
     </Card>
   );
