@@ -7,7 +7,6 @@
 
     // First application
     {
-      "name"      : "appetini-front",
       "script"    : "bin/server.js",
       "env": {
         "COMMON_VARIABLE" : "true",
