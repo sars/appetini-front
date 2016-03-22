@@ -24,12 +24,20 @@
    * http://pm2.keymetrics.io/docs/usage/deployment/
    */
   "deploy" : {
-    "production" : {
+    "staging" : {
       "user" : "site",
       "host" : "46.101.100.147",
       "ref"  : "origin/master",
       "repo" : "git@github.com:sars/appetini-front.git",
       "path" : "/home/site/www/site-front",
+      "post-deploy" : "npm install ; pm2 startOrRestart ecosystem.json --env production"
+    },
+    "production" : {
+      "user" : "site",
+      "host" : "46.101.100.147",
+      "ref"  : "origin/master",
+      "repo" : "git@github.com:sars/appetini-front.git",
+      "path" : "/home/site/www/site-front-prod",
       "post-deploy" : "npm install ; pm2 startOrRestart ecosystem.json --env production"
     }
   }
