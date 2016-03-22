@@ -7,8 +7,8 @@ import HeaderMenu from 'components/HeaderMenu/HeaderMenu';
 import SocialButton from 'components/SocialButton/SocialButton';
 
 const menuLinks = [
-  {to: '/terms', label: 'Условия использования'},
-  {to: '/how-it-works', label: 'Как это работает'},
+  // {to: '/terms', label: 'Условия использования'},
+  {to: '/about', label: 'Как это работает'},
   {to: '/', label: 'Меню', index: true},
   {to: '/about', label: 'О Нас'}
 ];

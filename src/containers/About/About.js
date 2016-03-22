@@ -1,47 +1,32 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
+import styles from './styles.scss';
 
-export default class About extends Component {
+const About = () => {
+  return (
+    <div className={styles.root}>
+      <h1>О нас</h1>
+      <Helmet title="О нас"/>
 
-  state = {
-    showKitten: false
-  };
+      <p>
+        Appetini - сервис доставки комплексных обедов.
+        Повара на нашем сайте готовят домашнюю еду в домашних условиях.
+        Мы предоставляем удобный интерфейс для заказа приготовленных ими обедов,
+        поставляем им упаковку и осуществляем доставку.
+      </p>
+      <p>
+        Обеды доставляются каждый день кроме выходных с 12:30 до 13:00, а также с 13:30 до 14:00.
+        Заказ необходимо делать заранее (например, на завтра или на несколько дней вперед).
+        Стоимость индивидуальной (одноразовой) доставки 30грн. Для постоянных клиентов (купивших
+        доставки по подкиске) стоимость значительно ниже - 10-12грн в зависимости от тарифного плана.
+      </p>
+      <p>
+        Количество поваров и выбор блюд будет постоянно увеличиваться, но мы уже сейчас готовы порадовать
+        вас вкусными и здоровыми обедами каждый день. Будем рады вашим отзывам и идеям, мы развиваемся
+        и становимся лучше вместе с вами и благодаря вам!
+      </p>
+    </div>
+  );
+};
 
-  handleToggleKitten = () => this.setState({showKitten: !this.state.showKitten});
-
-  render() {
-    const {showKitten} = this.state;
-    const kitten = require('./kitten.jpg');
-    return (
-      <div className="container">
-        <h1>About Us</h1>
-        <Helmet title="About Us"/>
-
-        <p>This project was originally created by Erik Rasmussen
-          (<a href="https://twitter.com/erikras" target="_blank">@erikras</a>), but has since seen many contributions
-          from the open source community. Thank you to <a
-            href="https://github.com/erikras/react-redux-universal-hot-example/graphs/contributors"
-            target="_blank">all the contributors</a>.
-        </p>
-
-        <h3>Mini Bar <span style={{color: '#aaa'}}>(not that kind)</span></h3>
-
-        <p>Hey! You found the mini info bar! The following component is display-only. Note that it shows the same
-          time as the info bar.</p>
-
-        <h3>Images</h3>
-
-        <p>
-          Psst! Would you like to see a kitten?
-
-          <button className={'btn btn-' + (showKitten ? 'danger' : 'success')}
-                  style={{marginLeft: 50}}
-                  onClick={this.handleToggleKitten}>
-            {showKitten ? 'No! Take it away!' : 'Yes! Please!'}</button>
-        </p>
-
-        {showKitten && <div><img src={kitten}/></div>}
-      </div>
-    );
-  }
-}
+export default About;
