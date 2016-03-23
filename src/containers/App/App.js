@@ -62,7 +62,7 @@ export default class App extends Component {
         <Modal />
         <Toast />
 
-        <GoogleAnalytics id="UA-71130170-1"/>
+        {!__DEVELOPMENT__ && <GoogleAnalytics id="UA-71130170-1"/>}
       </div>
     );
   }

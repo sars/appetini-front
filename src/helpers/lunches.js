@@ -14,3 +14,12 @@ export function request({helpers, store}) {
     'ready_by_time': filters.time
   }});
 }
+
+export function getLunch({params, helpers, store: { getState }}) {
+  const oldLunch = getState().reduxAsyncConnect.lunch;
+  return Promise.resolve(
+    oldLunch && (oldLunch.id.toString() === params.lunchId)
+      ? oldLunch
+      : helpers.client.get('/lunches/' + params.lunchId).then(response => response.resource)
+  );
+}

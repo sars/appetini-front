@@ -17,6 +17,7 @@ import PurchasePreview from './Purchase/Preview/Preview';
 import Photos from './Photos/Photos';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { getReviews } from 'redux/modules/common';
+import { getLunch } from 'helpers/lunches';
 import classNames from 'classnames';
 
 function isReviews(location) {
@@ -24,13 +25,8 @@ function isReviews(location) {
 }
 
 @asyncConnect([
-  {key: 'lunch', promise: ({params, helpers, location, store: { dispatch, getState }}) => {
-    const oldLunch = getState().reduxAsyncConnect.lunch;
-    return Promise.resolve(
-      oldLunch && (oldLunch.id.toString() === params.lunchId)
-        ? oldLunch
-        : helpers.client.get('/lunches/' + params.lunchId).then(response => response.resource)
-    ).then(lunch => {
+  {key: 'lunch', promise: ({params, helpers, location, store, store: { dispatch }}) => {
+    return getLunch({params, helpers, store}).then(lunch => {
       return isReviews(location)
         ? dispatch(getReviews(lunch.cook.id, params.page)).then(() => lunch)
         : lunch;

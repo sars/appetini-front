@@ -19,17 +19,17 @@ module.exports = Object.assign({
   apiPort: process.env.APIPORT,
   app: {
     title: 'Appetini',
-    description: 'All the modern best practices in one example.',
+    description: 'Сервис доставки вкусных домашних обедов каждый день',
     head: {
       titleTemplate: 'Appetini - доставка обедов: %s',
       meta: [
-        {name: 'description', content: 'All the modern best practices in one example.'},
+        {name: 'description', content: 'Сервис доставки вкусных домашних обедов каждый день'},
         {charset: 'utf-8'},
         {property: 'og:site_name', content: 'Appetini - доставка обедов'},
         {property: 'og:image', content: 'https://react-redux.herokuapp.com/logo.png'},
         {property: 'og:locale', content: 'en_US'},
         {property: 'og:title', content: 'Appetini - доставка обедов'},
-        {property: 'og:description', content: 'All the modern best practices in one example.'},
+        {property: 'og:description', content: 'Сервис доставки вкусных домашних обедов каждый день'},
         {property: 'og:card', content: 'summary'},
         {property: 'og:site', content: '@erikras'},
         {property: 'og:creator', content: '@erikras'},

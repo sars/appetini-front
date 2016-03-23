@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { asyncConnect } from 'redux-async-connect';
-import { request as requestLunches } from 'helpers/lunchesFilters';
+import { request as requestLunches } from 'helpers/lunches';
 
 import ResourcesIndex from 'components/ResourcesIndex/ResourcesIndex';
 

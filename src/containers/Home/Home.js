@@ -12,7 +12,7 @@ import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import { loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
-import { request as requestLunches, filterNames } from 'helpers/lunchesFilters';
+import { request as requestLunches, filterNames } from 'helpers/lunches';
 import valueFromLocationQuery from 'helpers/valueFromLocationQuery';
 
 function currentStateName(name) {

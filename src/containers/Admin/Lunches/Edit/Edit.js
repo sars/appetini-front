@@ -4,10 +4,11 @@ import { updateLunch } from 'redux/modules/common';
 import { show as showToast } from 'redux/modules/toast';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
+import { getLunch } from 'helpers/lunches';
 import submit from '../submit';
 
 @asyncConnect([
-  {key: 'lunch', promise: ({params, helpers}) => helpers.client.get('/lunches/' + params.lunchId)}
+  {key: 'lunch', promise: getLunch}
 ])
 @connect(null, { updateLunch, showToast })
 export default class Edit extends Component {
@@ -26,7 +27,7 @@ export default class Edit extends Component {
 
   render() {
     return (
-      <LunchForm initialValues={this.props.lunch.resource} onSubmit={::this.updateLunch}
+      <LunchForm initialValues={this.props.lunch} onSubmit={::this.updateLunch}
                  title="Редактирование обеда" sendLabel="Обновить обед"/>
     );
   }
