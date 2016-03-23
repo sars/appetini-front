@@ -55,6 +55,10 @@ export default class Purchase extends Component {
     return (
       <Card className={styles.root}>
         <CardContent className={styles.cardContent}>
+          <div>
+            <p>Есть вопросы? Звони!</p>
+            <p><strong>+38 096 505 85 84</strong></p>
+          </div>
           <div className={styles.amountContainer}>
             <Button className={styles.amountButton} type="button" icon="remove" outlined mini flat
                     onClick={() => this.incrementAmount(-1)}/>
