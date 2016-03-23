@@ -6,6 +6,7 @@ import config from '../../config';
 import { Modal, Toast, Header, Footer } from 'components';
 import 'react-toolbox/lib/commons';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
+import GoogleAnalytics from 'react-g-analytics';
 import classNames from 'classnames';
 
 @connect(state => ({loaded: state.reduxAsyncConnect.loaded}),
@@ -60,6 +61,8 @@ export default class App extends Component {
 
         <Modal />
         <Toast />
+
+        <GoogleAnalytics id="UA-71130170-1"/>
       </div>
     );
   }
