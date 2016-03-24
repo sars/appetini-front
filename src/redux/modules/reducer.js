@@ -1,9 +1,7 @@
 import { combineReducers } from 'redux';
-import multireducer from 'multireducer';
 import { routeReducer } from 'react-router-redux';
 
 import auth from './auth';
-import counter from './counter';
 import {reducer as form} from 'redux-form';
 import info from './info';
 import modals from './modals';
@@ -24,11 +22,6 @@ export default combineReducers({
       food_preference_ids: value => value && value.map(item => item.toString()),
       removing_photos: value => value || []
     }
-  }),
-  multireducer: multireducer({
-    counter1: counter,
-    counter2: counter,
-    counter3: counter
   }),
   info,
   modals,
