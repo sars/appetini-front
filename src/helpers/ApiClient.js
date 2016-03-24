@@ -46,7 +46,7 @@ class _ApiClient {
         }
 
         request.end((err, { body, headers } = {}) => {
-          if (headers['x-remove-user-token'] === 'yes') {
+          if (headers && headers['x-remove-user-token'] === 'yes') {
             const { dispatch } = this.store;
             dispatch(clearToken());
             dispatch(setUser());

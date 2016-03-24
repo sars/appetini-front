@@ -71,7 +71,9 @@ export default class Header extends Component {
       <AppBar fixed className={styles.root}>
         <IndexLink className={styles.brand} to="/">
           <div className={styles.brandIcon}></div>
-          <span className={styles.brandLabel}></span>
+          <span className={styles.brandLabel}>
+            <span className={styles.brandLabelCity}>Сумы</span>
+          </span>
         </IndexLink>
 
         <HeaderMenu className={styles.desktopMenu} links={menuLinks} showActive />

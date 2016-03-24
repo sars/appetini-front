@@ -24,6 +24,18 @@
   width: 125px;
   height: 35px;
   vertical-align: bottom;
+  position: relative;
+}
+
+.brandLabelCity {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: $color-primary;
+  position: absolute;
+  bottom: -2px;
+  right: -1px;
+  letter-spacing: 2px;
+  font-weight: 500;
 }
 
 .navigationRight {

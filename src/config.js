@@ -25,7 +25,7 @@ module.exports = Object.assign({
       meta: [
         {name: 'description', content: 'Сервис доставки вкусных домашних обедов каждый день'},
         {charset: 'utf-8'},
-        {property: 'og:site_name', content: 'Appetini - доставка обедов'},
+        {property: 'og:site_name', content: 'Appetini - доставка обедов Сумы'},
         {property: 'og:image', content: 'https://react-redux.herokuapp.com/logo.png'},
         {property: 'og:locale', content: 'en_US'},
         {property: 'og:title', content: 'Appetini - доставка обедов'},
