@@ -8,7 +8,7 @@ import { getLunch } from 'helpers/lunches';
 import submit from '../submit';
 
 @asyncConnect([
-  {key: 'lunch', promise: getLunch}
+  {key: 'lunch', promise: getLunch(true)}
 ])
 @connect(null, { updateLunch, showToast })
 export default class Edit extends Component {

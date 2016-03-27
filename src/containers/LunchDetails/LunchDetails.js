@@ -26,7 +26,7 @@ function isReviews(location) {
 
 @asyncConnect([
   {key: 'lunch', promise: ({params, helpers, location, store, store: { dispatch }}) => {
-    return getLunch({params, helpers, store}).then(lunch => {
+    return getLunch()({params, helpers, store}).then(lunch => {
       return isReviews(location)
         ? dispatch(getReviews(lunch.cook.id, params.page)).then(() => lunch)
         : lunch;

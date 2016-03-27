@@ -15,11 +15,13 @@ export function request({helpers, store}) {
   }});
 }
 
-export function getLunch({params, helpers, store: { getState }}) {
-  const oldLunch = getState().reduxAsyncConnect.lunch;
-  return Promise.resolve(
-    oldLunch && (oldLunch.id.toString() === params.lunchId)
-      ? oldLunch
-      : helpers.client.get('/lunches/' + params.lunchId).then(response => response.resource)
-  );
+export function getLunch(update = false) {
+  return ({params, helpers, store: { getState }}) => {
+    const oldLunch = getState().reduxAsyncConnect.lunch;
+    return Promise.resolve(
+      !update && oldLunch && (oldLunch.id.toString() === params.lunchId)
+        ? oldLunch
+        : helpers.client.get('/lunches/' + params.lunchId).then(response => response.resource)
+    );
+  };
 }
