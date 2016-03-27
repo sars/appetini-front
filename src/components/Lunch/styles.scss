@@ -101,6 +101,21 @@
   font-weight: 500;
   margin-bottom: 0.2rem;
   font-size: 1.5rem;
+  white-space: nowrap;
+  max-width: 14.4rem;
+  position: relative;
+  overflow: hidden;
+
+  &:after {
+    content: '';
+    display: block;
+    width: 1.7rem;
+    height: 100%;
+    position: absolute;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+    right: 0;
+    top: 0;
+  }
 }
 
 .photoWrapper {
