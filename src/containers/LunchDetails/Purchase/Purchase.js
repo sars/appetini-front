@@ -48,7 +48,7 @@ export default class Purchase extends Component {
   }
 
   render() {
-    const { lunch, individualTariff } = this.props;
+    const { lunch } = this.props;
     const { amount } = this.state;
     const hasDeliveries = this.userHasDeliveries();
 
@@ -83,7 +83,7 @@ export default class Purchase extends Component {
               <div className={styles.buttonHint}>
                 1 доставка будет списана при заказе с вашего счета
               </div> :
-              <div className={styles.buttonHint}>+ доставка {Number(individualTariff.price)}грн</div>
+              <div className={styles.buttonHint}>+ стоимость доставки</div>
             }
             <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Купить сейчас"
                     onClick={::this.buy}/>
@@ -96,7 +96,7 @@ export default class Purchase extends Component {
         </div>}
 
         {!hasDeliveries && <CardContent className={classNames(styles.subscribeContainer, styles.cardContent)}>
-          <div className={styles.buttonHint}>+ доставка 10грн</div>
+          <div className={styles.buttonHint}>+ тарифный план</div>
           <Button big flat accent className={classNames(styles.button, styles.subscribeButton)}
                   onClick={::this.subscribe}>
             <div>Подписаться</div>
