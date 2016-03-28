@@ -4,6 +4,7 @@ import SocialButton from 'components/SocialButton/SocialButton';
 import StarRating from 'react-star-rating';
 import { Link } from 'react-router';
 import { FormattedPlural } from 'react-intl';
+import ImagesPreview from 'components/ImagesPreview/ImagesPreview';
 import classNames from 'classnames';
 import styles from './styles.scss';
 
@@ -39,7 +40,7 @@ const Cook = ({cook, cook: { user: { facebook, vkontakte, instagram } }, lunch, 
           <div className={styles.otherPhotos}>
             {cook.other_photos.map((photo, index) =>
               <div className={styles.otherPhotoContainer} key={index}>
-                <img src={photo.thumb.url} />
+                <ImagesPreview images={cook.other_photos} currentImageId={index}/>
               </div>
             )}
           </div>
