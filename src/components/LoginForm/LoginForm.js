@@ -68,8 +68,8 @@ export default class LoginForm extends Component {
 
     return (
       <div className={styles.root}>
-        <Input big className={styles.input} type="email" {...email}/>
-        <Input big className={styles.input} type="password" {...password}/>
+        <Input big className={styles.input} placeholder="Email" type="email" {...email}/>
+        <Input big className={styles.input} placeholder="Password" type="password" {...password}/>
 
         <div className={styles.recoveryContainer}>
           <Checkbox className={styles.rememberMe} label="Запомнить меня" {...rememberMe} />

@@ -25,7 +25,7 @@ export default class Recovery extends Component {
   })(
     ({fields: {email}, handleSubmit}) =>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <Input big className={styles.input} type="email" {...email}/>
+        <Input big className={styles.input} placeholder="Email" type="email" {...email}/>
 
         <div className={styles.buttons}>
           <Button big className={styles.button} accent flat label="Восстановить" type="submit"/>
