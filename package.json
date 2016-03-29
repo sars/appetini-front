@@ -110,6 +110,7 @@
     "react-star-rating": "^1.4.2",
     "react-tap-event-plugin": "^0.2.1",
     "react-toolbox": "^0.14.1",
+    "react-yandex-metrika": "^1.0.1",
     "redux": "^3.0.5",
     "redux-async-connect": "^1.0.0-rc4",
     "redux-form": "^4.2.2",
