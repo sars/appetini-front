@@ -23,12 +23,12 @@ export default class Recovery extends Component {
     form: 'recovery',
     fields: ['email']
   })(
-    ({fields: {email}, handleSubmit}) =>
+    ({fields: {email}, handleSubmit, submitting}) =>
       <form className={styles.form} onSubmit={handleSubmit}>
         <Input big className={styles.input} placeholder="Email" type="email" {...email}/>
 
         <div className={styles.buttons}>
-          <Button big className={styles.button} accent flat label="Восстановить" type="submit"/>
+          <Button big className={styles.button} accent flat label="Восстановить" type="submit" disabled={submitting}/>
         </div>
       </form>
   );

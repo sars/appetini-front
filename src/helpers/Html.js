@@ -48,6 +48,7 @@ export default class Html extends Component {
                 rel="stylesheet" type="text/css" />
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                 rel="stylesheet" type="text/css" />
+          <script src="https://linked.chat/web/je6x93" async></script>
 
           {/* (will be present only in development mode) */}
           {/* outputs a <style/> tag with all bootstrap styles + App.scss + it could be CurrentPage.scss. */}
