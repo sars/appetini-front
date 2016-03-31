@@ -43,7 +43,7 @@ export default class LoginForm extends Component {
     this.props.handleSubmit(user => {
       this.props.login(user).then(this.props.onSuccess)
         .then(() => this.props.showToast('You are successfully logged in', 'accept', 'done'))
-        .catch(this.props.onError);
+        .catch((response) => this.props.showToast(response.error, 'warning', 'error'));
     })();
   };
 
@@ -51,7 +51,7 @@ export default class LoginForm extends Component {
     return () => {
       this.props.oauth(provider).then(this.props.onSuccess)
         .then(() => this.props.showToast('You are successfully logged in', 'accept', 'done'))
-        .catch(this.props.onError);
+        .catch((response) => this.props.showToast(response.error, 'warning', 'error'));
     };
   }
 

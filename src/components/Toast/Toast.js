@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Snackbar from 'react-toolbox/lib/snackbar';
 import { close } from 'redux/modules/toast';
 import { connect } from 'react-redux';
+import styles from './styles.scss';
 
 @connect(state => ({ ...state.toast }), {close})
 export default class Toast extends Component {
@@ -20,7 +21,7 @@ export default class Toast extends Component {
   render() {
     const {icon, label, type, active} = this.props;
     return (
-      <Snackbar icon={icon} label={label} type={type} onTimeout={this.props.close}
+      <Snackbar icon={icon} label={label} className={styles[type]} type={type} onTimeout={this.props.close}
                 timeout={2000} active={active}
       />
     );
