@@ -121,6 +121,9 @@
   visibility: hidden;
   transition: visibility 0ms ease;
   transition-delay: 410ms;
+  top: 0;
+  left: 50%;
+  margin-left: - ($column-width * $unit)/2;
 
   .#{$inner} {
     z-index: 2;
@@ -149,7 +152,6 @@
 @media (max-width: $medium-screen - 1 ) {
   .buyContainer {
     @include collapsingContainer(buyContainerOpened, buyContent);
-    margin-left: -$column-width * $unit;
   }
 }
 
