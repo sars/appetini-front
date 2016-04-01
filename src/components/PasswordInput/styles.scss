@@ -1,0 +1,24 @@
+.passwordInputWrapper {
+  position: relative;
+
+  .passwordInput {
+    input {
+      padding-right: 55px;
+    }
+  }
+
+  .showPasswordBtn {
+    position: absolute;
+    height: 100%;
+    width: 30px;
+    right: 0;
+    top: 0;
+    color: #685c50;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+}

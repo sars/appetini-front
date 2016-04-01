@@ -5,6 +5,7 @@ import { join } from 'redux/modules/auth';
 import { show as showToast } from 'redux/modules/toast';
 import Button from 'components/Button/Button';
 import Input from 'components/Input/Input';
+import PasswordInput from 'components/PasswordInput/PasswordInput';
 import Checkbox from 'react-toolbox/lib/checkbox';
 import normalizeErrors from 'helpers/normalizeErrors';
 import styles from './styles.scss';
@@ -33,7 +34,7 @@ export default class Registration extends Component {
         <Input big className={styles.input} placeholder="Имя" {...name}/>
         <Input big className={styles.input} placeholder="Телефон" type="phone" {...phone}/>
         <Input big className={styles.input} placeholder="Email" type="email" {...email}/>
-        <Input big className={styles.input} placeholder="Password" type="password" {...password}/>
+        <PasswordInput big placeholder="Password" {...password} className={styles.input}/>
 
         <Checkbox {...rules} label="Я принимаю условия использования сервиса"/>
 
