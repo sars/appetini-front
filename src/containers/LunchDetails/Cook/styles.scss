@@ -46,11 +46,17 @@
   margin: 2rem 0;
 }
 
+.sanitaryHelp {
+  text-decoration: none;
+  i {
+    color: rgba(0,0,0,0.5);
+  }
+}
+
 .sanitaryBook {
   padding: 1.2rem 3rem;
   border-radius: 500px;
   display: inline-block;
-  border: 1px solid $color-accent;
   font-size: 1.6rem;
   color: $color-accent;
 

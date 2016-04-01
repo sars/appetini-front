@@ -6,7 +6,10 @@ import { Link } from 'react-router';
 import { FormattedPlural } from 'react-intl';
 import ImagesPreview from 'components/ImagesPreview/ImagesPreview';
 import classNames from 'classnames';
+import tooltip from 'react-toolbox/lib/tooltip';
 import styles from './styles.scss';
+
+const TooltipLink = tooltip(Link);
 
 const Cook = ({cook, cook: { user: { facebook, vkontakte, instagram } }, lunch, className}) => {
   return (
@@ -28,11 +31,9 @@ const Cook = ({cook, cook: { user: { facebook, vkontakte, instagram } }, lunch, 
         </div>
         <div className={styles.sanitaryBookContainer}>
           <div className={styles.sanitaryBook}>
-            <i className="fa fa-book" />
+            <i className="fa fa-check" />
             &nbsp;
-            <Link to="/">
-              Санитарная книжка
-            </Link>
+            <span>Санитарная книжка </span><TooltipLink label="Санитарная книжка" to="#" className={styles.sanitaryHelp} tooltip="Санитарная книжка еще действует"><i className="fa fa-question-circle"/></TooltipLink>
           </div>
         </div>
         <div className={styles.otherPhotosContainer}>

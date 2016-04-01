@@ -7,6 +7,7 @@ import { show as showToast } from 'redux/modules/toast';
 import { connect } from 'react-redux';
 import Checkbox from 'react-toolbox/lib/checkbox';
 import { Link } from 'react-router';
+import PasswordInput from 'components/PasswordInput/PasswordInput';
 import SocialButton from 'components/SocialButton/SocialButton';
 
 @connect(null, { login, oauth, showToast })
@@ -39,7 +40,8 @@ export default class LoginForm extends Component {
     onError: (error) => error
   };
 
-  submit = () => {
+  submit = (event) => {
+    event.preventDefault();
     this.props.handleSubmit(user => {
       this.props.login(user).then(this.props.onSuccess)
         .then(() => this.props.showToast('You are successfully logged in', 'accept', 'done'))
@@ -68,21 +70,22 @@ export default class LoginForm extends Component {
 
     return (
       <div className={styles.root}>
-        <Input big className={styles.input} placeholder="Email" type="email" {...email}/>
-        <Input big className={styles.input} placeholder="Password" type="password" {...password}/>
+        <form onSubmit={this.submit}>
+          <Input big className={styles.input} placeholder="Email" type="email" {...email}/>
+          <PasswordInput big placeholder="Password" {...password} className={styles.input}/>
+          <div className={styles.recoveryContainer}>
+            <Checkbox className={styles.rememberMe} label="Запомнить меня" {...rememberMe} />
+            <Link className={styles.forgotLink} to="/recovery">
+              Забыли пароль?
+            </Link>
+          </div>
 
-        <div className={styles.recoveryContainer}>
-          <Checkbox className={styles.rememberMe} label="Запомнить меня" {...rememberMe} />
-          <Link className={styles.forgotLink} to="/recovery">
-            Забыли пароль?
-          </Link>
-        </div>
-
-        <div className={styles.buttons}>
-          <Button className={styles.button} accent flat label="Войти" onClick={this.submit}/>
-          <Button className={styles.button} outlined flat label="Зарегистрироваться"
-                  onClick={() => this.context.router.push('/join')}/>
-        </div>
+          <div className={styles.buttons}>
+            <Button className={styles.button} accent flat label="Войти"/>
+            <Button className={styles.button} outlined flat label="Зарегистрироваться"
+                    onClick={() => this.context.router.push('/join')}/>
+          </div>
+        </form>
 
         <div className={styles.separator}>
           <span className={styles.separatorLabel}>
