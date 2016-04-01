@@ -56,17 +56,8 @@ export default class LunchDetails extends Component {
 
   state = {
     cookOpened: false,
-    purchaseOpened: false,
-    otherLunches: []
+    purchaseOpened: false
   };
-
-  componentDidMount() {
-    this.context.client.get('/lunches', { params: {
-      cook_id: this.props.lunch.cook_id
-    }}).then(response => {
-      this.setState({otherLunches: response.resources});
-    });
-  }
 
   handleReviewsClose() {
     this.context.router.push(`/lunches/${this.props.lunch.id}`);
@@ -76,11 +67,6 @@ export default class LunchDetails extends Component {
     const styles = require('./LunchDetails.scss');
     const { lunch, location, reviews } = this.props;
     const { cook } = lunch;
-    const otherLunches = this.state.otherLunches;
-    const boxes = otherLunches.map(otherLunch => ({
-      component: <Lunch lunch={otherLunch}/>
-    }));
-
     const individualTariff = find(this.props.tariffs, {individual: true});
 
     const leftSidebarClasses = classNames(styles.leftSidebar, {
@@ -137,13 +123,6 @@ export default class LunchDetails extends Component {
               </div>
             </div>
           </div>
-        </div>
-        <div className={styles.otherLunches}>
-          <h2>Обеды на другое время от {cook.first_name} {cook.last_name}</h2>
-          <Boxes boxes={boxes}/>
-          {null && <div className={styles.moreContainer}>
-            <Button flat outlined className={styles.moreButton} label="Показать еще" />
-          </div>}
         </div>
       </ColumnLayout>
     );
