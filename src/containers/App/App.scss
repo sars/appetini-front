@@ -44,3 +44,10 @@ h3 {
 .progressActive {
   height: 0.4rem;
 }
+
+
+:global {
+  .pointer {
+    cursor: pointer;
+  }
+}

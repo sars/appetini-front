@@ -100,3 +100,15 @@
     display: initial;
   }
 }
+
+@media (max-width: 767px) {
+  .brand {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 320px) {
+  .brandLabel {
+    display: none;
+  }
+}
