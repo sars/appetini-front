@@ -2,20 +2,18 @@ import React, { Component, PropTypes } from 'react';
 import {reduxForm} from 'redux-form';
 import Button from 'components/Button/Button';
 import Input from 'components/Input/Input';
-import { login, oauth } from 'redux/modules/auth';
+import { login, oauth, initRegistration } from 'redux/modules/auth';
 import { show as showToast } from 'redux/modules/toast';
-import { connect } from 'react-redux';
 import Checkbox from 'react-toolbox/lib/checkbox';
 import { Link } from 'react-router';
 import PasswordInput from 'components/PasswordInput/PasswordInput';
 import SocialButton from 'components/SocialButton/SocialButton';
 
-@connect(null, { login, oauth, showToast })
 @reduxForm({
   form: 'login',
   fields: ['email', 'password', 'rememberMe'],
   asyncBlurFields: ['email']
-})
+}, null, { login, oauth, showToast, initRegistration })
 export default class LoginForm extends Component {
   static propTypes = {
     fields: PropTypes.object.isRequired,
@@ -28,7 +26,8 @@ export default class LoginForm extends Component {
     login: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
     onError: PropTypes.func,
-    showToast: PropTypes.func.isRequired
+    showToast: PropTypes.func.isRequired,
+    initRegistration: PropTypes.func.isRequired
   };
 
   static contextTypes = {
@@ -53,7 +52,11 @@ export default class LoginForm extends Component {
     return () => {
       this.props.oauth(provider).then(this.props.onSuccess)
         .then(() => this.props.showToast('You are successfully logged in', 'accept', 'done'))
-        .catch((response) => this.props.showToast(response.error, 'warning', 'error'));
+        .catch((response) => {
+          this.props.initRegistration(provider, response.data);
+          this.props.showToast(response.error || 'Заполните пустые поля', 'warning', 'error');
+          this.context.router.push('/join');
+        });
     };
   }
 
@@ -82,7 +85,7 @@ export default class LoginForm extends Component {
 
           <div className={styles.buttons}>
             <Button className={styles.button} accent flat label="Войти"/>
-            <Button className={styles.button} outlined flat label="Зарегистрироваться"
+            <Button className={styles.button} outlined flat label="Зарегистрироваться" type="button"
                     onClick={() => this.context.router.push('/join')}/>
           </div>
         </form>

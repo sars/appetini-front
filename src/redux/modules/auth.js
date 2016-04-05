@@ -1,5 +1,6 @@
 import Oauth from 'redux/modules/oauth';
 import tokenPayload from 'helpers/tokenPayload';
+import normalizeOauthData from 'helpers/normalizeOauthData';
 
 const LOGIN = 'auth/LOGIN';
 const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
@@ -9,6 +10,8 @@ const LOGOUT_SUCCESS = 'auth/LOGOUT_SUCCESS';
 const LOGOUT_FAIL = 'auth/LOGOUT_FAIL';
 const SET_USER = 'auth/SET_USER';
 const REGISTRATION = 'auth/REGISTRATION';
+const REGISTRATION_INIT = 'auth/REGISTRATION_INIT';
+const REGISTRATION_RESET = 'auth/REGISTRATION_RESET';
 const RECOVERY_SENT = 'auth/RECOVERY_SENT';
 const RECOVERY_PASSWORD_CHANGED = 'auth/RECOVERY_PASSWORD_CHANGED';
 const SET_TOKEN = 'auth/SET_TOKEN';
@@ -68,6 +71,16 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         tokenPayload: action.tokenPayload
+      };
+    case REGISTRATION_INIT:
+      return {
+        ...state,
+        registrationInitial: action.data
+      };
+    case REGISTRATION_RESET:
+      return {
+        ...state,
+        registrationInitial: null
       };
     default:
       return state;
@@ -157,7 +170,10 @@ export function oauth(provider) {
 
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
-    promise: () => oauthClient.authenticate(provider)
+    promise: (client, getState, dispatch) => oauthClient.retrieveData(provider).then(response => {
+      dispatch(setToken(response.auth_token));
+      return response;
+    })
   };
 }
 
@@ -174,5 +190,18 @@ export function oauthSingUp(provider) {
   return {
     types: [OAUTH_SIGN_UP, OAUTH_SIGN_UP_SUCCESS, OAUTH_SIGN_UP_FAIL],
     promise: () => oauthClient.retrieveData(provider)
+  };
+}
+
+export function initRegistration(provider, data) {
+  return {
+    type: REGISTRATION_INIT,
+    data: normalizeOauthData(provider, data)
+  };
+}
+
+export function resetRegistration() {
+  return {
+    type: REGISTRATION_RESET
   };
 }
