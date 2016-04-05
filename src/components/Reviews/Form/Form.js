@@ -6,18 +6,20 @@ import { show as showToast } from 'redux/modules/toast';
 import { connect } from 'react-redux';
 import StarRating from 'react-star-rating';
 import styles from '../styles.scss';
+import MultiImagesField from 'components/ImageField/MultiImagesField';
 
 @connect(null, { showToast })
 @reduxForm({
   form: 'review',
-  fields: ['body', 'rating']
+  fields: ['body', 'rating', 'photos_temp_image_ids', 'photos', 'removing_photos']
 })
 export default class Form extends Component {
   static propTypes = {
     fields: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     resetForm: PropTypes.func.isRequired,
-    submitting: PropTypes.bool
+    submitting: PropTypes.bool,
+    showToast: PropTypes.func.isRequired
   };
 
   static contextTypes = {
@@ -42,8 +44,7 @@ export default class Form extends Component {
   }
 
   render() {
-    const { fields: {body, rating}, submitting } = this.props;
-
+    const { fields: {body, rating, photos_temp_image_ids, photos}, submitting } = this.props;
     return (
       <form className={styles.root} onSubmit={::this.handleSubmit}>
         <div className={styles.ratingFieldContainer}>
@@ -54,7 +55,9 @@ export default class Form extends Component {
           {this.errorsFor('rating')}
         </div>
         <Input multiline placeholder="Текст вашего отзыва" className={styles.reviewField} {...body}/>
-
+        <div className={styles.imageUploaderWrapper}>
+          <MultiImagesField onTempImages={photos_temp_image_ids.onChange} tempImagesIds={photos_temp_image_ids.value} value={photos.value}/>
+        </div>
         <div className={styles.buttons}>
           <Button big className={styles.button} accent flat label="Отправить" type="submit"
                   disabled={submitting || (!body.value || !rating.value)}/>

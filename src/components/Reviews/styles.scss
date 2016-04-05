@@ -4,6 +4,26 @@
   color: $color-primary;
 }
 
+.imageUploaderWrapper {
+  margin-top: 2rem;
+}
+
+.reviewIncludedPhotos {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.reviewPhotoContainer {
+  width: 20%;
+  display: inline-block;
+  padding: 0.4rem;
+  margin-bottom: 0.5rem;
+  img {
+    border-radius: 5px;
+    width: 100%;
+  }
+}
+
 .ratingWrapper {
   display: flex;
   justify-content: space-between;

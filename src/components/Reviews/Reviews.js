@@ -6,6 +6,8 @@ import moment from 'moment';
 import Form from './Form/Form';
 import normalizeErrors from 'helpers/normalizeErrors';
 import { createReview } from 'redux/modules/common';
+import ImagesPreview from 'components/ImagesPreview/ImagesPreview';
+
 
 @connect(state => ({ user: state.auth.user }), { createReview })
 export default class Reviews extends Component {
@@ -48,6 +50,15 @@ export default class Reviews extends Component {
             </div>
             <div className={styles.body}>
               {review.body}
+            </div>
+            <div className={styles.reviewIncludedPhotos}>
+              {review.photos.map((image, index) => {
+                return (
+                    <div className={styles.reviewPhotoContainer} key={index}>
+                      <ImagesPreview images={review.photos} currentImageId={index}/>
+                    </div>
+                );
+              })}
             </div>
           </div>
         )}

@@ -85,7 +85,7 @@ export default class Purchase extends Component {
               </div> :
               <div className={styles.buttonHint}>+ стоимость доставки</div>
             }
-            <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Купить сейчас"
+            <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Заказать обед"
                     onClick={::this.buy}/>
           </div>
 
