@@ -64,7 +64,7 @@ export default class App extends Component {
         <Toast />
 
         {!__DEVELOPMENT__ && <GoogleAnalytics id="UA-71130170-1"/>}
-        <YandexMetrika/>
+        {!__DEVELOPMENT__ && <YandexMetrika/>}
       </div>
     );
   }
