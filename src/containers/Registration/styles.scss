@@ -17,3 +17,31 @@
 .input {
   margin: 1rem 0;
 }
+
+.socialButtons {
+  text-align: center;
+}
+
+.socialButton {
+  margin: 0 0.5rem;
+}
+
+.separator {
+  margin: 2.5rem auto 2rem;
+  text-align: center;
+  color: #afa49d;
+  display: flex;
+  align-items: center;
+
+  &:before, &:after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #efe8e2;
+    height: 1px;
+  }
+}
+
+.separatorLabel {
+  margin: 0 1rem;
+  font-size: 1.4rem;
+}

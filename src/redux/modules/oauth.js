@@ -70,11 +70,17 @@ function apiRequest(urlName, oauthData, config) {
     client.send('code=' + oauthData.code + '&client_id=' + config.clientId + '&redirect_uri=' + config.redirectUri);
 
     client.onload = () => {
+      let result;
+      try {
+        result = JSON.parse(client.responseText);
+      } catch (exception) {
+        result = {};
+      }
+
       if (client.status >= 200 && client.status < 300) {
-        const result = JSON.parse(client.responseText);
         resolve(result);
       } else {
-        reject(client.statusText);
+        reject(result);
       }
     };
   });
