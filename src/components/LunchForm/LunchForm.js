@@ -111,10 +111,6 @@ export default class LunchForm extends Component {
     this.props.fields.removing_photos.onChange(photos);
   }
 
-  handleTempImages(tempImages) {
-    this.props.fields.photos_temp_image_ids.onChange(tempImages.map(item => item.id));
-  }
-
   errorsFor(fieldName) {
     const { fields } = this.props;
     return fields[fieldName].error && !fields[fieldName].visited &&
@@ -153,7 +149,7 @@ export default class LunchForm extends Component {
         </div>
         <div className={styles.section}>
           <h3>Фотографии</h3>
-          <MultiImagesField onRemove={::this.removePhoto} onTempImages={::this.handleTempImages}
+          <MultiImagesField onRemove={::this.removePhoto} tempImagesIds={fields.photos_temp_image_ids.value} onTempImages={fields.photos_temp_image_ids.onChange}
                             value={fields.photos.value} removingImages={fields.removing_photos.value}
           />
           {this.errorsFor('photos_temp_image_ids')}

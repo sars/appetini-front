@@ -37,8 +37,11 @@ export default class Tariffs extends Component {
       <div className={styles.root}>
         <h1>Тарифные планы</h1>
         <div className={styles.description}>
-          Экономьте на доставке, подписавшись. Вы сможете использовать купленные вами доставки
-          в любое удобное для вас время в течении месяца
+          Подпишитесь на тарифный план, чтобы экономить на доставке. Вы сможете использовать
+          купленные вами доставки в любое удобное для вас время в течении месяца*.
+          <div>
+            <small>*30 дней с даты покупки тарифного плана.</small>
+          </div>
         </div>
         <div className={styles.tariffs}>
           {tariffs.map((tariff, index) =>

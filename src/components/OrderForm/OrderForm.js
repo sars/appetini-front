@@ -8,6 +8,7 @@ import { show as showToast } from 'redux/modules/toast';
 import { open as openModal } from 'redux/modules/modals';
 import { removeOrderItem, clearOrderItems } from 'redux/modules/purchase';
 import { reduxForm } from 'redux-form';
+import PasswordInput from 'components/PasswordInput/PasswordInput';
 import styles from './styles.scss';
 
 @reduxForm(
@@ -87,7 +88,7 @@ export default class OrderForm extends Component {
 
         {!user && <div>
           <h3>Password</h3>
-          <Input type="password" {...fields.user.password}/>
+          <PasswordInput placeholder="Password" {...fields.user.password}/>
         </div>}
 
         {hasLunches && <div>

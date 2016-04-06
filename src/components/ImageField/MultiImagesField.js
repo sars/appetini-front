@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
-import Button from 'components/Button/Button';
 import { connect } from 'react-redux';
 import { show as showToast } from 'redux/modules/toast';
 import without from 'lodash/without';
@@ -11,10 +10,11 @@ import styles from './styles.scss';
 export default class MultiImagesField extends Component {
   static propTypes = {
     showToast: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
+    onRemove: PropTypes.func,
     onTempImages: PropTypes.func.isRequired,
     value: PropTypes.array,
-    removingImages: PropTypes.array
+    removingImages: PropTypes.array,
+    tempImagesIds: PropTypes.array
   };
 
   static contextTypes = {
@@ -29,11 +29,15 @@ export default class MultiImagesField extends Component {
     tempImages: []
   };
 
+  componentWillReceiveProps = (nextProps) => {
+    if (!nextProps.tempImagesIds || !nextProps.tempImagesIds.length) this.setState({tempImages: []});
+  };
+
   onDrop(files) {
     files.forEach(file => {
       tempImageRequest(this.context.client, file).then(tempImage => {
         const tempImages = [...this.state.tempImages, tempImage];
-        this.props.onTempImages(tempImages);
+        this.props.onTempImages(tempImages.map(item => item.id));
         this.setState({ tempImages });
       }).catch(error => this.props.showToast(error));
     });
@@ -42,7 +46,7 @@ export default class MultiImagesField extends Component {
   removeTempImage(tempImage) {
     return () => {
       const tempImages = without(this.state.tempImages, tempImage);
-      this.props.onTempImages(tempImages);
+      this.props.onTempImages(tempImages.map(item => item.id));
       this.setState({ tempImages });
     };
   }
@@ -60,20 +64,20 @@ export default class MultiImagesField extends Component {
     return (
       <div>
         <Dropzone ref="dropzone" onDrop={::this.onDrop} className={styles.dropzone} activeClassName={styles.activeDropzone}>
-          <div>Try dropping some files here, or click to select files to upload.</div>
+          <div>Перетяните в эту зону изображения, либо нажмите и укажите путь.</div>
         </Dropzone>
         <div className={styles.imagesPreviews}>
           {tempImages.map(tempImage =>
             <div className={styles.imagePreview} key={tempImage.id}>
               <img src={tempImage.image.thumb.url}/>
-              <Button className={styles.imagePreviewRemove} icon="remove" accent mini onClick={::this.removeTempImage(tempImage)} />
+              <span className={styles.imagePreviewRemove} onClick={::this.removeTempImage(tempImage)}><span className="fa fa-minus"/></span>
             </div>
           )}
           {value && value.map((image, index) =>
             removingImages.indexOf(index) === -1 &&
               <div className={styles.imagePreview} key={index}>
                 <img src={image.thumb.url}/>
-                <Button className={styles.imagePreviewRemove} icon="remove" accent mini onClick={::this.removeImage(index)} />
+                <span className={styles.imagePreviewRemove} onClick={::this.removeImage(index)}><span className="fa fa-minus"/></span>
               </div>
           )}
         </div>

@@ -44,14 +44,6 @@ export default class CookForm extends Component {
     this.props.fields.removing_other_photos.onChange(photos);
   }
 
-  handleOtherTempImages(tempImages) {
-    this.props.fields.other_photos_temp_image_ids.onChange(tempImages.map(item => item.id));
-  }
-
-  handleMainTempImage(tempImage) {
-    this.props.fields.main_photo_temp_image_id.onChange(tempImage && tempImage.id);
-  }
-
   errorsFor(fieldName) {
     const { fields } = this.props;
     return fields[fieldName].error && !fields[fieldName].visited &&
@@ -105,14 +97,14 @@ export default class CookForm extends Component {
 
         <div className={styles.section}>
           <h3>Основное фото</h3>
-          <ImageField onTempImage={::this.handleMainTempImage} value={fields.main_photo.value}/>
+          <ImageField onTempImage={fields.main_photo_temp_image_id.onChange} value={fields.main_photo.value}/>
           {this.errorsFor('main_photo')}
         </div>
 
         <div className={styles.section}>
           <h3>Другие фото</h3>
-          <MultiImagesField onRemove={::this.removeOtherPhoto} onTempImages={::this.handleOtherTempImages}
-                            value={fields.other_photos.value} removingImages={fields.removing_other_photos.value}
+          <MultiImagesField onRemove={::this.removeOtherPhoto} onTempImages={fields.other_photos_temp_image_ids.onChange}
+                            value={fields.other_photos.value} tempImagesIds={fields.other_photos_temp_image_ids.value} removingImages={fields.removing_other_photos.value}
           />
           {this.errorsFor('other_photos')}
         </div>

@@ -29,6 +29,21 @@
 
 .imagePreviewRemove {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -5px;
+  right: -5px;
+  text-align: center;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 19px;
+  color: #fff;
+  background-color: #d1cbc6;
+  transition: background-color 0.3s ease;
+  border: 1px solid #fff;
+  cursor: pointer;
+  &:hover {
+    background-color: #b3aba4;
+  }
 }
