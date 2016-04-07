@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
 import AddressSuggest from 'components/AddressSuggest/AddressSuggest';
+import LocationsSelect from 'components/Locations/Select';
 import OrderItems from 'components/OrderItems/OrderItems';
 import { RadioGroup, RadioButton } from 'react-toolbox';
 import { show as showToast } from 'redux/modules/toast';
@@ -38,8 +39,8 @@ export default class OrderForm extends Component {
     router: PropTypes.object.isRequired
   };
 
-  handleSuggestSelect(suggest) {
-    this.props.fields.location_attributes.onChange(suggest);
+  handleLocationChange(data) {
+    this.props.fields.location_attributes.onChange(data);
   }
 
   errorsFor(fieldName) {
@@ -61,6 +62,7 @@ export default class OrderForm extends Component {
     const { fields, handleSubmit, submitting, user, orderItems, order } = this.props;
     const submitLabel = fields.payment_type.value === 'liqpay' ? 'Оплатить' : 'Оформить заказ';
     const hasLunches = orderItems.some(item => item.resource_type === 'Lunch');
+    const orderExist = Boolean(order);
 
     return (
       <form className={styles.root} onSubmit={handleSubmit}>
@@ -93,9 +95,11 @@ export default class OrderForm extends Component {
 
         {hasLunches && <div>
           <h3>Адресс доставки</h3>
-          <AddressSuggest onSuggestSelect={::this.handleSuggestSelect} disabled={Boolean(order)}
-                          initialValue={fields.location.value && fields.location.value.full_address}
-          />
+          {user && user.locations && user.locations.length && !orderExist
+            ? <LocationsSelect locations={user.locations} onSelect={::this.handleLocationChange} />
+            : <AddressSuggest onSuggestSelect={::this.handleLocationChange} disabled={orderExist}
+                            initialValue={fields.location.value && fields.location.value.full_address} />}
+
           {this.errorsFor('location')}
         </div>}
 
