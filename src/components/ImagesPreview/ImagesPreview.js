@@ -8,6 +8,7 @@ export default class ImagesPreview extends Component {
 
   static propTypes = {
     images: PropTypes.array,
+    image: PropTypes.object,
     currentImageId: PropTypes.number.isRequired
   };
 
@@ -46,7 +47,7 @@ export default class ImagesPreview extends Component {
   }
 
   handleNextImage = () => {
-    const {images} = this.props;
+    const images = this.props.images ? this.props.images : [...this.props.image];
     const {currentChangedImageId} = this.state;
     if (currentChangedImageId === images.length - 1) {
       this.setState({
@@ -60,7 +61,8 @@ export default class ImagesPreview extends Component {
   }
 
   render() {
-    const {images, currentImageId} = this.props;
+    const {currentImageId} = this.props;
+    const images = this.props.images ? this.props.images : [...this.props.image];
     const {currentChangedImageId, active, overlayClosing} = this.state;
     const overlayClass = classNames(styles.overlay, active ? styles.overlayActive : '', overlayClosing ? styles.overlayClosing : '');
     return (

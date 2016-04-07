@@ -13,25 +13,55 @@ export default class OrderSuccess extends Component {
 
   render() {
     const { order } = this.props;
-
+    const individualDelivery = order.order_items.filter(item => item.resource_type === 'DeliveryTariff').every(item => item.resource.individual);
+    const liqpay = order.payment_type === 'liqpay';
+    const withLunch = order.order_items.some(item => item.resource_type === 'Lunch');
+    const cash = order.payment_type === 'cash';
     return (
       <div className={styles.root}>
-        <h1>{order.payed ? 'Заказ успешно оплачен!' : 'Заказ успешно создан!'}</h1>
+        <h1>{order.payed ? 'Заказ успешно оплачен!' : 'Благодарим за оформление заказа!'}</h1>
+
         <div className={styles.description}>
-          {order.creating_user ? 'Для юзера который был создан' : 'Для зареганого юзера'}
+          {order.creating_user && 'Вы были зарегистрированы, для входа в свой профиль проверьте почту: ' + order.user.email}
         </div>
+
         <div className={styles.comment}>
-          {order.payed ? 'Оплачен' : 'Не оплачен еще (возможно оплата обрабатывается)'}
+
+          {!individualDelivery && order.order_items.map((item) => {
+            if (item.resource_type === 'DeliveryTariff') {
+              return 'Вы подписались на тарифный план: ' + item.resource.amount + ' доставок в месяц.';
+            }
+          })
+          }
+
+          {!individualDelivery && order.order_items.map((item) => {
+            if (item.resource_type === 'Lunch') {
+              return <div>А также заказали обед ({item.amount} шт.) </div>;
+            }
+          })}
+
+          {individualDelivery && order.order_items.map((item) => {
+            if (item.resource_type === 'Lunch') {
+              return <div>Вы заказали обед ({item.amount} шт.) </div>;
+            }
+          })}
         </div>
+
         <div className={styles.comment}>
-          {order.order_items.some(item => item.resource_type === 'Lunch') ? 'С ланчем' : 'Без ланча'}
+          {liqpay && (order.payed ? 'Оплачен' : 'Не оплачен еще (возможно оплата обрабатывается)')}
         </div>
+
         <div className={styles.comment}>
-          {order.order_items.some(item => item.resource_type === 'DeliveryTariff') ? 'С тарифом' : 'Без тарифа'}
+          {cash && 'Оплата наличными курьеру.'}
         </div>
-        {order.order_items.some(item => item.resource_type === 'DeliveryTariff') && <div className={styles.comment}>
-          {order.order_items.filter(item => item.resource_type === 'DeliveryTariff').every(item => item.resource.individual) ? 'Индивидуальный тариф' : 'Множественный тарифф (Подписка)'}
-        </div>}
+
+        <div className={styles.comment}>
+          Сумма к оплате {order.total_price} грн.
+        </div>
+
+        <div className={styles.comment}>
+          {withLunch ? 'Не забудьте сделать заказ на завтра!' : 'Не забудьте заказать обед!'}
+        </div>
       </div>
     );
   }
