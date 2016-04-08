@@ -16,7 +16,7 @@ const Cook = ({cook, cook: { user: { facebook, vkontakte, instagram } }, lunch, 
     <Card className={classNames(styles.root, className)}>
       <CardContent>
         <div className={styles.avatarContainer}>
-          <img src={cook.main_photo.url}/>
+          <ImagesPreview image={cook.main_photo} currentImageId={0}/>
         </div>
         <h3 className={styles.cookName}>
           {cook.first_name} {cook.last_name}
