@@ -71,7 +71,7 @@ export default class Registration extends Component {
   );
 
   afterSuccess = (response) => {
-    this.props.setUser(response.user);
+    this.props.setUser(response.resource);
     this.props.setToken(response.auth_token);
     this.context.router.push('/');
   };
