@@ -9,6 +9,7 @@ export default class ImagesPreview extends Component {
   static propTypes = {
     images: PropTypes.array,
     image: PropTypes.object,
+    template: PropTypes.func,
     currentImageId: PropTypes.number.isRequired
   };
 
@@ -61,13 +62,14 @@ export default class ImagesPreview extends Component {
   }
 
   render() {
-    const {currentImageId} = this.props;
+    const {currentImageId, template} = this.props;
     const images = this.props.images ? this.props.images : [...this.props.image];
     const {currentChangedImageId, active, overlayClosing} = this.state;
     const overlayClass = classNames(styles.overlay, active ? styles.overlayActive : '', overlayClosing ? styles.overlayClosing : '');
     return (
         <div>
-          <img src={images[currentImageId].url} className="pointer" onClick={::this.handleClick}/>
+          {!template && <img src={images[currentImageId].thumb.url} className="pointer" onClick={::this.handleClick}/>}
+          {template && template(::this.handleClick)}
           {active &&
             <Overlay active={active} onClick={::this.handleClose} className={overlayClass}>
               <div className={styles.imagePreviewWrapper}>

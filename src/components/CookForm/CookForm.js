@@ -12,8 +12,8 @@ import styles from './styles.scss';
 @reduxForm(
   {
     form: 'cookForm',
-    fields: ['id', 'main_photo_temp_image_id', 'other_photos_temp_image_ids', 'removing_other_photos',
-      'first_name', 'last_name', 'other_photos', 'main_photo', 'location_attributes', 'location',
+    fields: ['id', 'main_photo_temp_image_id', 'other_photos_temp_image_ids', 'removing_other_photos', 'removing_sanitary_book_photos',
+      'sanitary_book_photos', 'sanitary_book_photos_temp_image_ids', 'first_name', 'last_name', 'other_photos', 'main_photo', 'location_attributes', 'location',
       'user.id', 'user.phone', 'user.email', 'user.password', 'user.facebook', 'user.vkontakte']
   }, null, {showToast}
 )
@@ -42,6 +42,10 @@ export default class CookForm extends Component {
 
   removeOtherPhoto(index, photos) {
     this.props.fields.removing_other_photos.onChange(photos);
+  }
+
+  removeSanitaryBookPhoto(index, photos) {
+    this.props.fields.removing_sanitary_book_photos.onChange(photos);
   }
 
   errorsFor(fieldName) {
@@ -107,6 +111,13 @@ export default class CookForm extends Component {
                             value={fields.other_photos.value} tempImagesIds={fields.other_photos_temp_image_ids.value} removingImages={fields.removing_other_photos.value}
           />
           {this.errorsFor('other_photos')}
+        </div>
+        <div className={styles.section}>
+          <h3>Фото санитарной книги</h3>
+          <MultiImagesField onRemove={::this.removeSanitaryBookPhoto} onTempImages={fields.sanitary_book_photos_temp_image_ids.onChange}
+                            value={fields.sanitary_book_photos.value} tempImagesIds={fields.sanitary_book_photos_temp_image_ids.value} removingImages={fields.removing_sanitary_book_photos.value}
+          />
+          {this.errorsFor('sanitary_book_photos')}
         </div>
 
         <div className={styles.section}>
