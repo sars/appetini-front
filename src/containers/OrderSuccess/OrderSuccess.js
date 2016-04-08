@@ -33,16 +33,11 @@ export default class OrderSuccess extends Component {
             }
           })
           }
+          {!individualDelivery && withLunch && <div>А также: </div>}
 
-          {!individualDelivery && order.order_items.map((item) => {
+          {order.order_items.map((item, index) => {
             if (item.resource_type === 'Lunch') {
-              return <div>А также заказали обед ({item.amount} шт.) </div>;
-            }
-          })}
-
-          {individualDelivery && order.order_items.map((item) => {
-            if (item.resource_type === 'Lunch') {
-              return <div>Вы заказали обед ({item.amount} шт.) </div>;
+              return <div key={index}>Вы заказали обед ({item.amount} шт.) </div>;
             }
           })}
         </div>
