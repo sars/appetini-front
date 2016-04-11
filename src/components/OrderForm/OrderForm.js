@@ -54,6 +54,11 @@ export default class OrderForm extends Component {
   }
 
   clearOrderItems() {
+    window.ga('send', {
+      hitType: 'event',
+      eventCategory: 'Cancel purchase',
+      eventAction: 'click'
+    });
     this.props.clearOrderItems();
     this.context.router.push('/');
   }

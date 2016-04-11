@@ -28,6 +28,11 @@ export default class Purchase extends Component {
   subscribe() {
     this.props.addOrderItem('Lunch', this.props.lunch, this.state.amount);
     this.context.router.push('/tariffs');
+    window.ga('send', {
+      hitType: 'event',
+      eventCategory: 'Subscribe and buy',
+      eventAction: 'click'
+    });
   }
 
   buy() {
@@ -36,6 +41,11 @@ export default class Purchase extends Component {
       this.props.addOrderItem('DeliveryTariff', this.props.individualTariff);
     }
     this.context.router.push('/checkout');
+    window.ga('send', {
+      hitType: 'event',
+      eventCategory: 'Buy',
+      eventAction: 'click'
+    });
   }
 
   incrementAmount(step) {

@@ -27,6 +27,11 @@ export default class Tariffs extends Component {
     return () => {
       this.props.addOrderItem('DeliveryTariff', tariff);
       this.context.router.push('/checkout');
+      window.ga('send', {
+        hitType: 'event',
+        eventCategory: 'Tariff ' + tariff.amount,
+        eventAction: 'click'
+      });
     };
   }
 

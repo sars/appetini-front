@@ -60,6 +60,15 @@ export default class LunchDetails extends Component {
     this.context.router.push(`/lunches/${this.props.lunch.id}`);
   }
 
+  handleMobilePurchase = () => {
+    this.setState({purchaseOpened: true});
+    window.ga('send', {
+      hitType: 'event',
+      eventCategory: 'Buy(mobile)',
+      eventAction: 'click'
+    });
+  }
+
   render() {
     const styles = require('./LunchDetails.scss');
     const { lunch, location, reviews } = this.props;
@@ -99,7 +108,7 @@ export default class LunchDetails extends Component {
                 <CookPreview cook={cook} className={styles.cookPreview}
                              onClick={() => this.setState({cookOpened: true})}/>
                 <PurchasePreview lunch={lunch} className={styles.purchasePreview}
-                                 onClick={() => this.setState({purchaseOpened: true})}/>
+                                 onClick={::this.handleMobilePurchase}/>
               </div>
               <div className={styles.lunch}>
                 <div className={styles.lunchContent}>

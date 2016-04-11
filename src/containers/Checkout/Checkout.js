@@ -44,7 +44,17 @@ export default class Checkout extends Component {
 
         if (order.payment_type === 'liqpay') {
           this.refs.payForm.submit();
+          window.ga('send', {
+            hitType: 'event',
+            eventCategory: 'Purchase(liqpay)',
+            eventAction: 'click'
+          });
         } else {
+          window.ga('send', {
+            hitType: 'event',
+            eventCategory: 'Purchase(cash)',
+            eventAction: 'click'
+          });
           this.context.router.push(`/order/${order.id}/success`);
         }
 
