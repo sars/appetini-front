@@ -30,6 +30,7 @@ export default class Checkout extends Component {
     return new Promise((resolve, reject) => {
       this.props.createOrder({
         ...orderAttrs,
+        location_attributes: orderAttrs.location,
         user_attributes: orderAttrs.user,
         order_items_attributes: this.props.orderItems,
         user_id: user && user.id

@@ -36,10 +36,6 @@ export default class CookForm extends Component {
     });
   }
 
-  handleSuggestSelect(suggest) {
-    this.props.fields.location_attributes.onChange(suggest);
-  }
-
   removeOtherPhoto(index, photos) {
     this.props.fields.removing_other_photos.onChange(photos);
   }
@@ -111,9 +107,7 @@ export default class CookForm extends Component {
 
         <div className={styles.section}>
           <h3>Адресс</h3>
-          <AddressSuggest onSuggestSelect={::this.handleSuggestSelect}
-                      initialValue={fields.location.value && fields.location.value.full_address}
-          />
+          <AddressSuggest onSuggestSelect={::this.props.fields.location.onChange} location={fields.location.value} />
           {this.errorsFor('location')}
         </div>
 
