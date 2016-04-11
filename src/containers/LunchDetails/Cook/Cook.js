@@ -37,7 +37,7 @@ export default class Cook extends Component {
                 <FormattedPlural value={cook.reviews_count} one="отзыв" few="отзыва" many="отзывов" other="отзывов"/>
               </Link>
             </div>
-            { cook.sanitary_book_photos.length > 0 &&
+            { cook.sanitary_book_photos && cook.sanitary_book_photos.length > 0 &&
             <ImagesPreview images={cook.sanitary_book_photos} currentImageId={0} template={(onClick) =>
                            <div className={styles.sanitaryBookContainer}>
                             <div className={styles.sanitaryBook}>
