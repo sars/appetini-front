@@ -4,6 +4,7 @@ import styles from './styles.scss';
 import Tariff from './Tariff/Tariff';
 import { addOrderItem } from 'redux/modules/purchase';
 import { connect } from 'react-redux';
+import ga from 'components/GaEvent/ga';
 
 @asyncConnect([
   {key: 'tariffs', promise: ({helpers, store}) => {
@@ -27,11 +28,7 @@ export default class Tariffs extends Component {
     return () => {
       this.props.addOrderItem('DeliveryTariff', tariff);
       this.context.router.push('/checkout');
-      window.ga('send', {
-        hitType: 'event',
-        eventCategory: 'Tariff ' + tariff.amount,
-        eventAction: 'click'
-      });
+      ga('Tariff ' + tariff.amount);
     };
   }
 

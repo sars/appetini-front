@@ -16,6 +16,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { getReviews } from 'redux/modules/common';
 import { getLunch } from 'helpers/lunches';
 import classNames from 'classnames';
+import ga from 'components/GaEvent/ga';
 
 function isReviews(location) {
   return /\/reviews$/.test(location.pathname);
@@ -62,11 +63,7 @@ export default class LunchDetails extends Component {
 
   handleMobilePurchase = () => {
     this.setState({purchaseOpened: true});
-    window.ga('send', {
-      hitType: 'event',
-      eventCategory: 'Buy(mobile)',
-      eventAction: 'click'
-    });
+    ga('Buy(mobile)');
   }
 
   render() {

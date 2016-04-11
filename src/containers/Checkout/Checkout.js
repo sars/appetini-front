@@ -5,6 +5,7 @@ import OrderForm from 'components/OrderForm/OrderForm';
 import { createOrder } from 'redux/modules/common';
 import normalizeErrors from 'helpers/normalizeErrors';
 import { setUser, setToken } from 'redux/modules/auth';
+import ga from 'components/GaEvent/ga';
 
 @connect(
   state => ({orderItems: state.purchase.orderItems, user: state.auth.user}),
@@ -44,17 +45,9 @@ export default class Checkout extends Component {
 
         if (order.payment_type === 'liqpay') {
           this.refs.payForm.submit();
-          window.ga('send', {
-            hitType: 'event',
-            eventCategory: 'Purchase(liqpay)',
-            eventAction: 'click'
-          });
+          ga('Purchase(liqpay)');
         } else {
-          window.ga('send', {
-            hitType: 'event',
-            eventCategory: 'Purchase(cash)',
-            eventAction: 'click'
-          });
+          ga('Purchase(cash)');
           this.context.router.push(`/order/${order.id}/success`);
         }
 

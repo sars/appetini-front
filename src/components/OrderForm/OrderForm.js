@@ -11,6 +11,7 @@ import { removeOrderItem, clearOrderItems } from 'redux/modules/purchase';
 import { reduxForm } from 'redux-form';
 import PasswordInput from 'components/PasswordInput/PasswordInput';
 import styles from './styles.scss';
+import ga from 'components/GaEvent/ga';
 
 @reduxForm(
   {
@@ -54,11 +55,7 @@ export default class OrderForm extends Component {
   }
 
   clearOrderItems() {
-    window.ga('send', {
-      hitType: 'event',
-      eventCategory: 'Cancel purchase',
-      eventAction: 'click'
-    });
+    ga('Cancel purchase');
     this.props.clearOrderItems();
     this.context.router.push('/');
   }

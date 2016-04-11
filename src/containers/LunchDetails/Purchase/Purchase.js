@@ -7,6 +7,7 @@ import { addOrderItem } from 'redux/modules/purchase';
 import { connect } from 'react-redux';
 import { FormattedPlural } from 'react-intl';
 import styles from './styles.scss';
+import ga from 'components/GaEvent/ga';
 
 @connect(state => ({user: state.auth.user}), { addOrderItem })
 export default class Purchase extends Component {
@@ -28,11 +29,7 @@ export default class Purchase extends Component {
   subscribe() {
     this.props.addOrderItem('Lunch', this.props.lunch, this.state.amount);
     this.context.router.push('/tariffs');
-    window.ga('send', {
-      hitType: 'event',
-      eventCategory: 'Subscribe and buy',
-      eventAction: 'click'
-    });
+    ga('Subscribe and buy');
   }
 
   buy() {
@@ -41,11 +38,7 @@ export default class Purchase extends Component {
       this.props.addOrderItem('DeliveryTariff', this.props.individualTariff);
     }
     this.context.router.push('/checkout');
-    window.ga('send', {
-      hitType: 'event',
-      eventCategory: 'Buy',
-      eventAction: 'click'
-    });
+    ga('Buy');
   }
 
   incrementAmount(step) {
