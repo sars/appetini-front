@@ -7,6 +7,7 @@ import forEach from 'lodash/forEach';
 
 export default class LocationsSelect extends Component {
   static propTypes = {
+    location: PropTypes.object,
     locations: PropTypes.array.isRequired,
     onSelect: PropTypes.func.isRequired
   };
@@ -44,7 +45,10 @@ export default class LocationsSelect extends Component {
       <div>
         <Dropdown auto source={this.state.list} size="15" value={this.state.selected} onChange={this.onChoose} />
 
-        {this.state.search && <AddressSuggest onSuggestSelect={::this.props.onSelect} className={styles.search} />}
+        {this.state.search &&
+        <div className={styles.search}>
+          <AddressSuggest onSuggestSelect={::this.props.onSelect} location={this.props.location} />
+        </div>}
       </div>
     );
   }

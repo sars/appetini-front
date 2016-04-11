@@ -3,6 +3,7 @@ import normalizeErrors from 'helpers/normalizeErrors';
 export default function submit(cook, submitFn) {
   cook.user_attributes = cook.user;
   cook.user_attributes.name = cook.first_name + ' ' + cook.last_name;
+  cook.location_attributes = cook.location;
   return new Promise((resolve, reject) => {
     submitFn(cook).then(response => {
       resolve(response);

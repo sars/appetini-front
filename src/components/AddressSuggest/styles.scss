@@ -79,3 +79,46 @@ $input-field-font-size: 1.6 * $unit;
     background-color: darken($dropdown-value-hover-background, 5%);
   }
 }
+
+.colWrapper {
+
+  .map, .textarea {
+    margin-top: 10px;
+  }
+
+  .map {
+    height: 20rem;
+  }
+
+  .textarea {
+    textarea {
+      height: 10rem;
+    }
+  }
+}
+
+
+@media (min-width: 500px) {
+  .colWrapper {
+
+    &:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    .map {
+      width: 49%;
+      float: right;
+    }
+
+    .textarea {
+      width: 49%;
+      float: left;
+
+      textarea {
+        height: 20rem;
+      }
+    }
+  }
+}

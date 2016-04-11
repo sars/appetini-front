@@ -40,10 +40,6 @@ export default class OrderForm extends Component {
     router: PropTypes.object.isRequired
   };
 
-  handleLocationChange(data) {
-    this.props.fields.location_attributes.onChange(data);
-  }
-
   errorsFor(fieldName) {
     const { fields } = this.props;
     return fields[fieldName].error && !fields[fieldName].visited &&
@@ -98,9 +94,10 @@ export default class OrderForm extends Component {
         {hasLunches && <div>
           <h3>Адресс доставки</h3>
           {user && user.locations && user.locations.length && !orderExist
-            ? <LocationsSelect locations={user.locations} onSelect={::this.handleLocationChange} />
-            : <AddressSuggest onSuggestSelect={::this.handleLocationChange} disabled={orderExist}
-                            initialValue={fields.location.value && fields.location.value.full_address} />}
+            ? <LocationsSelect locations={user.locations} onSelect={::this.props.fields.location.onChange}
+                               location={fields.location.value} />
+            : <AddressSuggest onSuggestSelect={::this.props.fields.location.onChange} disabled={orderExist}
+                            location={fields.location.value} />}
 
           {this.errorsFor('location')}
         </div>}
