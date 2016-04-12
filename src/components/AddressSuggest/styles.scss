@@ -82,7 +82,7 @@ $input-field-font-size: 1.6 * $unit;
 
 .colWrapper {
 
-  .map, .textarea {
+  .mapContainer, .textareaContainer {
     margin-top: 10px;
   }
 
@@ -90,7 +90,7 @@ $input-field-font-size: 1.6 * $unit;
     height: 20rem;
   }
 
-  .textarea {
+  .textareaContainer {
     textarea {
       height: 10rem;
     }
@@ -107,14 +107,16 @@ $input-field-font-size: 1.6 * $unit;
       clear: both;
     }
 
-    .map {
-      width: 49%;
+    .mapContainer {
+      width: 50%;
       float: right;
+      padding-left: 0.5rem;
     }
 
-    .textarea {
-      width: 49%;
+    .textareaContainer {
+      width: 50%;
       float: left;
+      padding-right: 0.5rem;
 
       textarea {
         height: 20rem;

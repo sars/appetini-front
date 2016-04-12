@@ -70,9 +70,13 @@ export default class AddressSuggest extends Component {
                     initialValue={location ? location.full_address : undefined}
         />
         <div className={styles.colWrapper}>
-          <GoogleMapLoader containerElement={mapContainer} googleMapElement={googleMapElement} />
-          <Input multiline placeholder="К вам трудно добраться? Укажите ориентиры, номер подъезда, номер домофона или квартиры, если нужно" className={styles.textarea}
-                 onChange={::this.onChangeDescription} value={this.state.description} disabled={disabled} />
+          <div className={styles.mapContainer}>
+            <GoogleMapLoader containerElement={mapContainer} googleMapElement={googleMapElement} />
+          </div>
+          <Input multiline className={styles.textareaContainer} onChange={::this.onChangeDescription}
+                 placeholder="К вам трудно добраться? Укажите ориентиры, номер подъезда, номер домофона или квартиры, если нужно"
+                 value={this.state.description} disabled={disabled}
+          />
         </div>
       </div>
     );
