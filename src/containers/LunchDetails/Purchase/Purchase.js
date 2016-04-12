@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { FormattedPlural } from 'react-intl';
 import styles from './styles.scss';
 import ga from 'components/GaEvent/ga';
+import moment from 'moment';
 
 @connect(state => ({user: state.auth.user}), { addOrderItem })
 export default class Purchase extends Component {
@@ -42,7 +43,10 @@ export default class Purchase extends Component {
   }
 
   incrementAmount(step) {
-    const newAmount = this.state.amount + step;
+    const {amount} = this.state;
+    const availableCount = this.props.lunch.available_count;
+    const currentStep = amount + step;
+    const newAmount = currentStep < availableCount ? currentStep : availableCount;
     this.setState({amount: newAmount < 1 ? 1 : newAmount});
   }
 
@@ -54,6 +58,7 @@ export default class Purchase extends Component {
     const { lunch } = this.props;
     const { amount } = this.state;
     const hasDeliveries = this.userHasDeliveries();
+    const disabled = moment(lunch.ready_by).subtract(lunch.disable_minutes, 'minutes').isBefore(moment()) || lunch.available_count === 0;
 
     return (
       <Card className={styles.root}>
@@ -62,20 +67,23 @@ export default class Purchase extends Component {
             <p>Есть вопросы? Звони!</p>
             <p><strong>+38 096 505 85 84</strong></p>
           </div>
-          <div className={styles.amountContainer}>
+          {!disabled && <div className={styles.amountContainer}>
             <Button className={styles.amountButton} type="button" icon="remove" outlined mini flat
                     onClick={() => this.incrementAmount(-1)}/>
-            <span className={styles.amountText}>
-              <span className={styles.amount}>{amount}</span>
-              &nbsp;
+            <div className={styles.amountText}>
+              <div>
+                <span className={styles.amount}>{amount}</span>
+                &nbsp;
               <span className={styles.amountLabel}>
                 <FormattedPlural value={amount} one="порция" few="порции" many="порций" other="порций"/>
-              </span>
-            </span>
+              </span></div>
+              <div className={styles.avaliableAmount}>Доступно <strong>{lunch.available_count}</strong></div>
+            </div>
             <Button className={styles.amountButton} type="button" icon="add" outlined mini flat
                     onClick={() => this.incrementAmount(1)}/>
           </div>
-
+          }
+          {disabled && <div className={styles.amountContainer}><span className={styles.amountLabel}>Нет доступных порций</span></div>}
           <div className={styles.price}>
             <span className={styles.priceAmount}>{Number(lunch.price)}</span>
             <span className={styles.priceCurrency}>грн</span>
@@ -88,7 +96,7 @@ export default class Purchase extends Component {
               </div> :
               <div className={styles.buttonHint}>+ стоимость доставки</div>
             }
-            <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Заказать обед"
+            <Button disabled={disabled} className={classNames(styles.button, styles.buyButton)} big flat accent label="Заказать обед"
                     onClick={::this.buy}/>
           </div>
 
@@ -100,7 +108,7 @@ export default class Purchase extends Component {
 
         {!hasDeliveries && <CardContent className={classNames(styles.subscribeContainer, styles.cardContent)}>
           <div className={styles.buttonHint}>+ тарифный план</div>
-          <Button big flat accent className={classNames(styles.button, styles.subscribeButton)}
+          <Button disabled={disabled} big flat accent className={classNames(styles.button, styles.subscribeButton)}
                   onClick={::this.subscribe}>
             <div>Подписаться</div>
             <div className={styles.buttonMinorLabel}>и купить</div>

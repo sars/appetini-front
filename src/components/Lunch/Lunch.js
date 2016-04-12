@@ -6,12 +6,13 @@ import classNames from 'classnames';
 import { Link } from 'react-router';
 import { FormattedPlural } from 'react-intl';
 import styles from './styles.scss';
+import moment from 'moment';
 
 const Lunch = ({className, lunch}) => {
   const { cook } = lunch;
-
+  const disabled = moment(lunch.ready_by).subtract(lunch.disable_minutes, 'minutes').isBefore(moment()) || lunch.available_count === 0;
   return (
-    <Link to={`/lunches/${lunch.id}`} className={classNames(styles.root, className)}>
+    <Link to={`/lunches/${lunch.id}`} className={classNames(styles.root, className, {[styles.disabled]: disabled})}>
       <DeliveryPeriod className={styles.readyBy} time={lunch.ready_by}/>
       <Card className={styles.card}>
         <div className={styles.photoWrapper}>

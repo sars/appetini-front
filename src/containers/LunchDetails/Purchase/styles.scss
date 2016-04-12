@@ -7,6 +7,10 @@
   margin: 2rem 0;
 }
 
+.avaliableCount {
+  margin-bottom: 10px;
+}
+
 .priceAmount {
   font-weight: 500;
   font-size: 7.2rem;
@@ -91,10 +95,16 @@
 }
 
 .amountText {
+  display: inline-block;
   margin: 0 1rem;
   color: #4a4a4a;
   vertical-align: middle;
   font-size: 2.4rem;
+}
+
+.avaliableAmount {
+  font-size: 1.3rem;
+  color: #888;
 }
 
 .amountLabel {

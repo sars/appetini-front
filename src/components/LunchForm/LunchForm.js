@@ -24,9 +24,9 @@ const dishTypes = [
 @reduxForm(
   {
     form: 'lunchForm',
-    fields: ['id', 'cook_id', 'amount', 'photos_temp_image_ids', 'initial_price', 'accept_rules',
+    fields: ['id', 'cook_id', 'available_count', 'photos_temp_image_ids', 'initial_price', 'accept_rules',
       'dishes[].id', 'dishes[].name', 'dishes[].size', 'dishes[].dish_type', 'dishes[]._destroy',
-      'removing_photos', 'food_preference_ids', 'ready_by_date', 'ready_by_time', 'dishes_count', 'photos']
+      'removing_photos', 'food_preference_ids', 'ready_by_date', 'ready_by_time', 'dishes_count', 'photos', 'disable_minutes']
     // https://github.com/erikras/redux-form/issues/621
     // https://github.com/erikras/redux-form/issues/514
     // initialValues: {
@@ -144,7 +144,11 @@ export default class LunchForm extends Component {
         <div className={classNames(styles.section, styles.twoColSection)}>
           <div>
             <h3>Количество</h3>
-            <Input {...fields.amount}/>
+            <Input {...fields.available_count}/>
+          </div>
+          <div>
+            <h3>Время до заказа (мин)</h3>
+            <Input {...fields.disable_minutes}/>
           </div>
         </div>
         <div className={styles.section}>
