@@ -9,7 +9,7 @@ import SocialButton from 'components/SocialButton/SocialButton';
 const menuLinks = [
   // {to: '/terms', label: 'Условия использования'},
   {to: '/about', label: 'Как это работает'},
-  {to: '/', label: 'Меню', index: true},
+  {to: '/', label: 'Обеды', index: true},
   {to: '/about', label: 'О Нас'}
 ];
 

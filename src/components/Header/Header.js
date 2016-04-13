@@ -13,9 +13,11 @@ import HeaderMenu from 'components/HeaderMenu/HeaderMenu';
 import Menu from 'components/Menu/Menu';
 import { MenuItem, MenuDivider } from 'react-toolbox';
 import { FormattedPlural } from 'react-intl';
+import MobMenu from 'components/MobMenu/MobMenu';
+
 
 const menuLinks = [
-  {to: '/', label: 'Меню', index: true},
+  {to: '/', label: 'Обеды', index: true},
   {to: '/about', label: 'О Нас'},
   {to: '/tariffs', label: 'Тарифные планы'}
 ];
@@ -72,6 +74,7 @@ export default class Header extends Component {
 
     return (
       <AppBar fixed className={styles.root}>
+        <MobMenu className={styles.mobMenu}/>
         <IndexLink className={styles.brand} to="/">
           <div className={styles.brandIcon}></div>
           <span className={styles.brandLabel}>
