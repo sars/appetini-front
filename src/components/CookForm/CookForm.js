@@ -117,7 +117,7 @@ export default class CookForm extends Component {
         </div>
 
         <div className={styles.section}>
-          <h3>Адресс</h3>
+          <h3>Адрес</h3>
           <AddressSuggest onSuggestSelect={::this.props.fields.location.onChange} location={fields.location.value} />
           {this.errorsFor('location')}
         </div>

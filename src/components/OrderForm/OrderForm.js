@@ -92,7 +92,7 @@ export default class OrderForm extends Component {
         </div>}
 
         {hasLunches && <div>
-          <h3>Адресс доставки</h3>
+          <h3>Адрес доставки</h3>
           {user && user.locations && user.locations.length && !orderExist
             ? <LocationsSelect locations={user.locations} onSelect={::this.props.fields.location.onChange}
                                location={fields.location.value} />
