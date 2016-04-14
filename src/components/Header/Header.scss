@@ -1,6 +1,7 @@
 .root:not(.flat) {
   box-shadow: 0 2px 4px rgba(221, 213, 205, 0.85);
   z-index: initial;
+  justify-content: center;
 }
 
 .brand {
@@ -41,6 +42,7 @@
 .navigationRight {
   flex: 1;
   text-align: right;
+  padding: 0;
 }
 
 .search {
@@ -94,10 +96,16 @@
     margin-top: 1rem;
   }
 }
+.mobMenu {
+  flex: 1;
+}
 
 @media (min-width: 700px) {
   .root .desktopMenu {
     display: initial;
+  }
+  .root .mobMenu {
+    display: none;
   }
 }
 
@@ -107,8 +115,11 @@
   }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 500px) {
   .brandLabel {
     display: none;
+  }
+  .brandIcon {
+    margin: 0;
   }
 }

@@ -1,0 +1,48 @@
+.mobMenuBtn {
+    color: $color-primary;
+
+    span {
+      font-size: 3rem;
+    }
+}
+
+.drawerMenu {
+  background: #FDFAF7;
+
+  .headerMobMenu {
+    text-align: center;
+    margin: 1.5rem 0 0.5rem 0;
+    font-size: 2rem;
+  }
+
+  .btnContainer  {
+    text-align: center;
+    padding: 1.6rem;
+  }
+
+  .socialContainer {
+    text-align: center;
+    padding: 0 1.6rem;
+
+    .socialLabel {
+      color: #929292;
+      font-size: 1.3rem;
+      margin-right: 1rem;
+    }
+
+    .socialButtons {
+      display: inline-block;
+      white-space: nowrap;
+      vertical-align: middle;
+
+      .socialButton{
+        margin: 0 0.5rem;
+      }
+    }
+
+    span {
+      display: inline-block;
+      margin: 0 0 1rem 0;
+    }
+  }
+}

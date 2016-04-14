@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import {reduxForm} from 'redux-form';
+import { reduxForm } from 'redux-form';
 import Button from 'components/Button/Button';
 import Input from 'components/Input/Input';
 import { login, oauth, initRegistration } from 'redux/modules/auth';
@@ -11,7 +11,7 @@ import SocialButton from 'components/SocialButton/SocialButton';
 
 @reduxForm({
   form: 'login',
-  fields: ['email', 'password', 'rememberMe'],
+  fields: ['email', 'password', 'remember_me'],
   asyncBlurFields: ['email']
 }, null, { login, oauth, showToast, initRegistration })
 export default class LoginForm extends Component {
@@ -61,23 +61,15 @@ export default class LoginForm extends Component {
   }
 
   render() {
-    const {
-      // dirty,
-      fields: {email, password, rememberMe},
-      /* handleSubmit,
-      invalid,
-      resetForm,
-      pristine, */
-      } = this.props;
     const styles = require('./LoginForm.scss');
-
+    const fields = this.props.fields;
     return (
       <div className={styles.root}>
         <form onSubmit={this.submit}>
-          <Input big className={styles.input} placeholder="Email" type="email" {...email}/>
-          <PasswordInput big placeholder="Password" {...password} className={styles.input}/>
+          <Input big className={styles.input} placeholder="Email" type="email" {...fields.email}/>
+          <PasswordInput big placeholder="Password" {...fields.password} className={styles.input}/>
           <div className={styles.recoveryContainer}>
-            <Checkbox className={styles.rememberMe} label="Запомнить меня" {...rememberMe} />
+            <Checkbox className={styles.rememberMe} label="Запомнить меня" {...fields.remember_me} />
             <Link className={styles.forgotLink} to="/recovery">
               Забыли пароль?
             </Link>
