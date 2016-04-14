@@ -59,8 +59,6 @@ export default class Html extends Component {
         </head>
         <body>
           <div id="content" dangerouslySetInnerHTML={{__html: content}}/>
-          {/* https://github.com/andyearnshaw/Intl.js#getting-started (polifill) */}
-          <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en,Intl.~locale.ru"></script>
           <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
           <script dangerouslySetInnerHTML={{__html: `window.__data=${serialize(store.getState())};`}} charSet="UTF-8"/>
           <script src={assets.javascript.main} charSet="UTF-8"/>

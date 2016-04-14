@@ -11,6 +11,7 @@ import { ReduxAsyncConnect } from 'redux-async-connect';
 import rootComponent from 'helpers/rootComponent';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
 import { close as closeModal } from './redux/modules/modals';
+import intlPolyfill from 'helpers/intlPolyfill';
 
 import getRoutes from './routes';
 
@@ -33,10 +34,12 @@ const component = (
   </Router>
 );
 
-ReactDOM.render(
-  rootComponent(store, component),
-  dest
-);
+intlPolyfill(() => {
+  ReactDOM.render(
+    rootComponent(store, component),
+    dest
+  );
+});
 
 if (process.env.NODE_ENV !== 'production') {
   window.React = React; // enable debugger
