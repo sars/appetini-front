@@ -97,6 +97,10 @@
   }
 }
 
+.disabled {
+  filter: grayscale(100%);
+}
+
 .cookName {
   font-weight: 500;
   margin-bottom: 0.2rem;
