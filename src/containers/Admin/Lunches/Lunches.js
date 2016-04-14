@@ -5,7 +5,7 @@ import { request as requestLunches } from 'helpers/lunches';
 import ResourcesIndex from 'components/ResourcesIndex/ResourcesIndex';
 
 @asyncConnect([
-  {key: 'adminLunches', promise: requestLunches}
+  {key: 'adminLunches', promise: requestLunches({nearest: false})}
 ])
 export default class Lunches extends Component {
   static propTypes = {

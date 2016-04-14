@@ -5,10 +5,12 @@ import times from 'lodash/times';
 import classNames from 'classnames';
 import { addOrderItem } from 'redux/modules/purchase';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { FormattedPlural } from 'react-intl';
 import styles from './styles.scss';
 import ga from 'components/GaEvent/ga';
 import moment from 'moment';
+import OrderTimeout from 'components/OrderTimeout/OrderTimeout';
 
 @connect(state => ({user: state.auth.user}), { addOrderItem })
 export default class Purchase extends Component {
@@ -58,8 +60,10 @@ export default class Purchase extends Component {
     const { lunch } = this.props;
     const { amount } = this.state;
     const hasDeliveries = this.userHasDeliveries();
-    const disabled = moment(lunch.ready_by).subtract(lunch.disable_minutes, 'minutes').isBefore(moment()) || lunch.available_count === 0;
-
+    const disabledByTime = moment(lunch.ready_by).subtract(lunch.disable_minutes, 'minutes').isBefore(moment());
+    const disabledByCount = lunch.available_count === 0;
+    const disabled = disabledByTime || disabledByCount;
+    const isToday = moment(lunch.ready_by).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
     return (
       <Card className={styles.root}>
         <CardContent className={styles.cardContent}>
@@ -83,19 +87,31 @@ export default class Purchase extends Component {
                     onClick={() => this.incrementAmount(1)}/>
           </div>
           }
-          {disabled && <div className={styles.amountContainer}><span className={styles.amountLabel}>Нет доступных порций</span></div>}
+          {disabled && <div className={styles.amountContainer}>
+            <div className={styles.amountLabel}>
+              <div>{disabledByCount && !disabledByTime && 'Нет доступных порций'} {disabledByTime && 'Время заказа истекло'}</div>
+              <div><Link to="/">Закажите доступный обед</Link></div>
+            </div>
+          </div>
+          }
           <div className={styles.price}>
             <span className={styles.priceAmount}>{Number(lunch.price)}</span>
             <span className={styles.priceCurrency}>грн</span>
           </div>
 
           <div>
-            {hasDeliveries ?
-              <div className={styles.buttonHint}>
-                1 доставка будет списана при заказе с вашего счета
-              </div> :
-              <div className={styles.buttonHint}>+ стоимость доставки</div>
+            {isToday && !disabled &&
+            <div className={styles.timerSection}>
+              До конца заказа осталось:
+              <div className={styles.timerWrapper}><OrderTimeout lunch={lunch} className={styles.timer}/></div>
+            </div>
             }
+            {!disabled && hasDeliveries ?
+                <div className={styles.buttonHint}>
+                  1 доставка будет списана при заказе с вашего счета
+                </div> :
+                <div className={styles.buttonHint}>+ стоимость доставки</div>
+              }
             <Button disabled={disabled} className={classNames(styles.button, styles.buyButton)} big flat accent label="Заказать обед"
                     onClick={::this.buy}/>
           </div>
