@@ -101,6 +101,24 @@
   filter: grayscale(100%);
 }
 
+.orderTimeoutWrapper {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+  color: #a4958b;
+}
+
+.timer {
+  margin-left: auto;
+  display: inline-block;
+  vertical-align: middle;
+  background-color: #958C82;
+  padding: 0 0.4rem;
+  line-height: 1.4em;
+  color: #E9E3DE;
+  border-radius: 2px;
+}
+
 .cookName {
   font-weight: 500;
   margin-bottom: 0.2rem;

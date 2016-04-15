@@ -14,6 +14,10 @@ import { loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
 import { request as requestLunches, filterNames } from 'helpers/lunches';
 import valueFromLocationQuery from 'helpers/valueFromLocationQuery';
+import groupBy from 'lodash/groupBy';
+import forIn from 'lodash/forIn';
+import humanizeDayName from 'components/humanizeDayName/humanizeDayName';
+import TimePeriod from 'helpers/TimePeriod';
 
 function currentStateName(name) {
   return 'current' + name.charAt(0).toUpperCase() + name.slice(1);
@@ -24,7 +28,7 @@ function racKeyLoaded(store, key) {
 }
 
 @asyncConnect([
-  {key: 'lunches', promise: requestLunches},
+  {key: 'lunches', promise: requestLunches({nearest: true})},
   {key: 'preferences', promise: ({helpers, store}) => {
     if (!racKeyLoaded(store, 'preferences')) {
       return helpers.client.get('/food_preferences').then(data => {
@@ -151,9 +155,27 @@ export default class Home extends Component {
       }))
     ];
 
+    const nearestLunches = [];
+    forIn(lunches.nearest && groupBy(lunches.nearest, 'ready_by'), (value, key) => {
+      nearestLunches.push({
+        lunches: value.map(lunch => ({component: <Lunch lunch={lunch} near={true}/>})),
+        date: key
+      });
+    });
+
     return (
       <ColumnLayout className={styles.root}>
         <Helmet title="Home"/>
+        {nearestLunches &&
+        <div className={styles.nearestWrapper}>
+          {nearestLunches.map((item, index) => {
+            return (<div key={index}>
+              <h1>Обеды на {humanizeDayName(item.date, 'DD MMMM')}, время доставки: <TimePeriod date={item.date} period={30}/></h1>
+              <Boxes boxes={item.lunches}/>
+            </div>);
+          })}
+        </div>
+        }
         <div className={styles.firstLine}>
           <h1>Обеды на каждый день</h1>
           <DeliveryTimeDropdown className={styles.timeDropdown} onChange={this.filterChanged('time')} value={currentTime}/>
