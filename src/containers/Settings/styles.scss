@@ -1,0 +1,39 @@
+.root {
+  max-width: 45rem;
+  margin: 0 auto;
+  padding: 2rem 0;
+
+  h1 {
+    text-align: center;
+    margin: 3rem 0;
+  }
+
+  label {
+    display: block;
+    margin: 2rem 0;
+    padding-left: 2rem;
+    color: #685c50;
+  }
+  .span {
+    font-weight: 500;
+  }
+}
+
+.input {
+  margin: 1rem 0;
+}
+
+.separator {
+  margin: 2.5rem auto 2rem;
+  text-align: center;
+  color: #afa49d;
+  display: flex;
+  align-items: center;
+
+  &:before, &:after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #efe8e2;
+    height: 1px;
+  }
+}

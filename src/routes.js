@@ -21,6 +21,7 @@ import {
     Checkout,
     Recovery,
     Registration,
+    Settings,
     OrderSuccess
   } from 'containers';
 
@@ -50,6 +51,7 @@ export default (store, client) => {
       <Route path="tariffs" component={Tariffs}/>
       <Route path="checkout" component={Checkout}/>
       <Route path="order/:orderId/success" component={OrderSuccess}/>
+      <Route path="settings" component={Settings}/>
 
       <Route path="admin" onEnter={requireLogin} component={AuthorizedApp} authCondition={user => user && user.role === 'admin'}>
         <IndexRoute component={AdminDashboard}/>

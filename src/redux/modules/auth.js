@@ -2,6 +2,7 @@ import Oauth from 'redux/modules/oauth';
 import tokenPayload from 'helpers/tokenPayload';
 import normalizeOauthData from 'helpers/normalizeOauthData';
 
+const CHANGE_PASSWORD = 'auth/CHANGE_PASSWORD';
 const LOGIN = 'auth/LOGIN';
 const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
 const LOGIN_FAIL = 'auth/LOGIN_FAIL';
@@ -18,6 +19,7 @@ const SET_TOKEN = 'auth/SET_TOKEN';
 const OAUTH_SIGN_UP = 'auth/OAUTH_SIGN_UP';
 const OAUTH_SIGN_UP_SUCCESS = 'auth/OAUTH_SIGN_UP_SUCCESS';
 const OAUTH_SIGN_UP_FAIL = 'auth/OAUTH_SIGN_UP_FAIL';
+const UPDATE_USER = 'auth/UPDATE_USER';
 
 const initialState = {
   tokenPayload: null,
@@ -67,6 +69,11 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         user: action.user
       };
+    case UPDATE_USER:
+      return {
+        ...state,
+        user: action.user
+      };
     case SET_TOKEN:
       return {
         ...state,
@@ -91,6 +98,29 @@ export function setUser(user) {
   return {
     type: SET_USER,
     user
+  };
+}
+
+export function updateCurrentUser(userId, userData) {
+  return (dispatch, client) => {
+    return client.put(`/users/${userId}`, { data: {resource: userData }}).then((response) => {
+      dispatch({
+        type: UPDATE_USER,
+        user: response.resource
+      });
+      return response;
+    });
+  };
+}
+
+export function changePassword(userId, password) {
+  return (dispatch, client) => {
+    return client.put(`/users/${userId}/password`, { data: {resource: password }}).then((response) => {
+      dispatch({
+        type: CHANGE_PASSWORD
+      });
+      return response;
+    });
   };
 }
 
