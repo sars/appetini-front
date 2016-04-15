@@ -104,8 +104,9 @@
 .orderTimeoutWrapper {
   display: flex;
   align-items: baseline;
-  margin-bottom: 0.5rem;
+  padding: 0.5rem 0;
   color: #a4958b;
+  line-height: 1.4em;
 }
 
 .timer {
@@ -114,7 +115,6 @@
   vertical-align: middle;
   background-color: #958C82;
   padding: 0 0.4rem;
-  line-height: 1.4em;
   color: #E9E3DE;
   border-radius: 2px;
 }

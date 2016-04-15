@@ -11,10 +11,19 @@ import OrderTimeout from 'components/OrderTimeout/OrderTimeout';
 
 const Lunch = ({className, lunch, near}) => {
   const { cook } = lunch;
-  const disabled = moment(lunch.ready_by).subtract(lunch.disable_minutes, 'minutes').isBefore(moment()) || lunch.available_count === 0;
+  const disabledByTime = moment(lunch.ready_by).subtract(lunch.disable_minutes, 'minutes').isBefore(moment());
+  const disabledByCount = lunch.available_count === 0;
+  const disabled = disabledByTime || disabledByCount;
+
   return (
     <Link to={`/lunches/${lunch.id}`} className={classNames(styles.root, className, {[styles.disabled]: disabled})}>
-      {!near && <DeliveryPeriod className={styles.readyBy} time={lunch.ready_by}/>}
+      {!near &&
+        (disabled ?
+          <span className={styles.orderTimeoutWrapper}>
+            {disabledByTime ? 'Время до заказа истекло' : 'Порции закончились'}
+          </span> :
+          <DeliveryPeriod className={styles.readyBy} time={lunch.ready_by}/>)
+      }
       {near && <span className={styles.orderTimeoutWrapper}>До окончания заказа: <OrderTimeout className={styles.timer} lunch={lunch}/> </span>}
       <Card className={styles.card}>
         <div className={styles.photoWrapper}>

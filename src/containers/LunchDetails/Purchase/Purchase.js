@@ -89,7 +89,7 @@ export default class Purchase extends Component {
           }
           {disabled && <div className={styles.amountContainer}>
             <div className={styles.amountLabel}>
-              <div>{disabledByCount && !disabledByTime && 'Нет доступных порций'} {disabledByTime && 'Время заказа истекло'}</div>
+              <div>{disabledByCount && !disabledByTime && 'Нет доступных порций'} {disabledByTime && 'Время до заказа истекло'}</div>
               <div><Link to="/">Закажите доступный обед</Link></div>
             </div>
           </div>
