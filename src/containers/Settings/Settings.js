@@ -47,14 +47,14 @@ export default class Settings extends Component {
     form: 'change-password',
     fields: ['current_password', 'password']
   })(
-    ({fields: {current_password, password}, handleSubmit}) =>
+    ({fields, handleSubmit}) =>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <PasswordInput big placeholder="Текущий пароль" {...current_password} className={styles.input}/>
-        <PasswordInput big placeholder="Новый пароль" {...password} className={styles.input}/>
+        <PasswordInput big placeholder="Текущий пароль" {...fields.current_password} className={styles.input}/>
+        <PasswordInput big placeholder="Новый пароль" {...fields.password} className={styles.input}/>
         <div className={styles.buttons}>
           <Button big accent flat label="Обновить пароль" type="submit"
                   className={styles.button}
-                  disabled={!current_password.value || !password.value}/>
+                  disabled={!fields.current_password.value || !fields.password.value}/>
         </div>
       </form>
   );
