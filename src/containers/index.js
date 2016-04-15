@@ -17,4 +17,5 @@ export Tariffs from './Tariffs/Tariffs';
 export Checkout from './Checkout/Checkout';
 export Recovery from './Recovery/Recovery';
 export Registration from './Registration/Registration';
+export Settings from './Settings/Settings';
 export OrderSuccess from './OrderSuccess/OrderSuccess';

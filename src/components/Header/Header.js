@@ -69,6 +69,7 @@ export default class Header extends Component {
       </MenuItem>,
       user.role === 'admin' && <MenuItem key="admin" caption="Админка" onClick={() => push('/admin')}/>,
       <MenuDivider key="devider" />,
+      <MenuItem key="settings" caption="Настройки" onClick={() => push('/settings')}/>,
       <MenuItem key="logout" caption="Выйти" onClick={this.logout}/>
     ];
 
