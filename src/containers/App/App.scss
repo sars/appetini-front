@@ -50,4 +50,10 @@ h3 {
   .pointer {
     cursor: pointer;
   }
+
+  @media all and (max-width:767px) {
+    #linkedchat {
+      display: none;
+    }
+  }
 }

@@ -6,13 +6,18 @@ import classNames from 'classnames';
 import { Link } from 'react-router';
 import { FormattedPlural } from 'react-intl';
 import styles from './styles.scss';
-import moment from 'moment';
 import OrderTimeout from 'components/OrderTimeout/OrderTimeout';
+import isLunchDisabled from 'helpers/isLunchDisabled';
+import Label from 'components/label/label';
+import tooltip from 'react-toolbox/lib/tooltip';
+
+const TooltipLabel = tooltip(Label);
 
 const Lunch = ({className, lunch, near}) => {
   const { cook } = lunch;
-  const disabledByTime = moment(lunch.ready_by).subtract(lunch.disable_minutes, 'minutes').isBefore(moment());
-  const disabledByCount = lunch.available_count === 0;
+  const lunchDisabled = isLunchDisabled(lunch);
+  const disabledByTime = lunchDisabled.byTime;
+  const disabledByCount = lunchDisabled.byCount;
   const disabled = disabledByTime || disabledByCount;
 
   return (
@@ -20,11 +25,11 @@ const Lunch = ({className, lunch, near}) => {
       {!near &&
         (disabled ?
           <span className={styles.orderTimeoutWrapper}>
-            {disabledByTime ? 'Время до заказа истекло' : 'Порции закончились'}
+            <TooltipLabel tooltip="Этот обед уже нельзя заказать" label={disabledByTime ? 'Время до заказа истекло' : 'Порции закончились'}/>
           </span> :
           <DeliveryPeriod className={styles.readyBy} time={lunch.ready_by}/>)
       }
-      {near && <span className={styles.orderTimeoutWrapper}>До окончания заказа: <OrderTimeout className={styles.timer} lunch={lunch}/> </span>}
+      {near && <span className={styles.orderTimeoutWrapper}>До окончания заказа: <OrderTimeout className={styles.timer} lunch={lunch}/> : </span>}
       <Card className={styles.card}>
         <div className={styles.photoWrapper}>
           <img className={styles.photo} src={lunch.photos[0].thumb.url} />

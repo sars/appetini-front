@@ -26,14 +26,17 @@ export default class OrderTimeout extends Component {
 
   getTime() {
     const time = moment.duration(moment(this.props.lunch.ready_by).subtract(this.props.lunch.disable_minutes, 'minutes').diff(moment()));
+    const showTimer = Math.floor(time.asHours()) < 24;
     const timeCheck = (int) => {
       if (int >= 0) {
         return padStart(int, 2, '0');
       }
       return '00';
     };
-
-    return timeCheck(Math.floor(time.asHours())) + ':' + timeCheck(Math.floor(time.minutes())) + ':' + timeCheck(Math.floor(time.seconds()));
+    if (showTimer) {
+      return timeCheck(Math.floor(time.asHours())) + ':' + timeCheck(Math.floor(time.minutes())) + ':' + timeCheck(Math.floor(time.seconds()));
+    }
+    return 'больше дня';
   }
 
   render() {

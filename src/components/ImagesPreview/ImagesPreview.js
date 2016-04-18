@@ -77,7 +77,7 @@ export default class ImagesPreview extends Component {
                 <div className={styles.imageWrapper}>
                   {
                     images.map((item, idx) => {
-                      return <img className={classNames(styles.imagePreview, currentChangedImageId === idx ? styles.activePhoto : '')} src={images[idx].url} key={idx} onClick={this.handleNextImage}/>;
+                      return <img className={classNames(styles.imagePreview, currentChangedImageId === idx ? styles.activePhoto : '')} src={images[idx].large.url} key={idx} onClick={this.handleNextImage}/>;
                     })
                   }
                   <div className={classNames(styles.imagePreviewNavigationWrapper, styles.mobile)}>
