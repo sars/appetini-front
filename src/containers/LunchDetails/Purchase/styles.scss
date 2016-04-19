@@ -1,7 +1,22 @@
 .root {
   text-align: center;
 }
-
+.shopModal {
+  width: 310px;
+  max-width: 310px;
+  h3 {
+    text-align: center;
+    margin: 0 0 3rem 0;
+  }
+  .dialogBox {
+    display: flex;
+    flex-direction: column;
+    button {
+      width: 100%;
+      margin: 0 0 1rem 0;
+    }
+  }
+}
 .price {
   color: $color-primary;
   margin: 2rem 0;
@@ -134,4 +149,14 @@
   border-radius: 2px;
   font-size: 2rem;
   margin: 1rem auto;
+}
+@media (min-width: 720px) {
+  .dialogBox {
+    display: flex;
+    flex-direction: row;
+    button {
+      width: 100%;
+      margin: 0 0 1rem 0;
+    }
+  }
 }

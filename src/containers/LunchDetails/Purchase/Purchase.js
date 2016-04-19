@@ -1,24 +1,27 @@
 import React, { Component, PropTypes } from 'react';
 import Card, { CardContent } from 'components/Card/Card';
+import ToolboxDialog from 'react-toolbox/lib/dialog';
 import Button from 'components/Button/Button';
 import times from 'lodash/times';
 import classNames from 'classnames';
 import { addOrderItem } from 'redux/modules/purchase';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { FormattedPlural } from 'react-intl';
 import styles from './styles.scss';
 import ga from 'components/GaEvent/ga';
 import moment from 'moment';
+import { Link } from 'react-router';
+import { show as showToast } from 'redux/modules/toast';
 import OrderTimeout from 'components/OrderTimeout/OrderTimeout';
 
-@connect(state => ({user: state.auth.user}), { addOrderItem })
+@connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount}), { addOrderItem, showToast })
 export default class Purchase extends Component {
   static propTypes = {
     lunch: PropTypes.object.isRequired,
     user: PropTypes.object,
-    individualTariff: PropTypes.object.isRequired,
-    addOrderItem: PropTypes.func.isRequired
+    addOrderItem: PropTypes.func.isRequired,
+    showToast: PropTypes.func.isRequired,
+    lunchesAmount: PropTypes.number.isRequired
   };
 
   static contextTypes = {
@@ -26,20 +29,28 @@ export default class Purchase extends Component {
   };
 
   state = {
-    amount: 1
+    amount: 1,
+    activeModal: false
   };
 
   subscribe() {
-    this.props.addOrderItem('Lunch', this.props.lunch, this.state.amount);
+    this.props.addOrderItem(this.props.user, 'Lunch', this.props.lunch, this.state.amount);
+    this.props.showToast('Заказ добавлен в корзину. Выберите тариф по доставкам', 'accept', 'done');
     this.context.router.push('/tariffs');
     ga('Subscribe and buy');
   }
 
   buy() {
-    this.props.addOrderItem('Lunch', this.props.lunch, this.state.amount);
-    if (!this.userHasDeliveries()) {
-      this.props.addOrderItem('DeliveryTariff', this.props.individualTariff);
+    if (this.props.lunchesAmount < 1 ) {
+      this.setState({activeModal: true});
+    } else {
+      this.props.showToast('Заказ добавлен в корзину', 'accept', 'done');
+      this.context.router.push('/');
     }
+    this.props.addOrderItem(this.props.user, 'Lunch', this.props.lunch, this.state.amount);
+  }
+
+  checkout() {
     this.context.router.push('/checkout');
     ga('Buy');
   }
@@ -56,6 +67,10 @@ export default class Purchase extends Component {
     return this.props.user && this.props.user.deliveries_available > 0;
   }
 
+  handleReviewsClose = () => {
+    this.setState({activeModal: false});
+  };
+
   render() {
     const { lunch } = this.props;
     const { amount } = this.state;
@@ -66,6 +81,13 @@ export default class Purchase extends Component {
     const isToday = moment(lunch.ready_by).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
     return (
       <Card className={styles.root}>
+        <ToolboxDialog className={styles.shopModal} active={this.state.activeModal} onOverlayClick={::this.handleReviewsClose}>
+          <div className={styles.dialogBox}>
+            <h3>Ваш заказ добавлен в конзину</h3>
+            <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Перейти к оформлению" onClick={::this.checkout}/>
+            <Link to="/"><Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Выбрать другие блюда"/></Link>
+          </div>
+        </ToolboxDialog>
         <CardContent className={styles.cardContent}>
           <div>
             <p>Есть вопросы? Звони!</p>

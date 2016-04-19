@@ -18,7 +18,7 @@ import ga from 'components/GaEvent/ga';
     form: 'orderForm',
     fields: ['id', 'phone', 'location_attributes', 'location', 'order_items', 'payment_type',
              'user.name', 'user.phone', 'user.email', 'user.password']
-  }, state => ({user: state.auth.user, orderItems: state.purchase.orderItems}),
+  }, state => ({user: state.auth.user}),
   { openModal, showToast, removeOrderItem, clearOrderItems }
 )
 export default class OrderForm extends Component {
@@ -32,8 +32,9 @@ export default class OrderForm extends Component {
     error: PropTypes.object,
     submitting: PropTypes.bool,
     user: PropTypes.object,
-    orderItems: PropTypes.array.isRequired,
-    order: PropTypes.object
+    orderItems: PropTypes.object.isRequired,
+    order: PropTypes.object,
+    showAddressField: PropTypes.bool
   };
 
   static contextTypes = {
@@ -57,9 +58,8 @@ export default class OrderForm extends Component {
   }
 
   render() {
-    const { fields, handleSubmit, submitting, user, orderItems, order } = this.props;
+    const { fields, handleSubmit, submitting, user, orderItems, order, showAddressField } = this.props;
     const submitLabel = fields.payment_type.value === 'liqpay' ? 'Оплатить' : 'Оформить заказ';
-    const hasLunches = orderItems.some(item => item.resource_type === 'Lunch');
     const orderExist = Boolean(order);
 
     return (
@@ -91,7 +91,7 @@ export default class OrderForm extends Component {
           <PasswordInput placeholder="Password" {...fields.user.password}/>
         </div>}
 
-        {hasLunches && <div>
+        {showAddressField && <div>
           <h3>Адрес доставки</h3>
           {user && user.locations && user.locations.length && !orderExist
             ? <LocationsSelect locations={user.locations} onSelect={::this.props.fields.location.onChange}
@@ -104,7 +104,7 @@ export default class OrderForm extends Component {
 
         <div>
           <h3>Ваш заказ:</h3>
-          <OrderItems items={orderItems} user={user} onRemove={::this.handleRemoveItem}/>
+          <OrderItems items={orderItems} onRemove={::this.handleRemoveItem}/>
           {this.errorsFor('order_items')}
         </div>
 

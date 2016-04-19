@@ -1,14 +1,13 @@
 import React, { PropTypes } from 'react';
-import { FormattedPlural } from 'react-intl';
 import Item from '../Item/Item';
+import styles from '../styles.scss';
 
 const Lunch = ({resource, amount, ...rest}) => {
-  const { cook } = resource;
   const name = (
     <span>
-      {amount}{' '}
-      <FormattedPlural value={amount} one="обед" few="обеда" many="обедов" other="обедов"/>{' '}
-      от {cook.first_name} {cook.last_name}
+      {resource.dishes.map((dish, index) => <div key={index} className={styles.dishesTag}>{dish.name}</div>)}
+      {' '}
+      <span>({amount} шт)</span>
     </span>
   );
 

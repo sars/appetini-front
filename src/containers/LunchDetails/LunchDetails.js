@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
-import find from 'lodash/find';
 import Modal from 'components/Modal/Modal';
 import Reviews from 'components/Reviews/Reviews';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
@@ -29,11 +28,6 @@ function isReviews(location) {
         ? dispatch(getReviews(lunch.cook.id, params.page)).then(() => lunch)
         : lunch;
     });
-  }},
-  {key: 'tariffs', promise: ({helpers, store}) => {
-    if (!store.getState().reduxAsyncConnect.tariffs) {
-      return helpers.client.get('/delivery_tariffs').then(tariffs => tariffs.resources);
-    }
   }}
 ])
 @connect(state => ({
@@ -42,7 +36,6 @@ function isReviews(location) {
 export default class LunchDetails extends Component {
   static propTypes = {
     lunch: PropTypes.object.isRequired,
-    tariffs: PropTypes.array.isRequired,
     location: PropTypes.object.isRequired,
     reviews: PropTypes.object
   };
@@ -64,13 +57,12 @@ export default class LunchDetails extends Component {
   handleMobilePurchase = () => {
     this.setState({purchaseOpened: true});
     ga('Buy(mobile)');
-  }
+  };
 
   render() {
     const styles = require('./LunchDetails.scss');
     const { lunch, location, reviews } = this.props;
     const { cook } = lunch;
-    const individualTariff = find(this.props.tariffs, {individual: true});
 
     const leftSidebarClasses = classNames(styles.leftSidebar, {
       [styles.leftSidebarOpened]: this.state.cookOpened
@@ -120,7 +112,7 @@ export default class LunchDetails extends Component {
                                                        onClick={() => this.setState({purchaseOpened: false})}></div>}
                   </ReactCSSTransitionGroup>
                   <div className={styles.buyContent}>
-                    <Purchase lunch={lunch} individualTariff={individualTariff}/>
+                    <Purchase lunch={lunch}/>
                   </div>
                 </div>
               </div>
