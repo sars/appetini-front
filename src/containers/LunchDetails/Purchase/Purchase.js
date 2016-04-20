@@ -13,6 +13,7 @@ import moment from 'moment';
 import { Link } from 'react-router';
 import { show as showToast } from 'redux/modules/toast';
 import OrderTimeout from 'components/OrderTimeout/OrderTimeout';
+import isLunchDisabled from 'helpers/isLunchDisabled';
 
 @connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount}), { addOrderItem, showToast })
 export default class Purchase extends Component {
@@ -75,8 +76,9 @@ export default class Purchase extends Component {
     const { lunch } = this.props;
     const { amount } = this.state;
     const hasDeliveries = this.userHasDeliveries();
-    const disabledByTime = moment(lunch.ready_by).subtract(lunch.disable_minutes, 'minutes').isBefore(moment());
-    const disabledByCount = lunch.available_count === 0;
+    const lunchDisabled = isLunchDisabled(lunch);
+    const disabledByTime = lunchDisabled.byTime;
+    const disabledByCount = lunchDisabled.byCount;
     const disabled = disabledByTime || disabledByCount;
     const isToday = moment(lunch.ready_by).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
     return (

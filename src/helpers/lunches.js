@@ -1,20 +1,27 @@
 import valueFromLocationQuery from 'helpers/valueFromLocationQuery';
+import values from 'lodash/values';
+import compact from 'lodash/compact';
 
 export const filterNames = ['preferences', 'dishes', 'dates', 'time'];
 
-export function request(params) {
+export function request(requestParams) {
   return function lunchesRequest({helpers, store}) {
     const filters = filterNames.reduce((result, name) => (
     {...result, [name]: valueFromLocationQuery(store.getState().routing, name)}
     ), {});
 
-    return helpers.client.get('/lunches', {params: {
+    const params = {
       'food_preferences_ids[]': filters.preferences,
       'dishes[]': filters.dishes,
       'ready_dy_date[]': filters.dates,
-      'ready_by_time': filters.time,
-      'include_nearest': params.nearest
-    }});
+      'ready_by_time': filters.time
+    };
+
+    if (requestParams.nearest && !compact(values(filters)).length) {
+      params.include_nearest = true;
+    }
+
+    return helpers.client.get('/lunches', {params: params});
   };
 }
 

@@ -4,6 +4,9 @@ import moment from 'moment';
 import styles from './styles.scss';
 import humanizeDayName from 'components/humanizeDayName/humanizeDayName';
 import TimePeriod from 'helpers/TimePeriod';
+import tooltip from 'react-toolbox/lib/tooltip';
+
+const TooltipTimePeriod = tooltip(TimePeriod);
 
 const DeliveryPeriod = ({className, time}) => {
   const originalDate = moment(time);
@@ -15,7 +18,7 @@ const DeliveryPeriod = ({className, time}) => {
       <span className={styles.unit} role="date">
         {originalDate.format('DD.MM.YYYY')}
       </span>
-      <TimePeriod date={time} className={styles.unit} period={30}/>
+      <TooltipTimePeriod date={time} className={styles.unit} period={30} tooltip="Время доставки"/>
     </span>
   );
 };

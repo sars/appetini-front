@@ -55,6 +55,10 @@ export default class Header extends Component {
     this.refs.userMenu.show();
   }
 
+  goToAdminPage() {
+    window.location.href = location.origin + '/rails_admin';
+  }
+
   render() {
     const { user, lunchesAmount } = this.props;
     const { push } = this.context.router;
@@ -67,7 +71,7 @@ export default class Header extends Component {
         &nbsp;
         <FormattedPlural value={user.deliveries_available} one="доставка" few="доставки" many="доставок" other="доставок"/>
       </MenuItem>,
-      user.role === 'admin' && <MenuItem key="admin" caption="Админка" onClick={() => push('/admin')}/>,
+      user.role === 'admin' && <MenuItem key="admin" caption="Админка" onClick={::this.goToAdminPage}/>,
       <MenuDivider key="devider" />,
       <MenuItem key="settings" caption="Настройки" onClick={() => push('/settings')}/>,
       <MenuItem key="logout" caption="Выйти" onClick={this.logout}/>
@@ -95,7 +99,7 @@ export default class Header extends Component {
               <a className={styles.logout} href="#" onClick={::this.openMenu}>
                 {user.name}
               </a>
-              <Menu position="top-left" menuRipple ref="userMenu" className={styles.menuComponent}>
+              <Menu position="top-right" menuRipple ref="userMenu" className={styles.menuComponent}>
                 {menuItems.filter(item => item)}
               </Menu>
             </div>
