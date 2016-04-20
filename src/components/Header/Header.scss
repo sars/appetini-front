@@ -96,16 +96,37 @@
     margin-top: 1rem;
   }
 }
-.mobMenu {
+.shopCart {
+  display: none;
+  margin: 0 2rem 0 0;
+  vertical-align: middle;
+}
+.leftMenu {
+  display: flex;
   flex: 1;
 }
-
+.shopCartMob {
+  display: inline-block;
+  margin: 0 0 0 1.5rem;
+}
 @media (min-width: 700px) {
   .root .desktopMenu {
     display: initial;
   }
+  .leftMenu {
+    display: none;
+  }
   .root .mobMenu {
     display: none;
+  }
+  .root .shopCartMob {
+    display: none;
+  }
+  .root .shopCart {
+    display: inline-block;
+  }
+  .navigationRight {
+    align-items: center;
   }
 }
 

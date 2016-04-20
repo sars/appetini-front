@@ -4,7 +4,7 @@ import styles from '../styles.scss';
 
 const Item = ({className, name, price, removable, onRemove, ...rest}) => {
   return (
-    <div className={classNames(styles.item, className)} {...rest}>
+    <div className={classNames(styles.item, className, {[styles.removableItem]: removable})} {...rest}>
       {removable &&
         <i className={classNames('fa fa-remove', styles.remove)} onClick={() => onRemove && onRemove()}/>
       }

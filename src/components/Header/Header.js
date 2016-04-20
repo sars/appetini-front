@@ -14,7 +14,7 @@ import Menu from 'components/Menu/Menu';
 import { MenuItem, MenuDivider } from 'react-toolbox';
 import { FormattedPlural } from 'react-intl';
 import MobMenu from 'components/MobMenu/MobMenu';
-
+import ShoppingButton from 'components/ShoppingButton/ShoppingButton';
 
 const menuLinks = [
   {to: '/', label: 'Обеды', index: true},
@@ -22,13 +22,14 @@ const menuLinks = [
   {to: '/tariffs', label: 'Тарифные планы'}
 ];
 
-@connect(state => ({user: state.auth.user}), {logout, showToast, openModal})
+@connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount}), {logout, showToast, openModal})
 export default class Header extends Component {
   static propTypes = {
     user: PropTypes.object,
     logout: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
-    showToast: PropTypes.func.isRequired
+    showToast: PropTypes.func.isRequired,
+    lunchesAmount: PropTypes.number.isRequired
   };
 
   static contextTypes = {
@@ -38,7 +39,6 @@ export default class Header extends Component {
   state = {
     userMenuOpened: false
   };
-
   logout = () => {
     this.props.logout().then(() => {
       this.props.showToast('You are successfully logged out', 'accept', 'done');
@@ -56,8 +56,8 @@ export default class Header extends Component {
   }
 
   render() {
-    const {user} = this.props;
-    const {push} = this.context.router;
+    const { user, lunchesAmount } = this.props;
+    const { push } = this.context.router;
     const styles = require('./Header.scss');
     const cx = classNames.bind(styles);
 
@@ -75,7 +75,10 @@ export default class Header extends Component {
 
     return (
       <AppBar fixed className={styles.root}>
-        <MobMenu className={styles.mobMenu}/>
+        <div className={styles.leftMenu}>
+          <MobMenu className={styles.mobMenu} />
+          {lunchesAmount > 0 && <ShoppingButton countItems={lunchesAmount} className={styles.shopCartMob}/>}
+        </div>
         <IndexLink className={styles.brand} to="/">
           <div className={styles.brandIcon}></div>
           <span className={styles.brandLabel}>
@@ -84,8 +87,8 @@ export default class Header extends Component {
         </IndexLink>
 
         <HeaderMenu className={styles.desktopMenu} links={menuLinks} showActive />
-
         <Navigation className={cx('navigation', 'navigationRight')}>
+          {lunchesAmount > 0 && <ShoppingButton countItems={lunchesAmount} className={styles.shopCart}/>}
           {!user && <Button flat accent label="Войти" onClick={this.openLoginModal}/>}
           {user &&
             <div className={styles.userMenu}>

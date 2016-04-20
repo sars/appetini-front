@@ -13,11 +13,12 @@ import ga from 'components/GaEvent/ga';
     }
   }}
 ])
-@connect(null, { addOrderItem })
+@connect(state => ({ user: state.auth.user }), { addOrderItem })
 export default class Tariffs extends Component {
   static propTypes = {
     tariffs: PropTypes.array.isRequired,
-    addOrderItem: PropTypes.func.isRequired
+    addOrderItem: PropTypes.func.isRequired,
+    user: PropTypes.object
   };
 
   static contextTypes = {
@@ -26,7 +27,7 @@ export default class Tariffs extends Component {
 
   purchase(tariff) {
     return () => {
-      this.props.addOrderItem('DeliveryTariff', tariff);
+      this.props.addOrderItem(this.props.user, 'DeliveryTariff', tariff);
       this.context.router.push('/checkout');
       ga('Tariff ' + tariff.amount);
     };
