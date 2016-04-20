@@ -16,7 +16,7 @@ import ga from 'components/GaEvent/ga';
 @reduxForm(
   {
     form: 'orderForm',
-    fields: ['id', 'phone', 'location_attributes', 'location', 'order_items', 'payment_type',
+    fields: ['id', 'phone', 'location_attributes', 'location', 'order_items', 'payment_type', 'user.id',
              'user.name', 'user.phone', 'user.email', 'user.password']
   }, state => ({user: state.auth.user}),
   { openModal, showToast, removeOrderItem, clearOrderItems }
@@ -78,7 +78,7 @@ export default class OrderForm extends Component {
 
         <div>
           <h3>Телефон</h3>
-          <Input disabled={Boolean(user)} {...fields.user.phone}/>
+          <Input disabled={Boolean(user && user.phone)} {...fields.user.phone}/>
         </div>
 
         {!user && <div>
