@@ -1,0 +1,20 @@
+.userslist {
+  :global {
+
+    [data-react-toolbox="input"] {
+      background-color: white;
+    }
+
+    ul:first-of-type {
+      > li {
+        background-color: inherit;
+        color: inherit;
+        margin: 0;
+
+        &:after {
+          content: '';
+        }
+      }
+    }
+  }
+}

@@ -39,7 +39,7 @@ export default function hooks({dispatch, getState}, client) {
             confirmation_token: token
           }
         }).then(() => {
-          dispatch(showToast('Письмо с подтверждением email отправлено на почту', 'accept', 'done'));
+          dispatch(showToast('Ваш email был успешно подтвержден', 'accept', 'done'));
         }).catch(() => {
           dispatch(showToast('Вероятно, неверный или устаревший токен', 'cancel', 'error'));
         }).then(() => {

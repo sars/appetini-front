@@ -15,6 +15,12 @@ export default class AsyncAutocomplete extends Autocomplete {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.multiple && this.props.value !== nextProps.value) {
+      this.setState({query: nextProps.value});
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.onUpdateSuggestions && this.state.query !== nextState.query) {
       this.props.onUpdateSuggestions(nextState.query);
