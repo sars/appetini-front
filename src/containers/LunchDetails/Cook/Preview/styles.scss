@@ -37,3 +37,9 @@
   color: #a4958b;
   font-size: 1.4rem;
 }
+
+@media all and (max-width: 320px) {
+  .avatar {
+    display: none;
+  }
+}

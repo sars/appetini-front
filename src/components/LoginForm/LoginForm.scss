@@ -64,3 +64,17 @@
   color: $color-accent;
   text-decoration: underline;
 }
+
+@media all and (max-width: 767px) {
+  .buttons {
+    display: block;
+    button {
+      width: 100%;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+  }
+  .rememberMe {
+    padding-right: 1rem;
+  }
+}

@@ -13,7 +13,7 @@ import styles from './styles.scss';
   {
     form: 'cookForm',
     fields: ['id', 'main_photo_temp_image_id', 'other_photos_temp_image_ids', 'removing_other_photos', 'removing_sanitary_book_photos',
-      'sanitary_book_photos', 'sanitary_book_photos_temp_image_ids', 'first_name', 'last_name', 'other_photos', 'main_photo', 'location_attributes', 'location',
+      'sanitary_book_photos', 'sanitary_book_photos_temp_image_ids', 'first_name', 'last_name', 'first_name_genitive', 'last_name_genitive', 'other_photos', 'main_photo', 'location_attributes', 'location',
       'user.id', 'user.phone', 'user.email', 'user.password', 'user.facebook', 'user.vkontakte']
   }, null, {showToast}
 )
@@ -66,6 +66,17 @@ export default class CookForm extends Component {
             <Input {...fields.last_name}/>
           </div>
         </div>
+        <div className={classNames(styles.section, styles.twoColSection)}>
+          <div>
+            <h3>Имя (родительный)</h3>
+            <Input {...fields.first_name_genitive}/>
+          </div>
+          <div>
+            <h3>Фамилия (родительный)</h3>
+            <Input {...fields.last_name_genitive}/>
+          </div>
+        </div>
+
 
         <input type="hidden" {...fields.user.id}/>
 

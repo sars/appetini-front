@@ -98,7 +98,7 @@ export default class LunchDetails extends Component {
             </div>
             <div className={styles.lunchContainer}>
               <div className={styles.header}>
-                <h1>Обед от {cook.first_name} {cook.last_name}</h1>
+                <h1>Обед от {cook.full_name_genitive}</h1>
                 <DeliveryPeriod className={styles.deliveryPeriod} time={lunch.ready_by} />
               </div>
               <div className={styles.previewsContainer}>

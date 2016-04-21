@@ -172,3 +172,9 @@
     max-width: $huge-screen !important;
   }
 }
+
+@media (max-width: 500px) {
+  .header h1 {
+    line-height: 1.2;
+  }
+}

@@ -15,6 +15,7 @@ const Preview = ({lunch, className, ...other}) => {
         </span>
       </div>
       <Button className={styles.button} flat accent label="Заказать обед" {...other}/>
+      <Button className={classNames(styles.button, styles.mobileVersion)} flat accent label="Заказать" {...other}/>
     </div>
   );
 };
