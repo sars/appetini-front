@@ -27,7 +27,7 @@ export default class Cook extends Component {
               <ImagesPreview image={cook.main_photo} currentImageId={0}/>
             </div>
             <h3 className={styles.cookName}>
-              {cook.first_name} {cook.last_name}
+              {cook.full_name}
             </h3>
             <div className={styles.ratingContainer}>
               <StarRating name="cook-rating" totalStars={5} editing={false} rating={cook.rating} size={18}/>
