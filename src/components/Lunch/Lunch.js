@@ -29,7 +29,7 @@ const Lunch = ({className, lunch, near}) => {
           </span> :
           <DeliveryPeriod className={styles.readyBy} time={lunch.ready_by}/>)
       }
-      {near && <span className={styles.orderTimeoutWrapper}>До окончания заказа: <OrderTimeout className={styles.timer} lunch={lunch}/> : </span>}
+      {near && <span className={styles.orderTimeoutWrapper}>До окончания заказа: <OrderTimeout className={styles.timer} lunch={lunch}/></span>}
       <Card className={styles.card}>
         <div className={styles.photoWrapper}>
           <img className={styles.photo} src={lunch.photos[0].thumb.url} />

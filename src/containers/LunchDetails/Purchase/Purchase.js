@@ -85,7 +85,7 @@ export default class Purchase extends Component {
       <Card className={styles.root}>
         <ToolboxDialog className={styles.shopModal} active={this.state.activeModal} onOverlayClick={::this.handleReviewsClose}>
           <div className={styles.dialogBox}>
-            <h3>Ваш заказ добавлен в конзину</h3>
+            <h3>Ваш заказ добавлен в корзину</h3>
             <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Перейти к оформлению" onClick={::this.checkout}/>
             <Link to="/"><Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Выбрать другие блюда"/></Link>
           </div>
