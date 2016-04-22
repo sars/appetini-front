@@ -3,6 +3,17 @@
     padding: 0;
   }
 
+  label {
+    top: 1rem;
+    left: 1rem;
+  }
+
+  &.hideLabel {
+    label {
+      display: none;
+    }
+  }
+
   input {
     background-color: #FFF;
     border: 1px solid #e4d9cf;

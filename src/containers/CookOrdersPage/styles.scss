@@ -1,0 +1,37 @@
+.root {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.filters {
+  margin: 2rem 0 1rem 0;
+
+  .filter {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 1rem;
+  }
+}
+
+.ordersTitle {
+  margin-bottom: 1rem;
+  color: #685c50;
+}
+
+.dayName {
+  background-color: #958C82;
+  padding: 0 0.4rem;
+  line-height: 1.4em;
+  color: #E9E3DE;
+  border-radius: 2px;
+}
+
+.filterItem {
+  display: inline-block;
+  margin-right: 1rem;
+  vertical-align: middle;
+}
+
+.datePickerWrapper {
+  width: 25rem;
+}
