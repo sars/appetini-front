@@ -16,6 +16,9 @@ import { getReviews } from 'redux/modules/common';
 import { getLunch } from 'helpers/lunches';
 import classNames from 'classnames';
 import ga from 'components/GaEvent/ga';
+import Button from 'components/Button/Button';
+import { link as stylesLink } from 'components/HeaderMenu/HeaderMenu.scss';
+import { Link } from 'react-router';
 
 function isReviews(location) {
   return /\/reviews$/.test(location.pathname);
@@ -90,7 +93,12 @@ export default class LunchDetails extends Component {
             </div>
             <div className={styles.lunchContainer}>
               <div className={styles.header}>
-                <h1>Обед от {cook.full_name_genitive}</h1>
+                <div className={styles.headerBackLink}>
+                  <Link className={stylesLink} to="/">
+                    <span>Назад к списку обедов</span>
+                  </Link>
+                  <h1>Обед от {cook.full_name_genitive}</h1>
+                </div>
                 <DeliveryPeriod className={styles.deliveryPeriod} time={lunch.ready_by} />
               </div>
               <div className={styles.previewsContainer}>
@@ -115,6 +123,11 @@ export default class LunchDetails extends Component {
                     <Purchase lunch={lunch}/>
                   </div>
                 </div>
+              </div>
+              <div className={styles.mobBackLink}>
+                <Link to="/">
+                  <Button flat outlined className={classNames(styles.button)} label="К списку обедов"/>
+                </Link>
               </div>
             </div>
           </div>

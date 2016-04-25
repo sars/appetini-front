@@ -36,7 +36,7 @@
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin: 0.5rem 0;
   flex-wrap: wrap;
 }
@@ -116,6 +116,19 @@
   padding: 0 1rem;
 }
 
+.mobBackLink {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.headerBackLink {
+  display: none;
+  a {
+    padding: 0;
+  }
+}
+
 @mixin collapsingContainer($opened, $inner) {
   position: absolute;
   visibility: hidden;
@@ -170,6 +183,15 @@
 @media (min-width: $huge-screen ) {
   .root {
     max-width: $huge-screen !important;
+  }
+}
+
+@media (min-width: 700px ) {
+  .mobBackLink {
+    display: none;
+  }
+  .headerBackLink {
+    display: block;
   }
 }
 
