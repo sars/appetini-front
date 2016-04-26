@@ -1,0 +1,67 @@
+.orderPreviewWrapper {
+  width: 100%;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+}
+
+.ordersPlaceholder {
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+  max-width: 100%;
+
+  tr {
+    text-align: center;
+    border-bottom: 1px solid #F3F3F3;
+    td {
+      padding: 1rem;
+    }
+  }
+
+  thead tr {
+    color: #685c50;
+    font-size: 1.6rem;
+    font-weight: 500;
+  }
+
+  tbody tr {
+    cursor: pointer;
+
+    &:hover {
+      background: #F3F3F3;
+    }
+  }
+}
+
+.photoWrapper {
+  width: 150px;
+  margin: 0 auto;
+
+  img {
+    max-width: 80%;
+    border-radius: 8px;
+  }
+}
+
+.dish {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.dishName {
+  background-color: #958C82;
+  padding: 0 0.4rem;
+  line-height: 1.4em;
+  color: #fff;
+  border-radius: 2px;
+}
+
+@media all and (max-width: 767px) {
+  .hiddenXs {
+    display: none;
+  }
+}
