@@ -16,11 +16,20 @@
   font-size: 1.2rem;
 }
 
-@media all and (max-width: 500px) {
+@media all and (max-width: 414px) {
   .button {
     display: none;
     &.mobileVersion {
       display: inline-block;
+    }
+  }
+}
+
+@media all and (min-width: 415px) {
+  .button {
+    display: inline-block;
+    &.mobileVersion {
+      display: none;
     }
   }
 }
