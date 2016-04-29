@@ -57,11 +57,36 @@
   padding: 0 0.4rem;
   line-height: 1.4em;
   color: #fff;
+  white-space: nowrap;
+  display: block;
+  margin: 1px 1px 3px 1px;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   border-radius: 2px;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.borderLeft {
+  border-left: 1px solid #F3F3F3;
+}
+
+.borderRight {
+  border-right: 1px solid #F3F3F3;
 }
 
 @media all and (max-width: 767px) {
   .hiddenXs {
     display: none;
   }
+}
+
+.orderItemWrapper {
+  margin: 3px;
+  background: #F3F3F3;
+  border: 1px solid #bababa;
+  border-radius: 3px;
 }
