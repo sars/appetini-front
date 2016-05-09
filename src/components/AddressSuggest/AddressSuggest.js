@@ -1,10 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import Geosuggest from 'react-geosuggest';
-import GoogleMapLoader from 'react-google-maps/lib/GoogleMapLoader';
+import _GoogleMapLoader from 'react-google-maps/lib/GoogleMapLoader';
 import GoogleMap from 'react-google-maps/lib/GoogleMap';
 import Marker from 'react-google-maps/lib/Marker';
 import Input from 'components/Input/Input';
 import styles from './styles.scss';
+
+// https://github.com/tomchentw/react-google-maps/pull/252
+class GoogleMapLoader extends _GoogleMapLoader {
+  mountGoogleMap(domEl) {
+    if (domEl !== null) {
+      super.mountGoogleMap(domEl);
+    }
+  }
+}
 
 export default class AddressSuggest extends Component {
   static propTypes = {

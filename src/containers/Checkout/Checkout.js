@@ -95,13 +95,17 @@ export default class Checkout extends Component {
         location_attributes: orderAttrs.location,
         user_attributes: orderAttrs.user,
         order_items_attributes: this.state.preparedOrderItems.purchasing,
-        user_id: user && user.id
+        user_id: orderAttrs.user.id
       }).then(response => {
         const order = response.resource;
 
         // TODO this.props.loginSuccess(response) instead of setUser and setToken
-        this.props.setUser(order.user);
-        this.props.setToken(response.auth_token);
+        if (user && order.user.id === user.id || !user) {
+          this.props.setUser(order.user);
+        }
+        if (response.meta) {
+          this.props.setToken(response.meta.access_token);
+        }
 
         this.props.clearOrderItems();
 
@@ -125,12 +129,12 @@ export default class Checkout extends Component {
 
   render() {
     const { order } = this.state;
-    const initialOrderValues = {...order, user: this.props.user};
+    const initialOrderValues = {...order};
     const hasLunches = this.props.orderItems.some(item => item.resource_type === 'Lunch');
 
     return (
       <div className={styles.root}>
-        <OrderForm onSubmit={::this.createOrder} initialValues={initialOrderValues} orderItems={this.state.preparedOrderItems}
+        <OrderForm onSubmit={::this.createOrder} initialValues={initialOrderValues} user={this.props.user} orderItems={this.state.preparedOrderItems}
           showAddressField={hasLunches}/>
 
         {order &&
