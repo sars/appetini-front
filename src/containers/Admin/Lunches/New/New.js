@@ -12,10 +12,14 @@ export default class New extends Component {
     showToast: PropTypes.func.isRequired
   };
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
   createLunch(lunch) {
     return submit(lunch, this.props.createLunch).then(response => {
       this.props.showToast('Обед успешно добавлен');
-      return response;
+      this.context.router.push('/admin/lunches/' + response.resource.id + '/edit');
     });
   }
 

@@ -14,6 +14,7 @@ import { Link } from 'react-router';
 import { show as showToast } from 'redux/modules/toast';
 import OrderTimeout from 'components/OrderTimeout/OrderTimeout';
 import isLunchDisabled from 'helpers/isLunchDisabled';
+import { MenuItem } from 'react-toolbox/lib/menu';
 
 @connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount}), { addOrderItem, showToast })
 export default class Purchase extends Component {
@@ -73,7 +74,7 @@ export default class Purchase extends Component {
   };
 
   render() {
-    const { lunch } = this.props;
+    const { lunch, user } = this.props;
     const { amount } = this.state;
     const hasDeliveries = this.userHasDeliveries();
     const lunchDisabled = isLunchDisabled(lunch);
@@ -82,79 +83,90 @@ export default class Purchase extends Component {
     const disabled = disabledByTime || disabledByCount;
     const isToday = moment(lunch.ready_by).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
     return (
-      <Card className={styles.root}>
-        <ToolboxDialog className={styles.shopModal} active={this.state.activeModal} onOverlayClick={::this.handleReviewsClose}>
-          <div className={styles.dialogBox}>
-            <h3>Ваш заказ добавлен в корзину</h3>
-            <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Перейти к оформлению" onClick={::this.checkout}/>
-            <Link to="/"><Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Выбрать другие блюда"/></Link>
-          </div>
-        </ToolboxDialog>
-        <CardContent className={styles.cardContent}>
-          <div>
-            <p>Есть вопросы? Звони!</p>
-            <p><strong>+38 096 505 85 84</strong></p>
-          </div>
-          {!disabled && <div className={styles.amountContainer}>
-            <Button className={styles.amountButton} type="button" icon="remove" outlined mini flat
-                    onClick={() => this.incrementAmount(-1)}/>
-            <div className={styles.amountText}>
-              <div>
-                <span className={styles.amount}>{amount}</span>
-                &nbsp;
-              <span className={styles.amountLabel}>
-                <FormattedPlural value={amount} one="порция" few="порции" many="порций" other="порций"/>
-              </span></div>
-              <div className={styles.avaliableAmount}>Доступно <strong>{lunch.available_count}</strong></div>
+      <div>
+        <Card className={styles.root}>
+          <ToolboxDialog className={styles.shopModal} active={this.state.activeModal} onOverlayClick={::this.handleReviewsClose}>
+            <div className={styles.dialogBox}>
+              <h3>Ваш заказ добавлен в корзину</h3>
+              <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Перейти к оформлению" onClick={::this.checkout}/>
+              <Link to="/"><Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Выбрать другие блюда"/></Link>
             </div>
-            <Button className={styles.amountButton} type="button" icon="add" outlined mini flat
-                    onClick={() => this.incrementAmount(1)}/>
-          </div>
-          }
-          {disabled && <div className={styles.amountContainer}>
-            <div className={styles.amountLabel}>
-              <div>{disabledByCount && !disabledByTime && 'Нет доступных порций'} {disabledByTime && 'Время до заказа истекло'}</div>
-              <div><Link to="/">Закажите доступный обед</Link></div>
+          </ToolboxDialog>
+          <CardContent className={styles.cardContent}>
+            <div>
+              <p>Есть вопросы? Звони!</p>
+              <p><strong>+38 096 505 85 84</strong></p>
             </div>
-          </div>
-          }
-          <div className={styles.price}>
-            <span className={styles.priceAmount}>{Number(lunch.price)}</span>
-            <span className={styles.priceCurrency}>грн</span>
-          </div>
-
-          <div>
-            {isToday && !disabled &&
-            <div className={styles.timerSection}>
-              До конца заказа осталось:
-              <div className={styles.timerWrapper}><OrderTimeout lunch={lunch} className={styles.timer}/></div>
+            {!disabled && <div className={styles.amountContainer}>
+              <Button className={styles.amountButton} type="button" icon="remove" outlined mini flat
+                      onClick={() => this.incrementAmount(-1)}/>
+              <div className={styles.amountText}>
+                <div>
+                  <span className={styles.amount}>{amount}</span>
+                  &nbsp;
+                <span className={styles.amountLabel}>
+                  <FormattedPlural value={amount} one="порция" few="порции" many="порций" other="порций"/>
+                </span></div>
+                <div className={styles.avaliableAmount}>Доступно <strong>{lunch.available_count}</strong></div>
+              </div>
+              <Button className={styles.amountButton} type="button" icon="add" outlined mini flat
+                      onClick={() => this.incrementAmount(1)}/>
             </div>
             }
-            {!disabled && hasDeliveries ?
-                <div className={styles.buttonHint}>
-                  1 доставка будет списана при заказе с вашего счета
-                </div> :
-                <div className={styles.buttonHint}>+ стоимость доставки</div>
+            {disabled && <div className={styles.amountContainer}>
+              <div className={styles.amountLabel}>
+                <div>{disabledByCount && !disabledByTime && 'Нет доступных порций'} {disabledByTime && 'Время до заказа истекло'}</div>
+                <div><Link to="/">Закажите доступный обед</Link></div>
+              </div>
+            </div>
+            }
+            <div className={styles.price}>
+              <span className={styles.priceAmount}>{Number(lunch.price)}</span>
+              <span className={styles.priceCurrency}>грн</span>
+            </div>
+
+            <div>
+              {isToday && !disabled &&
+              <div className={styles.timerSection}>
+                До конца заказа осталось:
+                <div className={styles.timerWrapper}><OrderTimeout lunch={lunch} className={styles.timer}/></div>
+              </div>
               }
-            <Button disabled={disabled} className={classNames(styles.button, styles.buyButton)} big flat accent label="Заказать обед"
-                    onClick={::this.buy}/>
-          </div>
+              {!disabled && hasDeliveries ?
+                  <div className={styles.buttonHint}>
+                    1 доставка будет списана при заказе с вашего счета
+                  </div> :
+                  <div className={styles.buttonHint}>+ стоимость доставки</div>
+                }
+              <Button disabled={disabled} className={classNames(styles.button, styles.buyButton)} big flat accent label="Заказать обед"
+                      onClick={::this.buy}/>
+            </div>
+          </CardContent>
 
-        </CardContent>
+          {!hasDeliveries && <div className={styles.separator}>
+            {times(50, (index) => <i key={index}/>)}
+          </div>}
 
-        {!hasDeliveries && <div className={styles.separator}>
-          {times(50, (index) => <i key={index}/>)}
-        </div>}
-
-        {!hasDeliveries && <CardContent className={classNames(styles.subscribeContainer, styles.cardContent)}>
-          <div className={styles.buttonHint}>+ тарифный план</div>
-          <Button disabled={disabled} big flat accent className={classNames(styles.button, styles.subscribeButton)}
-                  onClick={::this.subscribe}>
-            <div>Подписаться</div>
-            <div className={styles.buttonMinorLabel}>и купить</div>
-          </Button>
-        </CardContent>}
-      </Card>
+          {!hasDeliveries && <CardContent className={classNames(styles.subscribeContainer, styles.cardContent)}>
+            <div className={styles.buttonHint}>+ тарифный план</div>
+            <Button disabled={disabled} big flat accent className={classNames(styles.button, styles.subscribeButton)}
+                    onClick={::this.subscribe}>
+              <div>Подписаться</div>
+              <div className={styles.buttonMinorLabel}>и купить</div>
+            </Button>
+          </CardContent>}
+        </Card>
+        {user && user.role === 'admin' &&
+          <Card className={styles.editPanel}>
+            <CardContent className={styles.cardContent}>
+              <h3 className={styles.title}>Администратору</h3>
+              <Link to={'/admin/lunches/' + lunch.id + '/edit'}>
+              <MenuItem caption="Редактировать"/>
+              </Link>
+            </CardContent>
+          </Card>
+        }
+      </div>
     );
   }
 }
