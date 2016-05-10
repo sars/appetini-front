@@ -150,6 +150,15 @@
   font-size: 2rem;
   margin: 1rem auto;
 }
+
+.editPanel {
+  margin-top: 20px;
+  text-align: center;
+  .title {
+    margin-bottom: 20px;
+  }
+}
+
 @media (min-width: 720px) {
   .dialogBox {
     display: flex;
