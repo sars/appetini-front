@@ -23,8 +23,9 @@ import {
     Registration,
     Settings,
     OrderSuccess,
-    CookOrdersPage
-  } from 'containers';
+    CookOrdersPage,
+    CourierOrdersPage
+} from 'containers';
 
 export default (store, client) => {
   const { userLoad, confirmEmail, requireLogin } = hooks(store, client);
@@ -54,6 +55,7 @@ export default (store, client) => {
       <Route path="order/:orderId/success" component={OrderSuccess}/>
       <Route path="settings" component={Settings}/>
       <Route path="cooks/:cookId/orders" component={CookOrdersPage}/>
+      <Route path="courier/orders" component={CourierOrdersPage}/>
 
       <Route path="admin" onEnter={requireLogin} component={AuthorizedApp} authCondition={user => user && user.role === 'admin'}>
         <IndexRoute component={AdminDashboard}/>

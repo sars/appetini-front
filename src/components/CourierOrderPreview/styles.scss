@@ -1,0 +1,17 @@
+.table {
+  tbody {
+    border-bottom: 1px solid #F3F3F3;
+
+    &:hover {
+      background: #F3F3F3;
+    }
+
+    tr {
+      border-bottom: 0;
+
+      &:hover {
+        background: inherit;
+      }
+    }
+  }
+}
