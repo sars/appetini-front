@@ -12,16 +12,35 @@ const types = {
   DeliveryTariff,
   Lunch
 };
-
+/**
+ * @description This function checks possibility to removing object.
+ * If this function returns "true", then we can remove current object from order list.
+ * @param { object } item ("Lunch" || "Delivery")
+ * @returns { boolean }
+ */
 function removable(item) {
   return !(item.resource_type === 'DeliveryTariff' && (item.resource.individual || item.resource.zero));
 }
 
+/**
+ * @description This function returns jsx with grouped orders list. [Ф-ция выводит сгрупированный список заказа]
+ * @param {object} items Object with 2 attributes: "grouped" - Object with items, grouped by date and cooks name;
+ * "purchasing" - Array of lunches and deliveries.
+ *
+ * @param {func} onRemove Remove callback.
+ * @param rest
+ * @returns {JSX}
+ */
 const OrderItems = ({items, onRemove, ...rest}) => {
   const totalPrice = items.purchasing.reduce((result, item) => Number(item.resource.price) * item.amount + result, 0);
   const groupedItems = items.grouped;
   const specialTariffs = filter(items.purchasing, item => item.resource_type === 'DeliveryTariff' && !item.resource.individual);
-
+  /**
+   * @description Returns item's jsx depends of item type. 
+   * @type {func}
+   * @param {object} item ("Lunch" || "Delivery").
+   * @param index
+   */
   const itemElem = (item, index) =>
     React.createElement(types[item.resource_type], {
       ...item,

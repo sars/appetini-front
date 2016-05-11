@@ -49,20 +49,36 @@ export default class Checkout extends Component {
       this.setState({preparedOrderItems: this.preparedOrderItems(nextProps.orderItems, nextProps.user)});
     }
   }
-
+  /**
+   * @description This function returns deliveries amount.
+   * @param items Array of "Lunch" objects.
+   * @returns {*}
+     */
   purchasedTariffsCount(items) {
     return items.reduce((result, item) => result + (item.resource_type === 'DeliveryTariff' ? item.resource.amount : 0), 0);
   }
 
+  /**
+   * @description This function prepares array of lunches to display in order list.
+   * @param items Array of "Lunch" objects.
+   * @param user User.
+   * @returns {{purchasing: null[], grouped}}
+     */
   preparedOrderItems(items, user) {
     const { tariffs } = this.props;
     const groupedItems = this.groupedItems(items);
     const individualTariffItem = orderItemStructure('DeliveryTariff', find(tariffs, {individual: true}));
     const zeroTariffItem = orderItemStructure('DeliveryTariff', { price: 0, zero: true });
     const individualTariffItems = [];
-
+    /**
+     * @description This variable represents deliveries amount for current order including user's deliveries available and purchasing deliveries in order.
+     * @constant { number }
+     */
     let deliveriesAvailable = (user ? user.deliveries_available : 0) + this.purchasedTariffsCount(items);
-
+    /**
+     * @description This function adds delivery to each group in order list. If user has available deliveries, function will add delivery with zero price;
+     * @constant {object}
+     */
     const itemsWithDelivers = transform(groupedItems, (groupedItemsResult, dateItems, date) => {
       groupedItemsResult[date] = transform(dateItems, (dateItemsResult, cookItems, cookId) => {
         if (deliveriesAvailable > 0) {
@@ -81,6 +97,10 @@ export default class Checkout extends Component {
     };
   }
 
+  /**
+   * @description This function returns object grouped by delivery time and cooks.
+   * @param orderItems Array of lunches.
+   */
   groupedItems(orderItems) {
     const lunchesItems = filter(orderItems, {resource_type: 'Lunch'});
     const groupedByDate = groupBy(lunchesItems, 'resource.ready_by');
@@ -136,14 +156,12 @@ export default class Checkout extends Component {
       <div className={styles.root}>
         <OrderForm onSubmit={::this.createOrder} initialValues={initialOrderValues} user={this.props.user} orderItems={this.state.preparedOrderItems}
           showAddressField={hasLunches}/>
-
         {order &&
           <form ref="payForm" method="post" action="https://www.liqpay.com/api/3/checkout" acceptCharset="utf-8">
             <input type="hidden" name="data" value={order.liqpay_data.data}/>
             <input type="hidden" name="signature" value={order.liqpay_data.signature}/>
           </form>
         }
-
       </div>
     );
   }

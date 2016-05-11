@@ -4,9 +4,18 @@
 .shopModal {
   width: 310px;
   max-width: 310px;
+  nav {
+    display: none;
+  }
   h3 {
+    font-size: 2rem;
     text-align: center;
-    margin: 0 0 3rem 0;
+  }
+  i {
+    text-align: center;
+    margin: 2rem 0;
+    font-size: 9rem;
+    color: #64bb09;
   }
   .dialogBox {
     display: flex;
