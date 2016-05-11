@@ -68,3 +68,9 @@
     display: flex;
   }
 }
+
+@media print {
+  .footer {
+    display: none;
+  }
+}

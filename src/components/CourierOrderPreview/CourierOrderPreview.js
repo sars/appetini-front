@@ -4,11 +4,18 @@ import moment from 'moment';
 import styles from '../OrderPreview/styles.scss';
 import courierStyles from './styles.scss';
 import classNames from 'classnames';
+import reduce from 'lodash/reduce';
 
 export default class CourierOrderPreview extends Component {
   static propTypes = {
     orders: PropTypes.array
   }
+
+  totalPrice = (array) => {
+    return reduce(array, (sum, item) => {
+      return sum + parseFloat(item.total_price);
+    }, 0);
+  };
 
   render() {
     const { orders } = this.props;
@@ -64,6 +71,13 @@ export default class CourierOrderPreview extends Component {
                       )}
                     </tbody>);
                 })}
+                <tbody>
+                  <tr>
+                    <td colSpan="6"> </td>
+                    <td colSpan="2">Общая сумма: </td>
+                    <td colSpan="2">{this.totalPrice(orders)} грн.</td>
+                  </tr>
+                </tbody>
               </table>
             : <h2 className={styles.ordersPlaceholder}>Нет заказов</h2>
           }
