@@ -4,7 +4,7 @@ import DatePicker from 'components/DatePicker/DatePicker';
 import humanizeDayName from 'components/humanizeDayName/humanizeDayName';
 import classNames from 'classnames';
 import Button from 'components/Button/Button';
-import styles from 'containers/CookOrdersPage/styles.scss';
+import styles from './styles.scss';
 import {getParsedDate} from 'helpers/ordersDateHelper';
 
 export default class OrdersForCookCourier extends Component {
