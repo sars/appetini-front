@@ -36,7 +36,7 @@ const OrderItems = ({items, onRemove, ...rest}) => {
   const groupedItems = items.grouped;
   const specialTariffs = filter(items.purchasing, item => item.resource_type === 'DeliveryTariff' && !item.resource.individual);
   /**
-   * @description Returns item's jsx depends of item type. 
+   * @description Returns item's jsx depends of item type.
    * @type {func}
    * @param {object} item ("Lunch" || "Delivery").
    * @param index

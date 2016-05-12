@@ -8,21 +8,26 @@ import OrderItems from 'components/OrderItems/OrderItems';
 import { RadioGroup, RadioButton } from 'react-toolbox';
 import { show as showToast } from 'redux/modules/toast';
 import { open as openModal } from 'redux/modules/modals';
-import { removeOrderItem, clearOrderItems } from 'redux/modules/purchase';
+import { removeOrderItem, clearOrderItems, orderItemStructure } from 'redux/modules/purchase';
 import { reduxForm } from 'redux-form';
 import PasswordInput from 'components/PasswordInput/PasswordInput';
 import styles from './styles.scss';
 import ga from 'components/GaEvent/ga';
 import isEmpty from 'lodash/isEmpty';
+import find from 'lodash/find';
+import filter from 'lodash/filter';
+import groupBy from 'lodash/groupBy';
+import mapValues from 'lodash/mapValues';
+import transform from 'lodash/transform';
 
 @reduxForm(
   {
     form: 'orderForm',
-    fields: ['id', 'phone', 'location_attributes', 'location', 'order_items', 'payment_type', 'user.id',
-             'user.name', 'user.phone', 'user.email', 'user.password', 'user.locations']
-  }, null, { openModal, showToast, removeOrderItem, clearOrderItems }
+    fields: ['id', 'phone', 'location_attributes', 'location', 'order_items', 'order_items_attributes', 'payment_type', 'user.id',
+             'user.name', 'user.phone', 'user.email', 'user.password', 'user.locations', 'user.deliveries_available']
+  }, state => ({orderItems: state.purchase.orderItems, user: state.auth.user}),
+  { openModal, showToast, removeOrderItem, clearOrderItems }
 )
-
 export default class OrderForm extends Component {
   static propTypes = {
     fields: PropTypes.object.isRequired,
@@ -33,27 +38,91 @@ export default class OrderForm extends Component {
     clearOrderItems: PropTypes.func.isRequired,
     error: PropTypes.object,
     submitting: PropTypes.bool,
+    orderItems: PropTypes.array.isRequired,
     user: PropTypes.object,
-    orderItems: PropTypes.object.isRequired,
     order: PropTypes.object,
-    showAddressField: PropTypes.bool
+    tariffs: PropTypes.array.isRequired
   };
 
-  static contextTypes = {
-    router: PropTypes.object.isRequired
+  state = {
+    preparedOrderItems: this.preparedOrderItems(this.props.orderItems, this.props.user)
   };
 
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    const props = this.props;
     if (props.user) {
       this.changeFields(props.fields.user, props.user);
     }
+    props.fields.order_items_attributes.onChange(this.preparedOrderItems(props.orderItems, props.user).purchasing);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.user !== nextProps.user && nextProps.user) {
-      this.changeFields(nextProps.fields.user, nextProps.user);
+    const newItems = this.preparedOrderItems(nextProps.orderItems, this.state.selectedUser);
+    const props = this.props;
+    if (props.orderItems !== nextProps.orderItems) {
+      this.setState({preparedOrderItems: newItems});
+      props.fields.order_items_attributes.onChange(newItems.purchasing);
     }
+  }
+
+  /**
+   * @description This function prepares array of lunches to display in order list.
+   * @param items Array of "Lunch" objects.
+   * @param user User.
+   * @returns {{purchasing: null[], grouped}}
+   */
+  preparedOrderItems(items, user) {
+    const { tariffs } = this.props;
+    const groupedItems = this.groupedItems(items);
+    const individualTariffItem = orderItemStructure('DeliveryTariff', find(tariffs, {individual: true}));
+    const zeroTariffItem = orderItemStructure('DeliveryTariff', { price: 0, zero: true });
+    const individualTariffItems = [];
+    /**
+     * @description This variable represents deliveries amount for current order including user's deliveries available and purchasing deliveries in order.
+     * @constant { number }
+     */
+    let deliveriesAvailable = (user ? user.deliveries_available : 0) + this.purchasedTariffsCount(items);
+    /**
+     * @description This function adds delivery to each group in order list. If user has available deliveries, function will add delivery with zero price;
+     * @constant {object}
+     */
+    const itemsWithDelivers = transform(groupedItems, (groupedItemsResult, dateItems, date) => {
+      groupedItemsResult[date] = transform(dateItems, (dateItemsResult, cookItems, cookId) => {
+        if (deliveriesAvailable > 0) {
+          deliveriesAvailable--;
+          dateItemsResult[cookId] = [...cookItems, zeroTariffItem];
+        } else {
+          dateItemsResult[cookId] = [...cookItems, individualTariffItem];
+          individualTariffItems.push(individualTariffItem);
+        }
+      }, {});
+    }, {});
+
+    return {
+      purchasing: [...items, ...individualTariffItems],
+      grouped: itemsWithDelivers
+    };
+  }
+
+  /**
+   * @description This function returns object grouped by delivery time and cooks.
+   * @param orderItems Array of lunches.
+   */
+
+  purchasedTariffsCount(items) {
+    return items.reduce((result, item) => result + (item.resource_type === 'DeliveryTariff' ? item.resource.amount : 0), 0);
+  }
+
+  /**
+   * @description This function returns deliveries amount.
+   * @param items Array of "Lunch" objects.
+   * @returns {*}
+   */
+
+  groupedItems(orderItems) {
+    const lunchesItems = filter(orderItems, {resource_type: 'Lunch'});
+    const groupedByDate = groupBy(lunchesItems, 'resource.ready_by');
+    return mapValues(groupedByDate, items => groupBy(items, 'resource.cook.id'));
   }
 
   changeFields = (changingField, value) => {
@@ -65,8 +134,14 @@ export default class OrderForm extends Component {
   };
 
   handleUserSelect = (selectedUser) => {
-    const { fields } = this.props;
+    const { fields, orderItems } = this.props;
+    const newItems = this.preparedOrderItems(orderItems, selectedUser);
+    this.setState({
+      preparedOrderItems: newItems,
+      selectedUser: selectedUser
+    });
     this.changeFields(fields.user, selectedUser);
+    fields.order_items_attributes.onChange(newItems.purchasing);
   };
 
   errorsFor(fieldName) {
@@ -86,10 +161,13 @@ export default class OrderForm extends Component {
   }
 
   render() {
-    const { fields, handleSubmit, submitting, user, orderItems, order, showAddressField } = this.props;
+    const { fields, handleSubmit, submitting, user } = this.props;
+    const { order } = this.state;
+    const orderItems = this.state.preparedOrderItems;
     const submitLabel = fields.payment_type.value === 'liqpay' ? 'Оплатить' : 'Оформить заказ';
     const orderExist = Boolean(order);
     const locationsEmpty = isEmpty(fields.user.locations.value);
+    const hasLunches = this.props.orderItems.some(item => item.resource_type === 'Lunch');
 
     return (
       <form className={styles.root} onSubmit={handleSubmit}>
@@ -103,7 +181,7 @@ export default class OrderForm extends Component {
         <div>
           <h3>Имя</h3>
           { user && (user.role === 'admin')
-            ? <UsersAutocomplete direction="down" onSelect={this.handleUserSelect}
+            ? <UsersAutocomplete direction="down" onUserSelect={::this.handleUserSelect}
                                  value={{id: fields.user.id.value, name: fields.user.name.value}}/>
             : <Input disabled={Boolean(user)} {...fields.user.name}/>
           }
@@ -124,7 +202,7 @@ export default class OrderForm extends Component {
           <PasswordInput placeholder="Password" {...fields.user.password}/>
         </div>}
 
-        {showAddressField && <div>
+        {hasLunches && <div>
           <h3>Адрес доставки</h3>
           {locationsEmpty
             ? <AddressSuggest onSuggestSelect={::this.props.fields.location.onChange} disabled={orderExist}
