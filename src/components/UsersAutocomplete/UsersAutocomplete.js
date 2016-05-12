@@ -8,7 +8,7 @@ import isEmpty from 'lodash/isEmpty';
 
 export default class UsersAutocomplete extends Component {
   static propTypes = {
-    onSelect: PropTypes.func,
+    onUserSelect: PropTypes.func,
     value: PropTypes.object
   };
 
@@ -29,7 +29,7 @@ export default class UsersAutocomplete extends Component {
 
   handleChange = (value) => {
     const selectedUser = this.state.users[value];
-    this.props.onSelect(selectedUser);
+    this.props.onUserSelect(selectedUser);
   };
 
   render() {
