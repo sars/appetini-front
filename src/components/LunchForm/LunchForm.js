@@ -11,6 +11,7 @@ import { reduxForm } from 'redux-form';
 import { getCooks, getFoodPreferences } from 'redux/modules/common';
 import classNames from 'classnames';
 import styles from './styles.scss';
+import { Link } from 'react-router';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const dishTypes = [
@@ -211,8 +212,12 @@ export default class LunchForm extends Component {
 
         <div className={styles.acceptRules}>
           <Button flat accent label={sendLabel} type="submit" disabled={submitting}/>
+          {fields.id.value &&
+            <Link className={styles.cloneWrapper} to={'/admin/lunches/' + fields.id.value + '/clone'}>
+              <Button flat accent label="Клонировать"/>
+            </Link>
+          }
         </div>
-
       </form>
     );
   }

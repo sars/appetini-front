@@ -162,7 +162,10 @@ export default class Purchase extends Component {
             <CardContent className={styles.cardContent}>
               <h3 className={styles.title}>Администратору</h3>
               <Link to={'/admin/lunches/' + lunch.id + '/edit'}>
-              <MenuItem caption="Редактировать"/>
+                <MenuItem caption="Редактировать"/>
+              </Link>
+              <Link to={'/admin/lunches/' + lunch.id + '/clone'}>
+                <MenuItem caption="Клонировать"/>
               </Link>
             </CardContent>
           </Card>
