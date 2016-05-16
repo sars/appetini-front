@@ -4,10 +4,20 @@ import moment from 'moment';
 import ImagesPreview from 'components/ImagesPreview/ImagesPreview';
 import styles from './styles.scss';
 import { dots } from 'components/OrderItems/styles.scss';
+import reduce from 'lodash/reduce';
 
 export default class OrderPreview extends Component {
   static propTypes = {
     orders: PropTypes.array
+  }
+
+  totalPrice() {
+    const { orders } = this.props;
+    return reduce(orders, (sum, order) => {
+      return sum + reduce(order.order_items, (total, orderItem) => {
+        return total + (parseFloat(orderItem.resource.initial_price) * orderItem.amount);
+      }, 0);
+    }, 0);
   }
 
   render() {
@@ -23,6 +33,7 @@ export default class OrderPreview extends Component {
                   <td>Время</td>
                   <td>Блюда</td>
                   <td className={styles.hiddenXs}>Фото</td>
+                  <td>Цена</td>
                   <td>Количество</td>
                 </tr>
               </thead>
@@ -46,11 +57,19 @@ export default class OrderPreview extends Component {
                             <ImagesPreview images={item.resource.photos} currentImageId={0}/>
                           </div>
                         </td>
+                        <td>{item.resource.initial_price * item.amount} грн.</td>
                         <td>{item.amount}</td>
                       </tr>);
                     }));
                 })
                 }
+              </tbody>
+              <tbody>
+                <tr>
+                  <td colSpan="4"/>
+                  <td colSpan="2">Общая стоимость: </td>
+                  <td colSpan="1">{this.totalPrice()} грн.</td>
+                </tr>
               </tbody>
             </table>
             : <h2 className={styles.ordersPlaceholder}>Нет заказов</h2>
