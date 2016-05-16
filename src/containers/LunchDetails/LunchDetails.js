@@ -19,6 +19,7 @@ import ga from 'components/GaEvent/ga';
 import Button from 'components/Button/Button';
 import { link as stylesLink } from 'components/HeaderMenu/HeaderMenu.scss';
 import { Link } from 'react-router';
+import Card, { CardContent } from 'components/Card/Card';
 
 function isReviews(location) {
   return /\/reviews$/.test(location.pathname);
@@ -112,6 +113,18 @@ export default class LunchDetails extends Component {
                   <div className={styles.lunchContentInner}>
                     <Photos className={styles.photos} lunch={lunch}/>
                     <Dishes dishes={lunch.dishes}/>
+                    { lunch.description &&
+                      <div className={styles.descriptionWrapper}>
+                        <Card>
+                          <CardContent>
+                            <h3>Описание обеда:</h3>
+                            <span className={styles.description}>
+                              {lunch.description}
+                            </span>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    }
                   </div>
                 </div>
                 <div className={buyContainerClasses}>
