@@ -14,7 +14,7 @@ import styles from './styles.scss';
     form: 'cookForm',
     fields: ['id', 'main_photo_temp_image_id', 'other_photos_temp_image_ids', 'removing_other_photos', 'removing_sanitary_book_photos',
       'sanitary_book_photos', 'sanitary_book_photos_temp_image_ids', 'first_name', 'last_name', 'first_name_genitive', 'last_name_genitive', 'other_photos', 'main_photo', 'location_attributes', 'location',
-      'user.id', 'user.phone', 'user.email', 'user.password', 'user.facebook', 'user.vkontakte']
+      'user.id', 'user.phone', 'user.email', 'user.password', 'user.facebook', 'user.vkontakte', 'fee_percent']
   }, null, {showToast}
 )
 export default class CookForm extends Component {
@@ -131,6 +131,11 @@ export default class CookForm extends Component {
           <h3>Адрес</h3>
           <AddressSuggest onSuggestSelect={::this.props.fields.location.onChange} location={fields.location.value} />
           {this.errorsFor('location')}
+        </div>
+
+        <div className={styles.section}>
+          <h3>Fee percent</h3>
+          <Input type="number" {...fields.fee_percent} min="0" max="100" step="1"/>
         </div>
 
         <div className={styles.submitContainer}>
