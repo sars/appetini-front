@@ -25,7 +25,7 @@ const dishTypes = [
 @reduxForm(
   {
     form: 'lunchForm',
-    fields: ['id', 'cook_id', 'available_count', 'photos_temp_image_ids', 'initial_price', 'accept_rules',
+    fields: ['id', 'cook_id', 'available_count', 'photos_temp_image_ids', 'initial_price', 'accept_rules', 'description',
       'dishes[].id', 'dishes[].name', 'dishes[].size', 'dishes[].dish_type', 'dishes[]._destroy',
       'removing_photos', 'food_preference_ids', 'ready_by_date', 'ready_by_time', 'dishes_count', 'photos', 'disable_minutes']
     // https://github.com/erikras/redux-form/issues/621
@@ -151,6 +151,10 @@ export default class LunchForm extends Component {
             <h3>Время до заказа (мин)</h3>
             <Input {...fields.disable_minutes}/>
           </div>
+        </div>
+        <div>
+          <h3>Описание</h3>
+          <Input {...fields.description} multiline={true}/>
         </div>
         <div className={styles.section}>
           <h3>Фотографии</h3>
