@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
 import { show as showToast } from 'redux/modules/toast';
-import { tempImageRequest } from './helpers';
+import { tempImageRequest } from 'helpers/tempImageRequest';
 import styles from './styles.scss';
 
 @connect(null, { showToast })

@@ -3,6 +3,7 @@ export AdminDashboard from './Admin/Dashboard/Dashboard';
 export AdminLunches from './Admin/Lunches/Lunches';
 export AdminLunchesNew from './Admin/Lunches/New/New';
 export AdminLunchesEdit from './Admin/Lunches/Edit/Edit';
+export AdminLunchesClone from './Admin/Lunches/Clone/Clone';
 export AdminCooks from './Admin/Cooks/Cooks';
 export AdminOrders from './Admin/Orders/Orders';
 export AdminCooksNew from './Admin/Cooks/New/New';

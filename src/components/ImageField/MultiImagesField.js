@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
 import { show as showToast } from 'redux/modules/toast';
 import without from 'lodash/without';
-import { tempImageRequest } from './helpers';
+import { tempImageRequest } from 'helpers/tempImageRequest';
 import styles from './styles.scss';
 
 @connect(null, { showToast })
@@ -52,10 +52,8 @@ export default class MultiImagesField extends Component {
   }
 
   removeImage(index) {
-    return () => {
-      const { onRemove, removingImages } = this.props;
-      onRemove(index, [...removingImages, index]);
-    };
+    const { onRemove, removingImages } = this.props;
+    return onRemove(index, [...removingImages, index]);
   }
 
   render() {
@@ -70,14 +68,14 @@ export default class MultiImagesField extends Component {
           {tempImages.map(tempImage =>
             <div className={styles.imagePreview} key={tempImage.id}>
               <img src={tempImage.image.thumb.url}/>
-              <span className={styles.imagePreviewRemove} onClick={::this.removeTempImage(tempImage)}><span className="fa fa-minus"/></span>
+              <span className={styles.imagePreviewRemove} onClick={() => this.removeTempImage(tempImage)}><span className="fa fa-minus"/></span>
             </div>
           )}
           {value && value.map((image, index) =>
             removingImages.indexOf(index) === -1 &&
               <div className={styles.imagePreview} key={index}>
                 <img src={image.thumb.url}/>
-                <span className={styles.imagePreviewRemove} onClick={::this.removeImage(index)}><span className="fa fa-minus"/></span>
+                <span className={styles.imagePreviewRemove} onClick={() => this.removeImage(index)}><span className="fa fa-minus"/></span>
               </div>
           )}
         </div>

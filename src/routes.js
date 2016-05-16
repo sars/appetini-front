@@ -13,6 +13,7 @@ import {
     AdminLunches,
     AdminLunchesNew,
     AdminLunchesEdit,
+    AdminLunchesClone,
     AdminOrders,
     AdminCooks,
     AdminCooksNew,
@@ -62,6 +63,7 @@ export default (store, client) => {
         <Route path="orders" component={AdminOrders}/>
         <Route path="lunches" component={AdminLunches}/>
         <Route path="lunches/:lunchId/edit" component={AdminLunchesEdit}/>
+        <Route path="lunches/:lunchId/clone" component={AdminLunchesClone}/>
         <Route path="lunches/new" component={AdminLunchesNew}/>
         <Route path="cooks" component={AdminCooks}/>
         <Route path="cooks/:cookId/edit" component={AdminCooksEdit}/>
