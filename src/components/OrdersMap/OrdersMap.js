@@ -4,6 +4,7 @@ import GoogleMapLoader from 'components/GoogleMapLoader/GoogleMapLoader';
 import Card, { CardContent } from 'components/Card/Card';
 import styles from './styles.scss';
 import Button from 'components/Button/Button';
+const icon = require('./marker.png');
 
 export default class OrdersMap extends Component {
   static propTypes = {
@@ -28,7 +29,7 @@ export default class OrdersMap extends Component {
     const markers = orders.map((order) => {
       return {
         position: {lat: order.location.lat, lng: order.location.lng},
-        label: order.id.toString()
+        icon: icon
       };
     });
 
