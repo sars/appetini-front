@@ -1,10 +1,8 @@
 import React, {Component, PropTypes} from 'react';
-import {GoogleMap, Marker} from 'react-google-maps';
-import GoogleMapLoader from 'components/GoogleMapLoader/GoogleMapLoader';
+import GoogleMap from 'google-map-react';
 import Card, { CardContent } from 'components/Card/Card';
 import styles from './styles.scss';
 import Button from 'components/Button/Button';
-const icon = require('./marker.png');
 
 export default class OrdersMap extends Component {
   static propTypes = {
@@ -13,51 +11,54 @@ export default class OrdersMap extends Component {
     clearOrderLocationHandler: PropTypes.func
   };
 
-  fit = (map, bounds) => {
-    const { orderPosition } = this.props;
-    if (!orderPosition && bounds && map) {
-      map.fitBounds(bounds);
-    }
+  state = {
+    gmap: undefined
+  }
+
+  setMap = (map) => {
+    this.setState({
+      gmap: map
+    });
   }
 
   render() {
-    const {orders, orderPosition, clearOrderLocationHandler} = this.props;
-    const defaultCenter = {lat: 50.907777, lng: 34.797297999999955};
-    const mapOptions = {mapTypeControl: false, streetViewControl: false, zoom: 17, center: orderPosition ? orderPosition : defaultCenter};
+    const { orders, orderPosition, clearOrderLocationHandler } = this.props;
+    const { gmap } = this.state;
+    const mapOptions = {mapTypeControl: false, streetViewControl: false, center: orderPosition};
     let bounds;
-
-    const markers = orders.map((order) => {
-      return {
-        position: {lat: order.location.lat, lng: order.location.lng},
-        icon: icon
-      };
+    const places = orders.map((order, idx) => {
+      return (
+        <div key={idx} lat={order.location.lat} lng={order.location.lng} className={styles.markerWrapper}>
+          <div className={styles.marker}>
+            <div className={styles.markerTextWrapper}><span>{order.id}</span></div>
+            <div className={styles.markerTriangle}></div>
+            <div className={styles.infoBox}>{order.location.full_address}</div>
+          </div>
+        </div>
+      );
     });
 
     if (typeof google !== 'undefined') {
       bounds = new window.google.maps.LatLngBounds();
-      markers.forEach(marker => {
-        bounds.extend(new window.google.maps.LatLng(marker.position.lat, marker.position.lng));
+      orders.forEach(order => {
+        bounds.extend(new window.google.maps.LatLng(order.location.lat, order.location.lng));
       });
     }
 
-    const googleMapElement = (
-      <GoogleMap options={mapOptions} ref={map => this.fit(map, bounds)}>
-        {markers && markers.map((marker, idx) => {
-          return (<Marker {...marker} key={idx} />);
-        })}
-      </GoogleMap>
-    );
-
-    const mapContainer = (
-      <div className={styles.map}></div>
-    );
+    if (gmap && !!places.length) {
+      gmap.fitBounds(bounds);
+    }
 
     return (
       <Card>
         <CardContent>
           <div className={styles.mapContainer}>
-            <GoogleMapLoader containerElement={mapContainer} googleMapElement={googleMapElement} />
-            {orderPosition &&
+            <GoogleMap {...mapOptions} defaultCenter={{lat: 50.907777, lng: 34.797297999999955}} defaultZoom={17}
+                                       onGoogleApiLoaded={({map}) => this.setMap(map)}
+                                       yesIWantToUseGoogleMapApiInternals>
+              {places}
+            </GoogleMap>
+            { orderPosition &&
               <div className={styles.allLocationsWrapper}>
                 <Button flat accent label="Показать все" onClick={clearOrderLocationHandler} />
               </div>
