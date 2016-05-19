@@ -56,4 +56,10 @@ h3 {
       display: none;
     }
   }
+
+  @media print {
+    .hidePrint {
+      display: none!important;
+    }
+  }
 }

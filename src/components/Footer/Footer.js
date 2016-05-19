@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { open as openModal } from 'redux/modules/modals';
 import HeaderMenu from 'components/HeaderMenu/HeaderMenu';
 import SocialButton from 'components/SocialButton/SocialButton';
+import classnames from 'classnames';
 
 const menuLinks = [
   // {to: '/terms', label: 'Условия использования'},
@@ -31,7 +32,7 @@ export default class Footer extends Component {
     const styles = require('./Footer.scss');
 
     return (
-      <footer className={styles.footer}>
+      <footer className={classnames(styles.footer, 'hidePrint')}>
         <div className={styles.firstLine}>
           <HeaderMenu className={styles.menu} links={menuLinks}/>
 

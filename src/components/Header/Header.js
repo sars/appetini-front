@@ -80,7 +80,7 @@ export default class Header extends Component {
     ];
 
     return (
-      <AppBar fixed className={styles.root}>
+      <AppBar fixed className={classNames(styles.root, 'hidePrint')}>
         <div className={styles.leftMenu}>
           <MobMenu className={styles.mobMenu} />
           {lunchesAmount > 0 && <ShoppingButton countItems={lunchesAmount} className={styles.shopCartMob}/>}
