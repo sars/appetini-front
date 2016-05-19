@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import GoogleMapLoader from 'components/GoogleMapLoader/GoogleMapLoader';
 import Geosuggest from 'react-geosuggest';
-import GoogleMap from 'react-google-maps/lib/GoogleMap';
-import Marker from 'react-google-maps/lib/Marker';
 import Input from 'components/Input/Input';
 import styles from './styles.scss';
+import GoogleMap from 'google-map-react';
+const icon = require('./marker.png');
 
 export default class AddressSuggest extends Component {
   static propTypes = {
@@ -48,20 +47,9 @@ export default class AddressSuggest extends Component {
 
   render() {
     const { location, disabled } = this.props;
-
-    const cityLatLng = (typeof google === 'object') ? new google.maps.LatLng(this.defaultCenter.lat, this.defaultCenter.lng) : undefined; // eslint-disable-line no-undef
-
-    const mapContainer = (
-      <div className={styles.map}></div>
-    );
-
-    const mapOptions = {mapTypeControl: false, streetViewControl: false};
-
-    const googleMapElement = (
-      <GoogleMap options={mapOptions} center={location || this.defaultCenter} zoom={location ? 17 : 11}>
-        {location && <Marker position={location} />}
-      </GoogleMap>
-    );
+    const locationCenter = location ? {lat: location.lat, lng: location.lng} : undefined;
+    const cityLatLng = (typeof google === 'object') ? new window.google.maps.LatLng(this.defaultCenter.lat, this.defaultCenter.lng) : undefined;
+    const mapOptions = {mapTypeControl: false, streetViewControl: false, center: locationCenter, zoom: location ? 17 : 13};
 
     return (
       <div>
@@ -71,7 +59,9 @@ export default class AddressSuggest extends Component {
         />
         <div className={styles.colWrapper}>
           <div className={styles.mapContainer}>
-            <GoogleMapLoader containerElement={mapContainer} googleMapElement={googleMapElement} />
+            <GoogleMap {...mapOptions} defaultCenter={this.defaultCenter}>
+              {location && <span className={styles.marker} lat={location.lat} lng={location.lng}><img src={icon} alt="marker"/></span>}
+            </GoogleMap>
           </div>
           <Input multiline className={styles.textareaContainer} onChange={::this.onChangeDescription}
                  placeholder="К вам трудно добраться? Укажите ориентиры, номер подъезда, номер домофона или квартиры, если нужно"
