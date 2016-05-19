@@ -24,7 +24,8 @@ export default class OrdersMap extends Component {
   render() {
     const { orders, orderPosition, clearOrderLocationHandler } = this.props;
     const { gmap } = this.state;
-    const mapOptions = {mapTypeControl: false, streetViewControl: false, center: orderPosition};
+    const mapOptions = {mapTypeControl: false, streetViewControl: false,
+      center: orderPosition ? orderPosition : {lat: 50.907777, lng: 34.797297999999955}};
     let bounds;
     const places = orders.map((order, idx) => {
       return (
@@ -53,7 +54,7 @@ export default class OrdersMap extends Component {
       <Card>
         <CardContent>
           <div className={styles.mapContainer}>
-            <GoogleMap {...mapOptions} defaultCenter={{lat: 50.907777, lng: 34.797297999999955}} defaultZoom={17}
+            <GoogleMap {...mapOptions} defaultZoom={17}
                                        onGoogleApiLoaded={({map}) => this.setMap(map)}
                                        yesIWantToUseGoogleMapApiInternals>
               {places}
