@@ -97,6 +97,9 @@ $input-field-font-size: 1.6 * $unit;
   }
 }
 
+.mapContainer {
+  height: 200px;
+}
 
 @media (min-width: 500px) {
   .colWrapper {
@@ -122,5 +125,15 @@ $input-field-font-size: 1.6 * $unit;
         height: 20rem;
       }
     }
+  }
+}
+
+.marker {
+  position: relative;
+
+  img {
+    position: absolute;
+    bottom: 100%;
+    left: -50%;
   }
 }
