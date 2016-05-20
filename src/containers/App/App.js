@@ -8,6 +8,7 @@ import 'react-toolbox/lib/commons';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 import GoogleAnalytics from 'react-g-analytics';
 import YandexMetrika from 'components/YandexMetrika/YandexMetrika';
+import VKRetargeting from 'components/VKRetargeting/VKRetargeting';
 import classNames from 'classnames';
 
 @connect(state => ({loaded: state.reduxAsyncConnect.loaded}),
@@ -65,6 +66,8 @@ export default class App extends Component {
 
         {!__DEVELOPMENT__ && <GoogleAnalytics id="UA-71130170-1"/>}
         {!__DEVELOPMENT__ && <YandexMetrika/>}
+        {!__DEVELOPMENT__ && <VKRetargeting/>}
+
       </div>
     );
   }
