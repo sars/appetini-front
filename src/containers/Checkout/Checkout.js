@@ -40,6 +40,10 @@ export default class Checkout extends Component {
     order: undefined
   };
 
+  componentDidMount() {
+    window.fbq('track', 'InitiateCheckout');
+  }
+
   createOrder(orderAttrs) {
     const { user } = this.props;
     return new Promise((resolve, reject) => {
@@ -51,7 +55,7 @@ export default class Checkout extends Component {
         user_id: orderAttrs.user.id
       }).then(response => {
         const order = response.resource;
-
+        window.fbq('track', 'Purchase', {value: order.total_price.toString(), currency: 'USD'});
         // TODO this.props.loginSuccess(response) instead of setUser and setToken
         if (user && order.user.id === user.id || !user) {
           this.props.setUser(order.user);
