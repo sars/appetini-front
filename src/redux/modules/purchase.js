@@ -1,5 +1,6 @@
 import without from 'lodash/without';
 import filter from 'lodash/filter';
+import some from 'lodash/some';
 
 const ADD_ORDER_ITEM = 'purchase/ADD_ORDER_ITEM';
 const REMOVE_ORDER_ITEM = 'purchase/REMOVE_ORDER_ITEM';
@@ -25,7 +26,20 @@ export default function reducer(state = initialState, action = {}) {
        * @description This is a new state of order list, when user added new item to cart.
        * @type {*[]}
        */
-      const newOrderItems = [...state.orderItems, action.payload.orderItem];
+
+      let newOrderItems;
+      const orderItems = state.orderItems;
+      const newItem = action.payload.orderItem;
+      if (some(orderItems, {resource_id: newItem.resource_id, resource_type: newItem.resource_type})) {
+        newOrderItems = orderItems.map((item) => {
+          if (item.resource_id === newItem.resource_id && item.resource_type === newItem.resource_type) {
+            item.amount = item.amount + newItem.amount;
+          }
+          return item;
+        });
+      } else {
+        newOrderItems = [...orderItems, newItem];
+      }
 
       return {
         ...state,
