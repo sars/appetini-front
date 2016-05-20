@@ -10,6 +10,7 @@ import GoogleAnalytics from 'react-g-analytics';
 import YandexMetrika from 'components/YandexMetrika/YandexMetrika';
 import VKRetargeting from 'components/VKRetargeting/VKRetargeting';
 import classNames from 'classnames';
+import FacebookPixel from 'components/FacebookPixel/FacebookPixel';
 
 @connect(state => ({loaded: state.reduxAsyncConnect.loaded}),
   {pushState: routeActions.push})
@@ -66,6 +67,7 @@ export default class App extends Component {
 
         {!__DEVELOPMENT__ && <GoogleAnalytics id="UA-71130170-1"/>}
         {!__DEVELOPMENT__ && <YandexMetrika/>}
+        {!__DEVELOPMENT__ && <FacebookPixel id={210397052652459}/>}
         {!__DEVELOPMENT__ && <VKRetargeting/>}
 
       </div>

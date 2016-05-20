@@ -43,6 +43,7 @@ export default class Purchase extends Component {
   }
 
   buy() {
+    window.fbq('track', 'AddToCart');
     if (this.props.lunchesAmount < 1 ) {
       this.setState({activeModal: true});
     } else {
