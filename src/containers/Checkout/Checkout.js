@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { createOrder } from 'redux/modules/common';
 import { setUser, setToken } from 'redux/modules/auth';
 import normalizeErrors from 'helpers/normalizeErrors';
+import fbEvent from 'components/fbEvent/fbEvent';
 import ga from 'components/GaEvent/ga';
 
 @asyncConnect([
@@ -41,7 +42,7 @@ export default class Checkout extends Component {
   };
 
   componentDidMount() {
-    window.fbq('track', 'InitiateCheckout');
+    fbEvent('track', 'InitiateCheckout');
   }
 
   createOrder(orderAttrs) {
@@ -55,7 +56,7 @@ export default class Checkout extends Component {
         user_id: orderAttrs.user.id
       }).then(response => {
         const order = response.resource;
-        window.fbq('track', 'Purchase', {value: order.total_price.toString(), currency: 'USD'});
+        fbEvent('track', 'Purchase', {value: order.total_price.toString(), currency: 'USD'});
         // TODO this.props.loginSuccess(response) instead of setUser and setToken
         if (user && order.user.id === user.id || !user) {
           this.props.setUser(order.user);
