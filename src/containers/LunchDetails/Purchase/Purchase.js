@@ -15,15 +15,17 @@ import { Link } from 'react-router';
 import { show as showToast } from 'redux/modules/toast';
 import OrderTimeout from 'components/OrderTimeout/OrderTimeout';
 import isLunchDisabled from 'helpers/isLunchDisabled';
+import { loadSuccess } from 'redux-async-connect';
 import { MenuItem } from 'react-toolbox/lib/menu';
 
-@connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount}), { addOrderItem, showToast })
+@connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount}), { addOrderItem, showToast, loadSuccess })
 export default class Purchase extends Component {
   static propTypes = {
     lunch: PropTypes.object.isRequired,
     user: PropTypes.object,
     addOrderItem: PropTypes.func.isRequired,
     showToast: PropTypes.func.isRequired,
+    loadSuccess: PropTypes.func.isRequired,
     lunchesAmount: PropTypes.number.isRequired
   };
 
@@ -44,6 +46,8 @@ export default class Purchase extends Component {
   }
 
   buy() {
+    const { lunch, user } = this.props;
+    const { amount } = this.state;
     fbEvent('track', 'AddToCart');
     if (this.props.lunchesAmount < 1 ) {
       this.setState({activeModal: true});
@@ -51,7 +55,9 @@ export default class Purchase extends Component {
       this.props.showToast('Заказ добавлен в корзину', 'accept', 'done');
       this.context.router.push('/');
     }
-    this.props.addOrderItem(this.props.user, 'Lunch', this.props.lunch, this.state.amount);
+    this.props.addOrderItem(user, 'Lunch', lunch, amount);
+    const newLunch = {...lunch, available_count: lunch.available_count - amount};
+    this.props.loadSuccess('lunch', newLunch);
   }
 
   checkout() {

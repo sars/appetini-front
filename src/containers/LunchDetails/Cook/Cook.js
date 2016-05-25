@@ -8,6 +8,7 @@ import ImagesPreview from 'components/ImagesPreview/ImagesPreview';
 import classNames from 'classnames';
 import tooltip from 'react-toolbox/lib/tooltip';
 import styles from './styles.scss';
+import round from 'lodash/round';
 
 const TooltipLink = tooltip(Link);
 
@@ -30,7 +31,7 @@ export default class Cook extends Component {
               {cook.full_name}
             </h3>
             <div className={styles.ratingContainer}>
-              <StarRating name="cook-rating" totalStars={5} editing={false} rating={cook.rating} size={18}/>
+              <StarRating name="cook-rating" totalStars={5} editing={false} rating={round(cook.rating)} size={18}/>
               <Link className={styles.feedbackLink} to={`/lunches/${lunch.id}/reviews`}>
                 {cook.reviews_count}
                 &nbsp;

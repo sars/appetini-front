@@ -185,23 +185,23 @@ export default class OrderForm extends Component {
           { user && (user.role === 'admin')
             ? <UsersAutocomplete direction="down" onUserSelect={::this.handleUserSelect}
                                  value={{id: fields.user.id.value, name: fields.user.name.value}}/>
-            : <Input disabled={Boolean(user)} {...fields.user.name}/>
+            : <Input disabled={Boolean(user)} placeholder="Введите имя" {...fields.user.name}/>
           }
         </div>
 
         <div>
           <h3>Телефон</h3>
-          <Input disabled={Boolean(user && user.phone)} {...fields.user.phone}/>
+          <Input disabled={Boolean(user && user.phone)} placeholder="Введите телефон" {...fields.user.phone}/>
         </div>
 
         {!user && <div>
           <h3>Email</h3>
-          <Input type="email" {...fields.user.email}/>
+          <Input type="email" placeholder="Введите email" {...fields.user.email}/>
         </div>}
 
         {!user && <div>
-          <h3>Password</h3>
-          <PasswordInput placeholder="Password" {...fields.user.password}/>
+          <h3>Пароль</h3>
+          <PasswordInput placeholder="Введите пароль" {...fields.user.password}/>
         </div>}
 
         {hasLunches && <div>
