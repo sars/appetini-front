@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { FormattedPlural } from 'react-intl';
 import styles from './styles.scss';
 import ga from 'components/GaEvent/ga';
+import fbEvent from 'components/fbEvent/fbEvent';
 import moment from 'moment';
 import { Link } from 'react-router';
 import { show as showToast } from 'redux/modules/toast';
@@ -43,7 +44,7 @@ export default class Purchase extends Component {
   }
 
   buy() {
-    window.fbq('track', 'AddToCart');
+    fbEvent('track', 'AddToCart');
     if (this.props.lunchesAmount < 1 ) {
       this.setState({activeModal: true});
     } else {

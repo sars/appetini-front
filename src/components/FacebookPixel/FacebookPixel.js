@@ -1,4 +1,5 @@
 import { Component, PropTypes } from 'react';
+import fbEvent from 'components/fbEvent/fbEvent';
 
 const facebookPixel = (id) => {
   /* eslint-disable */
@@ -26,7 +27,7 @@ export default class FacebookPixel extends Component {
       if (!location) {
         return;
       }
-      window.fbq('track', 'PageView');
+      fbEvent('track', 'PageView');
     });
   }
 
