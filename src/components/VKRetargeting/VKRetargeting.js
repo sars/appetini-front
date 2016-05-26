@@ -3,7 +3,7 @@ import { Component } from 'react';
 export default class VKRetargeting extends Component {
 
   componentDidMount() {
-    (window.Image ? (new Image()) : document.createElement('img')).src = window.location.protocol + '//vk.com/rtrg?r=GUhOCqSmSICvUITzlSRfRJM5YpK/0lf5gI/hKrLv8U/uxmsVd0wcwHm3JhJkC5mYr*o3BMuKYQ/p9I7*dayGE1uDdZf4XuBCuQADA4EQK5VuSD0juP9qE6b97LP5TfLHhGmGAmXbrclR/pLFOg09tiAfzYq*z9GuyT*SAV/GWY4-';
+    (window.Image ? (new Image()) : document.createElement('img')).src = window.location.protocol + '//vk.com/rtrg?r=bk0UW9kIErJ49JK5XehMqiGOHwZsAo0IT4z/6uPAWVIDOS*4rBvkgTgYjgYj4P7QGra*FtO5f6ZXa8898NRVRfc7ffU0GeneMmvzmdgjOiqNGi6UAID5vWMTjGqJI0Ruc2fx6cYFsTsVy9aBFOGNgmqjkF6Ut17CeA5atVgEjK0-';
   }
 
   render() {
