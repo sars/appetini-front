@@ -44,6 +44,10 @@ export default class OrderForm extends Component {
     tariffs: PropTypes.array.isRequired
   };
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
   state = {
     preparedOrderItems: this.preparedOrderItems(this.props.orderItems, this.props.user)
   };

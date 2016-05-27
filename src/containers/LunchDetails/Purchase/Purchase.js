@@ -23,6 +23,7 @@ export default class Purchase extends Component {
   static propTypes = {
     lunch: PropTypes.object.isRequired,
     user: PropTypes.object,
+    openedLunches: PropTypes.object,
     addOrderItem: PropTypes.func.isRequired,
     showToast: PropTypes.func.isRequired,
     loadSuccess: PropTypes.func.isRequired,
@@ -46,7 +47,7 @@ export default class Purchase extends Component {
   }
 
   buy() {
-    const { lunch, user } = this.props;
+    const { lunch, user, openedLunches } = this.props;
     const { amount } = this.state;
     fbEvent('track', 'AddToCart');
     if (this.props.lunchesAmount < 1 ) {
@@ -56,8 +57,13 @@ export default class Purchase extends Component {
       this.context.router.push('/');
     }
     this.props.addOrderItem(user, 'Lunch', lunch, amount);
-    const newLunch = {...lunch, available_count: lunch.available_count - amount};
-    this.props.loadSuccess('lunch', newLunch);
+    const newOpenedLunches = {
+      ...openedLunches,
+      [lunch.id]: {
+        ...lunch, available_count: lunch.available_count - amount
+      }
+    };
+    this.props.loadSuccess('openedLunches', newOpenedLunches);
   }
 
   checkout() {

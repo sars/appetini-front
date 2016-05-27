@@ -14,9 +14,10 @@ const menuLinks = [
   {to: '/about', label: 'О Нас'}
 ];
 
-@connect(null, {openModal})
+@connect(state => ({user: state.auth.user}), {openModal})
 export default class Footer extends Component {
   static propTypes = {
+    user: PropTypes.object,
     openModal: PropTypes.func.isRequired
   };
 
@@ -30,16 +31,19 @@ export default class Footer extends Component {
 
   render() {
     const styles = require('./Footer.scss');
+    const { user } = this.props;
 
     return (
       <footer className={classnames(styles.footer, 'hidePrint')}>
         <div className={styles.firstLine}>
           <HeaderMenu className={styles.menu} links={menuLinks}/>
 
-          <Navigation className={styles.loginSignUp}>
-            <Button flat accent label="Войти" onClick={this.openLoginModal} />
-            <Button flat outlined label="Зарегистрироваться" onClick={() => this.context.router.push('/join')}/>
-          </Navigation>
+          {!user &&
+            <Navigation className={styles.loginSignUp}>
+              <Button flat accent label="Войти" onClick={this.openLoginModal} />
+              <Button flat outlined label="Зарегистрироваться" onClick={() => this.context.router.push('/join')}/>
+            </Navigation>
+          }
         </div>
 
         <div className={styles.secondLine}>
