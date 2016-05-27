@@ -26,11 +26,11 @@ function isReviews(location) {
 }
 
 @asyncConnect([
-  {key: 'lunch', promise: ({params, helpers, location, store, store: { dispatch }}) => {
-    return getLunch()({params, helpers, store}).then(lunch => {
+  {key: 'openedLunches', promise: ({params, helpers, location, store, store: { dispatch }}) => {
+    return getLunch()({params, helpers, store}).then(openedLunches => {
       return isReviews(location)
-        ? dispatch(getReviews(lunch.cook.id, params.page)).then(() => lunch)
-        : lunch;
+        ? dispatch(getReviews(openedLunches[params.lunchId].cook.id, params.page)).then(() => openedLunches)
+        : openedLunches;
     });
   }}
 ])
@@ -39,9 +39,10 @@ function isReviews(location) {
 }))
 export default class LunchDetails extends Component {
   static propTypes = {
-    lunch: PropTypes.object.isRequired,
+    openedLunches: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    reviews: PropTypes.object
+    reviews: PropTypes.object,
+    params: PropTypes.object.isRequired
   };
 
   static contextTypes = {
@@ -55,7 +56,7 @@ export default class LunchDetails extends Component {
   };
 
   handleReviewsClose() {
-    this.context.router.push(`/lunches/${this.props.lunch.id}`);
+    this.context.router.push(`/lunches/${this.props.params.lunchId}`);
   }
 
   handleMobilePurchase = () => {
@@ -65,7 +66,8 @@ export default class LunchDetails extends Component {
 
   render() {
     const styles = require('./LunchDetails.scss');
-    const { lunch, location, reviews } = this.props;
+    const { location, reviews, openedLunches, params } = this.props;
+    const lunch = openedLunches[params.lunchId];
     const { cook } = lunch;
 
     const leftSidebarClasses = classNames(styles.leftSidebar, {
@@ -105,7 +107,7 @@ export default class LunchDetails extends Component {
               <div className={styles.previewsContainer}>
                 <CookPreview cook={cook} className={styles.cookPreview}
                              onClick={() => this.setState({cookOpened: true})}/>
-                <PurchasePreview lunch={lunch} className={styles.purchasePreview}
+                <PurchasePreview lunch={lunch} openedLunches={openedLunches} className={styles.purchasePreview}
                                  onClick={::this.handleMobilePurchase}/>
               </div>
               <div className={styles.lunch}>
@@ -133,7 +135,7 @@ export default class LunchDetails extends Component {
                                                        onClick={() => this.setState({purchaseOpened: false})}></div>}
                   </ReactCSSTransitionGroup>
                   <div className={styles.buyContent}>
-                    <Purchase lunch={lunch}/>
+                    <Purchase openedLunches={openedLunches} lunch={lunch}/>
                   </div>
                 </div>
               </div>
