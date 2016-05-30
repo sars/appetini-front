@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import styles from './styles.scss';
 import OrderForm from 'components/OrderForm/OrderForm';
-import { asyncConnect } from 'redux-async-connect';
+import { asyncConnect, loadSuccess } from 'redux-async-connect';
 import { clearOrderItems } from 'redux/modules/purchase';
 import { connect } from 'react-redux';
 import { createOrder } from 'redux/modules/common';
@@ -20,13 +20,14 @@ import ga from 'components/GaEvent/ga';
 
 @connect(
   state => ({orderItems: state.purchase.orderItems, user: state.auth.user}),
-  { createOrder, setUser, setToken, clearOrderItems }
+  { createOrder, setUser, setToken, clearOrderItems, loadSuccess }
 )
 export default class Checkout extends Component {
 
   static propTypes = {
     tariffs: PropTypes.array.isRequired,
     createOrder: PropTypes.func.isRequired,
+    loadSuccess: PropTypes.func.isRequired,
     setUser: PropTypes.func.isRequired,
     clearOrderItems: PropTypes.func.isRequired,
     user: PropTypes.object,
@@ -66,7 +67,7 @@ export default class Checkout extends Component {
         }
 
         this.props.clearOrderItems();
-
+        this.props.loadSuccess('lunch', undefined);
         this.setState({order});
 
         if (order.payment_type === 'liqpay') {

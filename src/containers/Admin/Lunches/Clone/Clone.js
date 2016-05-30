@@ -9,13 +9,12 @@ import cloneLunch from 'helpers/cloneLunch';
 import submit from '../submit';
 
 @asyncConnect([
-  {key: 'openedLunches', promise: getLunch()}
+  {key: 'lunch', promise: getLunch()}
 ])
 @connect(null, { createLunch, showToast })
 export default class Clone extends Component {
   static propTypes = {
-    openedLunches: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
+    lunch: PropTypes.object.isRequired,
     createLunch: PropTypes.func.isRequired,
     showToast: PropTypes.func.isRequired
   };
@@ -30,7 +29,7 @@ export default class Clone extends Component {
   };
 
   componentDidMount() {
-    const lunch = this.props.openedLunches[this.props.params.lunchId];
+    const { lunch } = this.props;
     const { client } = this.context;
     cloneLunch(lunch, client)
       .then(lunchFields => {
