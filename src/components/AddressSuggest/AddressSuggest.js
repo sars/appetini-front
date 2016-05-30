@@ -9,6 +9,7 @@ export default class AddressSuggest extends Component {
   static propTypes = {
     location: PropTypes.object,
     disabled: PropTypes.bool,
+    error: PropTypes.string,
     onSuggestSelect: PropTypes.func.isRequired
   };
 
@@ -46,17 +47,18 @@ export default class AddressSuggest extends Component {
   }
 
   render() {
-    const { location, disabled } = this.props;
+    const { location, disabled, error } = this.props;
     const locationCenter = location ? {lat: location.lat, lng: location.lng} : undefined;
     const cityLatLng = (typeof google === 'object') ? new window.google.maps.LatLng(this.defaultCenter.lat, this.defaultCenter.lng) : undefined;
     const mapOptions = {mapTypeControl: false, streetViewControl: false, center: locationCenter, zoom: location ? 17 : 13};
 
     return (
       <div>
-        <Geosuggest country="ua" types={['address']} radius={10000} location={cityLatLng} disabled={disabled}
+        <Geosuggest className={error && styles.withError} country="ua" types={['address']} radius={10000} location={cityLatLng} disabled={disabled}
                     placeholder="например, 203, Барановская улица, Сумы" onSuggestSelect={::this.handleSuggestSelect}
                     initialValue={location ? location.full_address : undefined}
         />
+        {error && <div className={styles.error}>{error}</div>}
         <div className={styles.colWrapper}>
           <div className={styles.mapContainer}>
             <GoogleMap {...mapOptions} defaultCenter={this.defaultCenter}>

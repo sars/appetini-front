@@ -9,7 +9,8 @@ export default class LocationsSelect extends Component {
   static propTypes = {
     location: PropTypes.object,
     locations: PropTypes.array.isRequired,
-    onSelect: PropTypes.func.isRequired
+    onSelect: PropTypes.func.isRequired,
+    className: PropTypes.string
   };
 
   constructor(props) {
@@ -43,7 +44,7 @@ export default class LocationsSelect extends Component {
   render() {
     return (
       <div>
-        <Dropdown auto source={this.state.list} size="15" value={this.state.selected} onChange={this.onChoose} />
+        <Dropdown auto source={this.state.list} size="15" className={this.props.className} value={this.state.selected} onChange={this.onChoose} />
 
         {this.state.search &&
         <div className={styles.search}>
