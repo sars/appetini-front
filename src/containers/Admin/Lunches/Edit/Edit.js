@@ -8,13 +8,12 @@ import { getLunch } from 'helpers/lunches';
 import submit from '../submit';
 
 @asyncConnect([
-  {key: 'openedLunches', promise: getLunch(true)}
+  {key: 'lunch', promise: getLunch(true)}
 ])
 @connect(null, { updateLunch, showToast, loadSuccess })
 export default class Edit extends Component {
   static propTypes = {
-    openedLunches: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
+    lunch: PropTypes.object.isRequired,
     updateLunch: PropTypes.func.isRequired,
     loadSuccess: PropTypes.func.isRequired,
     showToast: PropTypes.func.isRequired
@@ -23,19 +22,14 @@ export default class Edit extends Component {
   updateLunch(lunch) {
     return submit(lunch, this.props.updateLunch).then(response => {
       this.props.showToast('Обед успешно обновлен');
-      const newOpenedLunches = {
-        ...this.props.openedLunches,
-        [response.resource.id]: response.resource
-      };
-      this.props.loadSuccess('openedLunches', newOpenedLunches);
+      this.props.loadSuccess('lunch', response.resource);
       return response;
     });
   }
 
   render() {
-    const lunch = this.props.openedLunches[this.props.params.lunchId];
     return (
-      <LunchForm initialValues={lunch} onSubmit={::this.updateLunch}
+      <LunchForm initialValues={this.props.lunch} onSubmit={::this.updateLunch}
                  title="Редактирование обеда" sendLabel="Обновить обед"/>
     );
   }

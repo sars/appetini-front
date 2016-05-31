@@ -2,6 +2,13 @@
   display: flex;
   align-items: center;
   padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cookInfo {
+  display: flex;
+  transition: transform 0.3s ease;
 }
 
 .rating {
@@ -15,6 +22,7 @@
 
 .price {
   margin-left: auto;
+  transition: transform 0.3s ease;
 }
 
 .priceAmount {
@@ -47,6 +55,23 @@
   }
 }
 
+.buyBtnWrapper {
+  position: absolute;
+  right: 0;
+  padding-right: 15px;
+  bottom: 15px;
+  height: 50px;
+  display: flex;
+  pointer-events: none;
+  align-items: center;
+  overflow: hidden;
+
+  .buyBtn {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateX(calc(100% + 15px));
+  }
+}
+
 .card:hover {
   box-shadow: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 78, 47, 0.12), 0 5px 5px -3px rgba(109, 78, 47, 0.2);
 
@@ -57,12 +82,25 @@
   .dish {
     transform: translateX(0);
   }
+
+  .cookInfo {
+    transform: translateX(calc(-100% - 15px));
+  }
+
+  .buyBtnWrapper .buyBtn {
+    pointer-events: all;
+    transform: translateX(0);
+  }
+
+  .price {
+    transform: translateX(calc(-260px + 100%));
+  }
 }
 
 .dish {
   padding: 0.7rem 1.3rem;
   margin: 0.3rem;
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 500px; // http://stackoverflow.com/questions/18794947/capsule-shape-using-border-radius-without-a-set-width-or-height
   display: inline-block;
   font-size: 1.2rem;

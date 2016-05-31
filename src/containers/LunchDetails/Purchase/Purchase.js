@@ -15,18 +15,22 @@ import { Link } from 'react-router';
 import { show as showToast } from 'redux/modules/toast';
 import OrderTimeout from 'components/OrderTimeout/OrderTimeout';
 import isLunchDisabled from 'helpers/isLunchDisabled';
-import { loadSuccess } from 'redux-async-connect';
 import { MenuItem } from 'react-toolbox/lib/menu';
+import find from 'lodash/find';
 
-@connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount}), { addOrderItem, showToast, loadSuccess })
+const checkAvailableCount = (lunch, orderItems) => {
+  const lunchInCart = find(orderItems, {resource_id: lunch.id});
+  return lunchInCart ? (lunch.available_count - lunchInCart.amount) : lunch.available_count;
+};
+
+@connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount, orderItems: state.purchase.orderItems}), { addOrderItem, showToast })
 export default class Purchase extends Component {
   static propTypes = {
     lunch: PropTypes.object.isRequired,
+    orderItems: PropTypes.any,
     user: PropTypes.object,
-    openedLunches: PropTypes.object,
     addOrderItem: PropTypes.func.isRequired,
     showToast: PropTypes.func.isRequired,
-    loadSuccess: PropTypes.func.isRequired,
     lunchesAmount: PropTypes.number.isRequired
   };
 
@@ -34,10 +38,13 @@ export default class Purchase extends Component {
     router: PropTypes.object.isRequired
   };
 
-  state = {
-    amount: 1,
-    activeModal: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      amount: 1,
+      activeModal: false
+    };
+  }
 
   subscribe() {
     this.props.addOrderItem(this.props.user, 'Lunch', this.props.lunch, this.state.amount);
@@ -47,7 +54,7 @@ export default class Purchase extends Component {
   }
 
   buy() {
-    const { lunch, user, openedLunches } = this.props;
+    const { lunch, user } = this.props;
     const { amount } = this.state;
     fbEvent('track', 'AddToCart');
     if (this.props.lunchesAmount < 1 ) {
@@ -57,13 +64,9 @@ export default class Purchase extends Component {
       this.context.router.push('/');
     }
     this.props.addOrderItem(user, 'Lunch', lunch, amount);
-    const newOpenedLunches = {
-      ...openedLunches,
-      [lunch.id]: {
-        ...lunch, available_count: lunch.available_count - amount
-      }
-    };
-    this.props.loadSuccess('openedLunches', newOpenedLunches);
+    this.setState({
+      amount: 1
+    });
   }
 
   checkout() {
@@ -72,8 +75,9 @@ export default class Purchase extends Component {
   }
 
   incrementAmount(step) {
-    const {amount} = this.state;
-    const availableCount = this.props.lunch.available_count;
+    const { lunch, orderItems } = this.props;
+    const availableCount = checkAvailableCount(lunch, orderItems);
+    const { amount } = this.state;
     const currentStep = amount + step;
     const newAmount = currentStep < availableCount ? currentStep : availableCount;
     this.setState({amount: newAmount < 1 ? 1 : newAmount});
@@ -88,13 +92,12 @@ export default class Purchase extends Component {
   };
 
   render() {
-    const { lunch, user } = this.props;
+    const { lunch, user, orderItems } = this.props;
     const { amount } = this.state;
+    const availableCount = checkAvailableCount(lunch, orderItems);
     const hasDeliveries = this.userHasDeliveries();
-    const lunchDisabled = isLunchDisabled(lunch);
-    const disabledByTime = lunchDisabled.byTime;
-    const disabledByCount = lunchDisabled.byCount;
-    const disabled = disabledByTime || disabledByCount;
+    const disabledByTime = isLunchDisabled(lunch).byTime;
+    const disabled = disabledByTime || availableCount < 1;
     const isToday = moment(lunch.ready_by).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
     return (
       <div>
@@ -122,7 +125,7 @@ export default class Purchase extends Component {
                 <span className={styles.amountLabel}>
                   <FormattedPlural value={amount} one="порция" few="порции" many="порций" other="порций"/>
                 </span></div>
-                <div className={styles.avaliableAmount}>Доступно <strong>{lunch.available_count}</strong></div>
+                <div className={styles.avaliableAmount}>Доступно <strong>{availableCount}</strong></div>
               </div>
               <Button className={styles.amountButton} type="button" icon="add" outlined mini flat
                       onClick={() => this.incrementAmount(1)}/>
@@ -130,7 +133,7 @@ export default class Purchase extends Component {
             }
             {disabled && <div className={styles.amountContainer}>
               <div className={styles.amountLabel}>
-                <div>{disabledByCount && !disabledByTime && 'Нет доступных порций'} {disabledByTime && 'Время до заказа истекло'}</div>
+                <div>{disabledByTime ? 'Время до заказа истекло' : 'Нет доступных порций'}</div>
                 <div><Link to="/">Закажите доступный обед</Link></div>
               </div>
             </div>

@@ -27,17 +27,11 @@ export function request(requestParams) {
 
 export function getLunch(update = false) {
   return ({params, helpers, store: { getState }}) => {
-    const openedLunches = getState().reduxAsyncConnect.openedLunches;
-    const oldLunch = openedLunches ? openedLunches[params.lunchId] : undefined;
+    const oldLunch = getState().reduxAsyncConnect.lunch;
     return Promise.resolve(
-      !update && oldLunch
-        ? openedLunches
-        : helpers.client.get('/lunches/' + params.lunchId).then(response => {
-          return {
-            [params.lunchId]: response.resource,
-            ...openedLunches
-          };
-        })
+      !update && oldLunch && (oldLunch.id.toString() === params.lunchId)
+        ? oldLunch
+        : helpers.client.get('/lunches/' + params.lunchId).then(response => response.resource)
     );
   };
 }
