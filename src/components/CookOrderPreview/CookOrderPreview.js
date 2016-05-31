@@ -6,7 +6,7 @@ import styles from './styles.scss';
 import { dots } from 'components/OrderItems/styles.scss';
 import reduce from 'lodash/reduce';
 
-export default class OrderPreview extends Component {
+export default class CookOrderPreview extends Component {
   static propTypes = {
     orders: PropTypes.array
   }
@@ -14,9 +14,7 @@ export default class OrderPreview extends Component {
   totalPrice() {
     const { orders } = this.props;
     return reduce(orders, (sum, order) => {
-      return sum + reduce(order.order_items, (total, orderItem) => {
-        return total + (parseFloat(orderItem.resource.initial_price) * orderItem.amount);
-      }, 0);
+      return sum + (parseFloat(order.resource.initial_price) * order.amount);
     }, 0);
   }
 
@@ -38,31 +36,29 @@ export default class OrderPreview extends Component {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order) => {
+                {orders.map((order, id) => {
                   return (
-                    order.order_items.map((item, id) => {
-                      return (<tr key={id}>
-                        <td>{order.id}</td>
-                        <td>{moment(item.resource.ready_by).format('DD MMMM')}</td>
-                        <td>{moment(item.resource.ready_by).format('HH:mm')}</td>
-                        <td>{item.resource.dishes.map((dish, index) => {
+                    <tr key={id}>
+                      <td>{order.order_id}</td>
+                      <td>{moment(order.resource.ready_by).format('DD MMMM')}</td>
+                      <td>{moment(order.resource.ready_by).format('HH:mm')}</td>
+                      <td>
+                        {order.resource.dishes.map((dish, index) => {
                           return (<div key={index} className={styles.dish}>
                             <span className={styles.dishName}>{dish.name}</span>
                             <span className={dots}/>
                             <span>{dish.size}</span></div>);
                         })}
-                        </td>
-                        <td className={styles.hiddenXs}>
-                          <div className={styles.photoWrapper}>
-                            <ImagesPreview images={item.resource.photos} currentImageId={0}/>
-                          </div>
-                        </td>
-                        <td>{item.resource.initial_price * item.amount} грн.</td>
-                        <td>{item.amount}</td>
-                      </tr>);
-                    }));
-                })
-                }
+                      </td>
+                      <td className={styles.hiddenXs}>
+                        <div className={styles.photoWrapper}>
+                          <ImagesPreview images={order.resource.photos} currentImageId={0}/>
+                        </div>
+                      </td>
+                      <td>{order.resource.initial_price * order.amount} грн.</td>
+                      <td>{order.amount}</td>
+                    </tr>);
+                })}
               </tbody>
               <tbody>
                 <tr>
