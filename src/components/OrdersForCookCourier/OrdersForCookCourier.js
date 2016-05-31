@@ -11,7 +11,10 @@ export default class OrdersForCookCourier extends Component {
 
   static propTypes = {
     location: PropTypes.object,
+    sortByOrderItem: PropTypes.func,
+    clearSortByOrderItem: PropTypes.func,
     title: PropTypes.string,
+    sorted: PropTypes.any,
     children: PropTypes.element.isRequired
   };
 
@@ -38,7 +41,7 @@ export default class OrdersForCookCourier extends Component {
   }
 
   render() {
-    const { location, title, children } = this.props;
+    const { location, title, children, sortByOrderItem, clearSortByOrderItem, sorted } = this.props;
     const date = location.query.date;
     return (
       <ColumnLayout>
@@ -51,9 +54,11 @@ export default class OrdersForCookCourier extends Component {
                 <DatePicker label="Выберите дату" onChange={this.filterChanged} value={date ? getParsedDate(date) : undefined}/>
               </span>
               {date && <Button className={styles.filterItem} flat accent label="Сбросить фильтр" onClick={this.clearFilter}/>}
+              {sortByOrderItem && !sorted && <Button className={styles.filterItem} flat accent label="Сгрупировать по обедам" onClick={sortByOrderItem}/>}
+              {clearSortByOrderItem && sorted && <Button className={styles.filterItem} flat accent label="Показать заказы" onClick={clearSortByOrderItem}/>}
             </div>
           </div>
-          <h4 className={styles.ordersTitle}>{date ? <span>Заказы на <span className={styles.dayName}>{humanizeDayName(getParsedDate(date), 'DD MMMM')}</span></span> : <span>Все заказы</span>}: </h4>
+          <h4 className={styles.ordersTitle}>{date ? <span>{sorted ? 'Обеды' : 'Заказы'} на <span className={styles.dayName}>{humanizeDayName(getParsedDate(date), 'DD MMMM')}</span></span> : <span>Все {sorted ? 'обеды' : 'заказы'}</span>}: </h4>
           {children}
         </div>
       </ColumnLayout>

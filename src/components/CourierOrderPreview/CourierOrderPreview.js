@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import { Card } from 'react-toolbox/lib/card';
 import moment from 'moment';
-import styles from '../OrderPreview/styles.scss';
+import styles from '../CookOrderPreview/styles.scss';
 import OrdersMap from 'components/OrdersMap/OrdersMap';
 import courierStyles from './styles.scss';
 import classNames from 'classnames';
