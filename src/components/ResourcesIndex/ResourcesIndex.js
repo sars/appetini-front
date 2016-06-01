@@ -51,7 +51,15 @@ export default class ResourcesIndex extends Component {
           {resources.map(resource =>
             <tr key={resource.id}>
               {fields.map(renderField(resource))}
-              <td><Link to={`/admin/${urlName}/${resource.id}/edit`}>Редактировать</Link></td>
+              <td>
+                <div className={styles.action}>
+                  <Link to={`/admin/${urlName}/${resource.id}/edit`}><Button flat accent label="Редактировать"/></Link>
+                </div>
+                {urlName === 'cooks' &&
+                <div className={styles.action}>
+                  <Link to={`/cooks/${resource.id}/orders`}><Button flat accent label="Заказы"/></Link>
+                </div>}
+              </td>
             </tr>
           )}
           </tbody>
