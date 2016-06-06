@@ -97,6 +97,16 @@ $input-field-font-size: 1.6 * $unit;
   }
 }
 
+.error {
+  font-size: 1.2rem;
+  line-height: 2rem;
+  color: #de3226;
+}
+
+.withError input{
+  border-bottom-color: #de3226;
+}
+
 .mapContainer {
   height: 200px;
 }

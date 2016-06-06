@@ -212,10 +212,10 @@ export default class OrderForm extends Component {
           <h3>Адрес доставки</h3>
           {locationsEmpty
             ? <AddressSuggest onSuggestSelect={::this.props.fields.location.onChange} disabled={orderExist}
-                              location={fields.location.value} />
-            : <LocationsSelect locations={fields.user.locations.value || []} onSelect={::this.props.fields.location.onChange}
+                              location={fields.location.value} error={fields.location.error}/>
+            : <LocationsSelect className={fields.location.error && styles.withError} locations={fields.user.locations.value || []} onSelect={::this.props.fields.location.onChange}
                                location={fields.location.value} />}
-          {this.errorsFor('location')}
+          { !locationsEmpty && this.errorsFor('location')}
         </div>}
 
         <div>
