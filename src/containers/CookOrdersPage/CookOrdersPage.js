@@ -20,7 +20,7 @@ const getOrderItems = (orders) => {
   {key: 'orders', promise: ({helpers, params, location}) =>
     helpers.client.get(`/cooks/${params.cookId}/orders`,
       {params: getParams(location)})
-        .then(response => response.resources)}
+      .then(response => response.resources)}
 ])
 
 export default class CookOrdersPage extends Component {

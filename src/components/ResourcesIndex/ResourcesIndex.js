@@ -19,6 +19,7 @@ export default class ResourcesIndex extends Component {
     resources: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
     createTitle: PropTypes.string,
+    customActions: PropTypes.array,
     urlName: PropTypes.string.isRequired,
     fields: PropTypes.array.isRequired
   };
@@ -33,7 +34,7 @@ export default class ResourcesIndex extends Component {
   }
 
   render() {
-    const { resources, title, createTitle, fields, urlName } = this.props;
+    const { resources, title, createTitle, fields, urlName, customActions } = this.props;
     return (
       <div className={styles.root}>
         <div className={styles.firstLine}>
@@ -55,10 +56,14 @@ export default class ResourcesIndex extends Component {
                 <div className={styles.action}>
                   <Link to={`/admin/${urlName}/${resource.id}/edit`}><Button flat accent label="Редактировать"/></Link>
                 </div>
-                {urlName === 'cooks' &&
-                <div className={styles.action}>
-                  <Link to={`/cooks/${resource.id}/orders`}><Button flat accent label="Заказы"/></Link>
-                </div>}
+                {
+                  customActions && customActions.map((custom, idx ) => {
+                    return (
+                      <div key={idx} className={styles.action}>
+                        <Button onClick={() => custom.action(resource.id)} flat accent label={custom.title}/>
+                      </div>);
+                  })
+                }
               </td>
             </tr>
           )}
