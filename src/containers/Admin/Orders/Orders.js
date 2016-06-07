@@ -24,6 +24,10 @@ export default class Orders extends Component {
     updateOrder: PropTypes.func.isRequired
   };
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
   updateOrder(order, attrs) {
     this.props.updateOrder({...attrs, id: order.id});
   }
@@ -52,7 +56,12 @@ export default class Orders extends Component {
       { title: 'Статус', value: ::this.statusComponent },
       { title: 'Цена', value: order => Number(order.total_price) + 'грн' }
     ];
+    const actions = [{
+      action: (id) => this.context.router.push('/admin/orders/' + id),
+      title: 'Подробнее'
+    }];
 
-    return (<ResourcesIndex resources={orders} title="Заказы" urlName="orders" fields={fields}/>);
+    return (<ResourcesIndex resources={orders} title="Заказы" urlName="orders" fields={fields}
+                            customActions={actions}/>);
   }
 }

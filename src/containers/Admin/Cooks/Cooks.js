@@ -11,6 +11,10 @@ export default class Cooks extends Component {
     cooks: PropTypes.object.isRequired
   };
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
   render() {
     const { resources: cooks } = this.props.cooks;
     const fields = [
@@ -19,8 +23,13 @@ export default class Cooks extends Component {
       { title: 'Имя', value: cook => cook.first_name },
       { title: 'Фамилия', value: cook => cook.last_name }
     ];
+    const actions = [{
+      action: (id) => this.context.router.push('/cooks/' + id + '/orders'),
+      title: 'Заказы'
+    }];
 
     return (<ResourcesIndex resources={cooks} title="Кулинары" createTitle="Создать кулинара"
-                            urlName="cooks" fields={fields}/>);
+                            urlName="cooks" fields={fields}
+                            customActions={actions}/>);
   }
 }
