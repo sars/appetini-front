@@ -76,7 +76,7 @@ export default class Header extends Component {
       <MenuDivider key="devider" />,
       <MenuItem key="settings" caption="Настройки" onClick={() => push('/settings')}/>,
       user.cook && user.cook.id && <MenuItem key="cook_page" caption="Страница кулинара" onClick={() => push('/cooks/' + user.cook.id + '/orders')}/>,
-      user.role === 'admin' && <MenuItem key="courier_page" caption="Страница курьера" onClick={() => push('/courier/orders')}/>,
+      (user.courier || user.role === 'admin') && <MenuItem key="courier_page" caption="Страница курьера" onClick={() => push('/courier/orders')}/>,
       <MenuItem key="logout" caption="Выйти" onClick={this.logout}/>
     ];
 
