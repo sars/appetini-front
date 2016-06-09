@@ -54,12 +54,12 @@ export default class OrdersMap extends Component {
       <Card>
         <CardContent>
           <div className={styles.mapContainer}>
-            <GoogleMap {...mapOptions} defaultZoom={17}
+            <GoogleMap {...mapOptions} defaultZoom={14}
                                        onGoogleApiLoaded={({map}) => this.setMap(map)}
                                        yesIWantToUseGoogleMapApiInternals>
               {places}
             </GoogleMap>
-            { orderPosition &&
+            { orderPosition && orders.length > 1 &&
               <div className={styles.allLocationsWrapper}>
                 <Button flat accent label="Показать все" onClick={clearOrderLocationHandler} />
               </div>

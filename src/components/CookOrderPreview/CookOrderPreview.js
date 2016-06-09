@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import { Card } from 'react-toolbox/lib/card';
 import moment from 'moment';
+import { Link } from 'react-router';
+import Button from 'components/Button/Button';
 import ImagesPreview from 'components/ImagesPreview/ImagesPreview';
 import styles from './styles.scss';
 import { dots } from 'components/OrderItems/styles.scss';
@@ -8,6 +10,7 @@ import reduce from 'lodash/reduce';
 
 export default class CookOrderPreview extends Component {
   static propTypes = {
+    user: PropTypes.object,
     orders: PropTypes.array
   }
 
@@ -19,7 +22,8 @@ export default class CookOrderPreview extends Component {
   }
 
   render() {
-    const { orders } = this.props;
+    const { orders, user } = this.props;
+    const showOrderLink = user && user.role === 'admin';
     return (
         <Card className={styles.orderPreviewWrapper}>
           {orders.length > 0 ?
@@ -30,9 +34,10 @@ export default class CookOrderPreview extends Component {
                   <td>Дата</td>
                   <td>Время</td>
                   <td>Блюда</td>
-                  <td className={styles.hiddenXs}>Фото</td>
+                  <td className={styles.hiddenSm}>Фото</td>
                   <td>Цена</td>
                   <td>Количество</td>
+                  {showOrderLink && <td>Заказ</td>}
                 </tr>
               </thead>
               <tbody>
@@ -50,13 +55,14 @@ export default class CookOrderPreview extends Component {
                             <span>{dish.size}</span></div>);
                         })}
                       </td>
-                      <td className={styles.hiddenXs}>
+                      <td className={styles.hiddenSm}>
                         <div className={styles.photoWrapper}>
                           <ImagesPreview images={order.resource.photos} currentImageId={0}/>
                         </div>
                       </td>
                       <td>{order.resource.initial_price * order.amount} грн.</td>
                       <td>{order.amount}</td>
+                      {showOrderLink && <td><Link to={`/orders/${order.order_id}`}><Button flat accent label="Заказ"/></Link></td>}
                     </tr>);
                 })}
               </tbody>
@@ -64,7 +70,7 @@ export default class CookOrderPreview extends Component {
                 <tr>
                   <td colSpan="4"/>
                   <td colSpan="2">Общая стоимость: </td>
-                  <td colSpan="1">{this.totalPrice()} грн.</td>
+                  <td colSpan={showOrderLink ? 2 : 1}>{this.totalPrice()} грн.</td>
                 </tr>
               </tbody>
             </table>
