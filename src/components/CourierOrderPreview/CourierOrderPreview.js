@@ -1,24 +1,32 @@
 import React, {Component, PropTypes} from 'react';
 import { Card } from 'react-toolbox/lib/card';
 import moment from 'moment';
+import Modal from 'components/Modal/Modal';
 import styles from 'components/CookOrderPreview/styles.scss';
 import OrdersMap from 'components/OrdersMap/OrdersMap';
+import { Link } from 'react-router';
+import Button from 'components/Button/Button';
 import courierStyles from './styles.scss';
 import classNames from 'classnames';
 import reduce from 'lodash/reduce';
 
 export default class CourierOrderPreview extends Component {
   static propTypes = {
+    user: PropTypes.object,
     orders: PropTypes.array
   }
 
   state = {
-    orderPosition: undefined
+    orderPosition: undefined,
+    showModal: false,
+    selectedOrder: {}
   }
 
-  setMapCenter = (order) => {
+  handleClickOrder = (order, showModal = false) => {
     this.setState({
-      orderPosition: {lat: order.location.lat, lng: order.location.lng}
+      orderPosition: {lat: order.location.lat, lng: order.location.lng},
+      selectedOrder: order,
+      showModal: showModal
     });
   }
 
@@ -32,35 +40,93 @@ export default class CourierOrderPreview extends Component {
     return reduce(array, (sum, item) => {
       return sum + parseFloat(item.total_price);
     }, 0);
-  };
+  }
+
+  handleModalClose = () => {
+    this.setState({
+      selectedOrder: {},
+      showModal: false
+    });
+  }
 
   render() {
-    const { orders } = this.props;
-    const { orderPosition } = this.state;
+    const { orders, user } = this.props;
+    const { orderPosition, selectedOrder, showModal } = this.state;
+    const showOrderLink = user && (user.role === 'admin' || user.courier);
     return (
       <div>
+        <Modal.Dialog active={showModal} title={`Заказ #${selectedOrder.id || ''}`} onClose={::this.handleModalClose}>
+          {selectedOrder.id &&
+            <div className={courierStyles.modal}>
+              <div className={courierStyles.modalField}>
+                <span>Номер заказа: </span>
+                <strong>{selectedOrder.id}</strong>
+              </div>
+              <div className={courierStyles.modalField}>
+                <span>Имя: </span>
+                <strong>{selectedOrder.user.name}</strong>
+              </div>
+              <div className={courierStyles.modalField}>
+                <span>Адрес доставки: </span>
+                <strong>{selectedOrder.location.full_address}</strong>
+              </div>
+              <div className={courierStyles.modalField}>
+                <span>Статус оплаты: </span>
+                <strong>{selectedOrder.payed ? 'Оплачено' : 'Не оплачено'}</strong>
+              </div>
+              <div className={courierStyles.modalField}>
+                <span>Тип оплаты: </span>
+                <strong>{selectedOrder.payment_type}</strong>
+              </div>
+              <div className={courierStyles.modalField}>
+                <span>Общая цена: </span>
+                <strong>{selectedOrder.total_price} грн.</strong>
+              </div>
+
+              <div className={courierStyles.modalItems}>
+                <h3 className={courierStyles.modalItemsTitle}>Блюда</h3>
+                {selectedOrder.order_items.map((item, index) =>
+                  <div key={index} className={courierStyles.modalItem}>
+                      <div className={courierStyles.modalItemTitle}>
+                        {moment(item.resource.ready_by).format('DD MMMM HH:mm')}(<strong>{item.amount} шт.</strong>)
+                      </div>
+                      <div>
+                        {
+                          item.resource.dishes.map((dish, idx) => {
+                            return (<span key={idx} className={classNames(styles.dishName, courierStyles.modalDish)}>{dish.name}</span>);
+                          })
+                        }
+                      </div>
+                  </div>
+                )}
+              </div>
+              <OrdersMap orders={orders} orderPosition={orderPosition} clearOrderLocationHandler={::this.clearOrderLocationHandler}/>
+            </div>
+          }
+        </Modal.Dialog>
         <Card className={styles.orderPreviewWrapper}>
           {orders.length > 0 ?
             <table className={classNames(styles.table, courierStyles.table)}>
               <thead>
                 <tr>
                   <td>ИД</td>
-                  <td>Имя</td>
+                  <td className={styles.hiddenXs}>Имя</td>
                   <td>Адрес</td>
-                  <td>Телефон</td>
-                  <td>Доставка</td>
-                  <td>Блюда</td>
-                  <td>
+                  <td className={styles.hiddenXs}>Телефон</td>
+                  <td className={styles.hiddenXs}>Доставка</td>
+                  <td className={styles.hiddenXs}>Блюда</td>
+                  <td className={styles.hiddenXs}>
                     <span className={styles.nowrap}>К-во</span>
                   </td>
-                  <td>Тип оплаты</td>
-                  <td>Статус оплаты</td>
+                  <td className={styles.hiddenXs}>Тип оплаты</td>
+                  <td className={styles.hiddenXs}>Статус оплаты</td>
                   <td>Общая цена</td>
+                  {showOrderLink && <td className={classNames(styles.hiddenXs, 'hidePrint')}>Заказ</td>}
                 </tr>
               </thead>
               {orders.map((order, indx) => {
-                return (
-                  <tbody onClick={() => this.setMapCenter(order)} key={indx}>
+                return ([
+                  <tbody onClick={() => this.handleClickOrder(order)} key={indx} className={styles.hiddenXs}>
                     {order.order_items.map((item, index) =>
                       <tr key={index}>
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.id}</td>}
@@ -86,15 +152,28 @@ export default class CourierOrderPreview extends Component {
                         {index === 0 &&
                         <td rowSpan={order.order_items.length}>{order.payed ? 'Оплачено' : 'Не оплачено'}</td>}
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.total_price} грн.</td>}
+                        {index === 0 && showOrderLink &&
+                          <td rowSpan={order.order_items.length}>
+                            <Link to={`/orders/${order.id}`}><Button flat accent label="Заказ"/></Link>
+                          </td>
+                        }
                       </tr>
                     )}
-                  </tbody>);
+                  </tbody>,
+                  <tbody onClick={() => this.handleClickOrder(order, true)} key={indx + 1} className={classNames(courierStyles.showXs, 'hidePrint')}>
+                    <tr>
+                      <td>{order.id}</td>
+                      <td>{order.location.full_address}{order.location.description && '(' + order.location.description + ')'}</td>
+                      <td>{order.total_price} грн.</td>
+                    </tr>
+                  </tbody>
+                ]);
               })}
               <tbody>
                 <tr>
-                  <td colSpan="6"> </td>
+                  <td colSpan="6" className={styles.hiddenXs}/>
                   <td colSpan="2">Общая сумма: </td>
-                  <td colSpan="2">{this.totalPrice(orders)} грн.</td>
+                  <td colSpan={showOrderLink ? 3 : 2}>{this.totalPrice(orders)} грн.</td>
                 </tr>
               </tbody>
             </table>

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import CookOrderPreview from 'components/CookOrderPreview/CookOrderPreview';
 import OrdersForCookCourier from 'components/OrdersForCookCourier/OrdersForCookCourier';
 import { asyncConnect } from 'redux-async-connect';
+import { connect } from 'react-redux';
 import {getParams} from 'helpers/ordersDateHelper';
 import flatten from 'lodash/flatten';
 import groupBy from 'lodash/groupBy';
@@ -22,10 +23,11 @@ const getOrderItems = (orders) => {
       {params: getParams(location)})
       .then(response => response.resources)}
 ])
-
+@connect(state => ({user: state.auth.user}))
 export default class CookOrdersPage extends Component {
 
   static propTypes = {
+    user: PropTypes.object,
     orders: PropTypes.array,
     location: PropTypes.object
   };
@@ -62,14 +64,14 @@ export default class CookOrdersPage extends Component {
   }
 
   render() {
-    const { location } = this.props;
+    const { location, user } = this.props;
     const { groupedOrders } = this.state;
     const ungroupedOrders = getOrderItems(this.props.orders);
     const orders = groupedOrders ? groupedOrders : ungroupedOrders;
     return (
       <OrdersForCookCourier title="Страница кулинара" location={location} clearSortByOrderItem={::this.clearSortByOrderItem}
                             sorted={groupedOrders} sortByOrderItem={::this.sortByOrderItem}>
-        <CookOrderPreview orders={orders}/>
+        <CookOrderPreview orders={orders} user={user}/>
       </OrdersForCookCourier>
     );
   }

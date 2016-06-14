@@ -78,8 +78,14 @@
   border-right: 1px solid #F3F3F3;
 }
 
-@media all and (max-width: 991px) {
+@media screen and (max-width: 767px) {
   .hiddenXs {
+    display: none;
+  }
+}
+
+@media all and (max-width: 991px) {
+  .hiddenSm {
     display: none;
   }
 }

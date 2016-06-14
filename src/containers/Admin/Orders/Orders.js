@@ -57,7 +57,7 @@ export default class Orders extends Component {
       { title: 'Цена', value: order => Number(order.total_price) + 'грн' }
     ];
     const actions = [{
-      action: (id) => this.context.router.push('/admin/orders/' + id),
+      action: (id) => this.context.router.push('/orders/' + id),
       title: 'Подробнее'
     }];
 

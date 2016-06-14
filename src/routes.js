@@ -15,11 +15,11 @@ import {
     AdminLunchesEdit,
     AdminLunchesClone,
     AdminOrders,
-    AdminOrdersShow,
     AdminCooks,
     AdminCooksNew,
     AdminCooksEdit,
     Tariffs,
+    OrderShow,
     Checkout,
     Recovery,
     Registration,
@@ -58,11 +58,11 @@ export default (store, client) => {
       <Route path="settings" component={Settings}/>
       <Route path="cooks/:cookId/orders" component={CookOrdersPage}/>
       <Route path="courier/orders" component={CourierOrdersPage}/>
+      <Route path="orders/:orderId" component={OrderShow}/>
 
       <Route path="admin" onEnter={requireLogin} component={AuthorizedApp} authCondition={user => user && user.role === 'admin'}>
         <IndexRoute component={AdminDashboard}/>
         <Route path="orders" component={AdminOrders}/>
-        <Route path="orders/:orderId" component={AdminOrdersShow}/>
         <Route path="lunches" component={AdminLunches}/>
         <Route path="lunches/:lunchId/edit" component={AdminLunchesEdit}/>
         <Route path="lunches/:lunchId/clone" component={AdminLunchesClone}/>
