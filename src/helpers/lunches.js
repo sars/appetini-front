@@ -14,7 +14,9 @@ export function request(requestParams) {
       'food_preferences_ids[]': filters.preferences,
       'dishes[]': filters.dishes,
       'ready_dy_date[]': filters.dates,
-      'ready_by_time': filters.time
+      'ready_by_time': filters.time,
+      'disable_by_gt': new Date,
+      'per_page': 10
     };
 
     if (requestParams.nearest && !compact(values(filters)).length) {

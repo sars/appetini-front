@@ -49,7 +49,7 @@ export default class Lunch extends Component {
     const disabled = disabledByTime || availableCount < 1;
 
     return (
-        <Link to={`/lunches/${lunch.id}`} className={classNames(styles.root, className, {[styles.disabled]: disabled})}>
+        <Link to={`/lunches/${lunch.id}`} className={classNames(styles.root, className, {[styles.disabled]: disabled}, styles.animated, styles.fadeInUp)}>
           {!near &&
           (disabled ?
             <span className={styles.orderTimeoutWrapper}>
