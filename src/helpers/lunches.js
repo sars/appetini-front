@@ -16,7 +16,8 @@ export function request(requestParams) {
       'ready_dy_date[]': filters.dates,
       'ready_by_time': filters.time,
       'disable_by_gt': new Date,
-      'per_page': 10
+      'per_page': 10,
+      'page': 1
     };
 
     if (requestParams.nearest && !compact(values(filters)).length) {

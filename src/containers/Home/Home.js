@@ -109,6 +109,7 @@ export default class Home extends Component {
       'ready_by_time': currentTime,
       'per_page': 10,
       'disable_by_gt': new Date,
+      'include_nearest': true,
       'page': page
     };
     this.setState({

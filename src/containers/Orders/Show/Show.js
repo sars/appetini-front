@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Card } from 'react-toolbox/lib/card';
 import moment from 'moment';
+import Checkbox from 'react-toolbox/lib/checkbox';
 import ImagesPreview from 'components/ImagesPreview/ImagesPreview';
 import classnames from 'classnames';
 import { asyncConnect } from 'redux-async-connect';
@@ -67,6 +68,7 @@ export default class AdminOrdersShow extends Component {
           <table className={classnames(tableStyles.table, styles.table)}>
             <thead>
             <tr>
+              <td>Обработано</td>
               <td>Ид Кулинара</td>
               <td>Имя Кулинара</td>
               <td>Доставка</td>
@@ -83,6 +85,7 @@ export default class AdminOrdersShow extends Component {
                   if (item.resource_type !== 'DeliveryTariff') {
                     return (
                       <tr key={index}>
+                        <td><Checkbox checked={Boolean(item.reviewed_order_item && item.reviewed_order_item.id)} disabled/></td>
                         <td>{item.resource.cook_id}</td>
                         <td>{item.resource.cook.full_name_genitive}</td>
                         <td>

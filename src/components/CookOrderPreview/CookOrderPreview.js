@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import { Card } from 'react-toolbox/lib/card';
 import moment from 'moment';
+import Checkbox from 'react-toolbox/lib/checkbox';
 import { Link } from 'react-router';
 import Button from 'components/Button/Button';
 import ImagesPreview from 'components/ImagesPreview/ImagesPreview';
@@ -11,6 +12,7 @@ import reduce from 'lodash/reduce';
 export default class CookOrderPreview extends Component {
   static propTypes = {
     user: PropTypes.object,
+    onItemReviewed: PropTypes.func,
     orders: PropTypes.array
   }
 
@@ -22,7 +24,7 @@ export default class CookOrderPreview extends Component {
   }
 
   render() {
-    const { orders, user } = this.props;
+    const { orders, user, onItemReviewed } = this.props;
     const showOrderLink = user && user.role === 'admin';
     return (
         <Card className={styles.orderPreviewWrapper}>
@@ -30,6 +32,7 @@ export default class CookOrderPreview extends Component {
             <table className={styles.table}>
               <thead>
                 <tr>
+                  {onItemReviewed && <td>Обработано</td>}
                   <td>Номер</td>
                   <td>Дата</td>
                   <td>Время</td>
@@ -41,14 +44,16 @@ export default class CookOrderPreview extends Component {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order, id) => {
+                {orders.map((orderItem, id) => {
                   return (
                     <tr key={id}>
-                      <td>{order.order_id}</td>
-                      <td>{moment(order.resource.ready_by).format('DD MMMM')}</td>
-                      <td>{moment(order.resource.ready_by).format('HH:mm')}</td>
+                      {onItemReviewed && <td><Checkbox checked={Boolean(orderItem.reviewed_order_item && orderItem.reviewed_order_item.id)}
+                                    onChange={(checked) => onItemReviewed(orderItem, checked)}/></td>}
+                      <td>{orderItem.order_id}</td>
+                      <td>{moment(orderItem.resource.ready_by).format('DD MMMM')}</td>
+                      <td>{moment(orderItem.resource.ready_by).format('HH:mm')}</td>
                       <td>
-                        {order.resource.dishes.map((dish, index) => {
+                        {orderItem.resource.dishes.map((dish, index) => {
                           return (<div key={index} className={styles.dish}>
                             <span className={styles.dishName}>{dish.name}</span>
                             <span className={dots}/>
@@ -57,12 +62,12 @@ export default class CookOrderPreview extends Component {
                       </td>
                       <td className={styles.hiddenSm}>
                         <div className={styles.photoWrapper}>
-                          <ImagesPreview images={order.resource.photos} currentImageId={0}/>
+                          <ImagesPreview images={orderItem.resource.photos} currentImageId={0}/>
                         </div>
                       </td>
-                      <td>{order.resource.initial_price * order.amount} грн.</td>
-                      <td>{order.amount}</td>
-                      {showOrderLink && <td><Link to={`/orders/${order.order_id}`}><Button flat accent label="Заказ"/></Link></td>}
+                      <td>{orderItem.resource.initial_price * orderItem.amount} грн.</td>
+                      <td>{orderItem.amount}</td>
+                      {showOrderLink && <td><Link to={`/orders/${orderItem.order_id}`}><Button flat accent label="Заказ"/></Link></td>}
                     </tr>);
                 })}
               </tbody>
@@ -70,7 +75,7 @@ export default class CookOrderPreview extends Component {
                 <tr>
                   <td colSpan="4"/>
                   <td colSpan="2">Общая стоимость: </td>
-                  <td colSpan={showOrderLink ? 2 : 1}>{this.totalPrice()} грн.</td>
+                  <td colSpan={showOrderLink ? 3 : 1}>{this.totalPrice()} грн.</td>
                 </tr>
               </tbody>
             </table>
