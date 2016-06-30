@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import Lunch from 'components/Lunch/Lunch';
 import Boxes from 'components/Boxes/Boxes';
+import Button from 'components/Button/Button';
 import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
 import Autocomplete from 'components/AsyncAutocomplete/AsyncAutocomplete';
 import DeliveryTimeDropdown from 'components/DeliveryTimeDropdown/DeliveryTimeDropdown';
@@ -66,7 +67,6 @@ export default class Home extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {};
     filterNames.forEach(name => {
       this.state[currentStateName(name)] = valueFromLocationQuery(props, name);
@@ -99,6 +99,32 @@ export default class Home extends Component {
     this.context.router.push(newLocation);
   };
 
+  loadMoreHandle = () => {
+    const { currentPreferences, currentDishes, currentTime } = this.state;
+    const { lunches } = this.props;
+    const page = (this.state.page || 1) + 1;
+    const params = {
+      'food_preferences_ids[]': currentPreferences,
+      'dishes[]': currentDishes,
+      'ready_by_time': currentTime,
+      'per_page': 10,
+      'disable_by_gt': new Date,
+      'page': page
+    };
+    this.setState({
+      isInfiniteLoading: true
+    });
+    this.context.client.get('/lunches', {params})
+      .then(lunchesFromServer => {
+        const newLunches = {...lunches, resources: [...lunches.resources, ...lunchesFromServer.resources]};
+        this.props.loadSuccess('lunches', newLunches);
+        this.setState({
+          page: page,
+          isInfiniteLoading: false
+        });
+      });
+  };
+
   locationWithNewQuery = (name, value) => {
     const location = this.props.location;
 
@@ -123,7 +149,9 @@ export default class Home extends Component {
   render() {
     const styles = require('./Home.scss');
     const autocompleteStyles = require('components/autocomplete/autocomplete.scss');
-    const {lunches, preferences, dishes} = this.props;
+    const { preferences, dishes, lunches } = this.props;
+    const { isInfiniteLoading } = this.state;
+    const allLunchesLoaded = lunches.resources.length >= lunches.meta.total;
     const {currentPreferences = [], currentDishes = [], currentTime} = this.state;
 
     const filters = {
@@ -181,6 +209,12 @@ export default class Home extends Component {
           <DeliveryTimeDropdown className={styles.timeDropdown} onChange={this.filterChanged('time')} value={currentTime}/>
         </div>
         {boxes && <Boxes boxes={boxes}/>}
+        {!allLunchesLoaded &&
+          <div className={styles.loadMoreWrapper}>
+            <Button flat accent onClick={::this.loadMoreHandle} disabled={isInfiniteLoading}
+                    label={isInfiniteLoading ? 'Загрузка...' : 'Посмотреть еще'}/>
+          </div>
+        }
       </ColumnLayout>
     );
   }
