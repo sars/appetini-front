@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import CookOrderPreview from 'components/CookOrderPreview/CookOrderPreview';
 import OrdersForCookCourier from 'components/OrdersForCookCourier/OrdersForCookCourier';
-import { asyncConnect } from 'redux-async-connect';
+import { asyncConnect, loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
 import {getParams} from 'helpers/ordersDateHelper';
 import flatten from 'lodash/flatten';
@@ -18,18 +18,25 @@ const getOrderItems = (orders) => {
 };
 
 @asyncConnect([
-  {key: 'orders', promise: ({helpers, params, location}) =>
+  {
+    key: 'orders', promise: ({helpers, params, location}) =>
     helpers.client.get(`/cooks/${params.cookId}/orders`,
       {params: getParams(location)})
-      .then(response => response.resources)}
+      .then(response => response.resources)
+  }
 ])
-@connect(state => ({user: state.auth.user}))
+@connect(state => ({user: state.auth.user}), {loadSuccess})
 export default class CookOrdersPage extends Component {
 
   static propTypes = {
     user: PropTypes.object,
     orders: PropTypes.array,
+    loadSuccess: PropTypes.func.isRequired,
     location: PropTypes.object
+  };
+
+  static contextTypes = {
+    client: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -43,6 +50,35 @@ export default class CookOrdersPage extends Component {
     if (nextProps && this.state.groupedOrders) {
       this.sortByOrderItem();
     }
+  }
+
+  onItemReviewed = (orderItem, checked) => {
+    const { client } = this.context;
+    if (checked) {
+      client.post('/reviewed_order_items',
+        {data: {resource: {order_item_id: orderItem.id, user_id: this.props.user.id}}})
+        .then((response) => {
+          this.setOrderItems(orderItem.id, response.resource);
+        });
+    } else {
+      client.del(`/reviewed_order_items/${orderItem.reviewed_order_item.id}`)
+        .then(() => {
+          this.setOrderItems(orderItem.id, null);
+        });
+    }
+  }
+
+  setOrderItems = (currentOrderItemId, reviewedOrderItem) => {
+    const newOrders = this.props.orders.map((order) => {
+      return {
+        ...order,
+        order_items: order.order_items.map((orderItem) => {
+          if (orderItem.id === currentOrderItemId) return {...orderItem, reviewed_order_item: reviewedOrderItem};
+          return orderItem;
+        })
+      };
+    });
+    this.props.loadSuccess('orders', newOrders);
   }
 
   sortByOrderItem() {
@@ -64,14 +100,15 @@ export default class CookOrdersPage extends Component {
   }
 
   render() {
-    const { location, user } = this.props;
+    const { location, user, orders } = this.props;
     const { groupedOrders } = this.state;
-    const ungroupedOrders = getOrderItems(this.props.orders);
-    const orders = groupedOrders ? groupedOrders : ungroupedOrders;
+    const ungroupedOrders = getOrderItems(orders);
     return (
-      <OrdersForCookCourier title="Страница кулинара" location={location} clearSortByOrderItem={::this.clearSortByOrderItem}
+      <OrdersForCookCourier title="Страница кулинара" location={location}
+                            clearSortByOrderItem={::this.clearSortByOrderItem}
                             sorted={groupedOrders} sortByOrderItem={::this.sortByOrderItem}>
-        <CookOrderPreview orders={orders} user={user}/>
+        <CookOrderPreview orders={groupedOrders || ungroupedOrders} user={user}
+                          onItemReviewed={groupedOrders ? null : ::this.onItemReviewed}/>
       </OrdersForCookCourier>
     );
   }
