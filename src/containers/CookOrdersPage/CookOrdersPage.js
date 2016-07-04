@@ -8,6 +8,7 @@ import flatten from 'lodash/flatten';
 import groupBy from 'lodash/groupBy';
 import reduce from 'lodash/reduce';
 import sumBy from 'lodash/sumBy';
+import reviewOrderItem from 'helpers/reviewOrderItem';
 
 const getOrderItems = (orders) => {
   return flatten(orders.map((order) => {
@@ -53,19 +54,11 @@ export default class CookOrdersPage extends Component {
   }
 
   onItemReviewed = (orderItem, checked) => {
-    const { client } = this.context;
-    if (checked) {
-      client.post('/reviewed_order_items',
-        {data: {resource: {order_item_id: orderItem.id, user_id: this.props.user.id}}})
-        .then((response) => {
-          this.setOrderItems(orderItem.id, response.resource);
-        });
-    } else {
-      client.del(`/reviewed_order_items/${orderItem.reviewed_order_item.id}`)
-        .then(() => {
-          this.setOrderItems(orderItem.id, null);
-        });
-    }
+    reviewOrderItem(orderItem, checked, this.props.user, this.context.client)
+      .then(response => {
+        const reviewedOrderItem = response ? response.resource : null;
+        this.setOrderItems(orderItem.id, reviewedOrderItem);
+      });
   }
 
   setOrderItems = (currentOrderItemId, reviewedOrderItem) => {

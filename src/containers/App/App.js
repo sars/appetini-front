@@ -31,14 +31,6 @@ export default class App extends Component {
     return { client: this.props.route.client };
   }
 
-  componentDidMount() {
-    window.addEventListener('wheel', () => {
-      const y1 = document.body.scrollTop / 2 + 'px';
-      const y2 = document.body.scrollTop / 5 + 'px';
-      document.body.style.backgroundPositionY = y1 + ', ' + y2;
-    });
-  }
-
   handleChange = (item, value) => {
     const newState = {};
     newState[item] = value;
