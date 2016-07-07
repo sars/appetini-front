@@ -4,6 +4,7 @@ import hooks from './routerHooks';
 import {
     App,
     Home,
+    Lunches,
     About,
     LoginSuccess,
     NotFound,
@@ -48,6 +49,7 @@ export default (store, client) => {
       <Route path="users/confirm/:token" onEnter={confirmEmail}/>
 
       <Route path="join" component={Registration}/>
+      <Route path="lunches" component={Lunches}/>
       <Route path="recovery" component={Recovery}/>
       <Route path="recovery/:token" component={Recovery.Password}/>
 

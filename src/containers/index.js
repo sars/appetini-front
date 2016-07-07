@@ -12,6 +12,7 @@ export AdminCooksNew from './Admin/Cooks/New/New';
 export AdminCooksEdit from './Admin/Cooks/Edit/Edit';
 export AuthorizedApp from './AuthorizedApp/AuthorizedApp';
 export Home from './Home/Home';
+export Lunches from './Lunches/Lunches';
 export About from './About/About';
 export LoginSuccess from './LoginSuccess/LoginSuccess';
 export NotFound from './NotFound/NotFound';

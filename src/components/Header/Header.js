@@ -17,7 +17,8 @@ import MobMenu from 'components/MobMenu/MobMenu';
 import ShoppingButton from 'components/ShoppingButton/ShoppingButton';
 
 const menuLinks = [
-  {to: '/', label: 'Обеды', index: true},
+  {to: '/', label: 'Главная', index: true},
+  {to: '/lunches', label: 'Обеды'},
   {to: '/about', label: 'О Нас'},
   {to: '/tariffs', label: 'Тарифные планы'}
 ];
