@@ -10,7 +10,7 @@ import classnames from 'classnames';
 const menuLinks = [
   // {to: '/terms', label: 'Условия использования'},
   {to: '/about', label: 'Как это работает'},
-  {to: '/', label: 'Обеды', index: true},
+  {to: '/lunches', label: 'Обеды', index: true},
   {to: '/about', label: 'О Нас'}
 ];
 

@@ -1,13 +1,22 @@
 @import "../../theme/variables.scss";
 
-.firstLine h1, .timeDropdown {
-  display: inline-block;
-  vertical-align: bottom;
+.title {
+  margin: 1rem 0;
 }
 
-.firstLine h1 {
-  margin-right: 1rem;
+.firstLine {
+  margin-bottom: 1rem;
+
+  h2, .timeDropdown {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  h2 {
+    margin-right: 1rem;
+  }
 }
+
 
 .root .filtersCard {
   margin-top: 3.2rem;
