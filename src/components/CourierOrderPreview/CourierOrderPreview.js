@@ -5,7 +5,6 @@ import Modal from 'components/Modal/Modal';
 import styles from 'components/CookOrderPreview/styles.scss';
 import OrdersMap from 'components/OrdersMap/OrdersMap';
 import { Link } from 'react-router';
-import Button from 'components/Button/Button';
 import courierStyles from './styles.scss';
 import classNames from 'classnames';
 import reduce from 'lodash/reduce';
@@ -90,6 +89,7 @@ export default class CourierOrderPreview extends Component {
                       <div className={courierStyles.modalItemTitle}>
                         {moment(item.resource.ready_by).format('DD MMMM HH:mm')}(<strong>{item.amount} шт.</strong>)
                       </div>
+                      <div className={courierStyles.modalCookName}><strong>Кулинар: {item.resource.cook.first_name + ' ' + item.resource.cook.last_name}</strong></div>
                       <div>
                         {
                           item.resource.dishes.map((dish, idx) => {
@@ -111,6 +111,7 @@ export default class CourierOrderPreview extends Component {
                 <tr>
                   <td>ИД</td>
                   <td className={styles.hiddenXs}>Имя</td>
+                  <td className={styles.hiddenXs}>Имя кулинара</td>
                   <td>Адрес</td>
                   <td className={styles.hiddenXs}>Телефон</td>
                   <td className={styles.hiddenXs}>Доставка</td>
@@ -131,6 +132,9 @@ export default class CourierOrderPreview extends Component {
                       <tr key={index}>
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.id}</td>}
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.user.name}</td>}
+                        <td className={classNames(styles.borderLeft, styles.borderRight)}>
+                          <div>{item.resource.cook.first_name + ' ' + item.resource.cook.last_name}</div>
+                        </td>
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.location.full_address}{order.location.description && '(' + order.location.description + ')'}</td>}
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.user.phone}</td>}
                         <td className={styles.borderLeft}>
@@ -154,7 +158,7 @@ export default class CourierOrderPreview extends Component {
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.total_price} грн.</td>}
                         {index === 0 && showOrderLink &&
                           <td rowSpan={order.order_items.length}>
-                            <Link to={`/orders/${order.id}`}><Button flat accent label="Заказ"/></Link>
+                            <Link to={`/orders/${order.id}`}>Заказ</Link>
                           </td>
                         }
                       </tr>
