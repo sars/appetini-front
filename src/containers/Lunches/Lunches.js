@@ -16,6 +16,13 @@ import find from 'lodash/find';
 import humanizeDayName from 'components/humanizeDayName/humanizeDayName';
 import TimePeriod from 'helpers/TimePeriod';
 
+const humanizeLunchTypeName = (date) => {
+  if (new Date(date).getHours() < 17) {
+    return 'Обеды';
+  }
+  return 'Ужины';
+};
+
 function currentStateName(name) {
   return 'current' + name.charAt(0).toUpperCase() + name.slice(1);
 }
@@ -120,7 +127,7 @@ export default class Lunches extends Component {
         <div className={styles.nearestWrapper}>
           {nearestLunches.map((item, index) => {
             return (<div key={index}>
-              <h1>Обеды на {humanizeDayName(item.date, 'DD MMMM')}, время доставки: <TimePeriod date={item.date} period={30}/></h1>
+              <h1>{humanizeLunchTypeName(item.date)} на {humanizeDayName(item.date, 'DD MMMM')}, время доставки: <TimePeriod date={item.date} period={30}/></h1>
               <Boxes boxes={item.lunches}/>
             </div>);
           })}
