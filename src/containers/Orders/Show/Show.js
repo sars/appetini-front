@@ -17,8 +17,13 @@ export default class AdminOrdersShow extends Component {
     order: PropTypes.object.isRequired
   }
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  };
+
   render() {
     const {order} = this.props;
+    const { router } = this.context;
     return (
       <div className={styles.root}>
         <h2 className={styles.title}>Информация по заказу #{order.id}</h2>
@@ -84,7 +89,7 @@ export default class AdminOrdersShow extends Component {
                 {order.order_items.map((item, index) => {
                   if (item.resource_type !== 'DeliveryTariff') {
                     return (
-                      <tr key={index}>
+                      <tr key={index} onClick={() => {router.push(`/lunches/${item.resource_id}`);}}>
                         <td><Checkbox checked={Boolean(item.reviewed_order_item && item.reviewed_order_item.id)} disabled/></td>
                         <td>{item.resource.cook_id}</td>
                         <td>{item.resource.cook.full_name_genitive}</td>

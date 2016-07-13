@@ -65,7 +65,9 @@ export default class OrderForm extends Component {
     if (props.orderItems !== nextProps.orderItems || props.user !== nextProps.user) {
       const user = this.state.selectedUser ? this.state.selectedUser : nextProps.user;
       const newItems = this.preparedOrderItems(nextProps.orderItems, user);
-      this.changeFields(props.fields.user, user);
+      if (user) {
+        this.changeFields(props.fields.user, user);
+      }
       this.setState({preparedOrderItems: newItems});
       props.fields.order_items_attributes.onChange(newItems.purchasing);
     }

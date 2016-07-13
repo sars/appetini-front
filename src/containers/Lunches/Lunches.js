@@ -5,7 +5,6 @@ import Boxes from 'components/Boxes/Boxes';
 import DeliveryTimeDropdown from 'components/DeliveryTimeDropdown/DeliveryTimeDropdown';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import { asyncConnect } from 'redux-async-connect';
-import isEqual from 'lodash/isEqual';
 import { loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
 import { request as requestLunches, filterNames } from 'helpers/lunches';
@@ -13,6 +12,7 @@ import valueFromLocationQuery from 'helpers/valueFromLocationQuery';
 import groupBy from 'lodash/groupBy';
 import forIn from 'lodash/forIn';
 import find from 'lodash/find';
+import isEqual from 'lodash/isEqual';
 import humanizeDayName from 'components/humanizeDayName/humanizeDayName';
 import TimePeriod from 'helpers/TimePeriod';
 
@@ -69,10 +69,8 @@ export default class Lunches extends Component {
       const newState = filterNames.reduce((result, name) => {
         const stateName = currentStateName(name);
         const value = valueFromLocationQuery(nextProps, name);
-
-        return isEqual(this.state[name], value) ? result : {...result, [stateName]: value};
+        return isEqual(this.state[stateName], value) ? result : {...result, [stateName]: value};
       }, null);
-
       if (newState) {
         this.setState(newState);
       }
@@ -133,7 +131,7 @@ export default class Lunches extends Component {
           })}
         </div>
         }
-        {!nearestLunches.length && currentPreferencesTitle &&
+        {!nearestLunches.length && currentPreferences &&
           <div><h1 className={styles.title}>{currentPreferencesTitle}</h1></div>
         }
         <div className={styles.firstLine}>
