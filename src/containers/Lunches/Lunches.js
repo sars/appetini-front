@@ -112,7 +112,7 @@ export default class Lunches extends Component {
       'page': page
     };
     if (lunches.nearest.length) {
-      params[`include_nearest`] = true;
+      params.include_nearest = true;
     }
     this.setState({
       isInfiniteLoading: true
