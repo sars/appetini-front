@@ -2,7 +2,7 @@ import valueFromLocationQuery from 'helpers/valueFromLocationQuery';
 import values from 'lodash/values';
 import compact from 'lodash/compact';
 
-export const filterNames = ['preferences', 'dishes', 'dates', 'time'];
+export const filterNames = ['preferences', 'dishes', 'dates', 'time', 'cook_id'];
 
 export function request(requestParams) {
   return function lunchesRequest({helpers, store}) {
@@ -13,6 +13,7 @@ export function request(requestParams) {
     const params = {
       'food_preferences_ids[]': filters.preferences,
       'dishes[]': filters.dishes,
+      'cook_id': filters.cook_id,
       'ready_dy_date[]': filters.dates,
       'ready_by_time': filters.time,
       'disable_by_gt': new Date,
