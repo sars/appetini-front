@@ -161,11 +161,9 @@ export default class Lunches extends Component {
           })}
         </div>
         }
-        {!nearestLunches.length && currentPreferences &&
-          <div><h1 className={styles.title}>{currentPreferencesTitle}</h1></div>
-        }
+
         <div className={styles.firstLine}>
-          <h2>Обеды на каждый день</h2>
+          <h2>{!nearestLunches.length && currentPreferences ? currentPreferencesTitle : 'Обеды на каждый день'}</h2>
           <DeliveryTimeDropdown className={styles.timeDropdown} onChange={this.filterChanged('time')} value={currentTime}/>
         </div>
         {boxes && <Boxes boxes={boxes}/>}
