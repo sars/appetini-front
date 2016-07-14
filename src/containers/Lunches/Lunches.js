@@ -7,6 +7,7 @@ import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import { asyncConnect } from 'redux-async-connect';
 import { loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
+import Button from 'components/Button/Button';
 import { request as requestLunches, filterNames } from 'helpers/lunches';
 import valueFromLocationQuery from 'helpers/valueFromLocationQuery';
 import groupBy from 'lodash/groupBy';
@@ -99,10 +100,39 @@ export default class Lunches extends Component {
     return newLocation;
   };
 
+  loadMoreHandle = () => {
+    const { currentTime, currentPreferences } = this.state;
+    const { lunches } = this.props;
+    const page = (this.state.page || 1) + 1;
+    const params = {
+      'ready_by_time': currentTime,
+      'per_page': 10,
+      'food_preferences_ids[]': currentPreferences,
+      'disable_by_gt': new Date,
+      'page': page
+    };
+    if (lunches.nearest.length) {
+      params[`include_nearest`] = true;
+    }
+    this.setState({
+      isInfiniteLoading: true
+    });
+    this.context.client.get('/lunches', {params})
+      .then(lunchesFromServer => {
+        const newLunches = {...lunches, resources: [...lunches.resources, ...lunchesFromServer.resources]};
+        this.props.loadSuccess('lunches', newLunches);
+        this.setState({
+          page: page,
+          isInfiniteLoading: false
+        });
+      });
+  };
+
   render() {
     const styles = require('./Lunches.scss');
     const {lunches, preferences} = this.props;
-    const {currentPreferences, currentTime} = this.state;
+    const {currentPreferences, currentTime, isInfiniteLoading} = this.state;
+    const allLunchesLoaded = lunches.resources.length >= lunches.meta.total;
     const currentPreferencesTitle = currentPreferences ? find(preferences, {id: parseInt(currentPreferences, 10)}).title : null;
     const boxes = lunches.resources && [
       ...lunches.resources.map(lunch => ({
@@ -139,6 +169,12 @@ export default class Lunches extends Component {
           <DeliveryTimeDropdown className={styles.timeDropdown} onChange={this.filterChanged('time')} value={currentTime}/>
         </div>
         {boxes && <Boxes boxes={boxes}/>}
+        {!allLunchesLoaded &&
+        <div className={styles.loadMoreWrapper}>
+          <Button flat accent onClick={::this.loadMoreHandle} disabled={isInfiniteLoading}
+                  label={isInfiniteLoading ? 'Загрузка...' : 'Посмотреть еще'}/>
+        </div>
+        }
       </ColumnLayout>
     );
   }
