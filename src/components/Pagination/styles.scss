@@ -1,0 +1,53 @@
+.pagination {
+  display: inline-block;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 20px;
+
+  li {
+    display: inline-block;
+
+    a {
+      position: relative;
+      float: left;
+      padding: 6px 12px 3px;
+      margin-left: -1px;
+      line-height: 1.42857143;
+      color: #64bb09;
+      text-decoration: none;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      cursor: pointer;
+    }
+
+    &.active a {
+      z-index: 3;
+      color: #fff;
+      cursor: default;
+      background-color: #64bb09;
+      border-color: #64bb09;
+    }
+  }
+
+  :global {
+    .previous {
+      margin-right: 10px;
+    }
+
+    .next {
+      margin-left: 10px;
+    }
+
+    .break {
+      cursor: default;
+      padding: 6px 12px 3px;
+      margin-left: -1px;
+      line-height: 1.42857143;
+      color: #64bb09;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      position: relative;
+      top: -11px;
+    }
+  }
+}

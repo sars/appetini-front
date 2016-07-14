@@ -19,8 +19,9 @@ export default class Lunches extends Component {
       { title: 'Фото', type: 'image', value: lunch => lunch.photos[0].thumb.url },
       { title: 'Кулинар', value: lunch => `${lunch.cook.first_name} ${lunch.cook.last_name}` }
     ];
+    const defaultActions = ['edit'];
 
     return (<ResourcesIndex resources={lunches} title="Обеды" createTitle="Создать обед"
-                           urlName="lunches" fields={fields}/>);
+                           urlName="lunches" fields={fields} defaultActions={defaultActions}/>);
   }
 }

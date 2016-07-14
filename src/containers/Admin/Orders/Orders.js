@@ -56,12 +56,9 @@ export default class Orders extends Component {
       { title: 'Статус', value: ::this.statusComponent },
       { title: 'Цена', value: order => Number(order.total_price) + 'грн' }
     ];
-    const actions = [{
-      action: (id) => this.context.router.push('/orders/' + id),
-      title: 'Подробнее'
-    }];
+    const defaultActions = ['edit', 'details'];
 
     return (<ResourcesIndex resources={orders} title="Заказы" urlName="orders" fields={fields}
-                            customActions={actions}/>);
+                            defaultActions={defaultActions}/>);
   }
 }
