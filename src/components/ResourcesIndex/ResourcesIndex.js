@@ -20,6 +20,7 @@ export default class ResourcesIndex extends Component {
     title: PropTypes.string.isRequired,
     createTitle: PropTypes.string,
     customActions: PropTypes.array,
+    defaultActions: PropTypes.array,
     urlName: PropTypes.string.isRequired,
     fields: PropTypes.array.isRequired
   };
@@ -34,7 +35,7 @@ export default class ResourcesIndex extends Component {
   }
 
   render() {
-    const { resources, title, createTitle, fields, urlName, customActions } = this.props;
+    const { resources, title, createTitle, fields, urlName, customActions, defaultActions } = this.props;
     return (
       <div className={styles.root}>
         <div className={styles.firstLine}>
@@ -53,15 +54,25 @@ export default class ResourcesIndex extends Component {
             <tr key={resource.id}>
               {fields.map(renderField(resource))}
               <td>
-                <div className={styles.action}>
-                  <Link to={`/admin/${urlName}/${resource.id}/edit`}><Button flat accent label="Редактировать"/></Link>
-                </div>
                 {
-                  customActions && customActions.map((custom, idx ) => {
+                  defaultActions && defaultActions.map((action, idx) => {
+                    return (
+                      <div key={idx} className={styles.action}>
+                        {action === 'edit' && <Link to={`/admin/${urlName}/${resource.id}/edit`}>
+                          <Button flat accent label="Редактировать"/>
+                        </Link>}
+                        {action === 'details' && <Link to={`/orders/${resource.id}`}>Подробнее</Link>}
+                      </div>
+                    );
+                  })
+                }
+                {
+                  customActions && customActions.map((custom, idx) => {
                     return (
                       <div key={idx} className={styles.action}>
                         <Button onClick={() => custom.action(resource.id)} flat accent label={custom.title}/>
-                      </div>);
+                      </div>
+                    );
                   })
                 }
               </td>

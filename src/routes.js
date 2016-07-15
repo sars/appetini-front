@@ -23,6 +23,7 @@ import {
     AdminOrderItems,
     Tariffs,
     OrderShow,
+    OrdersIndex,
     Checkout,
     Recovery,
     Registration,
@@ -63,6 +64,7 @@ export default (store, client) => {
       <Route path="settings" component={Settings}/>
       <Route path="cooks/:cookId/orders" component={CookOrdersPage}/>
       <Route path="courier/orders" component={CourierOrdersPage}/>
+      <Route path="orders" component={OrdersIndex}/>
       <Route path="orders/:orderId" component={OrderShow}/>
 
       <Route path="admin" onEnter={requireLogin} component={AuthorizedApp} authCondition={user => user && user.role === 'admin'}>

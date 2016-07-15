@@ -27,9 +27,10 @@ export default class Cooks extends Component {
       action: (id) => this.context.router.push('/cooks/' + id + '/orders'),
       title: 'Заказы'
     }];
+    const defaultActions = ['edit'];
 
     return (<ResourcesIndex resources={cooks} title="Кулинары" createTitle="Создать кулинара"
-                            urlName="cooks" fields={fields}
-                            customActions={actions}/>);
+                            urlName="cooks" fields={fields} customActions={actions}
+                            defaultActions={defaultActions}/>);
   }
 }

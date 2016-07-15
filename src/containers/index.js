@@ -8,6 +8,7 @@ export AdminCooks from './Admin/Cooks/Cooks';
 export AdminOrders from './Admin/Orders/Orders';
 export AdminOrderItems from './Admin/OrderItems/OrderItems';
 export OrderShow from './Orders/Show/Show';
+export OrdersIndex from './Orders/Index/Index';
 export AdminCooksNew from './Admin/Cooks/New/New';
 export AdminCooksEdit from './Admin/Cooks/Edit/Edit';
 export AuthorizedApp from './AuthorizedApp/AuthorizedApp';
