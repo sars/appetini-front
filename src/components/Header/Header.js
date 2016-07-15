@@ -15,13 +15,7 @@ import { MenuItem, MenuDivider } from 'react-toolbox';
 import { FormattedPlural } from 'react-intl';
 import MobMenu from 'components/MobMenu/MobMenu';
 import ShoppingButton from 'components/ShoppingButton/ShoppingButton';
-
-const menuLinks = [
-  {to: '/', label: 'Главная', index: true},
-  {to: '/lunches', label: 'Обеды'},
-  {to: '/about', label: 'О Нас'},
-  {to: '/tariffs', label: 'Тарифные планы'}
-];
+import menuLinks from 'helpers/menuLinks';
 
 @connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount}), {logout, showToast, openModal})
 export default class Header extends Component {

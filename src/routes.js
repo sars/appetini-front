@@ -5,6 +5,7 @@ import {
     App,
     Home,
     Lunches,
+    Cooks,
     About,
     LoginSuccess,
     NotFound,
@@ -50,6 +51,7 @@ export default (store, client) => {
 
       <Route path="join" component={Registration}/>
       <Route path="lunches" component={Lunches}/>
+      <Route path="cooks" component={Cooks}/>
       <Route path="recovery" component={Recovery}/>
       <Route path="recovery/:token" component={Recovery.Password}/>
 

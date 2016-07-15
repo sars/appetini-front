@@ -5,9 +5,9 @@
 }
 
 .firstLine {
-  margin-bottom: 1rem;
+  margin: 2rem 0 1rem;
 
-  h2, .timeDropdown {
+  h2, .filter {
     display: inline-block;
     vertical-align: middle;
   }
@@ -17,19 +17,17 @@
   }
 }
 
-
-.root .filtersCard {
-  margin-top: 3.2rem;
-  flex: 1;
-  box-shadow: none;
-  border: 1px solid #E4D9CF;
-}
-
-.dishesFilter {
-  min-width: 15rem;
-  margin-bottom: 1rem;
+.filter {
+  margin-right: 0.5rem;
 }
 
 .loadMoreWrapper {
   text-align: center;
+}
+
+@media all and (max-width: 767px) {
+  .firstLine .filter {
+    margin: 0.5rem auto;
+    display: block;
+  }
 }

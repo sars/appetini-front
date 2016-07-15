@@ -1,0 +1,119 @@
+.root {
+  margin: 0 auto;
+}
+
+.title {
+  color: #685c50;
+  text-align: center;
+  margin: 3rem 0;
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.cooksWrapper {
+  margin: 0 auto;
+
+  &:after, &:before {
+    display: table;
+    clear: both;
+    content: '';
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.cookWrapper {
+  width: 250px;
+  padding: 1rem;
+  margin: 2rem;
+  float: left;
+  animation-name: fadeInUp;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+
+  .cook {
+    display: block;
+    border-radius: 50%;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+
+    .cookLink {
+      display: block;
+      &:hover {
+        .cookInfo {
+          padding-bottom: 3rem;
+        }
+      }
+    }
+
+    img {
+      width: 100%;
+      display: block;
+    }
+
+    .cookInfo {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.5);
+      text-align: center;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      padding: 0.5rem;
+      color: #fff;
+      transition: padding 0.3s ease;
+      .rating {
+        margin-top: 0.3rem;
+      }
+
+      .feedback {
+        margin: 0.2rem 0;
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
+
+.moreBtnWrapper {
+  margin: 3rem 0;
+  text-align: center;
+}
+
+@media all and (min-width: 960px) {
+  .cooksWrapper {
+    width: 870px;
+  }
+}
+
+@media all and (min-width: 960px) {
+  .cooksWrapper {
+    width: 870px;
+  }
+}
+
+@media all and (min-width: 1268px) {
+  .cooksWrapper {
+    width: 1220px;
+  }
+}
+
+@media all and (max-width: 699px) {
+  .cooksWrapper {
+    width: 100%;
+
+    .cookWrapper {
+      margin: 1rem auto;
+      float: none;
+    }
+  }
+}

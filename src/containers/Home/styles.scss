@@ -67,3 +67,10 @@
     width: 50%;
   }
 }
+
+
+@media all and (max-width: 320px) {
+  .preferencesWrapper .preferenceWrapper {
+    width: 100%;
+  }
+}

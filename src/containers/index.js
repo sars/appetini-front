@@ -13,6 +13,7 @@ export AdminCooksEdit from './Admin/Cooks/Edit/Edit';
 export AuthorizedApp from './AuthorizedApp/AuthorizedApp';
 export Home from './Home/Home';
 export Lunches from './Lunches/Lunches';
+export Cooks from './Cooks/Cooks';
 export About from './About/About';
 export LoginSuccess from './LoginSuccess/LoginSuccess';
 export NotFound from './NotFound/NotFound';

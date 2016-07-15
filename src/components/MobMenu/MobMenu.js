@@ -5,6 +5,7 @@ import Button from 'components/Button/Button';
 import { MenuItem, MenuDivider } from 'react-toolbox/lib/menu';
 import { Link } from 'react-router';
 import SocialButton from 'components/SocialButton/SocialButton';
+import menuLinks from 'helpers/menuLinks';
 import styles from './styles.scss';
 
 export default class MobMenu extends Component {
@@ -28,9 +29,11 @@ export default class MobMenu extends Component {
         <Drawer className={styles.drawerMenu} active={this.state.active} onOverlayClick={this.handleToggle}>
           <h3 className={styles.headerMobMenu}>Меню</h3>
           <div icon="more_vert" position="top-left" menuRipple>
-            <Link onClick={this.handleToggle} to="/"><MenuItem caption="Обеды"/></Link>
-            <Link onClick={this.handleToggle} to="/about"><MenuItem caption="О Нас"/></Link>
-            <Link onClick={this.handleToggle} to="/tariffs"><MenuItem caption="Тарифные планы"/></Link>
+            {menuLinks.map((link, idx) => {
+              return (
+                <Link key={idx} onClick={this.handleToggle} to={link.to}><MenuItem caption={link.label}/></Link>
+              );
+            })}
             <MenuDivider />
             <div className={styles.btnContainer}>
               <Button flat outlined label="Зарегистрироваться" onClick={this.handleOnJoin}/>

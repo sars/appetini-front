@@ -2,12 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import Lunch from 'components/Lunch/Lunch';
 import Boxes from 'components/Boxes/Boxes';
-import DeliveryTimeDropdown from 'components/DeliveryTimeDropdown/DeliveryTimeDropdown';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import { asyncConnect } from 'redux-async-connect';
 import { loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
 import Button from 'components/Button/Button';
+import Dropdown from 'components/Dropdown/Dropdown';
+import CooksDropdown from 'components/CooksDropdown/CooksDropdown';
 import { request as requestLunches, filterNames } from 'helpers/lunches';
 import valueFromLocationQuery from 'helpers/valueFromLocationQuery';
 import groupBy from 'lodash/groupBy';
@@ -40,6 +41,10 @@ function racKeyLoaded(store, key) {
         return data.resources;
       });
     }}
+  },
+  {key: 'cooks', promise: ({helpers}) => {
+    return helpers.client.get('/cooks')
+      .then(response => response);}
   }
 ])
 @connect(null, { loadSuccess })
@@ -48,6 +53,7 @@ export default class Lunches extends Component {
     lunches: PropTypes.object,
     preferences: PropTypes.array.isRequired,
     location: PropTypes.object.isRequired,
+    cooks: PropTypes.object.isRequired,
     loadSuccess: PropTypes.func.isRequired
   };
 
@@ -130,8 +136,9 @@ export default class Lunches extends Component {
 
   render() {
     const styles = require('./Lunches.scss');
-    const {lunches, preferences} = this.props;
-    const {currentPreferences, currentTime, isInfiniteLoading} = this.state;
+    const {lunches, preferences, cooks} = this.props;
+    const {currentPreferences, isInfiniteLoading} = this.state;
+    const filters = Boolean(currentPreferences || this.state.currentCook_id);
     const allLunchesLoaded = lunches.resources.length >= lunches.meta.total;
     const currentPreferencesTitle = currentPreferences ? find(preferences, {id: parseInt(currentPreferences, 10)}).title : null;
     const boxes = lunches.resources && [
@@ -147,6 +154,10 @@ export default class Lunches extends Component {
         date: key
       });
     });
+
+    const preparedPreferences = [{label: 'Категория'}, ...preferences.map(preference => {
+      return {value: preference.id, label: preference.name};
+    })];
 
     return (
       <ColumnLayout className={styles.root}>
@@ -164,7 +175,9 @@ export default class Lunches extends Component {
 
         <div className={styles.firstLine}>
           <h2>{!nearestLunches.length && currentPreferences ? currentPreferencesTitle : 'Обеды на каждый день'}</h2>
-          <DeliveryTimeDropdown className={styles.timeDropdown} onChange={this.filterChanged('time')} value={currentTime}/>
+          <CooksDropdown className={styles.filter} onChange={this.filterChanged('cook_id')} value={parseInt(this.state.currentCook_id, 10)} cooks={cooks.resources}/>
+          <Dropdown className={styles.filter} onChange={this.filterChanged('preferences')} value={parseInt(this.state.currentPreferences, 10)} source={preparedPreferences}/>
+          {filters && <Button className={styles.filter} flat outlined onClick={() => {this.context.router.push('lunches');}} label="Сбросить"/>}
         </div>
         {boxes && <Boxes boxes={boxes}/>}
         {!allLunchesLoaded &&

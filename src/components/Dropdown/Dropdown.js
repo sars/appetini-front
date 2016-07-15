@@ -3,6 +3,9 @@ import _Dropdown from 'react-toolbox/lib/dropdown';
 import classNames from 'classnames';
 import events from 'react-toolbox/lib/utils/events';
 import Input from 'components/Input/Input';
+import dropdownStyles from './styles.scss';
+import toolboxStyles from 'react-toolbox/lib/dropdown/style.scss';
+import InputStyles from 'components/Input/styles.scss';
 
 export default class Dropdown extends _Dropdown {
   componentWillUpdate(nextProps, nextState) {
@@ -12,25 +15,40 @@ export default class Dropdown extends _Dropdown {
   }
 
   getSelectedItem = () => {
-    if (this.props.value) {
-      for (const item of this.props.source) {
-        if (item.value === this.props.value) return item;
+    const { value, source } = this.props;
+    if (value) {
+      for (const item of source) {
+        if (item.value === value) return item;
       }
     } else {
-      return this.props.source[0];
+      return source[0];
     }
   };
 
-  render() {
-    const styles = require('./styles.scss');
-    const toolboxStyles = require('react-toolbox/lib/dropdown/style.scss');
-    let inputStyles = require('components/Input/styles.scss');
-    inputStyles = {
-      ...inputStyles,
-      inputWrapper: classNames(inputStyles.inputWrapper, styles.inputWrapper)
-    };
+  renderTemplateValue(selected) {
+    const { label, error, disabled, styles, template } = this.props;
 
+    const className = classNames(toolboxStyles.field, {
+      [toolboxStyles.errored]: error,
+      [toolboxStyles.disabled]: disabled
+    }, styles.field);
+
+    return (
+      <div className={className} onMouseDown={this.handleMouseDown}>
+        {template(selected)}
+        {label ? <label className={toolboxStyles.label}>{label}</label> : null}
+        {error ? <span className={toolboxStyles.error}>{error}</span> : null}
+      </div>
+    );
+  }
+
+  render() {
     const {template, source, ...others} = this.props;
+    const styles = {...toolboxStyles, ...dropdownStyles, ...this.props.styles};
+    const inputStyles = {
+      ...InputStyles,
+      inputWrapper: classNames(InputStyles.inputWrapper, styles.inputWrapper)
+    };
     const selected = this.getSelectedItem();
     const className = classNames(toolboxStyles.root, {
       [toolboxStyles.up]: this.state.up,
