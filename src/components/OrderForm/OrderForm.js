@@ -187,6 +187,12 @@ export default class OrderForm extends Component {
         </div>}
 
         <div>
+          <h3>Ваш заказ:</h3>
+          <OrderItems items={orderItems} onRemove={::this.handleRemoveItem}/>
+          {this.errorsFor('order_items')}
+        </div>
+
+        <div>
           <h3>Имя</h3>
           { user && (user.role === 'admin')
             ? <UsersAutocomplete direction="down" onUserSelect={::this.handleUserSelect}
@@ -219,12 +225,6 @@ export default class OrderForm extends Component {
                                location={fields.location.value} />}
           { !locationsEmpty && this.errorsFor('location')}
         </div>}
-
-        <div>
-          <h3>Ваш заказ:</h3>
-          <OrderItems items={orderItems} onRemove={::this.handleRemoveItem}/>
-          {this.errorsFor('order_items')}
-        </div>
 
         <div>
           <h3>Способ оплаты:</h3>
