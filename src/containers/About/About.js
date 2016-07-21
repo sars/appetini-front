@@ -26,7 +26,7 @@ const About = () => {
         и становимся лучше вместе с вами и благодаря вам!
       </p>
       <p>
-        По всем вопросам обращайтесь пожалуйста по телефону <a href="tel:+380965058584">+38 096 505 85 84</a> или по email support@appetini.com
+        По всем вопросам обращайтесь пожалуйста по телефону <a className={styles.link} href="tel:+380965058584">+38 096 505 85 84</a> или по email: <span className={styles.link}>support@appetini.com</span>
       </p>
     </div>
   );

@@ -113,7 +113,7 @@ export default class Purchase extends Component {
           <CardContent className={styles.cardContent}>
             <div>
               <p>Есть вопросы? Звони!</p>
-              <p><strong><a href="tel:+380953651956">+38 095 365 19 56</a></strong></p>
+              <p><strong><a className={styles.link} href="tel:+380953651956">+38 095 365 19 56</a></strong></p>
             </div>
             {!disabled && <div className={styles.amountContainer}>
               <Button className={styles.amountButton} type="button" icon="remove" outlined mini flat
