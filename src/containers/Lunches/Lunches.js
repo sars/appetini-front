@@ -107,7 +107,7 @@ export default class Lunches extends Component {
   };
 
   loadMoreHandle = () => {
-    const { currentTime, currentPreferences } = this.state;
+    const { currentTime, currentPreferences, currentCook_id } = this.state;
     const { lunches } = this.props;
     const page = (this.state.page || 1) + 1;
     const params = {
@@ -115,6 +115,7 @@ export default class Lunches extends Component {
       'per_page': 10,
       'food_preferences_ids[]': currentPreferences,
       'disable_by_gt': new Date,
+      'cook_id': currentCook_id,
       'page': page
     };
     if (lunches.nearest.length) {
