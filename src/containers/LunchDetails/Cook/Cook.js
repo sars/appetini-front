@@ -52,16 +52,18 @@ export default class Cook extends Component {
                             </div>
                         </div>}/>
             }
-            <div className={styles.otherPhotosContainer}>
-              <h3>Фотографии кухни</h3>
-              <div className={styles.otherPhotos}>
-                {cook.other_photos.map((photo, index) =>
-                    <div className={styles.otherPhotoContainer} key={index}>
-                      <ImagesPreview images={cook.other_photos} currentImageId={index}/>
-                    </div>
-                )}
+            { cook.other_photos && cook.other_photos.length > 0 &&
+              <div className={styles.otherPhotosContainer}>
+                <h3>Фотографии кухни</h3>
+                <div className={styles.otherPhotos}>
+                  {cook.other_photos.map((photo, index) =>
+                      <div className={styles.otherPhotoContainer} key={index}>
+                        <ImagesPreview images={cook.other_photos} currentImageId={index}/>
+                      </div>
+                  )}
+                </div>
               </div>
-            </div>
+            }
             {(vkontakte || facebook || instagram) && <div className={styles.socialContainer}>
               <h3>В соцсетях</h3>
               <div className={styles.socialButtons}>
