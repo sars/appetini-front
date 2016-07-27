@@ -47,6 +47,7 @@ export default class OrdersForCookCourier extends Component {
       <ColumnLayout>
         <div className={styles.root}>
           <h1>{title}</h1>
+          <h4 className={styles.ordersTitle}>{date ? <span>{sorted ? 'Обеды' : 'Заказы'} на <span className={styles.dayName}>{humanizeDayName(getParsedDate(date), 'DD MMMM')}</span></span> : <span>Все {sorted ? 'обеды' : 'заказы'}</span>}</h4>
           <div className={styles.filters}>
             <div className={styles.filter}>
               <h3>Дата заказа: </h3>
@@ -58,7 +59,6 @@ export default class OrdersForCookCourier extends Component {
               {clearSortByOrderItem && sorted && <Button className={styles.filterItem} flat accent label="Показать заказы" onClick={clearSortByOrderItem}/>}
             </div>
           </div>
-          <h4 className={styles.ordersTitle}>{date ? <span>{sorted ? 'Обеды' : 'Заказы'} на <span className={styles.dayName}>{humanizeDayName(getParsedDate(date), 'DD MMMM')}</span></span> : <span>Все {sorted ? 'обеды' : 'заказы'}</span>}: </h4>
           {children}
         </div>
       </ColumnLayout>
