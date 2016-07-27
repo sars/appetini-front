@@ -7,14 +7,15 @@ import Form from './Form/Form';
 import normalizeErrors from 'helpers/normalizeErrors';
 import { createReview } from 'redux/modules/common';
 import ImagesPreview from 'components/ImagesPreview/ImagesPreview';
+import { open as openModal } from 'redux/modules/modals';
 
-
-@connect(state => ({ user: state.auth.user }), { createReview })
+@connect(state => ({ user: state.auth.user }), { createReview, openModal })
 export default class Reviews extends Component {
   static propTypes = {
     reviews: PropTypes.object.isRequired,
     cook: PropTypes.object.isRequired,
     user: PropTypes.object,
+    openModal: PropTypes.func.isRequired,
     createReview: PropTypes.func.isRequired
   };
 
@@ -39,6 +40,19 @@ export default class Reviews extends Component {
     return (
       <div className={styles.root}>
         {user && <Form onSubmit={::this.submit}/>}
+        { reviews.resources.length === 0 &&
+          (
+            (user && <span className={styles.noReviewsText}>К этому блюду еще нет отзывов. Вы можете быть первым!</span>)
+            ||
+            <span className={styles.noReviewsText}>
+              К этому блюду еще нет отзывов.&nbsp;
+              <span className={styles.link} onClick={() => this.props.openModal('LoginForm', 'Авторизация')}>
+                Авторизуйтесь
+              </span>
+              &nbsp;и вы сможете быть первым!
+            </span>
+          )
+        }
         {reviews.resources.map(review =>
           <div className={styles.review} key={review.id}>
             <h3>{review.user.name}</h3>
