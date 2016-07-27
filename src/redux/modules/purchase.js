@@ -3,6 +3,7 @@ import filter from 'lodash/filter';
 import some from 'lodash/some';
 
 const ADD_ORDER_ITEM = 'purchase/ADD_ORDER_ITEM';
+const CHANGE_AMOUNT_ORDER_ITEM = 'purchase/CHANGE_AMOUNT_ORDER_ITEM';
 const REMOVE_ORDER_ITEM = 'purchase/REMOVE_ORDER_ITEM';
 const CLEAR_ORDER_ITEMS = 'purchase/CLEAR_ORDER_ITEMS';
 
@@ -45,6 +46,26 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         orderItems: newOrderItems,
         lunchesAmount: lunchesAmount(newOrderItems)
+      };
+    }
+    case CHANGE_AMOUNT_ORDER_ITEM: {
+      /**
+       * @description This is new state of order list, when user change amount of lunch from cart.
+       * @type {*[]}
+       */
+      const { id, type, amount } = action.payload;
+      const newOrderItems = state.orderItems.map((item) => {
+        if ( item.resource_id === id && item.resource_type === type && amount > 0 && amount <= item.resource.available_count ) {
+          return {
+            ...item,
+            amount
+          };
+        }
+        return item;
+      });
+      return {
+        ...state,
+        orderItems: newOrderItems
       };
     }
     case REMOVE_ORDER_ITEM: {
@@ -102,6 +123,17 @@ export function addOrderItem(user, type, resource, amount = 1) {
     type: ADD_ORDER_ITEM,
     payload: {
       orderItem: orderItemStructure(type, resource, amount)
+    }
+  };
+}
+
+export function changeAmountOrderItem(id, type, amount = 1) {
+  return {
+    type: CHANGE_AMOUNT_ORDER_ITEM,
+    payload: {
+      id,
+      type,
+      amount
     }
   };
 }

@@ -72,8 +72,23 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 10rem;
+  max-width: 9.85rem;
   margin: 0 0.2rem 0.2rem 0;
   font-size: 1.2rem;
   vertical-align: middle;
+}
+
+.amountButton {
+  min-width: 2rem;
+  width: 2rem;
+  max-height: 2rem;
+  vertical-align: middle;
+  padding: 0;
+  text-align: center;
+
+  > span:first-child {
+    margin: 0;
+    line-height: inherit;
+    font-size: 110%;
+  }
 }

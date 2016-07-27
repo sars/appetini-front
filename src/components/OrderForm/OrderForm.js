@@ -8,7 +8,7 @@ import OrderItems from 'components/OrderItems/OrderItems';
 import { RadioGroup, RadioButton } from 'react-toolbox';
 import { show as showToast } from 'redux/modules/toast';
 import { open as openModal } from 'redux/modules/modals';
-import { removeOrderItem, clearOrderItems, orderItemStructure } from 'redux/modules/purchase';
+import { removeOrderItem, clearOrderItems, orderItemStructure, changeAmountOrderItem } from 'redux/modules/purchase';
 import { reduxForm } from 'redux-form';
 import PasswordInput from 'components/PasswordInput/PasswordInput';
 import styles from './styles.scss';
@@ -26,7 +26,7 @@ import transform from 'lodash/transform';
     fields: ['id', 'phone', 'location_attributes', 'location', 'order_items', 'order_items_attributes', 'payment_type', 'user.id',
              'user.name', 'user.phone', 'user.email', 'user.password', 'user.locations', 'user.deliveries_available']
   }, state => ({orderItems: state.purchase.orderItems, user: state.auth.user}),
-  { openModal, showToast, removeOrderItem, clearOrderItems }
+  { openModal, showToast, removeOrderItem, clearOrderItems, changeAmountOrderItem }
 )
 export default class OrderForm extends Component {
   static propTypes = {
@@ -35,6 +35,7 @@ export default class OrderForm extends Component {
     showToast: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     removeOrderItem: PropTypes.func.isRequired,
+    changeAmountOrderItem: PropTypes.func.isRequired,
     clearOrderItems: PropTypes.func.isRequired,
     error: PropTypes.object,
     submitting: PropTypes.bool,
@@ -188,7 +189,7 @@ export default class OrderForm extends Component {
 
         <div>
           <h3>Ваш заказ:</h3>
-          <OrderItems items={orderItems} onRemove={::this.handleRemoveItem}/>
+          <OrderItems items={orderItems} onRemove={::this.handleRemoveItem} onChangeAmount={this.props.changeAmountOrderItem}/>
           {this.errorsFor('order_items')}
         </div>
 
