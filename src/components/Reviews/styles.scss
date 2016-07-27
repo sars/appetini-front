@@ -73,6 +73,7 @@
 }
 
 .link {
-  color: #685c50;
+  color: $color-accent;
+  text-decoration: underline;
   cursor: pointer;
 }
