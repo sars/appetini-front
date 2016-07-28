@@ -49,7 +49,6 @@ export default class Html extends Component {
                 rel="stylesheet" type="text/css" />
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                 rel="stylesheet" type="text/css" />
-          <script src="https://linked.chat/web/je6x93" async></script>
 
           {/* (will be present only in development mode) */}
           {/* outputs a <style/> tag with all bootstrap styles + App.scss + it could be CurrentPage.scss. */}
@@ -62,6 +61,7 @@ export default class Html extends Component {
           <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
           <script dangerouslySetInnerHTML={{__html: `window.__data=${serialize(store.getState())};`}} charSet="UTF-8"/>
           <script src={assets.javascript.main} charSet="UTF-8"/>
+          <script dangerouslySetInnerHTML={{__html: `(function(d,n){var s,a,p;s=document.createElement("script");s.type="text/javascript";s.async=true;s.src=(document.location.protocol==="https:"?"https:":"http:")+"//cdn.nudgespot.com"+"/nudgespot.js";a=document.getElementsByTagName("script");p=a[a.length-1];p.parentNode.insertBefore(s,p.nextSibling);window.nudgespot=n;n.init=function(t){function f(n,m){var a=m.split('.');2==a.length&&(n=n[a[0]],m=a[1]);n[m]=function(){n.push([m].concat(Array.prototype.slice.call(arguments,0)))}}n._version=0.1;n._globals=[t];n.people=n.people||[];n.params=n.params||[];m="track register unregister identify set_config people.delete people.create people.update people.create_property people.tag people.remove_Tag".split(" ");for(var i=0;i<m.length;i++)f(n,m[i])}})(document,window.nudgespot||[]);nudgespot.init("78c537eeeecccd3a4d7824c92cfcaa78");`}} charSet="UTF-8" />
         </body>
       </html>
     );

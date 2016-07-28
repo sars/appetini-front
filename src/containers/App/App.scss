@@ -45,16 +45,9 @@ h3 {
   height: 0.4rem;
 }
 
-
 :global {
   .pointer {
     cursor: pointer;
-  }
-
-  @media all and (max-width:767px) {
-    #linkedchat {
-      display: none;
-    }
   }
 
   @media print {
@@ -62,4 +55,14 @@ h3 {
       display: none!important;
     }
   }
+
+  #nudgespotInappContainer {
+    right: -15px !important;
+    bottom: 5px !important;
+    .nudgespot-launcher {
+      padding: 10px 0 0 0 !important;
+      height: 60px !important;
+    }
+  }
+
 }
