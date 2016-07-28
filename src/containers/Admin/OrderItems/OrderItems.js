@@ -94,7 +94,7 @@ export default class OrderItems extends Component {
                       <td>Блюда</td>
                       <td className={styles.hiddenXs}>Фото</td>
                       <td className={styles.hiddenXs}>Цена</td>
-                      <td className={styles.hiddenXs}>Просмотр Обеда</td>
+                      <td className={styles.hiddenXs}>Просмотр обеда</td>
                     </tr>
                   </thead>
                   <tbody>

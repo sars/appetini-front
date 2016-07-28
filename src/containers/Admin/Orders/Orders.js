@@ -58,7 +58,7 @@ export default class Orders extends Component {
     ];
     const defaultActions = ['edit', 'details'];
 
-    return (<ResourcesIndex resources={orders} title="Заказы" urlName="orders" fields={fields}
+    return (<ResourcesIndex resources={orders} title="Заказы" urlName="/admin/orders" fields={fields}
                             defaultActions={defaultActions}/>);
   }
 }

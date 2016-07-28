@@ -30,11 +30,14 @@ import {
     Settings,
     OrderSuccess,
     CookOrdersPage,
+    DraftLunchesEdit,
+    DraftLunchesNew,
+    DraftLunchesList,
     CourierOrdersPage
 } from 'containers';
 
 export default (store, client) => {
-  const { userLoad, confirmEmail, requireLogin } = hooks(store, client);
+  const { userLoad, confirmEmail, requireLogin, checkCurrentCook } = hooks(store, client);
 
   /**
    * Please keep routes in alphabetical order
@@ -63,6 +66,12 @@ export default (store, client) => {
       <Route path="order/:orderId/success" component={OrderSuccess}/>
       <Route path="settings" component={Settings}/>
       <Route path="cooks/:cookId/orders" component={CookOrdersPage}/>
+      <Route path="cooks/:cookId/draft_lunches" onEnter={checkCurrentCook}
+             component={AuthorizedApp} authCondition={user => user && (user.cook || user.role === 'admin')}>
+        <IndexRoute component={DraftLunchesList}/>
+        <Route path="new" component={DraftLunchesNew}/>
+        <Route path=":draftLunchId/edit" component={DraftLunchesEdit}/>
+      </Route>
       <Route path="courier/orders" component={CourierOrdersPage}/>
       <Route path="orders" component={OrdersIndex}/>
       <Route path="orders/:orderId" component={OrderShow}/>

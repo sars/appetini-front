@@ -45,7 +45,7 @@ export default class AdminOrdersIndex extends Component {
     return (
       <div className={styles.ordersPageWrapper}>
         <ResourcesIndex resources={orders.resources} title="История заказов" fields={fields}
-          urlName="orders" defaultActions={defaultActions}/>
+          urlName="/admin/orders" defaultActions={defaultActions}/>
         {pagesCount > 1 && <ReactPagination pagesCount={pagesCount} changePage={::this.changePage} />}
       </div>
     );

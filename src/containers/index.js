@@ -26,4 +26,7 @@ export Registration from './Registration/Registration';
 export Settings from './Settings/Settings';
 export OrderSuccess from './OrderSuccess/OrderSuccess';
 export CookOrdersPage from './CookOrdersPage/CookOrdersPage';
+export DraftLunchesEdit from './DraftLunches/Edit';
+export DraftLunchesNew from './DraftLunches/New';
+export DraftLunchesList from './DraftLunches/DraftLunches';
 export CourierOrdersPage from './CourierOrdersPage/CourierOrdersPage';
