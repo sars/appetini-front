@@ -12,7 +12,7 @@ const DeliveryPeriod = ({className, time}) => {
   const originalDate = moment(time);
 
   return (
-    <span className={classNames(styles.root, className)}>
+    <span className={classNames(styles.root, styles.readyBy, className)}>
       <i className="fa fa-calendar" />
       <span className={styles.unit} role="day">{humanizeDayName(originalDate, 'dddd')}</span>
       <span className={styles.unit} role="date">

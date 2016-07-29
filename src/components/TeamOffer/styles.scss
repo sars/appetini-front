@@ -1,0 +1,62 @@
+.teamOfferWrapper {
+  width: 310px;
+  max-width: 310px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  animation-name: fadeInUp;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 20%, 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .offerCard {
+    padding: 1rem;
+    &:hover {
+      box-shadow: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 78, 47, 0.12), 0 5px 5px -3px rgba(109, 78, 47, 0.2);
+    }
+  }
+
+  .imgWrapper {
+    text-align: center;
+    margin-bottom: 1rem;
+
+    img {
+      width: 50%;
+      max-height: 100%;
+      border-radius: 50%;
+      display: inline-block;
+    }
+  }
+
+  .info {
+    text-align: center;
+    color: #685c50;
+
+    .cookInfo {
+      margin-bottom: 1rem;
+    }
+
+    .cookName {
+      font-size: 1.6rem;
+    }
+
+    .rating, .feedback {
+      display: inline-block;
+    }
+
+    .feedback {
+      margin-left: 1rem;
+    }
+  }
+}

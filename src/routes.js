@@ -11,6 +11,7 @@ import {
     NotFound,
     LunchDetails,
     AuthorizedApp,
+    TeamOffers,
     AdminDashboard,
     AdminLunches,
     AdminLunchesNew,
@@ -52,6 +53,7 @@ export default (store, client) => {
 
       <Route path="join" component={Registration}/>
       <Route path="lunches" component={Lunches}/>
+      <Route path="team_offers" component={TeamOffers}/>
       <Route path="cooks" component={Cooks}/>
       <Route path="recovery" component={Recovery}/>
       <Route path="recovery/:token" component={Recovery.Password}/>
