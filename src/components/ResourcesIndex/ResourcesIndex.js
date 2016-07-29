@@ -31,7 +31,7 @@ export default class ResourcesIndex extends Component {
 
   goToCreate(event) {
     event.preventDefault();
-    this.context.router.push(`/admin/${this.props.urlName}/new`);
+    this.context.router.push(`${this.props.urlName}/new`);
   }
 
   render() {
@@ -58,7 +58,7 @@ export default class ResourcesIndex extends Component {
                   defaultActions && defaultActions.map((action, idx) => {
                     return (
                       <div key={idx} className={styles.action}>
-                        {action === 'edit' && <Link to={`/admin/${urlName}/${resource.id}/edit`}>
+                        {action === 'edit' && <Link to={`${urlName}/${resource.id}/edit`}>
                           <Button flat accent label="Редактировать"/>
                         </Link>}
                         {action === 'details' && <Link to={`/orders/${resource.id}`}>Подробнее</Link>}

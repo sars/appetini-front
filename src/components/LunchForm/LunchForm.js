@@ -1,26 +1,16 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import Dropdown from 'components/Dropdown/Dropdown';
 import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
 import DeliveryTimeDropdown from 'components/DeliveryTimeDropdown/DeliveryTimeDropdown';
 import DatePicker from 'components/DatePicker/DatePicker';
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
-import Checkbox from 'react-toolbox/lib/checkbox';
-import MultiImagesField from 'components/ImageField/MultiImagesField';
 import { reduxForm } from 'redux-form';
 import { getCooks, getFoodPreferences } from 'redux/modules/common';
 import classNames from 'classnames';
 import styles from './styles.scss';
 import { Link } from 'react-router';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-
-const dishTypes = [
-  { label: 'Выберите тип' },
-  { label: 'Салат', value: 'salad' },
-  { label: 'Суп', value: 'soup' },
-  { label: 'Основное', value: 'main' },
-  { label: 'Гарнир', value: 'side' }
-];
+import BaseLunchForm from './BaseLunchForm';
 
 @reduxForm(
   {
@@ -42,7 +32,7 @@ const dishTypes = [
   }),
   {getCooks, getFoodPreferences}
 )
-export default class LunchForm extends Component {
+export default class LunchForm extends BaseLunchForm {
   static propTypes = {
     cooks: PropTypes.array,
     foodPreferences: PropTypes.array,
@@ -82,42 +72,6 @@ export default class LunchForm extends Component {
     return foodPreferences && foodPreferences.reduce((result, preference) => ({...result, [preference.id]: preference.name}), {});
   }
 
-  addDish() {
-    const { fields } = this.props;
-    fields.dishes.addField();
-    fields.dishes_count.onChange();
-  }
-
-  removeDish(index) {
-    return () => {
-      const { fields } = this.props;
-      if (fields.dishes[index].id.value) {
-        fields.dishes[index]._destroy.onChange(true);
-      } else {
-        fields.dishes.removeField(index);
-      }
-
-      fields.dishes_count.onChange();
-    };
-  }
-
-  revertDish(dishField) {
-    return (event) => {
-      event.preventDefault();
-      dishField._destroy.onChange(false);
-    };
-  }
-
-  removePhoto(index, photos) {
-    this.props.fields.removing_photos.onChange(photos);
-  }
-
-  errorsFor(fieldName) {
-    const { fields } = this.props;
-    return fields[fieldName].error && !fields[fieldName].visited &&
-      <div className={styles.error}>{fields[fieldName].error}</div>;
-  }
-
   render() {
     const cooks = this.getCooks();
     const preferences = this.getPreferences();
@@ -152,70 +106,19 @@ export default class LunchForm extends Component {
             <Input {...fields.disable_minutes}/>
           </div>
         </div>
-        <div>
-          <h3>Описание</h3>
-          <Input {...fields.description} multiline={true}/>
-        </div>
-        <div className={styles.section}>
-          <h3>Фотографии</h3>
-          <MultiImagesField onRemove={::this.removePhoto} tempImagesIds={fields.photos_temp_image_ids.value} onTempImages={fields.photos_temp_image_ids.onChange}
-                            value={fields.photos.value} removingImages={fields.removing_photos.value}
-          />
-          {this.errorsFor('photos_temp_image_ids')}
-        </div>
-        <div className={styles.section}>
-          <h3>Состав обеда</h3>
-          <table className={styles.dishesTable}>
-            <ReactCSSTransitionGroup component="tbody" transitionEnterTimeout={310} transitionLeaveTimeout={310} transitionName="dish-tr">
-              <tr key="0">
-                <th>Название</th>
-                <th className={styles.dishSizeCol}>Размер</th>
-                <th className={styles.dishTypeCol}>Тип</th>
-              </tr>
-              {fields.dishes.map((dishField, index) =>
-                dishField._destroy.value
-                ? <tr key={index + 1}>
-                    <td className={styles.removeDishTd} colSpan="3">
-                      <a href="#" onClick={::this.revertDish(dishField)}>
-                        Отменить удаление "{dishField.name.value}"
-                      </a>
-                    </td>
-                  </tr>
-                : <tr key={index + 1}>
-                    <td><Input {...dishField.name}/></td>
-                    <td className={styles.dishSizeCol}><Input {...dishField.size}/></td>
-                    <td className={styles.dishTypeCol}><Dropdown source={dishTypes} {...dishField.dish_type}/></td>
-                    <td>
-                      {fields.dishes.length > 0 && <Button type="button" icon="remove" floating accent mini onClick={::this.removeDish(index)}/>}
-                    </td>
-                  </tr>
-              )}
-            </ReactCSSTransitionGroup>
-          </table>
-
-          <Button type="button" flat outlined label="Добавить" onClick={::this.addDish}/>
-          {this.errorsFor('dishes_count')}
-        </div>
-        <div className={styles.section}>
-          <h3>Цена</h3>
-          <Input {...fields.initial_price}/>
-        </div>
+        {this.descriptionField()}
+        {this.photosField()}
+        {this.dishesField()}
+        {this.priceField()}
         <div className={styles.section}>
           <h3>Предпочтения</h3>
           <CheckButtonsGroup source={preferences} {...fields.food_preference_ids}/>
           {this.errorsFor('food_preference_ids')}
         </div>
 
-        {acceptRules &&
-          <div className={styles.acceptRules}>
-            <Checkbox {...fields.accept_rules}
-              label="Я принимаю условия и помню про чистые руки, гигиену, правила упаковки и доставки"
-            />
-          </div>
-        }
-
+        {acceptRules && this.acceptRulesField()}
         <div className={styles.acceptRules}>
-          <Button flat accent label={sendLabel} type="submit" disabled={submitting}/>
+          {this.submitButton(sendLabel, submitting)}
           {fields.id.value &&
             <Link className={styles.cloneWrapper} to={'/admin/lunches/' + fields.id.value + '/clone'}>
               <Button flat accent label="Клонировать"/>

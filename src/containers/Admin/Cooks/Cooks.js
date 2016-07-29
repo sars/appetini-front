@@ -30,7 +30,7 @@ export default class Cooks extends Component {
     const defaultActions = ['edit'];
 
     return (<ResourcesIndex resources={cooks} title="Кулинары" createTitle="Создать кулинара"
-                            urlName="cooks" fields={fields} customActions={actions}
+                            urlName="/admin/cooks" fields={fields} customActions={actions}
                             defaultActions={defaultActions}/>);
   }
 }

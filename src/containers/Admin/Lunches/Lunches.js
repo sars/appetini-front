@@ -22,6 +22,6 @@ export default class Lunches extends Component {
     const defaultActions = ['edit'];
 
     return (<ResourcesIndex resources={lunches} title="Обеды" createTitle="Создать обед"
-                           urlName="lunches" fields={fields} defaultActions={defaultActions}/>);
+                           urlName="/admin/lunches" fields={fields} defaultActions={defaultActions}/>);
   }
 }
