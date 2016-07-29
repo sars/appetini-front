@@ -15,7 +15,7 @@ export default class TeamOffer extends Component {
   render() {
     const { offer } = this.props;
     return (
-      <Link to="/" className={styles.teamOfferWrapper}>
+      <Link to={`/team_offers/${offer.id}`} className={styles.teamOfferWrapper}>
         <DeliveryPeriod className={styles.readyBy} time={offer.ready_by}/>
         <Card className={styles.offerCard}>
           <div className={styles.imgWrapper}>

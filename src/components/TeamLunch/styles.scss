@@ -3,31 +3,12 @@
   width: 250px;
 }
 
-.dish {
-  list-style-type: none;
-  display: flex;
-  align-items: baseline;
-  padding: 0.5rem 0;
-  font-size: 1.6rem;
-  color: $color-primary;
-}
-
-.dots {
-  flex: 1;
-  border-bottom: 1px dotted currentColor;
-  margin: 0 0.5rem;
-}
-
-.size {
-  color: $color-accent;
-  font-weight: 500;
-}
-
 .imagePreviewWrapper {
-  padding: 0.5rem 0 0rem 1rem;
+  padding: 0.5rem 0 0 1rem;
   width: 30%;
   img {
     max-width: 100%;
+    border-radius: 0.5rem;
   }
 }
 
@@ -63,7 +44,7 @@
 }
 
 .portionAmountHeader {
-  text-align: left;
+  text-align: center;
 }
 
 @media (max-width: 963px) {
@@ -79,5 +60,16 @@
 @media (max-width: 529px) {
   .container > div {
     width: 90%;
+  }
+}
+
+.priceSection {
+  margin-top: 1rem;
+  color: #685c50;
+  font-size: 1.8rem;
+  font-weight: 500;
+
+  .price {
+    font-size: 3.6rem;
   }
 }

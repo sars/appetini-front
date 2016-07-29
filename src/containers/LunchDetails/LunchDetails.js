@@ -5,9 +5,9 @@ import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
 import Modal from 'components/Modal/Modal';
 import Reviews from 'components/Reviews/Reviews';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
-import Dishes from './Dishes/Dishes';
-import Cook from './Cook/Cook';
-import CookPreview from './Cook/Preview/Preview';
+import Dishes from 'components/Dishes/Dishes';
+import Cook from 'components/LunchDetailsCook/Cook';
+import CookPreview from 'components/LunchDetailsCook/Preview/Preview';
 import Purchase from './Purchase/Purchase';
 import PurchasePreview from './Purchase/Preview/Preview';
 import Photos from './Photos/Photos';
@@ -89,7 +89,7 @@ export default class LunchDetails extends Component {
                                                onClick={() => this.setState({cookOpened: false})}></div>}
               </ReactCSSTransitionGroup>
               <div className={styles.cookContainer}>
-                <Cook cook={cook} lunch={lunch}/>
+                <Cook cook={cook} resourceId={lunch.id} resourceType="lunches"/>
               </div>
             </div>
             <div className={styles.lunchContainer}>
@@ -112,7 +112,7 @@ export default class LunchDetails extends Component {
                 <div className={styles.lunchContent}>
                   <div className={styles.lunchContentInner}>
                     <Photos className={styles.photos} lunch={lunch}/>
-                    <Dishes dishes={lunch.dishes}/>
+                    <Card><Dishes dishes={lunch.dishes}/></Card>
                     { lunch.description &&
                     <div className={styles.descriptionWrapper}>
                       <Card>
