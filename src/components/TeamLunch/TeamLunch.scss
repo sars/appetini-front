@@ -1,0 +1,83 @@
+.amountCard {
+  text-align: center;
+  width: 250px;
+}
+
+.dish {
+  list-style-type: none;
+  display: flex;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  font-size: 1.6rem;
+  color: $color-primary;
+}
+
+.dots {
+  flex: 1;
+  border-bottom: 1px dotted currentColor;
+  margin: 0 0.5rem;
+}
+
+.size {
+  color: $color-accent;
+  font-weight: 500;
+}
+
+.imagePreviewWrapper {
+  padding: 0.5rem 0 0rem 1rem;
+  width: 30%;
+  img {
+    max-width: 100%;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+
+  & > div {
+    margin: 1%;
+  }
+}
+
+.infoCard {
+  width: 36%;
+}
+
+.descriptionWrapper {
+  color: #685c50;
+
+  .description {
+    padding: 5px 0;
+    display: block;
+  }
+}
+
+.cardContent {
+  padding-bottom: 0.3rem;
+  padding-top: 0.5rem;
+}
+
+.portionAmountHeader {
+  text-align: left;
+}
+
+@media (max-width: 963px) {
+  .portionAmountHeader {
+    text-align: center;
+  }
+
+  .container > div {
+    width: 70%;
+  }
+}
+
+@media (max-width: 529px) {
+  .container > div {
+    width: 90%;
+  }
+}
