@@ -32,7 +32,7 @@ export default function hooks({dispatch, getState}, client) {
 
     checkCurrentCook: ({params: { cookId }}, replaceState) => {
       const { user } = getState().auth;
-      if (user && lodashGet(user, 'cook.id') !== parseInt(cookId, 10)) {
+      if (user && user.cook && lodashGet(user, 'cook.id') !== parseInt(cookId, 10)) {
         replaceState(`/cooks/${user.cook.id}/draft_lunches`);
       }
     },

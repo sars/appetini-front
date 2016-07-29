@@ -68,7 +68,7 @@ export default class MultiImagesField extends Component {
           {tempImages.map(tempImage =>
             <div className={styles.imagePreview} key={tempImage.id}>
               <img src={tempImage.image.thumb.url}/>
-              <span className={styles.imagePreviewRemove} onClick={() => this.removeTempImage(tempImage)}><span className="fa fa-minus"/></span>
+              <span className={styles.imagePreviewRemove} onClick={this.removeTempImage(tempImage)}><span className="fa fa-minus"/></span>
             </div>
           )}
           {value && value.map((image, index) =>

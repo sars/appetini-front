@@ -46,7 +46,7 @@ export default class BaseLunchForm extends Component {
     };
   }
 
-  removePhoto(photos) {
+  removePhoto(index, photos) {
     this.props.fields.removing_photos.onChange(photos);
   }
 
