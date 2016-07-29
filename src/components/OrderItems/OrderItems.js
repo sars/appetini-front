@@ -28,10 +28,11 @@ function removable(item) {
  * "purchasing" - Array of lunches and deliveries.
  *
  * @param {func} onRemove Remove callback.
+ * @param {func} onChangeAmount Change amount callback.
  * @param rest
  * @returns {JSX}
  */
-const OrderItems = ({items, onRemove, ...rest}) => {
+const OrderItems = ({items, onRemove, onChangeAmount, ...rest}) => {
   const totalPrice = items.purchasing.reduce((result, item) => Number(item.resource.price) * item.amount + result, 0);
   const groupedItems = items.grouped;
   const specialTariffs = filter(items.purchasing, item => item.resource_type === 'DeliveryTariff' && !item.resource.individual);
@@ -47,7 +48,8 @@ const OrderItems = ({items, onRemove, ...rest}) => {
       ...rest,
       key: index,
       removable: removable(item),
-      onRemove: () => onRemove && onRemove(item)
+      onRemove: () => onRemove && onRemove(item),
+      onChangeAmount
     });
 
   return (

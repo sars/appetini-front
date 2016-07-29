@@ -1,13 +1,20 @@
 import React, { PropTypes } from 'react';
 import Item from '../Item/Item';
 import styles from '../styles.scss';
+import Button from 'components/Button/Button';
 
-const Lunch = ({resource, amount, ...rest}) => {
+const Lunch = ({resource, amount, onChangeAmount, ...rest}) => {
   const name = (
     <span>
       {resource.dishes.map((dish, index) => <div key={index} className={styles.dishesTag}>{dish.name}</div>)}
       {' '}
-      <span>({amount} шт)</span>
+      <Button className={styles.amountButton} type="button" icon="remove" outlined mini flat
+              onClick={() => onChangeAmount( resource.id, 'Lunch', amount - 1 )} />
+      {' '}
+      <span>{amount} шт</span>
+      {' '}
+      <Button className={styles.amountButton} type="button" icon="add" outlined mini flat
+              onClick={() => onChangeAmount( resource.id, 'Lunch', amount + 1 )} />
     </span>
   );
 
