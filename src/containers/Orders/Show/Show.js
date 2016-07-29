@@ -36,6 +36,10 @@ export default class AdminOrdersShow extends Component {
             <span>Имя: </span>
             <strong>{order.user.name}</strong>
           </div>
+          <div className={styles.commonField}>
+            <span>Телефон: </span>
+            <strong>{order.user.phone}</strong>
+          </div>
           {order.location &&
             <div className={styles.commonField}>
               <span>Адрес доставки: </span>

@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { Card } from 'react-toolbox/lib/card';
 import moment from 'moment';
 import Modal from 'components/Modal/Modal';
+import Checkbox from 'react-toolbox/lib/checkbox';
 import styles from 'components/CookOrderPreview/styles.scss';
 import OrdersMap from 'components/OrdersMap/OrdersMap';
 import { Link } from 'react-router';
@@ -12,7 +13,8 @@ import reduce from 'lodash/reduce';
 export default class CourierOrderPreview extends Component {
   static propTypes = {
     user: PropTypes.object,
-    orders: PropTypes.array
+    orders: PropTypes.array,
+    updatePayed: PropTypes.func
   }
 
   state = {
@@ -49,9 +51,20 @@ export default class CourierOrderPreview extends Component {
   }
 
   render() {
-    const { orders, user } = this.props;
+    const { orders, user, updatePayed } = this.props;
     const { orderPosition, selectedOrder, showModal } = this.state;
-    const showOrderLink = user && (user.role === 'admin' || user.courier);
+    const userAdmin = (user.role === 'admin');
+    const showOrderLink = user && (userAdmin || user.courier);
+    const payedCheckbox = (order) => {
+      return (
+        <div>
+          <Checkbox checked={order.payed}
+                    disabled={userAdmin || order.payment_type === 'liqpay'}
+                    onChange={(checked) => updatePayed(checked, order)}/>
+          {order.payed && order.order_payment.courier && <div>{order.order_payment.courier.name}</div>}
+        </div>
+      );
+    };
     return (
       <div>
         <Modal.Dialog active={showModal} title={`Заказ #${selectedOrder.id || ''}`} onClose={::this.handleModalClose}>
@@ -66,8 +79,12 @@ export default class CourierOrderPreview extends Component {
                 <strong>{selectedOrder.user.name}</strong>
               </div>
               <div className={courierStyles.modalField}>
+                <span>Телефон: </span>
+                <strong>{selectedOrder.user.phone}</strong>
+              </div>
+              <div className={courierStyles.modalField}>
                 <span>Адрес доставки: </span>
-                <strong>{selectedOrder.location.full_address}</strong>
+                <strong>{selectedOrder.location.full_address}{selectedOrder.location.description && ` (${selectedOrder.location.description})`}</strong>
               </div>
               <div className={courierStyles.modalField}>
                 <span>Статус оплаты: </span>
@@ -110,6 +127,7 @@ export default class CourierOrderPreview extends Component {
               <thead>
                 <tr>
                   <td>ИД</td>
+                  <td>Оплачено</td>
                   <td className={styles.hiddenXs}>Имя</td>
                   <td className={styles.hiddenXs}>Имя кулинара</td>
                   <td>Адрес</td>
@@ -120,7 +138,6 @@ export default class CourierOrderPreview extends Component {
                     <span className={styles.nowrap}>К-во</span>
                   </td>
                   <td className={styles.hiddenXs}>Тип оплаты</td>
-                  <td className={styles.hiddenXs}>Статус оплаты</td>
                   <td>Общая цена</td>
                   {showOrderLink && <td className={classNames(styles.hiddenXs, 'hidePrint')}>Заказ</td>}
                 </tr>
@@ -131,11 +148,12 @@ export default class CourierOrderPreview extends Component {
                     {order.order_items.map((item, index) =>
                       <tr key={index}>
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.id}</td>}
+                        {index === 0 && <td rowSpan={order.order_items.length}>{payedCheckbox(order)}</td>}
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.user.name}</td>}
                         <td className={classNames(styles.borderLeft, styles.borderRight)}>
                           <div>{item.resource.cook.first_name + ' ' + item.resource.cook.last_name}</div>
                         </td>
-                        {index === 0 && <td rowSpan={order.order_items.length}>{order.location.full_address}{order.location.description && '(' + order.location.description + ')'}</td>}
+                        {index === 0 && <td rowSpan={order.order_items.length}>{order.location.full_address}{order.location.description && ` (${order.location.description})`}</td>}
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.user.phone}</td>}
                         <td className={styles.borderLeft}>
                           <div>{moment(item.resource.ready_by).format('DD MMMM HH:mm')}</div>
@@ -153,8 +171,6 @@ export default class CourierOrderPreview extends Component {
                           <div>{item.amount}</div>
                         </td>
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.payment_type}</td>}
-                        {index === 0 &&
-                        <td rowSpan={order.order_items.length}>{order.payed ? 'Оплачено' : 'Не оплачено'}</td>}
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.total_price} грн.</td>}
                         {index === 0 && showOrderLink &&
                           <td rowSpan={order.order_items.length}>
@@ -164,11 +180,12 @@ export default class CourierOrderPreview extends Component {
                       </tr>
                     )}
                   </tbody>,
-                  <tbody onClick={() => this.handleClickOrder(order, true)} key={indx + 1} className={classNames(courierStyles.showXs, 'hidePrint')}>
+                  <tbody key={indx + 1} className={classNames(courierStyles.showXs, 'hidePrint')}>
                     <tr>
-                      <td>{order.id}</td>
-                      <td>{order.location.full_address}{order.location.description && '(' + order.location.description + ')'}</td>
-                      <td>{order.total_price} грн.</td>
+                      <td onClick={() => this.handleClickOrder(order, true)}>{order.id}</td>
+                      <td>{payedCheckbox(order)}</td>
+                      <td onClick={() => this.handleClickOrder(order, true)}>{order.location.full_address}{order.location.description && ` (${order.location.description})`}</td>
+                      <td onClick={() => this.handleClickOrder(order, true)}>{order.total_price} грн.</td>
                     </tr>
                   </tbody>
                 ]);
@@ -177,7 +194,8 @@ export default class CourierOrderPreview extends Component {
                 <tr>
                   <td colSpan="6" className={styles.hiddenXs}/>
                   <td colSpan="2">Общая сумма: </td>
-                  <td colSpan={showOrderLink ? 3 : 2}>{this.totalPrice(orders)} грн.</td>
+                  <td colSpan={showOrderLink ? 4 : 3} className={styles.hiddenXs}>{this.totalPrice(orders)} грн.</td>
+                  <td colSpan="3" className={styles.showXs}>{this.totalPrice(orders)} грн.</td>
                 </tr>
               </tbody>
             </table>
