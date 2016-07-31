@@ -19,26 +19,25 @@ import { show as showToast } from 'redux/modules/toast';
 
 const TooltipLabel = tooltip(Label);
 
-@connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount, orderItems: state.purchase.orderItems}), { addOrderItem, showToast })
+@connect(state => ({lunchesAmount: state.purchase.lunchesAmount, orderItems: state.purchase.orderItems}), { addOrderItem, showToast })
 export default class Lunch extends Component {
   static propTypes = {
     className: PropTypes.string,
     lunch: PropTypes.object,
     near: PropTypes.bool,
     orderItems: PropTypes.array,
-    user: PropTypes.object,
     addOrderItem: PropTypes.func.isRequired,
     showToast: PropTypes.func.isRequired,
     lunchesAmount: PropTypes.number.isRequired
-  }
+  };
 
   buy = (event) => {
     event.preventDefault();
-    const { lunch, user } = this.props;
+    const { lunch } = this.props;
     fbEvent('track', 'AddToCart');
     this.props.showToast('Заказ добавлен в корзину', 'accept', 'done');
-    this.props.addOrderItem(user, 'Lunch', lunch, 1);
-  }
+    this.props.addOrderItem('Lunch', lunch, 1);
+  };
 
   render() {
     const {className, lunch, near, orderItems} = this.props;

@@ -15,7 +15,6 @@ import styles from './styles.scss';
 import ga from 'components/GaEvent/ga';
 import isEmpty from 'lodash/isEmpty';
 import find from 'lodash/find';
-import filter from 'lodash/filter';
 import groupBy from 'lodash/groupBy';
 import mapValues from 'lodash/mapValues';
 import transform from 'lodash/transform';
@@ -58,7 +57,7 @@ export default class OrderForm extends Component {
     if (props.user) {
       this.changeFields(props.fields.user, props.user);
     }
-    props.fields.order_items_attributes.onChange(this.preparedOrderItems(props.orderItems, props.user).purchasing);
+    props.fields.order_items_attributes.onChange(this.state.preparedOrderItems.purchasing);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -129,7 +128,7 @@ export default class OrderForm extends Component {
    */
 
   groupedItems(orderItems) {
-    const lunchesItems = filter(orderItems, {resource_type: 'Lunch'});
+    const lunchesItems = orderItems.filter(items => (items.resource_type === 'Lunch' || items.resource_type === 'TeamOrder'));
     const groupedByDate = groupBy(lunchesItems, 'resource.ready_by');
     return mapValues(groupedByDate, items => groupBy(items, 'resource.cook.id'));
   }
@@ -176,7 +175,7 @@ export default class OrderForm extends Component {
     const submitLabel = fields.payment_type.value === 'liqpay' ? 'Оплатить' : 'Оформить заказ';
     const orderExist = Boolean(order);
     const locationsEmpty = isEmpty(fields.user.locations.value);
-    const hasLunches = this.props.orderItems.some(item => item.resource_type === 'Lunch');
+    const hasLunches = this.props.orderItems.some(item => item.resource_type === 'Lunch' || item.resource_type === 'TeamOrder');
 
     return (
       <form className={styles.root} onSubmit={handleSubmit}>

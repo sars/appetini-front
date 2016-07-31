@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Card, { CardContent } from 'components/Card/Card';
 import DeliveryTariff from './DeliveryTariff/DeliveryTariff';
+import TeamOrder from './TeamOrder/TeamOrder';
 import Lunch from './Lunch/Lunch';
 import Item from './Item/Item';
 import styles from './styles.scss';
@@ -10,7 +11,8 @@ import moment from 'moment';
 
 const types = {
   DeliveryTariff,
-  Lunch
+  Lunch,
+  TeamOrder
 };
 /**
  * @description This function checks possibility to removing object.
