@@ -47,14 +47,14 @@ export default class Purchase extends Component {
   }
 
   subscribe() {
-    this.props.addOrderItem(this.props.user, 'Lunch', this.props.lunch, this.state.amount);
+    this.props.addOrderItem('Lunch', this.props.lunch, this.state.amount);
     this.props.showToast('Заказ добавлен в корзину. Выберите тариф по доставкам', 'accept', 'done');
     this.context.router.push('/tariffs');
     ga('Subscribe and buy');
   }
 
   buy() {
-    const { lunch, user } = this.props;
+    const { lunch } = this.props;
     const { amount } = this.state;
     fbEvent('track', 'AddToCart');
     if (this.props.lunchesAmount < 1 ) {
@@ -63,7 +63,7 @@ export default class Purchase extends Component {
       this.props.showToast('Заказ добавлен в корзину', 'accept', 'done');
       this.context.router.push('/');
     }
-    this.props.addOrderItem(user, 'Lunch', lunch, amount);
+    this.props.addOrderItem('Lunch', lunch, amount);
     this.setState({
       amount: 1
     });

@@ -1,6 +1,6 @@
 import without from 'lodash/without';
-import filter from 'lodash/filter';
 import some from 'lodash/some';
+import pick from 'lodash/pick';
 
 const ADD_ORDER_ITEM = 'purchase/ADD_ORDER_ITEM';
 const CHANGE_AMOUNT_ORDER_ITEM = 'purchase/CHANGE_AMOUNT_ORDER_ITEM';
@@ -17,7 +17,7 @@ const initialState = {
  * @returns {number}
  */
 function lunchesAmount(orderItems) {
-  return filter(orderItems, {resource_type: 'Lunch'}).length;
+  return orderItems.filter(items => (items.resource_type === 'Lunch' || items.resource_type === 'TeamOrder')).length;
 }
 
 export default function reducer(state = initialState, action = {}) {
@@ -112,19 +112,23 @@ export function orderItemStructure(type, resource, amount = 1) {
 }
 /**
  * @description This function adds new item to order list.
- * @param user
- * @param type Type of added item("Lunch" || "DeliveryTariffs")
+ * @param type Type of added item("Lunch" || "DeliveryTariffs" || "TeamOrder")
  * @param resource Resource of added item
  * @param amount Items amount
  * @returns {{type: string, payload: {orderItem: ({resource_type, resource_id, resource, amount}|{resource_type: *, resource_id: *, resource: *, amount: number})}}}
  */
-export function addOrderItem(user, type, resource, amount = 1) {
+export function addOrderItem(type, resource, amount = 1) {
   return {
     type: ADD_ORDER_ITEM,
     payload: {
       orderItem: orderItemStructure(type, resource, amount)
     }
   };
+}
+
+export function addTeamOrder(teamOrder) {
+  const preparedTeamOrder = {...teamOrder, ...pick(teamOrder.team_offer, ['cook', 'ready_by'])};
+  return addOrderItem('TeamOrder', preparedTeamOrder);
 }
 
 export function changeAmountOrderItem(id, type, amount = 1) {

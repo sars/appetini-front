@@ -9,6 +9,8 @@ import { setUser, setToken } from 'redux/modules/auth';
 import normalizeErrors from 'helpers/normalizeErrors';
 import fbEvent from 'components/fbEvent/fbEvent';
 import ga from 'components/GaEvent/ga';
+import filter from 'lodash/filter';
+import difference from 'lodash/difference';
 
 @asyncConnect([
   {key: 'tariffs', promise: ({helpers, store}) => {
@@ -19,7 +21,7 @@ import ga from 'components/GaEvent/ga';
 ])
 
 @connect(
-  state => ({orderItems: state.purchase.orderItems, user: state.auth.user}),
+  state => ({user: state.auth.user}),
   { createOrder, setUser, setToken, clearOrderItems, loadSuccess }
 )
 export default class Checkout extends Component {
@@ -35,7 +37,8 @@ export default class Checkout extends Component {
   };
 
   static contextTypes = {
-    router: PropTypes.object.isRequired
+    router: PropTypes.object.isRequired,
+    client: PropTypes.object.isRequired
   };
 
   state = {
@@ -48,12 +51,16 @@ export default class Checkout extends Component {
 
   createOrder(orderAttrs) {
     const { user } = this.props;
+    const teamOrderItems = filter(orderAttrs.order_items_attributes, {resource_type: 'TeamOrder'});
+    const itemsWithoutTeamOrders = difference(orderAttrs.order_items_attributes, teamOrderItems);
+
     return new Promise((resolve, reject) => {
       this.props.createOrder({
         ...orderAttrs,
+        team_order_ids: teamOrderItems.map(item => item.resource.id),
         location_attributes: orderAttrs.location,
         user_attributes: orderAttrs.user,
-        order_items_attributes: orderAttrs.order_items_attributes,
+        order_items_attributes: itemsWithoutTeamOrders,
         user_id: orderAttrs.user.id
       }).then(response => {
         const order = response.resource;
