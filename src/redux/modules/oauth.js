@@ -117,7 +117,7 @@ function pollPopup(popupWindow) {
       } catch (error) {
         // Ignore DOMException: Blocked a frame with origin from accessing a cross-origin frame.
       }
-    });
+    }, 100);
   });
 }
 
