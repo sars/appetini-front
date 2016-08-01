@@ -127,7 +127,7 @@ export default class LunchForm extends BaseLunchForm {
           {this.submitButton(sendLabel, submitting)}
           {fields.id.value &&
             <Link className={styles.cloneWrapper} to={'/admin/lunches/' + fields.id.value + '/clone'}>
-              <Button flat accent label="Клонировать"/>
+              <Button flat outlined label="Клонировать"/>
             </Link>
           }
         </div>
