@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Card, { CardContent } from 'components/Card/Card';
+import PurchaseLunch from 'components/PurchaseLunch/PurchaseLunch';
 import ToolboxDialog from 'react-toolbox/lib/dialog';
 import Button from 'components/Button/Button';
 import times from 'lodash/times';
@@ -150,14 +151,7 @@ export default class Purchase extends Component {
                 <div className={styles.timerWrapper}><OrderTimeout lunch={lunch} className={styles.timer}/></div>
               </div>
               }
-              {!disabled && hasDeliveries ?
-                  <div className={styles.buttonHint}>
-                    1 доставка будет списана при заказе с вашего счета
-                  </div> :
-                  <div className={styles.buttonHint}>+ стоимость доставки</div>
-                }
-              <Button disabled={disabled} className={classNames(styles.button, styles.buyButton)} big flat accent label="Заказать обед"
-                      onClick={::this.buy}/>
+              <PurchaseLunch disabled={disabled} onBuy={::this.buy} label="Заказать обед" hasDeliveries={hasDeliveries}/>
             </div>
           </CardContent>
 

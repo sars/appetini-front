@@ -6,6 +6,7 @@ import DatePicker from 'components/DatePicker/DatePicker';
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
 import { reduxForm } from 'redux-form';
+import Checkbox from 'react-toolbox/lib/checkbox';
 import { getCooks, getFoodPreferences } from 'redux/modules/common';
 import classNames from 'classnames';
 import styles from './styles.scss';
@@ -15,7 +16,7 @@ import BaseLunchForm from './BaseLunchForm';
 @reduxForm(
   {
     form: 'lunchForm',
-    fields: ['id', 'cook_id', 'available_count', 'photos_temp_image_ids', 'initial_price', 'accept_rules', 'description',
+    fields: ['id', 'cook_id', 'available_count', 'team', 'photos_temp_image_ids', 'initial_price', 'accept_rules', 'description',
       'dishes[].id', 'dishes[].name', 'dishes[].size', 'dishes[].dish_type', 'dishes[]._destroy',
       'removing_photos', 'food_preference_ids', 'ready_by_date', 'ready_by_time', 'dishes_count', 'photos', 'disable_minutes']
     // https://github.com/erikras/redux-form/issues/621
@@ -44,6 +45,7 @@ export default class LunchForm extends BaseLunchForm {
     handleSubmit: PropTypes.func.isRequired,
     error: PropTypes.object,
     acceptRules: PropTypes.bool,
+    team: PropTypes.bool,
     submitting: PropTypes.bool,
     title: PropTypes.string.isRequired,
     sendLabel: PropTypes.string.isRequired
@@ -110,6 +112,10 @@ export default class LunchForm extends BaseLunchForm {
         {this.photosField()}
         {this.dishesField()}
         {this.priceField()}
+        <div className={styles.section}>
+          <h3>Корпоративный</h3>
+          <Checkbox {...fields.team}/>
+        </div>
         <div className={styles.section}>
           <h3>Предпочтения</h3>
           <CheckButtonsGroup source={preferences} {...fields.food_preference_ids}/>

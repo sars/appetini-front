@@ -15,12 +15,13 @@ const TooltipLink = tooltip(Link);
 export default class Cook extends Component {
   static propTypes = {
     cook: PropTypes.object.isRequired,
-    lunch: PropTypes.object.isRequired,
+    resourceId: PropTypes.number,
+    resourceType: PropTypes.string,
     className: PropTypes.string
   };
 
   render() {
-    const {cook, cook: { user: { facebook, vkontakte, instagram } }, lunch, className} = this.props;
+    const {cook, cook: { user: { facebook, vkontakte, instagram } }, resourceType, resourceId, className} = this.props;
     return (
         <Card className={classNames(styles.root, className)}>
           <CardContent>
@@ -32,7 +33,7 @@ export default class Cook extends Component {
             </h3>
             <div className={styles.ratingContainer}>
               <StarRating name="cook-rating" totalStars={5} editing={false} rating={round(cook.rating)} size={18}/>
-              <Link className={styles.feedbackLink} to={`/lunches/${lunch.id}/reviews`}>
+              <Link className={styles.feedbackLink} to={`/${resourceType}/${resourceId}/reviews`}>
                 {cook.reviews_count}
                 &nbsp;
                 <FormattedPlural value={cook.reviews_count} one="отзыв" few="отзыва" many="отзывов" other="отзывов"/>

@@ -1,0 +1,38 @@
+.amountButton {
+  min-width: 4.4rem;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  text-align: center;
+
+  > span:first-child {
+    margin: 0;
+  }
+}
+
+.amountContainer {
+  margin-top: 1rem;
+}
+
+.amountText {
+  display: inline-block;
+  margin: 0 1rem  1rem 1rem;
+  color: #4a4a4a;
+  vertical-align: middle;
+  font-size: 2.4rem;
+}
+
+.avaliableAmount {
+  font-size: 1.3rem;
+  color: #888;
+}
+
+.amountLabel {
+  font-size: 1.7rem;
+
+  a {
+    color: inherit;
+    font-size: 1.4rem;
+    text-decoration: underline;
+  }
+}

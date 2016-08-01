@@ -1,0 +1,75 @@
+.amountCard {
+  text-align: center;
+  width: 250px;
+}
+
+.imagePreviewWrapper {
+  padding: 0.5rem 0 0 1rem;
+  width: 30%;
+  img {
+    max-width: 100%;
+    border-radius: 0.5rem;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+
+  & > div {
+    margin: 1%;
+  }
+}
+
+.infoCard {
+  width: 36%;
+}
+
+.descriptionWrapper {
+  color: #685c50;
+
+  .description {
+    padding: 5px 0;
+    display: block;
+  }
+}
+
+.cardContent {
+  padding-bottom: 0.3rem;
+  padding-top: 0.5rem;
+}
+
+.portionAmountHeader {
+  text-align: center;
+}
+
+@media (max-width: 963px) {
+  .portionAmountHeader {
+    text-align: center;
+  }
+
+  .container > div {
+    width: 70%;
+  }
+}
+
+@media (max-width: 529px) {
+  .container > div {
+    width: 90%;
+  }
+}
+
+.priceSection {
+  margin-top: 1rem;
+  color: #685c50;
+  font-size: 1.8rem;
+  font-weight: 500;
+
+  .price {
+    font-size: 3.6rem;
+  }
+}
