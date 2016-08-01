@@ -2,9 +2,9 @@ import React, { PropTypes, Component } from 'react';
 import Card from 'components/Card/Card';
 import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
 import StarRating from 'react-star-rating';
+import Feedback from 'components/Feedback/Feedback';
 import classNames from 'classnames';
 import { Link } from 'react-router';
-import { FormattedPlural } from 'react-intl';
 import Button from 'components/Button/Button';
 import styles from './styles.scss';
 import OrderTimeout from 'components/OrderTimeout/OrderTimeout';
@@ -77,11 +77,7 @@ export default class Lunch extends Component {
                   <div className={styles.rating}>
                     <StarRating className={styles.starRating} name="cook-rating" totalStars={5}
                                 editing={false} rating={cook.rating} size={12} />
-                  <span className={styles.feedback}>
-                    {cook.reviews_count}
-                    &nbsp;
-                    <FormattedPlural value={cook.reviews_count} one="отзыв" few="отзыва" many="отзывов" other="отзывов"/>
-                  </span>
+                    <Feedback reviewsCount={cook.reviews_count} className={styles.feedback}/>
                   </div>
                 </div>
               </div>

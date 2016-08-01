@@ -8,10 +8,7 @@ import { connect } from 'react-redux';
 import styles from './styles.scss';
 
 @asyncConnect([
-  {key: 'offers', promise: ({helpers}) => {
-    return helpers.client.get('/team_offers', {params: {page: 1, per_page: 10}})
-      .then(response => response);}
-  }
+  {key: 'offers', promise: ({helpers}) => helpers.client.get('/team_offers', {params: {page: 1, per_page: 10}})}
 ])
 @connect(null, { loadSuccess })
 export default class TeamOffers extends Component {
@@ -62,9 +59,9 @@ export default class TeamOffers extends Component {
 
     return (
       <ColumnLayout className={styles.root}>
-        <h1 className={styles.title}>Корпоративные заказы</h1>
-        <Boxes boxes={boxes}/>
-        {!allOffersLoaded &&
+        <h1 className={styles.title}>Корпоративные обеды</h1>
+        {offers.resources.length ? <Boxes boxes={boxes}/> : <h3 className={styles.title}>Нет корпоративных обедов</h3>}
+        {!allOffersLoaded && offers.resources.length &&
           <div className={styles.loadMoreWrapper}>
             <Button flat accent onClick={::this.loadMoreHandle} disabled={isInfiniteLoading}
                     label={isInfiniteLoading ? 'Загрузка...' : 'Посмотреть еще'}/>
