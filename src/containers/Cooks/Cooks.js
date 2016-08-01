@@ -5,15 +5,12 @@ import { loadSuccess } from 'redux-async-connect';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import StarRating from 'react-star-rating';
-import { FormattedPlural } from 'react-intl';
+import Feedback from 'components/Feedback/Feedback';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import styles from './styles.scss';
 
 @asyncConnect([
-  {key: 'cooks', promise: ({helpers}) => {
-    return helpers.client.get('/cooks', {params: {page: 1, per_page: 12}})
-      .then(response => response);}
-  }
+  {key: 'cooks', promise: ({helpers}) => {helpers.client.get('/cooks', {params: {page: 1, per_page: 12}});}}
 ])
 @connect(null, { loadSuccess })
 export default class Cooks extends Component {
@@ -70,12 +67,7 @@ export default class Cooks extends Component {
                         <StarRating name="cook-rating" totalStars={5}
                                     editing={false} rating={cook.rating} size={12}/>
                       </div>
-                      <div className={styles.feedback}>
-                        {cook.reviews_count}
-                        &nbsp;
-                        <FormattedPlural value={cook.reviews_count} one="отзыв" few="отзыва" many="отзывов"
-                                         other="отзывов"/>
-                      </div>
+                      <Feedback reviewsCount={cook.reviews_count} className={styles.feedback}/>
                     </div>
                   </Link>
                 </div>

@@ -9,3 +9,39 @@
     content: ', ';
   }
 }
+
+.readyBy {
+  color: #a4958b;
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: baseline;
+
+  > :global(.fa) {
+    display: none;
+  }
+
+  > [role="day"], > [role="date"] {
+    margin-right: 0.4rem;
+
+    &:after {
+      display: none;
+    }
+  }
+
+  > [role="day"] {
+    background-color: #958C82;
+    padding: 0 0.4rem;
+    line-height: 1.4em;
+    color: #E9E3DE;
+    border-radius: 2px;
+  }
+
+  > [role="date"] {
+    font-size: 0.8em;
+  }
+
+  > [role="time"] {
+    margin-left: auto;
+    font-weight: 500;
+  }
+}
