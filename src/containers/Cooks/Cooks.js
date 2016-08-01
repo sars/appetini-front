@@ -10,7 +10,7 @@ import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import styles from './styles.scss';
 
 @asyncConnect([
-  {key: 'cooks', promise: ({helpers}) => {helpers.client.get('/cooks', {params: {page: 1, per_page: 12}});}}
+  {key: 'cooks', promise: ({helpers}) => helpers.client.get('/cooks', {params: {page: 1, per_page: 12}})}
 ])
 @connect(null, { loadSuccess })
 export default class Cooks extends Component {
