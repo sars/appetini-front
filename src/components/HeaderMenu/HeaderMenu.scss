@@ -29,6 +29,25 @@
     }
   }
 
+  :global {
+    .tariffs {
+      position: initial;
+      display: none;
+
+      @media (min-width: 990px) {
+        &.long {
+          display: inline;
+        }
+      }
+
+      @media (max-width: 989px) {
+        &.short {
+          display: inline;
+        }
+      }
+    }
+  }
+
   &:hover span:after {
     background-color: #888;
   }

@@ -1,13 +1,15 @@
 import React, { PropTypes } from 'react';
 import times from 'lodash/times';
 import styles from './styles.scss';
+import classNames from 'classnames/bind';
 
-const Boxes = ({boxes}) => {
+const Boxes = ({boxes, cssClass}) => {
+  const cx = classNames.bind(styles);
   return (
     <div className={styles.root}>
       <div className={styles.boxesContent}>
         {boxes && boxes.map(({component, span = 1}, index) =>
-          <div className={styles.boxContainer} key={index} span={span}>
+          <div className={cx('boxContainer', cssClass, `box-number-${index}`)} key={index} span={span}>
             {component}
           </div>
         )}
@@ -18,7 +20,8 @@ const Boxes = ({boxes}) => {
 };
 
 Boxes.propTypes = {
-  boxes: PropTypes.array
+  boxes: PropTypes.array,
+  cssClass: PropTypes.string
 };
 
 export default Boxes;

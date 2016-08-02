@@ -115,7 +115,7 @@
   display: inline-block;
   margin: 0 0 0 1.5rem;
 }
-@media (min-width: 700px) {
+@media (min-width: 760px) {
   .root .desktopMenu {
     display: initial;
   }
@@ -136,13 +136,13 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 785px) {
   .brand {
     margin-right: 0;
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 925px) {
   .brandLabel {
     display: none;
   }

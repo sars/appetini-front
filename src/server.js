@@ -33,7 +33,7 @@ app.use(compression());
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.png')));
 
 app.use(Express.static(path.join(__dirname, '..', 'static')));
-app.use(Express.static(path.join(__dirname, '..', '..', 'appetini', 'public'))); //TODO fix for real situation
+app.use(Express.static(path.join(__dirname, '..', '..', 'appetini', 'public'))); // TODO fix for real situation
 
 app.use(cookieParser());
 
