@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import { Link } from 'react-router';
+import Button from 'components/Button/Button';
 import Helmet from 'react-helmet';
 import { asyncConnect } from 'redux-async-connect';
+import TeamOffer from 'components/TeamOffer/TeamOffer';
+import Boxes from 'components/Boxes/Boxes';
 
 import styles from './styles.scss';
 
@@ -11,6 +14,9 @@ function racKeyLoaded(store, key) {
 }
 
 @asyncConnect([
+  {key: 'offers', promise: ({helpers}) => {
+    return helpers.client.get('/team_offers', {params: {page: 1, per_page: 4}});
+  }},
   {key: 'preferences', promise: ({helpers, store}) => {
     if (!racKeyLoaded(store, 'preferences')) {
       return helpers.client.get('/food_preferences').then(data => {
@@ -21,15 +27,29 @@ function racKeyLoaded(store, key) {
 ])
 export default class Home extends Component {
   static propTypes = {
+    offers: PropTypes.object.isRequired,
     preferences: PropTypes.array.isRequired
   }
 
   render() {
-    const { preferences } = this.props;
+    const { offers, preferences } = this.props;
+    const boxes = offers.resources && [
+      ...offers.resources.map(offer => ({
+        component: <TeamOffer offer={offer}/>
+      }))
+    ];
+
     return (
       <ColumnLayout className={styles.root}>
+        {offers.resources.length && <div className={styles.teamOffersWrapper}>
+          <h1 className={styles.title}>Корпоративные обеды по 33грн</h1>
+          <Boxes boxes={boxes} cssClass="small-box"/>
+          <Link to="/team_offers">
+            <Button flat outlined label="Смотреть все"/>
+          </Link>
+        </div>}
         <Helmet title="Обеды"/>
-        <h1 className={styles.title}>Выберите категорию</h1>
+        <h1 className={styles.title}>Другие обеды</h1>
         <div className={styles.preferencesWrapper}>
           {preferences.map((preference, idx) => {
             return (

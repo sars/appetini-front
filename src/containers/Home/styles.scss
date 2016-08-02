@@ -10,13 +10,35 @@
   font-weight: 400;
 }
 
-.preferencesWrapper {
+.preferencesWrapper, .teamOffersWrapper {
   display: flex;
   max-width: 1200px;
   margin: 0 auto;
   flex-flow: row wrap;
   justify-content: space-around;
+}
 
+.teamOffersWrapper {
+  :global {
+    .small-box {
+      width: 290px;
+      max-width: 290px;
+
+      a {
+        width: 290px;
+        max-width: 290px;
+      }
+    }
+
+    @media (min-width: 958px) and (max-width: 1267px) {
+      .small-box.box-number-3 {
+        display: none;
+      }
+    }
+  }
+}
+
+.preferencesWrapper {
   .preferenceWrapper {
     width: 300px;
     margin-bottom: 30px;
@@ -67,7 +89,6 @@
     width: 50%;
   }
 }
-
 
 @media all and (max-width: 320px) {
   .preferencesWrapper .preferenceWrapper {

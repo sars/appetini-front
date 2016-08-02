@@ -17,7 +17,7 @@ const HeaderMenu = ({links, showActive, className}) => {
             activeClassName: showActive && styles.activeNavLink,
             className: styles.link
           },
-          <span>{link.label}</span>
+          <span dangerouslySetInnerHTML={{__html: link.label}}></span>
         );
       })}
     </Navigation>
