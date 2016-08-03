@@ -3,20 +3,21 @@ import Card from 'components/Card/Card';
 import Feedback from 'components/Feedback/Feedback';
 import StarRating from 'react-star-rating';
 import { FormattedPlural } from 'react-intl';
+import ItemDeliveryTime from 'components/ItemDeliveryTime/ItemDeliveryTime';
 import { Link } from 'react-router';
-import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
 import styles from './styles.scss';
 
 export default class TeamOffer extends Component {
   static propTypes = {
-    offer: PropTypes.object.isRequired
+    item: PropTypes.object.isRequired,
+    near: PropTypes.bool
   }
 
   render() {
-    const { offer } = this.props;
+    const offer = this.props.item;
     return (
       <Link to={`/team_offers/${offer.id}`} className={styles.teamOfferWrapper}>
-        <DeliveryPeriod className={styles.readyBy} time={offer.ready_by}/>
+        <ItemDeliveryTime near={this.props.near} item={offer}/>
         <Card className={styles.offerCard}>
           <div className={styles.imgWrapper}>
             <img src={offer.cook.main_photo.thumb.url} alt={offer.cook.full_name}/>

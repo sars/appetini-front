@@ -1,29 +1,25 @@
 import React, { PropTypes, Component } from 'react';
 import Card from 'components/Card/Card';
-import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
 import StarRating from 'react-star-rating';
 import Feedback from 'components/Feedback/Feedback';
+import ItemDeliveryTime from 'components/ItemDeliveryTime/ItemDeliveryTime';
 import classNames from 'classnames';
 import { Link } from 'react-router';
 import Button from 'components/Button/Button';
 import styles from './styles.scss';
-import OrderTimeout from 'components/OrderTimeout/OrderTimeout';
 import isLunchDisabled from 'helpers/isLunchDisabled';
-import Label from 'components/label/label';
-import tooltip from 'react-toolbox/lib/tooltip';
 import find from 'lodash/find';
 import { addOrderItem } from 'redux/modules/purchase';
 import { connect } from 'react-redux';
 import fbEvent from 'components/fbEvent/fbEvent';
 import { show as showToast } from 'redux/modules/toast';
 
-const TooltipLabel = tooltip(Label);
 
 @connect(state => ({lunchesAmount: state.purchase.lunchesAmount, orderItems: state.purchase.orderItems}), { addOrderItem, showToast })
 export default class Lunch extends Component {
   static propTypes = {
     className: PropTypes.string,
-    lunch: PropTypes.object,
+    item: PropTypes.object,
     near: PropTypes.bool,
     orderItems: PropTypes.array,
     addOrderItem: PropTypes.func.isRequired,
@@ -33,14 +29,15 @@ export default class Lunch extends Component {
 
   buy = (event) => {
     event.preventDefault();
-    const { lunch } = this.props;
+    const lunch = this.props.item;
     fbEvent('track', 'AddToCart');
     this.props.showToast('Заказ добавлен в корзину', 'accept', 'done');
     this.props.addOrderItem('Lunch', lunch, 1);
   };
 
   render() {
-    const {className, lunch, near, orderItems} = this.props;
+    const {className, near, orderItems} = this.props;
+    const lunch = this.props.item;
     const lunchInCart = find(orderItems, {resource_id: lunch.id});
     const { cook } = lunch;
     const availableCount = lunchInCart ? (lunch.available_count - lunchInCart.amount) : lunch.available_count;
@@ -49,14 +46,7 @@ export default class Lunch extends Component {
 
     return (
         <Link to={`/lunches/${lunch.id}`} className={classNames(styles.root, className, {[styles.disabled]: disabled}, styles.animated, styles.fadeInUp)}>
-          {!near &&
-          (disabled ?
-            <span className={styles.orderTimeoutWrapper}>
-              <TooltipLabel tooltip="Этот обед уже нельзя заказать" label={disabledByTime ? 'Время до заказа истекло' : 'Порции закончились'}/>
-            </span> :
-            <DeliveryPeriod className={styles.readyBy} time={lunch.ready_by}/>)
-          }
-          {near && <span className={styles.orderTimeoutWrapper}>До окончания заказа: <OrderTimeout className={styles.timer} lunch={lunch}/></span>}
+          <ItemDeliveryTime near={near} disabled={disabled} disabledByTime={disabledByTime} item={lunch}/>
           <Card className={styles.card}>
             <div className={styles.photoWrapper}>
               <img className={styles.photo} src={lunch.photos[0].thumb.url} />
