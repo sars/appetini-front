@@ -140,7 +140,7 @@ export default class TeamOffers extends Component {
               <Card className={classnames(styles.countCard, styles.card)}>
                 <div>
                   <div className={styles.count}><strong>{teamOrderAmount}/{offer.min_lunches_amount}</strong> порций</div>
-                  <div><span className={styles.cost}>{totalPrice}</span> грн.</div>
+                  <div><span className={styles.cost}>{totalPrice}</span> грн</div>
                 </div>
               </Card>
               <Card className={classnames(styles.purchaseCard, styles.card)}>

@@ -65,7 +65,7 @@ export default class CookOrderPreview extends Component {
                           <ImagesPreview images={orderItem.resource.photos} currentImageId={0}/>
                         </div>
                       </td>
-                      <td>{orderItem.resource.initial_price * orderItem.amount} грн.</td>
+                      <td>{orderItem.resource.initial_price * orderItem.amount} грн</td>
                       <td>{orderItem.amount}</td>
                       {showOrderLink && <td><Link to={`/orders/${orderItem.order_id}`}><Button flat accent label="Заказ"/></Link></td>}
                     </tr>);
@@ -75,7 +75,7 @@ export default class CookOrderPreview extends Component {
                 <tr>
                   <td colSpan="4"/>
                   <td colSpan="2">Общая стоимость: </td>
-                  <td colSpan={showOrderLink ? 3 : 1}>{this.totalPrice()} грн.</td>
+                  <td colSpan={showOrderLink ? 3 : 1}>{this.totalPrice()} грн</td>
                 </tr>
               </tbody>
             </table>

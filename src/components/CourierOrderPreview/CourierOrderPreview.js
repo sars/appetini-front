@@ -96,7 +96,7 @@ export default class CourierOrderPreview extends Component {
               </div>
               <div className={courierStyles.modalField}>
                 <span>Общая цена: </span>
-                <strong>{selectedOrder.total_price} грн.</strong>
+                <strong>{selectedOrder.total_price} грн</strong>
               </div>
 
               <div className={courierStyles.modalItems}>
@@ -171,7 +171,7 @@ export default class CourierOrderPreview extends Component {
                           <div>{item.amount}</div>
                         </td>
                         {index === 0 && <td rowSpan={order.order_items.length}>{order.payment_type}</td>}
-                        {index === 0 && <td rowSpan={order.order_items.length}>{order.total_price} грн.</td>}
+                        {index === 0 && <td rowSpan={order.order_items.length}>{order.total_price} грн</td>}
                         {index === 0 && showOrderLink &&
                           <td rowSpan={order.order_items.length}>
                             <Link to={`/orders/${order.id}`}>Заказ</Link>
@@ -185,7 +185,7 @@ export default class CourierOrderPreview extends Component {
                       <td onClick={() => this.handleClickOrder(order, true)}>{order.id}</td>
                       <td>{payedCheckbox(order)}</td>
                       <td onClick={() => this.handleClickOrder(order, true)}>{order.location.full_address}{order.location.description && ` (${order.location.description})`}</td>
-                      <td onClick={() => this.handleClickOrder(order, true)}>{order.total_price} грн.</td>
+                      <td onClick={() => this.handleClickOrder(order, true)}>{order.total_price} грн</td>
                     </tr>
                   </tbody>
                 ]);
@@ -194,8 +194,8 @@ export default class CourierOrderPreview extends Component {
                 <tr>
                   <td colSpan="6" className={styles.hiddenXs}/>
                   <td colSpan="2">Общая сумма: </td>
-                  <td colSpan={showOrderLink ? 4 : 3} className={styles.hiddenXs}>{this.totalPrice(orders)} грн.</td>
-                  <td colSpan="3" className={styles.showXs}>{this.totalPrice(orders)} грн.</td>
+                  <td colSpan={showOrderLink ? 4 : 3} className={styles.hiddenXs}>{this.totalPrice(orders)} грн</td>
+                  <td colSpan="3" className={styles.showXs}>{this.totalPrice(orders)} грн</td>
                 </tr>
               </tbody>
             </table>

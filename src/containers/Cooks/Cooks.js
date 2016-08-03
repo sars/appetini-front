@@ -18,15 +18,15 @@ export default class Cooks extends Component {
   static propTypes = {
     cooks: PropTypes.object.isRequired,
     loadSuccess: PropTypes.func.isRequired
-  }
+  };
 
   static contextTypes = {
     client: PropTypes.object.isRequired
-  }
+  };
 
   state = {
     page: 1
-  }
+  };
 
   loadMoreHandle = () => {
     const { cooks } = this.props;
@@ -35,6 +35,7 @@ export default class Cooks extends Component {
     this.setState({
       isInfiniteLoading: true
     });
+
     this.context.client.get('/cooks', {params})
       .then(cooksFromServer => {
         const newCooks = {...cooks, resources: [...cooks.resources, ...cooksFromServer.resources]};

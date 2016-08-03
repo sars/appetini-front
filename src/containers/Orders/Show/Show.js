@@ -66,7 +66,7 @@ export default class AdminOrdersShow extends Component {
               return (
                 <div key={idx} className={styles.commonField}>
                   <span>{item.resource.individual ? 'Индивидуальная доставка ' : 'Тариф ' + item.resource.amount + ' доставок'}({item.amount}): </span>
-                  <strong>{item.amount * item.resource.price} грн.</strong>
+                  <strong>{item.amount * item.resource.price} грн</strong>
                 </div>
               );
             }
@@ -113,7 +113,7 @@ export default class AdminOrdersShow extends Component {
                           </div>
                         </td>
                         <td>
-                          {item.resource.price * item.amount} грн.
+                          {item.resource.price * item.amount} грн
                         </td>
                         <td>
                           <div>{item.amount}</div>
