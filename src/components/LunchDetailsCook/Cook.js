@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import Button from 'components/Button/Button';
 import Card, { CardContent } from 'components/Card/Card';
 import SocialButton from 'components/SocialButton/SocialButton';
 import StarRating from 'react-star-rating';
@@ -76,6 +77,10 @@ export default class Cook extends Component {
                                             href={'http://instagram.com/' + instagram}/>}
               </div>
             </div>}
+
+            <Link to={`/lunches?cook_id="${cook.id}"`}>
+              <Button flat outlined label={`Все обеды ${cook.full_name_genetive}`}/>
+            </Link>
           </CardContent>
         </Card>
     );

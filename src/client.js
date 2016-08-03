@@ -19,7 +19,9 @@ const client = new ApiClient();
 
 const history = useScroll(() => browserHistory)();
 const dest = document.getElementById('content');
-const store = createStore(history, client, window.__data);
+const memorizedStoreBranchesFromLS = window.localStorage.getItem('memorizedStoreBranches');
+const memorizedStoreBranches = memorizedStoreBranchesFromLS ? JSON.parse(memorizedStoreBranchesFromLS) : {};
+const store = createStore(history, client, {...window.__data, ...memorizedStoreBranches});
 client.setStore(store);
 
 history.listenBefore(() => {

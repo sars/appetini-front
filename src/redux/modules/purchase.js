@@ -20,7 +20,7 @@ function lunchesAmount(orderItems) {
   return orderItems.filter(items => (items.resource_type === 'Lunch' || items.resource_type === 'TeamOrder')).length;
 }
 
-export default function reducer(state = initialState, action = {}) {
+const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case ADD_ORDER_ITEM: {
       /**
@@ -48,6 +48,7 @@ export default function reducer(state = initialState, action = {}) {
         lunchesAmount: lunchesAmount(newOrderItems)
       };
     }
+
     case CHANGE_AMOUNT_ORDER_ITEM: {
       /**
        * @description This is new state of order list, when user change amount of lunch from cart.
@@ -94,7 +95,17 @@ export default function reducer(state = initialState, action = {}) {
     default:
       return state;
   }
-}
+};
+
+const memorizeToLocalStorage = (state = initialState, action = {}) => {
+  const newState = reducer(state, action);
+  if (newState !== state) {
+    window.localStorage.setItem('memorizedStoreBranches', JSON.stringify({purchase: newState}));
+  }
+  return newState;
+};
+
+export default memorizeToLocalStorage;
 /**
  * @description This function creates structure of last added item to cart.
  * @param type Type of added item("Lunch" || "DeliveryTariffs")
