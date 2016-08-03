@@ -1,14 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import { asyncConnect, loadSuccess } from 'redux-async-connect';
-import TeamOffer from 'components/TeamOffer/TeamOffer';
-import Boxes from 'components/Boxes/Boxes';
+import LunchesPage from 'components/LunchesPage/LunchesPage';
 import Button from 'components/Button/Button';
 import { connect } from 'react-redux';
 import styles from './styles.scss';
 
 @asyncConnect([
-  {key: 'offers', promise: ({helpers}) => helpers.client.get('/team_offers', {params: {page: 1, per_page: 10}})}
+  {key: 'offers', promise: ({helpers}) => helpers.client.get('/team_offers', {params: {page: 1, per_page: 20}})}
 ])
 @connect(null, { loadSuccess })
 export default class TeamOffers extends Component {
@@ -30,7 +29,7 @@ export default class TeamOffers extends Component {
     const page = (this.state.page || 1) + 1;
     const params = {
       page: page,
-      per_page: 10
+      per_page: 20
     };
 
     this.setState({
@@ -51,16 +50,14 @@ export default class TeamOffers extends Component {
     const { offers } = this.props;
     const { isInfiniteLoading } = this.state;
     const allOffersLoaded = offers.resources.length >= offers.meta.total;
-    const boxes = offers.resources && [
-      ...offers.resources.map(offer => ({
-        component: <TeamOffer offer={offer}/>
-      }))
-    ];
+    const items = offers.resources.map(offer => {
+      return {...offer, component: 'TeamOffer'};
+    });
 
     return (
       <ColumnLayout className={styles.root}>
         <h1 className={styles.title}>Корпоративные обеды</h1>
-        {offers.resources.length ? <Boxes boxes={boxes}/> : <h3 className={styles.title}>Нет корпоративных обедов</h3>}
+        {items.length ? <LunchesPage items={items}/> : <h3 className={styles.title}>Нет корпоративных обедов</h3>}
         {!allOffersLoaded && offers.resources.length &&
           <div className={styles.loadMoreWrapper}>
             <Button flat accent onClick={::this.loadMoreHandle} disabled={isInfiniteLoading}

@@ -4,7 +4,7 @@ import padStart from 'lodash/padStart';
 
 export default class OrderTimeout extends Component {
   static propTypes = {
-    lunch: PropTypes.object,
+    item: PropTypes.object,
     className: PropTypes.string
   }
 
@@ -25,7 +25,7 @@ export default class OrderTimeout extends Component {
   }
 
   getTime() {
-    const time = moment.duration(moment(this.props.lunch.ready_by).subtract(this.props.lunch.disable_minutes, 'minutes').diff(moment()));
+    const time = moment.duration(moment(this.props.item.ready_by).subtract(this.props.item.disable_minutes, 'minutes').diff(moment()));
     const showTimer = Math.floor(time.asHours()) < 24;
     const timeCheck = (int) => {
       if (int >= 0) {
