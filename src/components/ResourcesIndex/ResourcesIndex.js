@@ -82,7 +82,7 @@ export default class ResourcesIndex extends Component {
                   customActions && customActions.map((custom, idx) => {
                     return (
                       <div key={idx} className={styles.action}>
-                        <Button onClick={() => custom.action(resource.id)} flat accent label={custom.title}/>
+                        <Button onClick={() => custom.action(resource.id)} flat accent label={custom.title} disabled={custom.isDisabled(resource)}/>
                       </div>
                     );
                   })

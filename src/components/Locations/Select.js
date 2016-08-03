@@ -18,6 +18,13 @@ export default class LocationsSelect extends Component {
     this.state = {value: 'none', list: this.convertDropdownList(props.locations)};
   }
 
+  componentWillMount() {
+    const location = this.props.location;
+    if (location) {
+      this.onChoose(location.place_id);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     this.setState({list: this.convertDropdownList(nextProps.locations)});
   }

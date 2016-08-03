@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import styles from './styles.scss';
 import OrderForm from 'components/OrderForm/OrderForm';
 import { asyncConnect, loadSuccess } from 'redux-async-connect';
-import { clearOrderItems } from 'redux/modules/purchase';
+import { clearOrderItems, clearOrder } from 'redux/modules/purchase';
 import { connect } from 'react-redux';
-import { createOrder } from 'redux/modules/common';
+import { createOrder, updateOrder } from 'redux/modules/common';
 import { setUser, setToken } from 'redux/modules/auth';
 import normalizeErrors from 'helpers/normalizeErrors';
 import fbEvent from 'components/fbEvent/fbEvent';
@@ -21,8 +21,8 @@ import difference from 'lodash/difference';
 ])
 
 @connect(
-  state => ({user: state.auth.user}),
-  { createOrder, setUser, setToken, clearOrderItems, loadSuccess }
+  state => ({ user: state.auth.user }),
+  { createOrder, updateOrder, setUser, setToken, clearOrder, clearOrderItems, loadSuccess }
 )
 export default class Checkout extends Component {
 
@@ -32,6 +32,8 @@ export default class Checkout extends Component {
     loadSuccess: PropTypes.func.isRequired,
     setUser: PropTypes.func.isRequired,
     clearOrderItems: PropTypes.func.isRequired,
+    clearOrder: PropTypes.func.isRequired,
+    updateOrder: PropTypes.func.isRequired,
     user: PropTypes.object,
     setToken: PropTypes.func.isRequired
   };
@@ -49,13 +51,15 @@ export default class Checkout extends Component {
     fbEvent('track', 'InitiateCheckout');
   }
 
-  createOrder(orderAttrs) {
+  saveOrder(orderAttrs) {
     const { user } = this.props;
     const teamOrderItems = filter(orderAttrs.order_items_attributes, {resource_type: 'TeamOrder'});
     const itemsWithoutTeamOrders = difference(orderAttrs.order_items_attributes, teamOrderItems);
 
     return new Promise((resolve, reject) => {
-      this.props.createOrder({
+      const saveOrder = orderAttrs.id ? this.props.updateOrder : this.props.createOrder;
+
+      saveOrder({
         ...orderAttrs,
         team_order_ids: teamOrderItems.map(item => item.resource.id),
         location_attributes: orderAttrs.location,
@@ -64,7 +68,7 @@ export default class Checkout extends Component {
         user_id: orderAttrs.user.id
       }).then(response => {
         const order = response.resource;
-        fbEvent('track', 'Purchase', {value: order.total_price.toString(), currency: 'USD'});
+        fbEvent('track', orderAttrs.id ? 'Update Order' : 'Purchase', {value: order.total_price.toString(), currency: 'USD'});
         // TODO this.props.loginSuccess(response) instead of setUser and setToken
         if (user && order.user.id === user.id || !user) {
           this.props.setUser({...user, deliveries_available: order.user.deliveries_available});
@@ -74,6 +78,7 @@ export default class Checkout extends Component {
         }
 
         this.props.clearOrderItems();
+        this.props.clearOrder();
         this.props.loadSuccess('lunch', undefined);
         this.setState({order});
 
@@ -95,11 +100,10 @@ export default class Checkout extends Component {
 
   render() {
     const { order } = this.state;
-    const initialOrderValues = {...order};
 
     return (
       <div className={styles.root}>
-        <OrderForm tariffs={this.props.tariffs} initialValues={initialOrderValues} onSubmit={::this.createOrder}/>
+        <OrderForm tariffs={this.props.tariffs} onSubmit={::this.saveOrder}/>
         {order &&
         <form ref="payForm" method="post" action="https://www.liqpay.com/api/3/checkout" acceptCharset="utf-8">
           <input type="hidden" name="data" value={order.liqpay_data.data}/>
