@@ -9,8 +9,9 @@ import Feedback from 'components/Feedback/Feedback';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import styles from './styles.scss';
 
+const perPage = 12;
 @asyncConnect([
-  {key: 'cooks', promise: ({helpers}) => helpers.client.get('/cooks', {params: {page: 1, per_page: 12}})}
+  {key: 'cooks', promise: ({helpers}) => helpers.client.get('/cooks', {params: {page: 1, per_page: perPage}})}
 ])
 @connect(null, { loadSuccess })
 export default class Cooks extends Component {
@@ -30,10 +31,7 @@ export default class Cooks extends Component {
   loadMoreHandle = () => {
     const { cooks } = this.props;
     const { page } = this.state;
-    const params = {
-      'per_page': 12,
-      'page': page
-    };
+    const params = { per_page: perPage, page: page + 1 };
     this.setState({
       isInfiniteLoading: true
     });
@@ -42,7 +40,7 @@ export default class Cooks extends Component {
         const newCooks = {...cooks, resources: [...cooks.resources, ...cooksFromServer.resources]};
         this.props.loadSuccess('cooks', newCooks);
         this.setState({
-          page: page,
+          page: page + 1,
           isInfiniteLoading: false
         });
       });

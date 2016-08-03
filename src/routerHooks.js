@@ -1,6 +1,5 @@
 import { setUser } from 'redux/modules/auth';
 import { show as showToast, close as closeToast } from 'redux/modules/toast';
-import lodashGet from 'lodash/get';
 
 export default function hooks({dispatch, getState}, client) {
   return {
@@ -32,7 +31,7 @@ export default function hooks({dispatch, getState}, client) {
 
     checkCurrentCook: ({params: { cookId }}, replaceState) => {
       const { user } = getState().auth;
-      if (user && user.cook && lodashGet(user, 'cook.id') !== parseInt(cookId, 10)) {
+      if (user && user.cook && user.cook.id !== parseInt(cookId, 10)) {
         replaceState(`/cooks/${user.cook.id}/draft_lunches`);
       }
     },

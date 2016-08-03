@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import Button from 'components/Button/Button';
 import styles from './styles.scss';
+import ReactPagination from 'components/Pagination/Pagination';
 
 const fieldTypes = {
   label: value => value,
@@ -19,6 +20,7 @@ export default class ResourcesIndex extends Component {
     resources: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
     createTitle: PropTypes.string,
+    pagination: PropTypes.object,
     customActions: PropTypes.array,
     defaultActions: PropTypes.array,
     urlName: PropTypes.string.isRequired,
@@ -34,8 +36,18 @@ export default class ResourcesIndex extends Component {
     this.context.router.push(`${this.props.urlName}/new`);
   }
 
+  changePage(page) {
+    const { router } = this.context;
+    const { urlName, pagination } = this.props;
+    const query = { page: Number(page.selected) + 1, per_page: pagination.perPage };
+    router.push({
+      pathname: urlName,
+      query
+    });
+  }
+
   render() {
-    const { resources, title, createTitle, fields, urlName, customActions, defaultActions } = this.props;
+    const { resources, title, createTitle, fields, urlName, customActions, defaultActions, pagination } = this.props;
     return (
       <div className={styles.root}>
         <div className={styles.firstLine}>
@@ -80,6 +92,10 @@ export default class ResourcesIndex extends Component {
           )}
           </tbody>
         </table>
+        {pagination && pagination.resourcesCount > pagination.perPage &&
+        <div className={styles.pageWrapper}>
+          <ReactPagination pagination={pagination} changePage={::this.changePage}/>
+        </div>}
       </div>
     );
   }
