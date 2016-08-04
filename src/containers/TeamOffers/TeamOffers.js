@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import styles from './styles.scss';
 
 @asyncConnect([
-  {key: 'offers', promise: ({helpers}) => helpers.client.get('/team_offers', {params: {page: 1, per_page: 20}})}
+  {key: 'offers', promise: ({helpers}) => helpers.client.get('/team_offers', {params: {page: 1, per_page: 20, disable_by_gt: new Date}})}
 ])
 @connect(null, { loadSuccess })
 export default class TeamOffers extends Component {
@@ -29,7 +29,8 @@ export default class TeamOffers extends Component {
     const page = (this.state.page || 1) + 1;
     const params = {
       page: page,
-      per_page: 20
+      per_page: 20,
+      disable_by_gt: new Date
     };
 
     this.setState({
