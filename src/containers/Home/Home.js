@@ -35,7 +35,7 @@ export default class Home extends Component {
     const { offers, preferences } = this.props;
     const boxes = offers.resources && [
       ...offers.resources.map(offer => ({
-        component: <TeamOffer item={offer}/>
+        component: <TeamOffer item={offer} near={true}/>
       }))
     ];
 
