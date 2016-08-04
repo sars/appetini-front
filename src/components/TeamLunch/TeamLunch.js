@@ -42,7 +42,7 @@ export default class TeamLunch extends Component {
               <h3 className={styles.portionAmountHeader}>Добавьте порции</h3>
               <PortionManipulate availableCount={lunch.available_count} amount={amount} onChangeAmount={::this.changeAmountHandle} />
               <div className={styles.priceSection}>
-                <span className={styles.price}>{lunch.price}</span>грн
+                <span className={styles.price}>{Number(lunch.price)}</span>грн
               </div>
             </CardContent>
         </div>

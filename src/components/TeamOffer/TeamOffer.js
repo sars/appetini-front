@@ -7,6 +7,8 @@ import ItemDeliveryTime from 'components/ItemDeliveryTime/ItemDeliveryTime';
 import { Link } from 'react-router';
 import isLunchDisabled from 'helpers/isLunchDisabled';
 import styles from './styles.scss';
+import classNames from 'classnames';
+import sumBy from 'lodash/sumBy';
 
 export default class TeamOffer extends Component {
   static propTypes = {
@@ -17,9 +19,11 @@ export default class TeamOffer extends Component {
   render() {
     const offer = this.props.item;
     const disabledByTime = isLunchDisabled(offer).byTime;
+    const availableCount = sumBy(offer.lunches, lunch => lunch.available_count);
+    const disabled = disabledByTime || availableCount < offer.min_lunches_amount;
     return (
-      <Link to={`/team_offers/${offer.id}`} className={styles.teamOfferWrapper}>
-        <ItemDeliveryTime disabled={disabledByTime} disabledByTime={disabledByTime} near={this.props.near} item={offer}/>
+      <Link to={`/team_offers/${offer.id}`} className={classNames(styles.teamOfferWrapper, {[styles.disabled]: disabled})}>
+        <ItemDeliveryTime disabled={disabled} disabledByTime={disabledByTime} near={this.props.near} item={offer}/>
         <Card className={styles.offerCard}>
           <div className={styles.imgWrapper}>
             <img src={offer.cook.main_photo.thumb.url} alt={offer.cook.full_name}/>
@@ -33,7 +37,9 @@ export default class TeamOffer extends Component {
               </div>
               <Feedback reviewsCount={offer.cook.reviews_count} className={styles.feedback}/>
             </div>
-            <div>От <strong>{offer.min_lunches_amount}</strong> <FormattedPlural value={offer.min_lunches_amount} one="порция" few="порции" many="порций" other="порций"/></div>
+            <div>
+              От <strong>{offer.min_lunches_amount}</strong> <FormattedPlural value={offer.min_lunches_amount} one="порции" few="порций" many="порций" other="порций"/> по <strong>{Number(offer.price)}</strong> грн
+            </div>
           </div>
         </Card>
       </Link>

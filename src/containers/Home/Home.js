@@ -41,7 +41,7 @@ export default class Home extends Component {
 
     return (
       <ColumnLayout className={styles.root}>
-        {offers.resources.length && <div className={styles.teamOffersWrapper}>
+        {!!offers.resources.length && <div className={styles.teamOffersWrapper}>
           <h1 className={styles.title}>Корпоративные обеды по 33грн</h1>
           <Boxes boxes={boxes} cssClass="small-box"/>
           <Link to="/team_offers">
@@ -65,6 +65,9 @@ export default class Home extends Component {
               </div>
             );
           })}
+          <Link to="/lunches">
+            <Button flat outlined label="Смотреть все"/>
+          </Link>
         </div>
       </ColumnLayout>
     );

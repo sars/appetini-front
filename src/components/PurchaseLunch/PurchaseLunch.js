@@ -8,7 +8,7 @@ export default class PurchaseLunch extends Component {
     disabled: PropTypes.bool.isRequired,
     onBuy: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
-    hasDeliveries: PropTypes.bool.isRequired,
+    hasDeliveries: PropTypes.bool,
     className: PropTypes.any
   }
 
