@@ -5,6 +5,7 @@ import StarRating from 'react-star-rating';
 import { FormattedPlural } from 'react-intl';
 import ItemDeliveryTime from 'components/ItemDeliveryTime/ItemDeliveryTime';
 import { Link } from 'react-router';
+import isLunchDisabled from 'helpers/isLunchDisabled';
 import styles from './styles.scss';
 
 export default class TeamOffer extends Component {
@@ -15,9 +16,10 @@ export default class TeamOffer extends Component {
 
   render() {
     const offer = this.props.item;
+    const disabledByTime = isLunchDisabled(offer).byTime;
     return (
       <Link to={`/team_offers/${offer.id}`} className={styles.teamOfferWrapper}>
-        <ItemDeliveryTime near={this.props.near} item={offer}/>
+        <ItemDeliveryTime disabled={disabledByTime} disabledByTime={disabledByTime} near={this.props.near} item={offer}/>
         <Card className={styles.offerCard}>
           <div className={styles.imgWrapper}>
             <img src={offer.cook.main_photo.thumb.url} alt={offer.cook.full_name}/>
