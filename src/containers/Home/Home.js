@@ -15,7 +15,7 @@ function racKeyLoaded(store, key) {
 
 @asyncConnect([
   {key: 'offers', promise: ({helpers}) => {
-    return helpers.client.get('/team_offers', {params: {page: 1, per_page: 4}});
+    return helpers.client.get('/team_offers', {params: {page: 1, per_page: 4, disable_by_gt: new Date}});
   }},
   {key: 'preferences', promise: ({helpers, store}) => {
     if (!racKeyLoaded(store, 'preferences')) {
