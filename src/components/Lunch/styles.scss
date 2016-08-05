@@ -67,7 +67,9 @@
 .root {
   transition: box-shadow 0.3s ease, opacity 0.5s ease, transform3d 0.5s ease;
   cursor: pointer;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   color: #000;
 
   [data-react-toolbox="avatar"] {
@@ -94,28 +96,32 @@
   }
 }
 
-.card:hover {
-  box-shadow: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 78, 47, 0.12), 0 5px 5px -3px rgba(109, 78, 47, 0.2);
+.card {
+  flex: 1;
 
-  .photo {
-    transform: rotate(4deg) scale(1.2, 1.2);
-  }
+  &:hover {
+    box-shadow: 0 8px 10px 1px rgba(109, 78, 47, 0.14), 0 3px 14px 2px rgba(109, 78, 47, 0.12), 0 5px 5px -3px rgba(109, 78, 47, 0.2);
 
-  .dish {
-    transform: translateX(0);
-  }
+    .photo {
+      transform: rotate(4deg) scale(1.2, 1.2);
+    }
 
-  .cookInfo {
-    transform: translateX(calc(-100% - 15px));
-  }
+    .dish {
+      transform: translateX(0);
+    }
 
-  .buyBtnWrapper .buyBtn {
-    pointer-events: all;
-    transform: translateX(0);
-  }
+    .cookInfo {
+      transform: translateX(calc(-100% - 15px));
+    }
 
-  .price {
-    transform: translateX(calc(-260px + 100%));
+    .buyBtnWrapper .buyBtn {
+      pointer-events: all;
+      transform: translateX(0);
+    }
+
+    .price {
+      transform: translateX(calc(-260px + 100%));
+    }
   }
 }
 
