@@ -148,7 +148,7 @@ export default class Purchase extends Component {
               {isToday && !disabled &&
               <div className={styles.timerSection}>
                 До конца заказа осталось:
-                <div className={styles.timerWrapper}><OrderTimeout lunch={lunch} className={styles.timer}/></div>
+                <div className={styles.timerWrapper}><OrderTimeout item={lunch} className={styles.timer}/></div>
               </div>
               }
               <PurchaseLunch disabled={disabled} onBuy={::this.buy} label="Заказать обед" hasDeliveries={hasDeliveries}/>
