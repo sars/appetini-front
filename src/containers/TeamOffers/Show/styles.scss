@@ -36,7 +36,7 @@
 
       .card {
         flex: 1;
-        height: 140px;
+        height: 170px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -59,6 +59,17 @@
       .countCard {
         margin-right: 1rem;
         font-size: 1.8rem;
+
+        .orderCount {
+          color: #de3226;
+        }
+        .amountLabel {
+          padding-top: 1rem;
+          a {
+            color: #000;
+            text-decoration: underline;
+          }
+        }
         .count {
           margin-bottom: 0.5rem;
         }

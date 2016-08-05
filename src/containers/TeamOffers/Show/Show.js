@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import { asyncConnect } from 'redux-async-connect';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import Card from 'components/Card/Card';
 import classnames from 'classnames';
 import Reviews from 'components/Reviews/Reviews';
@@ -10,12 +11,15 @@ import TeamLunch from 'components/TeamLunch/TeamLunch';
 import CookPreview from 'components/LunchDetailsCook/Preview/Preview';
 import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
 import Cook from 'components/LunchDetailsCook/Cook';
+import OrderTimeoutStyled from 'components/OrderTimeout/OrderTimeoutStyled';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { getReviews } from 'redux/modules/common';
 import find from 'lodash/find';
 import without from 'lodash/without';
 import sumBy from 'lodash/sumBy';
 import forIn from 'lodash/forIn';
+import moment from 'moment';
+import isLunchDisabled from 'helpers/isLunchDisabled';
 import { addTeamOrder } from 'redux/modules/purchase';
 import { show as showToast } from 'redux/modules/toast';
 import PurchaseLunch from 'components/PurchaseLunch/PurchaseLunch';
@@ -113,7 +117,11 @@ export default class TeamOffers extends Component {
     const lunchesInTeamOrder = teamOrder.order_items_attributes;
     const teamOrderAmount = sumBy(lunchesInTeamOrder, (lunchInOrder) => lunchInOrder.amount);
     const totalPrice = sumBy(lunchesInTeamOrder, lunch => lunch.price * lunch.amount);
-    const disabled = teamOrderAmount < offer.min_lunches_amount || !lunchesInTeamOrder.length;
+    const disableByCount = sumBy(offer.lunches, lunch => lunch.available_count) < offer.min_lunches_amount;
+    const disabledByTime = isLunchDisabled(offer).byTime;
+    const orderAllowed = teamOrderAmount < offer.min_lunches_amount;
+    const disabled = disableByCount || disabledByTime;
+    const isToday = moment(offer.ready_by).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
     return (
       <ColumnLayout className={styles.root}>
         <Modal.Dialog active={isReviews(location)} title="Отзывы о кулинаре" onClose={::this.handleReviewsClose}>
@@ -138,14 +146,21 @@ export default class TeamOffers extends Component {
             </div>
             <div className={styles.countAndPurchase}>
               <Card className={classnames(styles.countCard, styles.card)}>
-                <div>
-                  <div className={styles.count}><strong>{teamOrderAmount}/{offer.min_lunches_amount}</strong> порций</div>
-                  <div><span className={styles.cost}>{totalPrice}</span> грн</div>
+                {disabled && <div>
+                  <div>{disabledByTime ? 'Время до заказа истекло' : 'Не достаточно доступных порций'}</div>
+                  <div className={styles.amountLabel}><Link to="/team_offers">Закажите доступный корпоративный обед</Link></div>
                 </div>
+                }
+                {!disabled && <div>
+                  <div className={styles.count}>Минимум порций для заказа: <strong>{offer.min_lunches_amount}</strong></div>
+                  <div className={classnames({[styles.orderCount]: orderAllowed})}>Заказано: <strong>{teamOrderAmount}</strong></div>
+                  <div><span className={styles.cost}>{totalPrice}</span> грн</div>
+                </div>}
               </Card>
               <Card className={classnames(styles.purchaseCard, styles.card)}>
                 <div>
-                  <PurchaseLunch disabled={disabled} onBuy={::this.buy} label="Заказать" hasDeliveries={hasDeliveries}/>
+                  {isToday && !disabled && <OrderTimeoutStyled item={offer}/>}
+                  <PurchaseLunch disabled={orderAllowed} onBuy={::this.buy} label="Заказать" hasDeliveries={hasDeliveries}/>
                 </div>
               </Card>
             </div>

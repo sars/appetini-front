@@ -14,7 +14,7 @@ import fbEvent from 'components/fbEvent/fbEvent';
 import moment from 'moment';
 import { Link } from 'react-router';
 import { show as showToast } from 'redux/modules/toast';
-import OrderTimeout from 'components/OrderTimeout/OrderTimeout';
+import OrderTimeoutStyled from 'components/OrderTimeout/OrderTimeoutStyled';
 import isLunchDisabled from 'helpers/isLunchDisabled';
 import { MenuItem } from 'react-toolbox/lib/menu';
 import find from 'lodash/find';
@@ -145,12 +145,7 @@ export default class Purchase extends Component {
             </div>
 
             <div>
-              {isToday && !disabled &&
-              <div className={styles.timerSection}>
-                До конца заказа осталось:
-                <div className={styles.timerWrapper}><OrderTimeout item={lunch} className={styles.timer}/></div>
-              </div>
-              }
+              {isToday && !disabled && <OrderTimeoutStyled item={lunch}/>}
               <PurchaseLunch disabled={disabled} onBuy={::this.buy} label="Заказать обед" hasDeliveries={hasDeliveries}/>
             </div>
           </CardContent>
