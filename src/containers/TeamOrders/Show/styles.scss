@@ -1,0 +1,151 @@
+.countAndPurchase {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  .card {
+    flex: 1;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    color: #685c50;
+    text-align: center;
+  }
+
+  .purchaseCard {
+    margin-left: 1rem;
+    .buyButton {
+      margin-bottom: 0.5rem;
+    }
+
+    a {
+      color: #685c50;
+    }
+  }
+
+  .countCard {
+    margin-right: 1rem;
+    font-size: 1.8rem;
+    .count {
+      margin-bottom: 0.5rem;
+    }
+    .cost {
+      font-weight: 500;
+      font-size: 5.2rem;
+    }
+  }
+
+  .purchaseCard {
+    .deliveriesHint {
+      font-size: 1.6rem;
+    }
+    .buyButton {
+      margin-top: 1rem;
+    }
+  }
+}
+
+@media all and (max-width: 1267px) {
+  .teamOfferWrapper {
+    .titleAndPurchase {
+      .header {
+        display: block;
+        text-align: center;
+
+        .deliveryPeriodWrapper {
+          margin: 0 auto 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media all and (max-width: 957px) {
+  .teamOfferWrapper {
+    position: relative;
+
+    .cookContainer {
+      display: none;
+
+      &.showCookModal {
+        z-index: 99;
+        display: inline-block;
+        min-width: 100%;
+        position: absolute;
+        max-width: 100%;
+        margin: 0;
+        animation-name: fadeInDown;
+        animation-duration: 0.5s;
+        animation-fill-mode: both;
+      }
+    }
+
+    .titleAndPurchase {
+
+      .cookPreview {
+        display: inline-block;
+      }
+
+      .countAndPurchase {
+        display: block;
+
+        .card {
+          &.purchaseCard, &.countCard {
+            margin: 1rem 0 0 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -20%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.teamOrderWrapper {
+  margin-top: 2rem;
+}
+
+.userModal {
+  display: flex;
+  .userInput {
+    width: 100%;
+    margin-right: 1rem;
+  }
+
+  .userButton {
+    min-width: 150px;
+  }
+}
+
+.placeholder {
+  text-align: center;
+  max-width: 900px;
+  margin: 2rem auto;
+  background: #fff;
+  border: 1px solid #E4D9CF;
+  padding: 1.4rem 1.6rem;
+  color: #8f847a;
+
+  h2 {
+    color: #685c50;
+  }
+
+  .placeholderButton {
+    display: inline-block;
+    margin-top: 2rem;
+    color: #685c50;
+  }
+}

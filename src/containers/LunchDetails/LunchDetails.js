@@ -1,9 +1,6 @@
 import React, {Component, PropTypes} from 'react';
-import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
-import Modal from 'components/Modal/Modal';
-import Reviews from 'components/Reviews/Reviews';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import Dishes from 'components/Dishes/Dishes';
 import Cook from 'components/LunchDetailsCook/Cook';
@@ -12,7 +9,6 @@ import Purchase from './Purchase/Purchase';
 import PurchasePreview from './Purchase/Preview/Preview';
 import Photos from './Photos/Photos';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { getReviews } from 'redux/modules/common';
 import { getLunch } from 'helpers/lunches';
 import classNames from 'classnames';
 import ga from 'components/GaEvent/ga';
@@ -21,27 +17,15 @@ import { link as stylesLink } from 'components/HeaderMenu/HeaderMenu.scss';
 import { Link } from 'react-router';
 import Card, { CardContent } from 'components/Card/Card';
 
-function isReviews(location) {
-  return /\/reviews$/.test(location.pathname);
-}
-
 @asyncConnect([
-  {key: 'lunch', promise: ({params, helpers, location, store, store: { dispatch }}) => {
-    return getLunch()({params, helpers, store}).then(lunch => {
-      return isReviews(location)
-        ? dispatch(getReviews(lunch.cook.id, params.page)).then(() => lunch)
-        : lunch;
-    });
+  {key: 'lunch', promise: ({params, helpers, store}) => {
+    return getLunch()({params, helpers, store}).then(lunch => lunch);
   }}
 ])
-@connect(state => ({
-  reviews: state.common.reviews
-}))
 export default class LunchDetails extends Component {
   static propTypes = {
     lunch: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    reviews: PropTypes.object
+    location: PropTypes.object.isRequired
   };
 
   static contextTypes = {
@@ -54,10 +38,6 @@ export default class LunchDetails extends Component {
     purchaseOpened: false
   };
 
-  handleReviewsClose() {
-    this.context.router.push(`/lunches/${this.props.lunch.id}`);
-  }
-
   handleMobilePurchase = () => {
     this.setState({purchaseOpened: true});
     ga('Buy(mobile)');
@@ -65,7 +45,7 @@ export default class LunchDetails extends Component {
 
   render() {
     const styles = require('./LunchDetails.scss');
-    const { lunch, location, reviews } = this.props;
+    const { lunch } = this.props;
     const { cook } = lunch;
 
     const leftSidebarClasses = classNames(styles.leftSidebar, {
@@ -78,9 +58,6 @@ export default class LunchDetails extends Component {
 
     return (
       <ColumnLayout className={styles.root}>
-        <Modal.Dialog active={isReviews(location)} title="Отзывы о кулинаре" onClose={::this.handleReviewsClose}>
-          {reviews && <Reviews reviews={reviews} cook={cook}/>}
-        </Modal.Dialog>
         <div className={styles.middlePart}>
           <div className={styles.middlePartContent}>
             <div className={leftSidebarClasses}>
@@ -89,7 +66,7 @@ export default class LunchDetails extends Component {
                                                onClick={() => this.setState({cookOpened: false})}></div>}
               </ReactCSSTransitionGroup>
               <div className={styles.cookContainer}>
-                <Cook cook={cook} resourceId={lunch.id} resourceType="lunches"/>
+                <Cook cook={cook}/>
               </div>
             </div>
             <div className={styles.lunchContainer}>

@@ -1,3 +1,4 @@
+export Root from './Root/Root';
 export App from './App/App';
 export AdminDashboard from './Admin/Dashboard/Dashboard';
 export AdminLunches from './Admin/Lunches/Lunches';
@@ -19,6 +20,7 @@ export Home from './Home/Home';
 export Lunches from './Lunches/Lunches';
 export TeamOffers from './TeamOffers/TeamOffers';
 export TeamOfferShow from './TeamOffers/Show/Show';
+export TeamOrderShow from './TeamOrders/Show/Show';
 export Cooks from './Cooks/Cooks';
 export About from './About/About';
 export LoginSuccess from './LoginSuccess/LoginSuccess';
