@@ -11,6 +11,7 @@ import CooksDropdown from 'components/CooksDropdown/CooksDropdown';
 import { request as requestLunches, filterNames } from 'helpers/lunches';
 import valueFromLocationQuery from 'helpers/valueFromLocationQuery';
 import find from 'lodash/find';
+import concat from 'lodash/concat';
 import isEqual from 'lodash/isEqual';
 
 function currentStateName(name) {
@@ -25,20 +26,26 @@ function racKeyLoaded(store, key) {
   {key: 'lunches', promise: requestLunches({nearest: true})},
   {key: 'preferences', promise: ({helpers, store}) => {
     if (!racKeyLoaded(store, 'preferences')) {
-      return helpers.client.get('/food_preferences').then(data => {
-        return data.resources;
-      });
+      return helpers.client.get('/food_preferences').then(data => data.resources);
     }}
   },
   {key: 'cooks', promise: ({helpers}) => {
-    return helpers.client.get('/cooks')
-      .then(response => response);}
-  }
+    return helpers.client.get('/cooks');
+  }},
+  {key: 'teamOffers', promise: ({helpers, store}) => {
+    const state = store.getState();
+    const cookId = valueFromLocationQuery(state.routing, 'cook_id');
+    if (cookId) {
+      return helpers.client.get('/team_offers', {params: {cook_id: cookId, disable_by_gt: new Date}});
+    }
+    return Promise.resolve(null);
+  }}
 ])
 @connect(null, { loadSuccess })
 export default class Lunches extends Component {
   static propTypes = {
     lunches: PropTypes.object,
+    teamOffers: PropTypes.object,
     preferences: PropTypes.array.isRequired,
     location: PropTypes.object.isRequired,
     cooks: PropTypes.object.isRequired,
@@ -122,12 +129,14 @@ export default class Lunches extends Component {
 
   render() {
     const styles = require('./Lunches.scss');
-    const {lunches, preferences, cooks} = this.props;
+    const {lunches, preferences, cooks, teamOffers} = this.props;
     const {currentPreferences, isInfiniteLoading} = this.state;
     const filters = Boolean(currentPreferences || this.state.currentCook_id);
     const allLunches = lunches.resources.map(lunch => {
       return {...lunch, component: 'Lunch'};
     });
+    const allTeamOffers = teamOffers ? teamOffers.resources.map(offer => { return {...offer, component: 'TeamOffer'};}) : [];
+    const allLunchesAndOffers = concat(allLunches, allTeamOffers);
     const allLunchesLoaded = allLunches.length >= lunches.meta.total;
     const currentPreferencesTitle = currentPreferences ? find(preferences, {id: parseInt(currentPreferences, 10)}).title : null;
 
@@ -144,7 +153,7 @@ export default class Lunches extends Component {
           <Dropdown className={styles.filter} onChange={this.filterChanged('preferences')} value={parseInt(this.state.currentPreferences, 10)} source={preparedPreferences}/>
           {filters && <Button className={styles.filter} flat outlined onClick={() => {this.context.router.push('lunches');}} label="Сбросить"/>}
         </div>
-        {allLunches.length ? <LunchesPage items={allLunches}/> : <h3 className={styles.title}>Нет обедов</h3>}
+        {allLunchesAndOffers.length ? <LunchesPage items={allLunchesAndOffers}/> : <h3 className={styles.title}>Нет обедов</h3>}
         {!allLunchesLoaded &&
         <div className={styles.loadMoreWrapper}>
           <Button flat accent onClick={::this.loadMoreHandle} disabled={isInfiniteLoading}
