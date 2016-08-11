@@ -8,7 +8,7 @@ import BaseLunchForm from './BaseLunchForm';
 @reduxForm(
   {
     form: 'draftLunchForm',
-    fields: ['id', 'cook_id', 'photos_temp_image_ids', 'initial_price', 'accept_rules', 'description',
+    fields: ['cook_id', 'photos_temp_image_ids', 'initial_price', 'accept_rules', 'description',
       'dishes[].id', 'dishes[].name', 'dishes[].size', 'dishes[].dish_type', 'dishes[]._destroy',
       'removing_photos', 'dishes_count', 'photos']
     // https://github.com/erikras/redux-form/issues/621
@@ -42,7 +42,7 @@ export default class DraftLunchForm extends BaseLunchForm {
         {acceptRules && this.acceptRulesField()}
         <div className={styles.acceptRules}>
           {this.submitButton(sendLabel, submitting)}
-          <Link className={styles.cloneWrapper} to={`/cooks/${fields.cook_id.value}/draft_lunches`}>
+          <Link className={styles.linkButton} to={`/cooks/${fields.cook_id.value}/draft_lunches`}>
             <Button flat outlined label="К списку моих обедов"/>
           </Link>
         </div>

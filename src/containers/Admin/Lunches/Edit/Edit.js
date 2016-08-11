@@ -28,8 +28,9 @@ export default class Edit extends Component {
   }
 
   render() {
+    const { lunch } = this.props;
     return (
-      <LunchForm initialValues={this.props.lunch} onSubmit={::this.updateLunch}
+      <LunchForm initialValues={lunch} onSubmit={::this.updateLunch}
                  title="Редактирование обеда" sendLabel="Обновить обед"/>
     );
   }

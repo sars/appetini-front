@@ -70,19 +70,23 @@ export default class ResourcesIndex extends Component {
                   defaultActions && defaultActions.map((action, idx) => {
                     return (
                       <div key={idx} className={styles.action}>
-                        {action === 'edit' && <Link to={`${urlName}/${resource.id}/edit`}>
-                          <Button flat accent label="Редактировать"/>
-                        </Link>}
-                        {action === 'details' && <Link to={`/orders/${resource.id}`}>Подробнее</Link>}
+                        {action === 'edit' && <Link to={`${urlName}/${resource.id}/edit`}>Редактировать</Link>}
+                        {action === 'details' && <Link to={`${urlName}/${resource.id}`}>Подробнее</Link>}
                       </div>
                     );
                   })
                 }
                 {
                   customActions && customActions.map((custom, idx) => {
+                    const options = {to: custom.linkTo && custom.linkTo(resource.id) || '#'};
+                    if (custom.action) {
+                      Object.assign(options, {onClick: () => custom.action(resource.id)});
+                    }
                     return (
                       <div key={idx} className={styles.action}>
-                        <Button onClick={() => custom.action(resource.id)} flat accent label={custom.title} disabled={custom.isDisabled(resource)}/>
+                        {custom.isDisabled && custom.isDisabled(resource)
+                          ? custom.title
+                          : <Link {...options}>{custom.title}</Link>}
                       </div>
                     );
                   })

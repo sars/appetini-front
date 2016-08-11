@@ -1,20 +1,21 @@
 import React, { Component, PropTypes } from 'react';
-import LunchForm from 'components/LunchForm/LunchForm';
+import LunchExampleForm from 'components/LunchForm/LunchExampleForm';
 import { createLunch } from 'redux/modules/common';
 import { show as showToast } from 'redux/modules/toast';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
-import { getLunch } from 'helpers/lunches';
 import cloneLunch from 'helpers/cloneLunch';
 import submit from '../submit';
 
 @asyncConnect([
-  {key: 'lunch', promise: getLunch()}
+  {key: 'lunchExample', promise: ({helpers, params}) => {
+    return helpers.client.get(`/lunch_examples/${params.lunchExampleId}`).then(response => response.resource);
+  }}
 ])
 @connect(null, { createLunch, showToast })
 export default class Clone extends Component {
   static propTypes = {
-    lunch: PropTypes.object.isRequired,
+    lunchExample: PropTypes.object.isRequired,
     createLunch: PropTypes.func.isRequired,
     showToast: PropTypes.func.isRequired
   };
@@ -25,30 +26,30 @@ export default class Clone extends Component {
   };
 
   state = {
-    lunchFields: {}
+    lunchExampleFields: {}
   };
 
   componentDidMount() {
-    const { lunch } = this.props;
+    const { lunchExample } = this.props;
     const { client } = this.context;
-    cloneLunch(lunch, client)
-      .then(lunchFields => {
-        this.setState({lunchFields});
+    cloneLunch(lunchExample, client)
+      .then(lunchExampleFields => {
+        this.setState({lunchExampleFields});
       });
   }
 
   createLunch(lunch) {
     return submit(lunch, this.props.createLunch).then(response => {
       this.props.showToast('Обед успешно добавлен');
-      this.context.router.push('/admin/lunches/' + response.resource.id + '/edit');
+      this.context.router.push('/admin/lunch_examples/' + response.resource.id + '/edit');
     });
   }
 
   render() {
-    const { lunchFields } = this.state;
+    const { lunchExampleFields } = this.state;
     return (
-      <LunchForm acceptRules initialValues={lunchFields} onSubmit={::this.createLunch}
-                 title="Создание обеда" sendLabel="Создать обед"/>
+      <LunchExampleForm acceptRules initialValues={lunchExampleFields} onSubmit={::this.createLunch}
+                        title="Создание обеда" sendLabel="Создать обед"/>
     );
   }
 }

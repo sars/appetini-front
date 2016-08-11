@@ -104,7 +104,8 @@ export default class OrderForm extends Component {
     const { orderItems, fields } = this.props;
     const userData = pickBy(mapValues(fields.user, field => field.value));
     const userFromReduxForm = isEmpty(userData) ? null : userData;
-    const user = userFromReduxForm || nextProps.user;
+    const isNextUser = (this.props.user !== nextProps.user) && nextProps.user;
+    const user = isNextUser ? nextProps.user : userFromReduxForm;
 
     const nextFields = nextProps.fields;
     if (orderItems !== nextProps.orderItems || this.props.user !== nextProps.user || fields.order_items.value !== nextFields.order_items.value ) {
@@ -113,7 +114,7 @@ export default class OrderForm extends Component {
       fields.order_items_attributes.onChange(newItems.purchasing);
     }
 
-    if (this.props.user !== nextProps.user && !userFromReduxForm) {
+    if (isNextUser) {
       this.changeFields(fields.user, user);
     }
   }
@@ -292,7 +293,7 @@ export default class OrderForm extends Component {
     const submitLabel = fields.payment_type.value === 'liqpay' ? 'Оплатить' : 'Оформить заказ';
     const orderExist = Boolean(this.props.initialOrder);
     const hasLunches = fields.order_items_attributes.value && fields.order_items_attributes.value.some(item => item.resource_type === 'Lunch' || item.resource_type === 'TeamOrder');
-    const locations = user && this.getLocations(fields.user.locations.value, fields.location.value);
+    const locations = user && !isEmpty(fields.user.locations.value) && this.getLocations(fields.user.locations.value, fields.location.value);
 
     return (
       <form className={styles.root} onSubmit={handleSubmit}>
