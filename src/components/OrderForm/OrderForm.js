@@ -292,7 +292,7 @@ export default class OrderForm extends Component {
     const submitLabel = fields.payment_type.value === 'liqpay' ? 'Оплатить' : 'Оформить заказ';
     const orderExist = Boolean(this.props.initialOrder);
     const hasLunches = fields.order_items_attributes.value && fields.order_items_attributes.value.some(item => item.resource_type === 'Lunch' || item.resource_type === 'TeamOrder');
-    const locations = this.getLocations(fields.user.locations.value, fields.location.value);
+    const locations = user && this.getLocations(fields.user.locations.value, fields.location.value);
 
     return (
       <form className={styles.root} onSubmit={handleSubmit}>

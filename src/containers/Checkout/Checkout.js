@@ -71,7 +71,7 @@ export default class Checkout extends Component {
         fbEvent('track', orderAttrs.id ? 'Update Order' : 'Purchase', {value: order.total_price.toString(), currency: 'USD'});
         // TODO this.props.loginSuccess(response) instead of setUser and setToken
         if (user && order.user.id === user.id || !user) {
-          this.props.setUser({...user, deliveries_available: order.user.deliveries_available});
+          this.props.setUser({ ...user, ...order.user });
         }
         if (response.meta) {
           this.props.setToken(response.meta.access_token);
