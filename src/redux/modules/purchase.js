@@ -3,9 +3,11 @@ import some from 'lodash/some';
 import pick from 'lodash/pick';
 
 const ADD_ORDER_ITEM = 'purchase/ADD_ORDER_ITEM';
+const UPDATE_ORDER = 'purchase/UPDATE_ORDER';
 const CHANGE_AMOUNT_ORDER_ITEM = 'purchase/CHANGE_AMOUNT_ORDER_ITEM';
 const REMOVE_ORDER_ITEM = 'purchase/REMOVE_ORDER_ITEM';
 const CLEAR_ORDER_ITEMS = 'purchase/CLEAR_ORDER_ITEMS';
+const CLEAR_ORDER = 'purchase/CLEAR_ORDER';
 
 const initialState = {
   orderItems: [],
@@ -54,12 +56,13 @@ const reducer = (state = initialState, action = {}) => {
        * @description This is new state of order list, when user change amount of lunch from cart.
        * @type {*[]}
        */
-      const { id, type, amount } = action.payload;
+      const { orderItem, amountDelta } = action.payload;
       const newOrderItems = state.orderItems.map((item) => {
-        if ( item.resource_id === id && item.resource_type === type && amount > 0 && amount <= item.resource.available_count ) {
+        const currentAmount = amountDelta + item.amount;
+        if ( item === orderItem && currentAmount > 0 && currentAmount <= item.resource.available_count ) {
           return {
             ...item,
-            amount
+            amount: currentAmount
           };
         }
         return item;
@@ -67,6 +70,16 @@ const reducer = (state = initialState, action = {}) => {
       return {
         ...state,
         orderItems: newOrderItems
+      };
+    }
+    case UPDATE_ORDER: {
+      /**
+       * @description This is new state of order, when admin updates order.
+       * @type {*}
+       */
+      return {
+        ...state,
+        order: action.payload.order
       };
     }
     case REMOVE_ORDER_ITEM: {
@@ -90,6 +103,15 @@ const reducer = (state = initialState, action = {}) => {
         ...state,
         orderItems: [],
         lunchesAmount: 0
+      };
+    case CLEAR_ORDER:
+      /**
+       * @description This is new state of order after end of edit order.
+       * @type {*[]}
+       */
+      return {
+        ...state,
+        order: undefined
       };
 
     default:
@@ -142,13 +164,21 @@ export function addTeamOrder(teamOrder) {
   return addOrderItem('TeamOrder', preparedTeamOrder);
 }
 
-export function changeAmountOrderItem(id, type, amount = 1) {
+export function updateOrder(order) {
+  return {
+    type: UPDATE_ORDER,
+    payload: {
+      order
+    }
+  };
+}
+
+export function changeAmountOrderItem(orderItem, amountDelta = 0) {
   return {
     type: CHANGE_AMOUNT_ORDER_ITEM,
     payload: {
-      id,
-      type,
-      amount
+      orderItem,
+      amountDelta
     }
   };
 }
@@ -163,5 +193,11 @@ export function removeOrderItem(orderItem) {
 export function clearOrderItems() {
   return {
     type: CLEAR_ORDER_ITEMS
+  };
+}
+
+export function clearOrder() {
+  return {
+    type: CLEAR_ORDER
   };
 }

@@ -30,7 +30,7 @@ export default class ShoppingCart extends Component {
     return (
       <div className={this.props.className}>
         <IconButton onClick={this.buy} className={styles.btnShopping} icon="shopping_cart" accent>
-          <div className={styles.shopPoint}>{this.countLunch()}</div>
+          {this.props.countItems && <div className={styles.shopPoint}>{this.countLunch()}</div>}
         </IconButton>
       </div>
     );

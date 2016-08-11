@@ -17,14 +17,15 @@ import MobMenu from 'components/MobMenu/MobMenu';
 import ShoppingButton from 'components/ShoppingButton/ShoppingButton';
 import menuLinks from 'helpers/menuLinks';
 
-@connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount}), {logout, showToast, openModal})
+@connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount, order: state.purchase.order}), {logout, showToast, openModal})
 export default class Header extends Component {
   static propTypes = {
     user: PropTypes.object,
     logout: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     showToast: PropTypes.func.isRequired,
-    lunchesAmount: PropTypes.number.isRequired
+    lunchesAmount: PropTypes.number.isRequired,
+    order: PropTypes.object
   };
 
   static contextTypes = {
@@ -55,7 +56,7 @@ export default class Header extends Component {
   }
 
   render() {
-    const { user, lunchesAmount } = this.props;
+    const { user, lunchesAmount, order } = this.props;
     const { push } = this.context.router;
     const styles = require('./Header.scss');
     const cx = classNames.bind(styles);
@@ -81,7 +82,7 @@ export default class Header extends Component {
       <AppBar fixed className={classNames(styles.root, 'hidePrint')}>
         <div className={styles.leftMenu}>
           <MobMenu className={styles.mobMenu} />
-          {lunchesAmount > 0 && <ShoppingButton countItems={lunchesAmount} className={styles.shopCartMob}/>}
+          {(lunchesAmount > 0 || order) && <ShoppingButton countItems={lunchesAmount} className={styles.shopCartMob}/>}
         </div>
         <IndexLink className={styles.brand} to="/">
           <div className={styles.brandIcon}></div>
@@ -92,7 +93,7 @@ export default class Header extends Component {
 
         <HeaderMenu className={styles.desktopMenu} links={menuLinks} showActive />
         <Navigation className={cx('navigation', 'navigationRight')}>
-          {lunchesAmount > 0 && <ShoppingButton countItems={lunchesAmount} className={styles.shopCart}/>}
+          {(lunchesAmount > 0 || order) && <ShoppingButton countItems={lunchesAmount} className={styles.shopCart}/>}
           {!user && <Button flat accent label="Войти" onClick={this.openLoginModal}/>}
           {user &&
             <div className={styles.userMenu}>

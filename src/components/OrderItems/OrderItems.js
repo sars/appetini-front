@@ -35,9 +35,10 @@ function removable(item) {
  * @returns {JSX}
  */
 const OrderItems = ({items, onRemove, onChangeAmount, ...rest}) => {
-  const totalPrice = items.purchasing.reduce((result, item) => Number(item.resource.price) * item.amount + result, 0);
+  const totalPrice = items.purchasing.filter(item => (item._destroy !== 1)).reduce((result, item) => Number(item.resource.price) * item.amount + result, 0);
   const groupedItems = items.grouped;
   const specialTariffs = filter(items.purchasing, item => item.resource_type === 'DeliveryTariff' && !item.resource.individual);
+
   /**
    * @description Returns item's jsx depends of item type.
    * @type {func}
@@ -48,10 +49,13 @@ const OrderItems = ({items, onRemove, onChangeAmount, ...rest}) => {
     React.createElement(types[item.resource_type], {
       ...item,
       ...rest,
+      item,
       key: index,
       removable: removable(item),
       onRemove: () => onRemove && onRemove(item),
-      onChangeAmount
+      onChangeAmount: (resource, delta) => {
+        return onChangeAmount(item, delta);
+      }
     });
 
   return (
