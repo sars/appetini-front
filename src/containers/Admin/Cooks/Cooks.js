@@ -23,14 +23,14 @@ export default class Cooks extends Component {
       { title: 'Имя', value: cook => cook.first_name },
       { title: 'Фамилия', value: cook => cook.last_name }
     ];
+    const defaultActions = ['edit'];
     const actions = [{
-      action: (id) => this.context.router.push('/cooks/' + id + '/orders'),
+      linkTo: (id) => `/cooks/${id}/orders`,
       title: 'Заказы'
     }];
-    const defaultActions = ['edit'];
 
     return (<ResourcesIndex resources={cooks} title="Кулинары" createTitle="Создать кулинара"
-                            urlName="/admin/cooks" fields={fields} customActions={actions}
-                            defaultActions={defaultActions}/>);
+                            urlName="/admin/cooks" fields={fields}
+                            customActions={actions} defaultActions={defaultActions}/>);
   }
 }

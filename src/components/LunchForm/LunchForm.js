@@ -1,94 +1,44 @@
-import React, { PropTypes } from 'react';
-import Dropdown from 'components/Dropdown/Dropdown';
-import CheckButtonsGroup from 'components/CheckButtonsGroup/CheckButtonsGroup';
+import React, { PropTypes, Component } from 'react';
 import DeliveryTimeDropdown from 'components/DeliveryTimeDropdown/DeliveryTimeDropdown';
 import DatePicker from 'components/DatePicker/DatePicker';
 import Input from 'components/Input/Input';
-import Button from 'components/Button/Button';
 import { reduxForm } from 'redux-form';
+import { Link } from 'react-router';
 import Checkbox from 'react-toolbox/lib/checkbox';
-import { getCooks, getFoodPreferences } from 'redux/modules/common';
 import classNames from 'classnames';
 import styles from './styles.scss';
-import { Link } from 'react-router';
-import BaseLunchForm from './BaseLunchForm';
+import Button from 'components/Button/Button';
+import LunchDropdown from 'components/LunchDropdown/LunchDropdown';
 
 @reduxForm(
   {
     form: 'lunchForm',
-    fields: ['id', 'cook_id', 'available_count', 'team', 'photos_temp_image_ids', 'initial_price', 'accept_rules', 'description',
-      'dishes[].id', 'dishes[].name', 'dishes[].size', 'dishes[].dish_type', 'dishes[]._destroy',
-      'removing_photos', 'food_preference_ids', 'ready_by_date', 'ready_by_time', 'dishes_count', 'photos', 'disable_minutes']
-    // https://github.com/erikras/redux-form/issues/621
-    // https://github.com/erikras/redux-form/issues/514
-    // initialValues: {
-    //   dishes: [{name: '', size: ''}]
-    // }
-  },
-  state => ({
-    cooks: state.common.cooks,
-    cookLoadState: state.common.loadState.cooks || {},
-    foodPreferences: state.common.foodPreferences,
-    foodPreferencesLoadState: state.common.loadState.foodPreferences || {}
-  }),
-  {getCooks, getFoodPreferences}
+    fields: ['available_count', 'team', 'lunch_example_id', 'ready_by_date', 'ready_by_time']
+  }
 )
-export default class LunchForm extends BaseLunchForm {
+export default class LunchForm extends Component {
   static propTypes = {
-    cooks: PropTypes.array,
-    foodPreferences: PropTypes.array,
-    cookLoadState: PropTypes.object,
-    foodPreferencesLoadState: PropTypes.object,
     fields: PropTypes.object.isRequired,
-    getCooks: PropTypes.func.isRequired,
-    getFoodPreferences: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     error: PropTypes.object,
-    acceptRules: PropTypes.bool,
     team: PropTypes.bool,
     submitting: PropTypes.bool,
     title: PropTypes.string.isRequired,
     sendLabel: PropTypes.string.isRequired
   };
 
-  componentDidMount() {
-    if (!this.props.cooks && !this.props.cookLoadState.loading) {
-      this.props.getCooks();
-    }
-
-    if (!this.props.foodPreferences && !this.props.foodPreferencesLoadState.loading) {
-      this.props.getFoodPreferences();
-    }
-  }
-
-  getCooks() {
-    const { cooks } = this.props;
-    return cooks ? [
-      { label: 'Выберите кулинара' },
-      ...cooks.map(cook => ({label: cook.first_name + ' ' + cook.last_name, value: cook.id.toString()}))
-    ] : [{ label: 'Загрузка...' }];
-  }
-
-  getPreferences() {
-    const { foodPreferences } = this.props;
-    return foodPreferences && foodPreferences.reduce((result, preference) => ({...result, [preference.id]: preference.name}), {});
-  }
-
   render() {
-    const cooks = this.getCooks();
-    const preferences = this.getPreferences();
-    const { fields, title, acceptRules, handleSubmit, submitting, sendLabel } = this.props;
+    const { fields, title, handleSubmit, submitting, sendLabel } = this.props;
 
     return (
       <form className={styles.root} onSubmit={handleSubmit}>
         <h1>{title}</h1>
-        <div className={classNames(styles.section, styles.twoColSection)}>
-          <div>
-            <h3>Кулинар</h3>
-            <Dropdown auto source={cooks} size="15" {...fields.cook_id}/>
-          </div>
+        <LunchDropdown className={styles.filter} {...fields.lunch_example_id}/>
+        <div className={styles.team}>
+          <h3>Корпоративный</h3>
+          <Checkbox {...fields.team}/>
         </div>
-        <div className={classNames(styles.section, styles.twoColSection)}>
+        {!fields.team.value && <div className={classNames(styles.section, styles.twoColSection)}>
           <div>
             <h3>Дата</h3>
             <DatePicker minDate={new Date()} {...fields.ready_by_date}/>
@@ -97,39 +47,18 @@ export default class LunchForm extends BaseLunchForm {
             <h3>Время</h3>
             <DeliveryTimeDropdown {...fields.ready_by_time}/>
           </div>
-        </div>
+        </div>}
         <div className={classNames(styles.section, styles.twoColSection)}>
           <div>
             <h3>Количество</h3>
             <Input {...fields.available_count}/>
           </div>
-          <div>
-            <h3>Время до заказа (мин)</h3>
-            <Input {...fields.disable_minutes}/>
-          </div>
         </div>
-        {this.descriptionField()}
-        {this.photosField()}
-        {this.dishesField()}
-        {this.priceField()}
-        <div className={styles.section}>
-          <h3>Корпоративный</h3>
-          <Checkbox {...fields.team}/>
-        </div>
-        <div className={styles.section}>
-          <h3>Предпочтения</h3>
-          <CheckButtonsGroup source={preferences} {...fields.food_preference_ids}/>
-          {this.errorsFor('food_preference_ids')}
-        </div>
-
-        {acceptRules && this.acceptRulesField()}
         <div className={styles.acceptRules}>
-          {this.submitButton(sendLabel, submitting)}
-          {fields.id.value &&
-            <Link className={styles.cloneWrapper} to={'/admin/lunches/' + fields.id.value + '/clone'}>
-              <Button flat outlined label="Клонировать"/>
-            </Link>
-          }
+          <Button flat accent label={sendLabel} type="submit" disabled={submitting}/>
+          <Link className={styles.linkButton} to="/admin/lunches">
+            <Button flat outlined label="К списку обедов"/>
+          </Link>
         </div>
       </form>
     );

@@ -56,7 +56,7 @@ export default class Orders extends Component {
       { title: 'Статус', value: ::this.statusComponent },
       { title: 'Цена', value: order => Number(order.total_price) + 'грн' }
     ];
-    const defaultActions = ['edit', 'details'];
+    const defaultActions = ['edit'];
 
     return (<ResourcesIndex resources={orders} title="Заказы" urlName="/admin/orders" fields={fields}
                             defaultActions={defaultActions}/>);

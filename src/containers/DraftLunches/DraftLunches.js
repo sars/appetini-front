@@ -32,7 +32,7 @@ export default class DraftLunches extends Component {
       { title: 'ID', value: draftLunch => draftLunch.id },
       { title: 'Фото', type: 'image', value: draftLunch => draftLunch.photos[0].thumb.url },
       { title: 'Описание', value: draftLunch => draftLunch.description },
-      { title: 'Цена', value: draftLunch => draftLunch.initial_price + ' грн' }
+      { title: 'Цена', value: draftLunch => Number(draftLunch.initial_price) + ' грн' }
     ];
     const defaultActions = ['edit'];
 
