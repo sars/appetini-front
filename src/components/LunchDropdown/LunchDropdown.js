@@ -18,7 +18,7 @@ export default class LunchDropdown extends Component {
   };
 
   componentDidMount() {
-    this.context.client.get('/lunch_examples').then(response => this.setState({lunches: response.resources}));
+    this.context.client.get('/lunch_examples', {params: {per_page: 2000}}).then(response => this.setState({lunches: response.resources}));
   }
 
   template = (lunch) => {
