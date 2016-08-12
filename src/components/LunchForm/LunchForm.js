@@ -13,7 +13,7 @@ import LunchDropdown from 'components/LunchDropdown/LunchDropdown';
 @reduxForm(
   {
     form: 'lunchForm',
-    fields: ['available_count', 'team', 'lunch_example_id', 'ready_by_date', 'ready_by_time']
+    fields: ['id', 'available_count', 'team', 'lunch_example_id', 'ready_by_date', 'ready_by_time']
   }
 )
 export default class LunchForm extends Component {
@@ -29,7 +29,6 @@ export default class LunchForm extends Component {
 
   render() {
     const { fields, title, handleSubmit, submitting, sendLabel } = this.props;
-
     return (
       <form className={styles.root} onSubmit={handleSubmit}>
         <h1>{title}</h1>
@@ -59,6 +58,11 @@ export default class LunchForm extends Component {
           <Link className={styles.linkButton} to="/admin/lunches">
             <Button flat outlined label="К списку обедов"/>
           </Link>
+          {fields.id.initialValue &&
+            <Link className={styles.linkButton} to={`/admin/lunch_examples/${fields.lunch_example_id.initialValue}/edit`}>
+              <Button flat outlined label="Редактировать шаблон"/>
+            </Link>
+          }
         </div>
       </form>
     );
