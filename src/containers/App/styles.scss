@@ -1,0 +1,11 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.appContent {
+  margin-top: 6.4rem;
+  padding: 2.4rem 0;
+  flex: 1;
+}

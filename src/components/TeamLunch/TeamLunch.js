@@ -12,9 +12,9 @@ export default class TeamLunch extends Component {
     amount: PropTypes.number.isRequired
   };
 
-  changeAmountHandle = (amount) => {
+  changeAmountHandle = (amountDelta) => {
     const { lunch, onChangeAmount } = this.props;
-    onChangeAmount(lunch, amount);
+    onChangeAmount(lunch, amountDelta);
   }
 
   render() {
@@ -41,6 +41,13 @@ export default class TeamLunch extends Component {
             <CardContent className={styles.cardContent}>
               <h3 className={styles.portionAmountHeader}>Добавьте порции</h3>
               <PortionManipulate availableCount={lunch.available_count} amount={amount} onChangeAmount={::this.changeAmountHandle} />
+              {lunch.order_item_info && lunch.order_item_info.map((item, idx) => {
+                if (item.buyer_id) {
+                  return (
+                    <div className={styles.buyer} key={idx}>{`${item.buyer_name} - ${item.amount}`}</div>
+                  );
+                }
+              })}
               <div className={styles.priceSection}>
                 <span className={styles.price}>{Number(lunch.price)}</span>грн
               </div>

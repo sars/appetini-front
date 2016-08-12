@@ -1,0 +1,15 @@
+.shareWrapper {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  display: flex;
+
+  .shareInput {
+    margin-right: 1rem;
+    width: 100%;
+  }
+
+  .shareButton {
+    background-color: #f8a900!important;
+    min-width: 140px;
+  }
+}

@@ -8,22 +8,45 @@ import { FormattedPlural } from 'react-intl';
 import ImagesPreview from 'components/ImagesPreview/ImagesPreview';
 import classNames from 'classnames';
 import tooltip from 'react-toolbox/lib/tooltip';
-import styles from './styles.scss';
+import Modal from 'components/Modal/Modal';
+import Reviews from 'components/Reviews/Reviews';
 import round from 'lodash/round';
+import { getReviews } from 'redux/modules/common';
+import { connect } from 'react-redux';
+import styles from './styles.scss';
 
 const TooltipLink = tooltip(Link);
-
+@connect(null, { getReviews })
 export default class Cook extends Component {
   static propTypes = {
     cook: PropTypes.object.isRequired,
-    resourceId: PropTypes.number,
-    resourceType: PropTypes.string,
-    className: PropTypes.string
+    hideExternalLinks: PropTypes.bool,
+    className: PropTypes.string,
+    getReviews: PropTypes.func
   };
 
+  state = {
+    showReviews: false,
+    reviews: {}
+  }
+
+  componentDidMount() {
+    const { cook } = this.props;
+    this.props.getReviews(cook.id).then(response => {
+      this.setState({
+        reviews: response
+      });
+    });
+  }
+
   render() {
-    const {cook, cook: { user: { facebook, vkontakte, instagram } }, resourceType, resourceId, className} = this.props;
+    const {cook, cook: { user: { facebook, vkontakte, instagram } }, hideExternalLinks, className} = this.props;
+    const { showReviews, reviews } = this.state;
     return (
+      <div>
+        <Modal.Dialog active={showReviews} title="Отзывы о кулинаре" onClose={() => this.setState({showReviews: false})}>
+          {reviews.resources && <Reviews reviews={reviews} cook={cook}/>}
+        </Modal.Dialog>
         <Card className={classNames(styles.root, className)}>
           <CardContent>
             <div className={styles.avatarContainer}>
@@ -34,11 +57,11 @@ export default class Cook extends Component {
             </h3>
             <div className={styles.ratingContainer}>
               <StarRating name="cook-rating" totalStars={5} editing={false} rating={round(cook.rating)} size={18}/>
-              <Link className={styles.feedbackLink} to={`/${resourceType}/${resourceId}/reviews`}>
+              <span className={styles.feedbackLink} onClick={() => this.setState({showReviews: true})}>
                 {cook.reviews_count}
                 &nbsp;
                 <FormattedPlural value={cook.reviews_count} one="отзыв" few="отзыва" many="отзывов" other="отзывов"/>
-              </Link>
+              </span>
             </div>
             { cook.sanitary_book_photos && cook.sanitary_book_photos.length > 0 &&
             <ImagesPreview images={cook.sanitary_book_photos} currentImageId={0} template={(onClick) =>
@@ -59,9 +82,9 @@ export default class Cook extends Component {
                 <h3>Фотографии кухни</h3>
                 <div className={styles.otherPhotos}>
                   {cook.other_photos.map((photo, index) =>
-                      <div className={styles.otherPhotoContainer} key={index}>
-                        <ImagesPreview images={cook.other_photos} currentImageId={index}/>
-                      </div>
+                    <div className={styles.otherPhotoContainer} key={index}>
+                      <ImagesPreview images={cook.other_photos} currentImageId={index}/>
+                    </div>
                   )}
                 </div>
               </div>
@@ -78,11 +101,12 @@ export default class Cook extends Component {
               </div>
             </div>}
 
-            <Link to={`/lunches?cook_id="${cook.id}"`}>
+            {!hideExternalLinks && <Link to={`/lunches?cook_id="${cook.id}"`}>
               <Button flat outlined label={`Все обеды ${cook.full_name_genitive}`}/>
-            </Link>
+            </Link>}
           </CardContent>
         </Card>
+      </div>
     );
   }
 }

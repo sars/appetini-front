@@ -8,6 +8,7 @@ import modals from './modals';
 import toast from './toast';
 import common from './common';
 import purchase from './purchase';
+import teamOrderPreferences from './teamOrderPreferences';
 import {reducer as reduxAsyncConnect} from 'redux-async-connect';
 import moment from 'moment';
 
@@ -28,5 +29,6 @@ export default combineReducers({
   toast,
   common,
   purchase,
-  reduxAsyncConnect
+  reduxAsyncConnect,
+  teamOrderPreferences
 });

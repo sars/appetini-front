@@ -27,12 +27,6 @@ h3 {
   min-height: 100vh;
 }
 
-.appContent {
-  margin-top: 6.4rem;
-  padding: 2.4rem 0;
-  flex: 1;
-}
-
 .progress {
   position: fixed;
   z-index: 101;
@@ -64,5 +58,4 @@ h3 {
       height: 60px !important;
     }
   }
-
 }

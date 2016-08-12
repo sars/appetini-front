@@ -1,6 +1,7 @@
 import without from 'lodash/without';
 import some from 'lodash/some';
 import pick from 'lodash/pick';
+import { reducerWrapper } from 'helpers/memorizedStoreBranches';
 
 const ADD_ORDER_ITEM = 'purchase/ADD_ORDER_ITEM';
 const UPDATE_ORDER = 'purchase/UPDATE_ORDER';
@@ -119,15 +120,8 @@ const reducer = (state = initialState, action = {}) => {
   }
 };
 
-const memorizeToLocalStorage = (state = initialState, action = {}) => {
-  const newState = reducer(state, action);
-  if (newState !== state) {
-    window.localStorage.setItem('memorizedStoreBranches', JSON.stringify({purchase: newState}));
-  }
-  return newState;
-};
+export default reducerWrapper(reducer, initialState, 'purchase');
 
-export default memorizeToLocalStorage;
 /**
  * @description This function creates structure of last added item to cart.
  * @param type Type of added item("Lunch" || "DeliveryTariffs")
