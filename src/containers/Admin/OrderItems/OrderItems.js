@@ -104,7 +104,7 @@ export default class OrderItems extends Component {
                         <Checkbox checked={Boolean(item.reviewed_order_item && item.reviewed_order_item.id)}
                                     onChange={(checked) => this.onItemReviewed(item, checked)}/>
                       </td>
-                      <td>{item.id}</td>
+                      <td>{item.order_id}</td>
                       <td>{item.resource.cook.full_name_genitive}</td>
                       <td>
                         {item.resource.dishes.map((dish, index) => {
