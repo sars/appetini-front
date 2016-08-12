@@ -104,12 +104,14 @@ export default class LunchExampleForm extends BaseLunchForm {
         {acceptRules && this.acceptRulesField()}
         <div className={styles.acceptRules}>
           {this.submitButton(sendLabel, submitting)}
-          {fields.id.value && <Link className={styles.linkButton} to={'/admin/lunch_examples/' + fields.id.value + '/clone'}>
-            <Button flat accent label="Клонировать"/>
-          </Link>}
-          <Link className={styles.linkButton} to="/admin/lunch_examples">
-            <Button flat outlined label="К списку шаблонов"/>
-          </Link>
+          {fields.id.value && <span>
+            <Link className={styles.linkButton} to={'/admin/lunch_examples/' + fields.id.value + '/clone'}>
+              <Button flat outlined label="Клонировать"/>
+            </Link>
+            <Link className={styles.linkButton} to={`/admin/lunches/new?lunchExampleId=${fields.id.value}`}>
+              <Button flat outlined label="Создать обед"/>
+            </Link>
+          </span>}
         </div>
       </form>
     );
