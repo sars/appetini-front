@@ -136,7 +136,7 @@ export default class Lunches extends Component {
       return {...lunch, component: 'Lunch'};
     });
     const allTeamOffers = teamOffers ? teamOffers.resources.map(offer => { return {...offer, component: 'TeamOffer'};}) : [];
-    const allLunchesAndOffers = concat(allLunches, allTeamOffers);
+    const allLunchesAndOffers = concat(allTeamOffers, allLunches);
     const allLunchesLoaded = allLunches.length >= lunches.meta.total;
     const currentPreferencesTitle = currentPreferences ? find(preferences, {id: parseInt(currentPreferences, 10)}).title : null;
 
