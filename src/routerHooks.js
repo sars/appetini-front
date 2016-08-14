@@ -7,7 +7,7 @@ export default function hooks({dispatch, getState}, client) {
       const state = getState();
       const { user } = state.auth;
       if (!user) {
-        const userFromToken = state.auth.tokenPayload.user;
+        const userFromToken = state.auth.tokenPayload && state.auth.tokenPayload.user;
         if (userFromToken) {
           client.get('/users/' + userFromToken.id).then(result => {
             dispatch(setUser(result.resource));

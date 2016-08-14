@@ -31,7 +31,7 @@ export default class MobMenu extends Component {
           <div icon="more_vert" position="top-left" menuRipple>
             {menuLinks.map((link, idx) => {
               return (
-                <Link key={idx} onClick={this.handleToggle} to={link.to}><MenuItem caption={link.label}/></Link>
+                <Link key={idx} onClick={this.handleToggle} to={link.to}><MenuItem>{link.label}</MenuItem></Link>
               );
             })}
             <MenuDivider />
