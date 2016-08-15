@@ -89,7 +89,7 @@ export default class LunchDetails extends Component {
                 <div className={styles.lunchContent}>
                   <div className={styles.lunchContentInner}>
                     <Photos className={styles.photos} lunch={lunch}/>
-                    <Card><Dishes dishes={lunch.dishes}/></Card>
+                    <Card><CardContent><Dishes dishes={lunch.dishes}/></CardContent></Card>
                     { lunch.description &&
                     <div className={styles.descriptionWrapper}>
                       <Card>

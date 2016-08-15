@@ -1,0 +1,32 @@
+.table {
+  min-width: 60%;
+  margin: 1.2rem auto;
+
+  caption {
+    padding-bottom: 1rem;
+  }
+
+  td {
+    padding: 0.3rem;
+    color: #888;
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+
+    .deleteOrder {
+      min-width: 2.2rem;
+      width: 2.2rem;
+      height: 2.2rem;
+      padding: 0;
+
+      > span:first-child {
+        margin: 0;
+        color: #888;
+        line-height: 2.2rem;
+      }
+    }
+  }
+}
+
+.textHeader {
+  text-align: center;
+}

@@ -101,7 +101,7 @@ export default class Cook extends Component {
               </div>
             </div>}
 
-            {!hideExternalLinks && <Link to={`/lunches?cook_id="${cook.id}"`}>
+            {!hideExternalLinks && <Link to={`/lunches?cook_id=${cook.id}`}>
               <Button flat outlined label={`Все обеды ${cook.full_name_genitive}`}/>
             </Link>}
           </CardContent>

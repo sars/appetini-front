@@ -54,7 +54,7 @@ export default class Home extends Component {
           {preferences.map((preference, idx) => {
             return (
               <div key={idx} className={styles.preferenceWrapper}>
-                <Link to={`/lunches?preferences="${preference.id}"`}>
+                <Link to={`/lunches?preferences=${preference.id}`}>
                   <div className={styles.preference}>
                     <div className={styles.imageWrapper}>
                       <img src={preference.image} alt={preference.name}/>
@@ -65,10 +65,10 @@ export default class Home extends Component {
               </div>
             );
           })}
-          <Link to="/lunches">
-            <Button flat outlined label="Смотреть все"/>
-          </Link>
         </div>
+        <Link to="/lunches">
+          <Button className={styles.preferenceBtn} flat outlined label="Смотреть все"/>
+        </Link>
       </ColumnLayout>
     );
   }
