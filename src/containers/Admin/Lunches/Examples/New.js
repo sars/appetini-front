@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import LunchExampleForm from 'components/LunchForm/LunchExampleForm';
 import { show as showToast } from 'redux/modules/toast';
 import { connect } from 'react-redux';
-import submit from './../submit';
+import submit, { createLunchExample } from './../submit';
 import cloneLunch from 'helpers/cloneLunch';
 import { asyncConnect } from 'redux-async-connect';
 
@@ -42,18 +42,14 @@ export default class New extends Component {
     }
   }
 
-  saveLunchByCook = (lunch) => {
-    return this.context.client.post('/lunch_examples', { data: { resource: lunch}});
-  }
-
   saveLunch = (lunch) => {
     const { showToast } = this.props; // eslint-disable-line no-shadow
-    return submit(lunch, this.saveLunchByCook).then((response) => {
+    return submit(lunch, createLunchExample(this.context.client)).then((response) => {
       showToast('Шаблон обеда успешно добавлен', 'accept', 'done');
       this.context.router.push(`/admin/lunch_examples`);
       return response;
     });
-  }
+  };
 
   render() {
     return (

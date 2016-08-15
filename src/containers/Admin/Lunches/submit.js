@@ -13,3 +13,7 @@ export default function submit(lunch, submitFn) {
     });
   });
 }
+
+export function createLunchExample(client) {
+  return lunchExample => client.post('/lunch_examples', { data: { resource: lunchExample}});
+}

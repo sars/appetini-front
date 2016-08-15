@@ -5,7 +5,7 @@ import { show as showToast } from 'redux/modules/toast';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import cloneLunch from 'helpers/cloneLunch';
-import submit from '../submit';
+import submit, { createLunchExample } from '../submit';
 
 @asyncConnect([
   {key: 'lunchExample', promise: ({helpers, params}) => {
@@ -39,7 +39,7 @@ export default class Clone extends Component {
   }
 
   createLunch(lunch) {
-    return submit(lunch, this.props.createLunch).then(response => {
+    return submit(lunch, createLunchExample(this.context.client)).then(response => {
       this.props.showToast('Обед успешно добавлен');
       this.context.router.push('/admin/lunch_examples/' + response.resource.id + '/edit');
     });
