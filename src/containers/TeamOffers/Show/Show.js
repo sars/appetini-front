@@ -11,6 +11,7 @@ import TeamOfferContainer from 'components/TeamOfferContainer/TeamOfferContainer
 import { show as showToast } from 'redux/modules/toast';
 import { addTeamOrderToOwner } from 'redux/modules/teamOrderPreferences';
 import styles from './styles.scss';
+import BuyModal from 'components/BuyModal/BuyModal';
 
 const getLunchAmount = (lunch, teamOrder) => {
   const lunchInOrder = find(teamOrder.order_items_attributes, {resource_id: lunch.id});
@@ -48,7 +49,8 @@ export default class TeamOfferShow extends Component {
       teamOrder: {
         team_offer_id: props.offer.id,
         order_items_attributes: []
-      }
+      },
+      showModal: false
     };
   }
 
@@ -56,8 +58,12 @@ export default class TeamOfferShow extends Component {
     this.buy((response) => {
       this.props.addTeamOrder(response.resource);
       this.props.showToast('Корпоративный обед успешно добавлен в корзину', 'accept', 'done');
-      this.context.router.push('/checkout');
+      this.setState({ showModal: true });
     });
+  }
+
+  checkout = () => {
+    this.context.router.push('/checkout');
   }
 
   buy = (callback) => {
@@ -91,6 +97,10 @@ export default class TeamOfferShow extends Component {
     }
   }
 
+  handleModalClose = () => {
+    this.context.router.push('/');
+  }
+
   shareTeamOrder() {
     this.buy((response) => {
       const teamOrder = response.resource;
@@ -114,6 +124,7 @@ export default class TeamOfferShow extends Component {
                           orderedAmount={teamOrderAmount}
                           disabled={disabled}
                           onBuy={::this.onBuyHandle}>
+        <BuyModal onClose={this.handleModalClose} active={this.state.showModal} onClick={this.checkout}/>
         <div className={styles.lunchesWrapper}>
           {offer.lunches.map((lunch, idx) => {
             return (<TeamLunch key={idx} lunch={lunch} onChangeAmount={::this.handleChangeAmount}

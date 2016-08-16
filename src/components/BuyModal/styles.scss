@@ -1,0 +1,36 @@
+.shopModal {
+  width: 310px;
+  max-width: 310px;
+  nav {
+    display: none;
+  }
+  h3 {
+    font-size: 2rem;
+    text-align: center;
+  }
+  i {
+    text-align: center;
+    margin: 2rem 0;
+    font-size: 9rem;
+    color: #64bb09;
+  }
+  .dialogBox {
+    display: flex;
+    flex-direction: column;
+    button {
+      width: 100%;
+      margin: 0 0 1rem 0;
+    }
+  }
+}
+
+@media (min-width: 720px) {
+  .dialogBox {
+    display: flex;
+    flex-direction: row;
+    button {
+      width: 100%;
+      margin: 0 0 1rem 0;
+    }
+  }
+}
