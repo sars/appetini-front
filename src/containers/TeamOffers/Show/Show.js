@@ -54,6 +54,14 @@ export default class TeamOfferShow extends Component {
     };
   }
 
+  componentDidMount() {
+    this.buy((response) => {
+      const teamOrder = response.resource;
+      this.props.addTeamOrderToOwner(teamOrder.id);
+      this.context.router.push(`/team_orders/owner/${teamOrder.id}?share_token=${teamOrder.share_token}`);
+    });
+  }
+
   onBuyHandle = () => {
     this.buy((response) => {
       this.props.addTeamOrder(response.resource);
@@ -101,14 +109,6 @@ export default class TeamOfferShow extends Component {
     this.context.router.push('/');
   }
 
-  shareTeamOrder() {
-    this.buy((response) => {
-      const teamOrder = response.resource;
-      this.props.addTeamOrderToOwner(teamOrder.id);
-      this.context.router.push(`/team_orders/owner/${teamOrder.id}?share_token=${teamOrder.share_token}`);
-    });
-  }
-
   render() {
     const { offer, user } = this.props;
     const { teamOrder } = this.state;
@@ -118,9 +118,9 @@ export default class TeamOfferShow extends Component {
     const disabled = !lunchesInTeamOrder.length;
     return (
       <TeamOfferContainer offer={offer}
-                          onShare={::this.shareTeamOrder}
                           totalPrice={totalPrice}
                           user={user}
+                          owner={true}
                           orderedAmount={teamOrderAmount}
                           disabled={disabled}
                           onBuy={::this.onBuyHandle}>
