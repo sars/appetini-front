@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react';
-import { CardContent } from 'components/Card/Card';
 import styles from './styles.scss';
 
 const Dishes = ({dishes}) => {
   return (
-    <CardContent>
+    <div>
       <h3>Состав обеда:</h3>
       <ul>
         {dishes.map(dish => {
@@ -17,7 +16,7 @@ const Dishes = ({dishes}) => {
           );
         })}
       </ul>
-    </CardContent>
+    </div>
   );
 };
 

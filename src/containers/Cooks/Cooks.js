@@ -58,7 +58,7 @@ export default class Cooks extends Component {
             return (
               <div key={idx} className={styles.cookWrapper}>
                 <div className={styles.cook}>
-                  <Link className={styles.cookLink} to={`/lunches?cook_id="${cook.id}"`}>
+                  <Link className={styles.cookLink} to={`/lunches?cook_id=${cook.id}`}>
                     <img src={cook.main_photo.thumb.url} alt={cook.full_name_genitive}/>
                     <div className={styles.cookInfo}>
                       <div>{cook.full_name_genitive}</div>

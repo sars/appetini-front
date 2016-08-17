@@ -12,7 +12,6 @@ import reduce from 'lodash/reduce';
 import groupBy from 'lodash/groupBy';
 import some from 'lodash/some';
 import includes from 'lodash/includes';
-import find from 'lodash/find';
 import { addTeamOrder } from 'redux/modules/purchase';
 import TeamOfferContainer from 'components/TeamOfferContainer/TeamOfferContainer';
 import { show as showToast } from 'redux/modules/toast';
@@ -40,7 +39,7 @@ const prepareLunches = (teamOrder) => {
   const lunches = teamOrder.team_offer.lunches;
   const groupedOrderItems = groupBy(orderItems, 'resource_id');
   return lunches.map(lunch => {
-    return {...lunch, order_item_info: groupedOrderItems[lunch.id]};
+    return {...lunch, order_item_info: groupedOrderItems[lunch.id] || []};
   });
 };
 
@@ -137,6 +136,7 @@ export default class TeamOrderShow extends Component {
       const newOrderItems = teamOrderItems.map(item => {
         return item.buyer_name ? item : { ...item, buyer_id: user.token, buyer_name: user.name };
       });
+      this.props.loadSuccess('teamOrder', {...teamOrder, order_items_attributes: newOrderItems});
       this.context.client.put(`team_orders/${teamOrder.id}`, {data: {
         resource: {
           ...teamOrder,
@@ -144,28 +144,23 @@ export default class TeamOrderShow extends Component {
         },
         share_token: teamOrder.share_token}
       })
-        .then(response => {
-          this.props.loadSuccess('teamOrder', {...response.resource, team_offer: teamOrder.team_offer});
+        .catch(() => {
+          this.props.loadSuccess('teamOrder', teamOrder);
         });
     }
   }
 
-  handleChangeAmount = (lunch, amount) => {
-    const { teamOrder, teamOrderPreferences } = this.props;
-    const currentOrderItem = find(lunch.order_item_info, {buyer_id: teamOrderPreferences.user.token});
-    const oldAmount = currentOrderItem ? currentOrderItem.amount : 0;
-    const currentOrderItemAmount = sumBy(lunch.order_item_info, 'amount') - oldAmount + amount;
-    if (currentOrderItemAmount <= lunch.available_count && amount >= 0) {
-      this.context.client.put(`team_orders/${teamOrder.id}/order_items`, {data: {
-        resource: {
-          resource_id: lunch.id, amount: amount, resource_type: 'Lunch', price: lunch.price, buyer_id: teamOrderPreferences.user.token, buyer_name: teamOrderPreferences.user.name
-        },
-        share_token: teamOrder.share_token}
-      })
-      .then(response => {
-        this.props.loadSuccess('teamOrder', {...response.resource, team_offer: teamOrder.team_offer});
-      });
-    }
+  handleChangeAmount = (lunch, amount, buyerId, buyerName) => {
+    const { teamOrder } = this.props;
+    this.context.client.put(`/team_orders/${teamOrder.id}/order_items`, {data: {
+      resource: {
+        resource_id: lunch.id, amount: amount, resource_type: 'Lunch', buyer_id: buyerId, buyer_name: buyerName
+      },
+      share_token: teamOrder.share_token}
+    })
+    .then(response => {
+      this.props.loadSuccess('teamOrder', {...response.resource, team_offer: teamOrder.team_offer});
+    });
   }
 
   render() {
@@ -201,7 +196,7 @@ export default class TeamOrderShow extends Component {
                 </Modal.Dialog>
                 <div className={styles.lunchesWrapper}>
                   {prepareLunches(teamOrder).map((lunch, idx) => {
-                    return (<TeamLunch key={idx} lunch={lunch} onChangeAmount={::this.handleChangeAmount}
+                    return (<TeamLunch key={idx} lunch={lunch} onChangeAmount={::this.handleChangeAmount} isOwner={isOwner(location)}
                                        amount={getLunchAmount(lunch, teamOrderPreferences.user)}/>);
                   })}
                 </div>

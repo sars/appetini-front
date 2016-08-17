@@ -37,6 +37,7 @@ export default class TeamOfferContainer extends Component {
     const { offer, children, orderedAmount, shareLink, hideExternalLinks, onShare, user, onBuy, totalPrice, disabled } = this.props;
     const disabledByCount = sumBy(offer.lunches, 'available_count') < offer.min_lunches_amount;
     const disabledByTime = isLunchDisabled(offer).byTime;
+    const disabledByCountOrTime = disabledByCount || disabledByTime;
     const hasDeliveries = user && user.deliveries_available > 0;
     const orderAllowed = orderedAmount < offer.min_lunches_amount;
     const isToday = moment(offer.ready_by).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
@@ -62,7 +63,7 @@ export default class TeamOfferContainer extends Component {
             <ShareTeamOrder shareLink={shareLink} onShare={onShare}/>
             <div className={styles.countAndPurchase}>
               <Card className={classnames(styles.countCard, styles.card)}>
-                {disabledByTime || disabledByCount
+                {disabledByCountOrTime
                   ? <div>
                       <div>{disabledByTime ? 'Время до заказа истекло' : 'Не достаточно доступных порций'}</div>
                       <div className={styles.amountLabel}><Link to="/team_offers">Закажите доступный корпоративный обед</Link></div>
@@ -76,8 +77,8 @@ export default class TeamOfferContainer extends Component {
               </Card>
               <Card className={classnames(styles.purchaseCard, styles.card)}>
                 <div>
-                  {isToday && !disabled && <OrderTimeoutStyled item={offer}/>}
-                  <PurchaseLunch disabled={disabled || disabledByCount || disabledByTime || orderAllowed} onBuy={onBuy} label="Заказать" hasDeliveries={hasDeliveries}/>
+                  {isToday && !disabledByCountOrTime && <OrderTimeoutStyled item={offer}/>}
+                  <PurchaseLunch disabled={disabled || disabledByCountOrTime || orderAllowed} onBuy={onBuy} label="Заказать" hasDeliveries={hasDeliveries}/>
                 </div>
               </Card>
             </div>

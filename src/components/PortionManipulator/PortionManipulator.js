@@ -15,7 +15,7 @@ export const PortionManipulator = ({availableCount, amount, onChangeAmount}) => 
           <span className={styles.amountLabel}>
             <FormattedPlural value={amount} one="порция" few="порции" many="порций" other="порций"/>
           </span></div>
-        <div className={styles.avaliableAmount}>Доступно {availableCount}</div>
+        {availableCount !== undefined && <div className={styles.avaliableAmount}>Доступно {availableCount}</div>}
       </div>
       <Button className={styles.amountButton} type="button" icon="add" outlined mini flat
               onClick={() => onChangeAmount(amount + 1)}/>
@@ -24,7 +24,7 @@ export const PortionManipulator = ({availableCount, amount, onChangeAmount}) => 
 };
 
 PortionManipulator.propTypes = {
-  availableCount: React.PropTypes.number.isRequired,
+  availableCount: React.PropTypes.number,
   amount: React.PropTypes.number.isRequired,
   onChangeAmount: React.PropTypes.func.isRequired
 };

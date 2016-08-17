@@ -1,6 +1,19 @@
 .amountCard {
   text-align: center;
   width: 250px;
+
+  .summary {
+    padding-top: 0.5rem;
+
+    .ordered {
+      color: #685c50;
+      font-weight: 500;
+    }
+    .available {
+      margin-left: 0.5rem;
+      color: #888;
+    }
+  }
 }
 
 .imagePreviewWrapper {
@@ -18,6 +31,7 @@
   align-items: stretch;
   justify-content: center;
   margin: 10px 0;
+  padding-bottom: 10px;
   flex-wrap: wrap;
 
   & > div {
@@ -30,21 +44,18 @@
 }
 
 .descriptionWrapper {
+  margin: 0 1.6rem;
   color: #685c50;
 
   .description {
     padding: 5px 0;
     display: block;
+    text-align: justify;
   }
 }
 
-.cardContent {
-  padding-bottom: 0.3rem;
-  padding-top: 0.5rem;
-}
-
-.portionAmountHeader {
-  text-align: center;
+.dishesWrapper {
+  margin: 1rem 1.6rem;
 }
 
 @media (max-width: 963px) {
@@ -64,17 +75,19 @@
 }
 
 .priceSection {
-  margin-top: 1rem;
+  margin: 0 1.6rem;
+  display: flex;
+  flex-direction: column;
   color: #685c50;
   font-size: 1.8rem;
-  font-weight: 500;
 
   .price {
-    font-size: 3.6rem;
-  }
-}
+    font-size: 3rem;
+    font-weight: 500;
 
-.buyer {
-  color: #685c50;
-  margin: 0.3rem;
+    .currency {
+      font-size: 1.5rem;
+      font-weight: normal;
+    }
+  }
 }
