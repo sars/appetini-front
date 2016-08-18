@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import Card, { CardContent } from 'components/Card/Card';
 import PurchaseLunch from 'components/PurchaseLunch/PurchaseLunch';
-import ToolboxDialog from 'react-toolbox/lib/dialog';
 import Button from 'components/Button/Button';
+import BuyModal from 'components/BuyModal/BuyModal';
 import times from 'lodash/times';
 import classNames from 'classnames';
 import { addOrderItem } from 'redux/modules/purchase';
@@ -103,14 +103,7 @@ export default class Purchase extends Component {
     return (
       <div>
         <Card className={styles.root}>
-          <ToolboxDialog className={styles.shopModal} active={this.state.activeModal} onOverlayClick={::this.handleReviewsClose}>
-            <div className={styles.dialogBox}>
-              <h3>Ваш заказ добавлен в корзину</h3>
-              <i className="material-icons">check_circle</i>
-              <Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Перейти к оформлению" onClick={::this.checkout}/>
-              <Link to="/"><Button className={classNames(styles.button, styles.buyButton)} big flat accent label="Выбрать другие блюда"/></Link>
-            </div>
-          </ToolboxDialog>
+          <BuyModal onClose={::this.handleReviewsClose} active={this.state.activeModal} onClick={::this.checkout}/>
           <CardContent className={styles.cardContent}>
             <div>
               <p>Есть вопросы? Звони!</p>
