@@ -19,6 +19,7 @@ module.exports = Object.assign({
   apiPort: process.env.APIPORT,
   app: {
     title: 'Appetini',
+    phone: '+38 068 366 11 24',
     description: 'Сервис доставки вкусных домашних обедов каждый день',
     head: {
       titleTemplate: 'Appetini - доставка обедов: %s',

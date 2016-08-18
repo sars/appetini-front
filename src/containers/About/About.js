@@ -1,6 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import styles from './styles.scss';
+import config from 'config';
 
 const About = () => {
   return (
@@ -26,7 +27,7 @@ const About = () => {
         и становимся лучше вместе с вами и благодаря вам!
       </p>
       <p>
-        По всем вопросам обращайтесь пожалуйста по телефону <a className={styles.link} href="tel:+380965058584">+38 096 505 85 84</a> или по email: <span className={styles.link}>support@appetini.com</span>
+        По всем вопросам обращайтесь пожалуйста по телефону <a className={styles.link} href={'tel:' + config.app.phone}>{config.app.phone}</a> или по email: <span className={styles.link}>support@appetini.com</span>
       </p>
     </div>
   );
