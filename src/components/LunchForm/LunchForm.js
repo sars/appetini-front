@@ -8,7 +8,7 @@ import Checkbox from 'react-toolbox/lib/checkbox';
 import classNames from 'classnames';
 import styles from './styles.scss';
 import Button from 'components/Button/Button';
-import LunchDropdown from 'components/LunchDropdown/LunchDropdown';
+import LunchExampleInfo from 'components/LunchExampleInfo/LunchExampleInfo';
 
 @reduxForm(
   {
@@ -32,7 +32,7 @@ export default class LunchForm extends Component {
     return (
       <form className={styles.root} onSubmit={handleSubmit}>
         <h1>{title}</h1>
-        <LunchDropdown className={styles.filter} {...fields.lunch_example_id}/>
+        <LunchExampleInfo lunchExampleId={fields.lunch_example_id.initialValue}/>
         <div className={styles.team}>
           <h3>Корпоративный</h3>
           <Checkbox {...fields.team}/>

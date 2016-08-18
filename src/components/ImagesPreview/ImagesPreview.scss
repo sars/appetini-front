@@ -14,9 +14,14 @@ $navigationActive: #fff;
   }
 }
 
+.image {
+  width: 100%;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
 .imagePreviewWrapper {
   height: 70%;
-  width: 70%;
   margin: 0 auto;
   z-index: 1;
   position: relative;

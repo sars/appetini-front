@@ -1,0 +1,33 @@
+.lunchExampleInfo {
+  display: flex;
+  flex-direction: column;
+
+  .field {
+    padding: 1rem 0;
+  }
+
+  .dishesTable {
+    width: 100%;
+
+    .dishCol {
+      width: 10rem;
+    }
+
+    th {
+      font-weight: 500;
+      color: #685c50;
+    }
+
+    td, th {
+      padding: 0.5rem;
+      vertical-align: top;
+
+      &:first-child {
+        padding-left: 0;
+      }
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+}
