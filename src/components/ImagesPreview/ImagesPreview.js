@@ -68,7 +68,7 @@ export default class ImagesPreview extends Component {
     const overlayClass = classNames(styles.overlay, active ? styles.overlayActive : '', overlayClosing ? styles.overlayClosing : '');
     return (
         <div>
-          {!template && <img src={images[currentImageId].thumb.url} className="pointer" onClick={::this.handleClick}/>}
+          {!template && <img src={images[currentImageId].thumb.url} className={styles.image} onClick={::this.handleClick}/>}
           {template && template(::this.handleClick)}
           {active &&
             <Overlay active={active} onClick={::this.handleClose} className={overlayClass}>
