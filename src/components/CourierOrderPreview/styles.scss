@@ -1,4 +1,14 @@
 .table {
+  thead {
+    .noticeStatus {
+      padding: 0;
+      width: 1rem;
+    }
+
+    .id {
+      padding: 0.5rem;
+    }
+  }
   tbody {
     border-bottom: 1px solid #958C82;
 
@@ -11,6 +21,18 @@
 
       &:hover {
         background: inherit;
+      }
+
+      & .noticeStatus {
+        padding: 0;
+      }
+    }
+
+    .notice {
+      padding: 0;
+      &>div {
+        display: block;
+        margin: 1rem;
       }
     }
   }
@@ -47,14 +69,31 @@
   margin: 2rem 0;
 }
 
+.modalOrderNotices > div {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
 .modalItem {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+}
+
+.checkbox {
+  margin: 0;
 }
 
 @media screen and (min-width: 768px) {
   .showXs {
     display: none;
   }
+
+  .table thead .id {
+    padding: 1rem;
+  }
+}
+
+.hasNotices {
+  background-color: #FFECB3;
 }
 
 .filterItem {
