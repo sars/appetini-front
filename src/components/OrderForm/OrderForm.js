@@ -22,6 +22,7 @@ import mapValues from 'lodash/mapValues';
 import transform from 'lodash/transform';
 import omit from 'lodash/omit';
 import pickBy from 'lodash/pickBy';
+import isPlainObject from 'lodash/isPlainObject';
 
 @reduxForm(
   {
@@ -235,7 +236,19 @@ export default class OrderForm extends Component {
   errorsFor(fieldName) {
     const { fields } = this.props;
     return fields[fieldName].error && !fields[fieldName].visited &&
-      <div className={styles.error}>{fields[fieldName].error}</div>;
+      <div className={styles.error}>{this.parseError(fields[fieldName].error)}</div>;
+  }
+
+  parseError(error) {
+    if (error instanceof Array) {
+      return error.join(', ');
+    } else if (typeof error === 'object') {
+      return transform(error, (result, value, key) => {
+        const msg = isPlainObject(value) ? `${key}: { ${this.parseError(value)} }` : `${key}: ${this.parseError(value)}`;
+        return result.push(msg);
+      }, []).join('; ');
+    }
+    return error;
   }
 
   changeAmountOrderItem(currentItem, amountDelta) {
