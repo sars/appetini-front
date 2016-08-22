@@ -16,6 +16,8 @@ import { addTeamOrder } from 'redux/modules/purchase';
 import TeamOfferContainer from 'components/TeamOfferContainer/TeamOfferContainer';
 import { show as showToast } from 'redux/modules/toast';
 import styles from './styles.scss';
+import Helmet from 'react-helmet';
+import { origin } from 'config';
 let pusher;
 let channel;
 
@@ -187,6 +189,11 @@ export default class TeamOrderShow extends Component {
                                 orderedAmount={teamOrderAmount}
                                 onBuy={::this.onBuyHandle}
                                 hideExternalLinks={!isOwner(location)}>
+              <Helmet meta={[
+                {property: 'og:title', content: 'Appetini - доставка обедов для корпоративных клиентов'},
+                {property: 'og:description', content: 'Комплексный обед за 33 грн'},
+                {property: 'og:image', content: `${origin}${teamOrder.team_offer.lunches[0].photos[0].thumb.url}`}
+              ]}/>
               <div>
                 <Modal.Dialog active={!teamOrderPreferences.user.token} onClose={() => {}} title="Введите ваше имя">
                   <form className={styles.userModal} onSubmit={::this.setTeamOrderUser}>

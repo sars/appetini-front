@@ -12,11 +12,14 @@ const environment = {
   }
 }[process.env.NODE_ENV || 'development'];
 
+const origin = 'http://appetini.com';
+
 module.exports = Object.assign({
   host: process.env.HOST || 'localhost',
   port: process.env.PORT,
   apiHost: process.env.APIHOST || 'localhost',
   apiPort: process.env.APIPORT,
+  origin: origin,
   app: {
     title: 'Appetini',
     description: 'Сервис доставки вкусных домашних обедов каждый день',
@@ -26,7 +29,7 @@ module.exports = Object.assign({
         {name: 'description', content: 'Сервис доставки вкусных домашних обедов каждый день'},
         {charset: 'utf-8'},
         {property: 'og:site_name', content: 'Appetini - доставка обедов Сумы'},
-        {property: 'og:image', content: 'https://react-redux.herokuapp.com/logo.png'},
+        {property: 'og:image', content: `${origin}/appetini.jpg`},
         {property: 'og:locale', content: 'en_US'},
         {property: 'og:title', content: 'Appetini - доставка обедов'},
         {property: 'og:description', content: 'Сервис доставки вкусных домашних обедов каждый день'},
