@@ -1,6 +1,7 @@
 .root {
   max-width: 55rem;
   margin: 0 auto;
+  padding: 0 2.4rem;
 }
 
 .dishesTable {
@@ -79,7 +80,6 @@
   display: flex;
   margin-left: -0.5rem;
   margin-right: -0.5rem;
-  width: 100%;
   > div {
     width: 50%;
     padding: 0 0.5rem;
@@ -96,5 +96,6 @@
 }
 
 .linkButton {
-  margin-left: 20px;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
 }

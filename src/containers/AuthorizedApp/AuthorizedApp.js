@@ -21,7 +21,7 @@ export default class AuthorizedApp extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.user !== nextProps.user) {
       // to reload asyncConnect data and block transition until data is loaded, we need to reload route
-      this.props.pushState(nextProps.location.pathname);
+      this.props.pushState({...nextProps.location});
     }
 
     if (this.props.location !== nextProps.location) {

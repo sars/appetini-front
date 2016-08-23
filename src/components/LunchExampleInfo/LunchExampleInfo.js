@@ -1,10 +1,8 @@
 import React, { PropTypes, Component } from 'react';
-import { Link } from 'react-router';
 import Input from 'components/Input/Input';
 import ImagesPreview from 'components/ImagesPreview/ImagesPreview';
 import styles from './styles.scss';
 import isEmpty from 'lodash/isEmpty';
-import Button from 'components/Button/Button';
 
 export default class LunchExampleInfo extends Component {
   static propTypes = {
@@ -41,11 +39,20 @@ export default class LunchExampleInfo extends Component {
             <tr key={index}>
               <td><Input disabled value={dishField.name}/></td>
               <td className={styles.dishCol}>{this.inputField(dishField.size)}</td>
-              <td className={styles.dishCol}>{this.inputField(dishField.dish_type)}</td>
+              <td className={styles.dishType}>{this.dishTypeField(dishField.dish_type)}</td>
             </tr>
           )}
         </tbody>
       </table>
+    );
+  }
+
+  dishTypeField(value) {
+    const dishTypes = {
+      salad: 'Салат', soup: 'Суп', main: 'Основное', side: 'Гарнир'
+    };
+    return (
+      <Input disabled value={dishTypes[value]}/>
     );
   }
 
@@ -61,14 +68,6 @@ export default class LunchExampleInfo extends Component {
     );
   }
 
-  templateLink() {
-    return (
-      <Link to="/admin/lunch_examples">
-        <Button flat accent label="Выбрать шаблон"/>
-      </Link>
-    );
-  }
-
   render() {
     const { lunchExample } = this.state;
     const fields = !isEmpty(lunchExample)
@@ -77,8 +76,7 @@ export default class LunchExampleInfo extends Component {
         {name: 'Описание', data: this.inputField(lunchExample.description, true)},
         {name: 'Состав обеда', data: this.dishesTable(lunchExample)},
         {name: 'Цена', data: this.inputField(Number(lunchExample.initial_price) + ' грн')}
-      ]
-      : [{name: 'Необходимо выбрать шаблон:', data: this.templateLink()}];
+      ] : [];
 
     return (
       <div className={styles.lunchExampleInfo}>
