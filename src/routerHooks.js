@@ -1,4 +1,5 @@
 import { setUser } from 'redux/modules/auth';
+import { updateOrder } from 'redux/modules/purchase';
 import { show as showToast, close as closeToast } from 'redux/modules/toast';
 
 export default function hooks({dispatch, getState}, client) {
@@ -60,6 +61,26 @@ export default function hooks({dispatch, getState}, client) {
       }
 
       cb();
+    },
+
+    loadEditOrder: ({params: { orderId }}, replaceState, cb) => {
+      client.get('/orders/' + orderId)
+        .then(response => {
+          const order = response.resource;
+          if (order.payed || order.status !== 'pending') {
+            dispatch(showToast('Редактирование этого заказа недоступно', 'warning', 'error'));
+            replaceState('/');
+          } else {
+            dispatch(updateOrder(order));
+            replaceState('/checkout');
+          }
+          cb();
+        })
+        .catch((response) => {
+          dispatch(showToast(response.errors, 'cancel', 'error'));
+          replaceState('/');
+          cb();
+        });
     }
   };
 }
