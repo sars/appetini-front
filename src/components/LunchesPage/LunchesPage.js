@@ -36,7 +36,6 @@ export default class LunchesPage extends Component {
     };
   }
 
-
   render() {
     const { items } = this.props;
     const nearDate = items[0].ready_by;
