@@ -64,11 +64,16 @@ export default function hooks({dispatch, getState}, client) {
     },
 
     loadEditOrder: ({params: { orderId }}, replaceState, cb) => {
+      if (__SERVER__) {
+        cb();
+        return;
+      }
       client.get('/orders/' + orderId)
         .then(response => {
           const order = response.resource;
           if (order.payed || order.status !== 'pending') {
             dispatch(showToast('Редактирование этого заказа недоступно', 'warning', 'error'));
+            setTimeout(() => dispatch(closeToast()), 2000);
             replaceState('/');
           } else {
             dispatch(updateOrder(order));
@@ -78,6 +83,7 @@ export default function hooks({dispatch, getState}, client) {
         })
         .catch((response) => {
           dispatch(showToast(response.errors, 'cancel', 'error'));
+          setTimeout(() => dispatch(closeToast()), 2000);
           replaceState('/');
           cb();
         });
