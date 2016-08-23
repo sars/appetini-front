@@ -87,7 +87,7 @@ export default class Checkout extends Component {
           ga('Purchase(liqpay)');
         } else {
           ga('Purchase(cash)');
-          this.context.router.push(`/order/${order.id}/success`);
+          this.context.router.push(`/orders/${order.id}/success`);
         }
 
         resolve(response);

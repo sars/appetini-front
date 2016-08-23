@@ -75,7 +75,7 @@ export default (store, client) => {
         <Route path="lunches/:lunchId(/reviews)" component={LunchDetails}/>
         <Route path="tariffs" component={Tariffs}/>
         <Route path="checkout" component={Checkout}/>
-        <Route path="order/:orderId/success" component={OrderSuccess}/>
+        <Route path="orders/:orderId/success" component={OrderSuccess}/>
         <Route path="settings" component={Settings}/>
         <Route path="cooks/:cookId/orders" component={CookOrdersPage}/>
         <Route path="cooks/:cookId/draft_lunches" onEnter={checkCurrentCook}
