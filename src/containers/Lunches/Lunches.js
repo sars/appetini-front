@@ -127,6 +127,12 @@ export default class Lunches extends Component {
       });
   };
 
+  sortItems = (items) => {
+    return items.sort((item, anotherItem) => {
+      return new Date(item.ready_by) - new Date(anotherItem.ready_by);
+    });
+  }
+
   render() {
     const styles = require('./Lunches.scss');
     const {lunches, preferences, cooks, teamOffers} = this.props;
@@ -136,7 +142,7 @@ export default class Lunches extends Component {
       return {...lunch, component: 'Lunch'};
     });
     const allTeamOffers = teamOffers ? teamOffers.resources.map(offer => { return {...offer, component: 'TeamOffer'};}) : [];
-    const allLunchesAndOffers = concat(allTeamOffers, allLunches);
+    const allLunchesAndOffers = this.sortItems(concat(allTeamOffers, allLunches));
     const allLunchesLoaded = allLunches.length >= lunches.meta.total;
     const currentPreferencesTitle = currentPreferences ? find(preferences, {id: parseInt(currentPreferences, 10)}).title : null;
 
