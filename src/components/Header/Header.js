@@ -16,6 +16,7 @@ import { FormattedPlural } from 'react-intl';
 import MobMenu from 'components/MobMenu/MobMenu';
 import ShoppingButton from 'components/ShoppingButton/ShoppingButton';
 import menuLinks from 'helpers/menuLinks';
+import config from 'config';
 
 @connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount, order: state.purchase.order}), {logout, showToast, openModal})
 export default class Header extends Component {
@@ -85,9 +86,12 @@ export default class Header extends Component {
           {(lunchesAmount > 0 || order) && <ShoppingButton countItems={lunchesAmount} className={styles.shopCartMob}/>}
         </div>
         <IndexLink className={styles.brand} to="/">
-          <div className={styles.brandIcon}></div>
+          <div className={styles.brandIcon}>
+            <span className={styles.brandIconCity}>сумы</span>
+            <span className={styles.brandIconPhone}>{config.app.phone}</span>
+          </div>
           <span className={styles.brandLabel}>
-            <span className={styles.brandLabelCity}>Сумы</span>
+            <span className={styles.brandLabelPhone}>{config.app.phone}</span>
           </span>
         </IndexLink>
 

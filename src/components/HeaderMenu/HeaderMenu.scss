@@ -34,13 +34,13 @@
       position: initial;
       display: none;
 
-      @media (min-width: 990px) {
+      @media (min-width: 1180px) {
         &.long {
           display: inline;
         }
       }
 
-      @media (max-width: 989px) {
+      @media (max-width: 1179px) {
         &.short {
           display: inline;
         }
