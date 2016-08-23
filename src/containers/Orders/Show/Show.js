@@ -24,6 +24,14 @@ export default class AdminOrdersShow extends Component {
   render() {
     const {order} = this.props;
     const { router } = this.context;
+    const hasLunches = order.order_items.some(item => item.resource_type !== 'DeliveryTariff');
+    const statuses = {
+      pending: 'В ожидании',
+      handled: 'Обработан',
+      approved: 'Обработан',
+      canceled: 'Отменен'
+    };
+
     return (
       <div className={styles.root}>
         <h2 className={styles.title}>Информация по заказу #{order.id}</h2>
@@ -47,8 +55,16 @@ export default class AdminOrdersShow extends Component {
             </div>
           }
           <div className={styles.commonField}>
+            <span>Дата заказа: </span>
+            <strong>{moment(order.created_at).format('DD MMMM HH:mm')}</strong>
+          </div>
+          <div className={styles.commonField}>
             <span>Статус оплаты: </span>
             <strong>{order.payed ? 'Оплачено' : 'Не оплачено'}</strong>
+          </div>
+          <div className={styles.commonField}>
+            <span>Статус: </span>
+            <strong>{statuses[order.status]}</strong>
           </div>
           <div className={styles.commonField}>
             <span>Тип оплаты: </span>
@@ -56,7 +72,7 @@ export default class AdminOrdersShow extends Component {
           </div>
           <div className={styles.commonField}>
             <span>Общая цена: </span>
-            <strong>{order.total_price} грн.</strong>
+            <strong>{Number(order.total_price)} грн.</strong>
           </div>
         </Card>
 
@@ -73,22 +89,23 @@ export default class AdminOrdersShow extends Component {
           })}
         </Card>
 
-        <Card className={tableStyles.orderPreviewWrapper}>
-          <table className={classnames(tableStyles.table, styles.table)}>
-            <thead>
-            <tr>
-              <td>Обработано</td>
-              <td>Ид Кулинара</td>
-              <td>Имя Кулинара</td>
-              <td>Доставка</td>
-              <td>Блюда</td>
-              <td className={styles.hiddenXs}>Фото</td>
-              <td>Цена</td>
-              <td>
-                <span className={tableStyles.nowrap}>К-во</span>
-              </td>
-            </tr>
-            </thead>
+        {hasLunches &&
+          <Card className={tableStyles.orderPreviewWrapper}>
+            <table className={classnames(tableStyles.table, styles.table)}>
+              <thead>
+                <tr>
+                  <td>Обработано</td>
+                  <td>Ид Кулинара</td>
+                  <td>Имя Кулинара</td>
+                  <td>Доставка</td>
+                  <td>Блюда</td>
+                  <td className={styles.hiddenXs}>Фото</td>
+                  <td>Цена</td>
+                  <td>
+                    <span className={tableStyles.nowrap}>К-во</span>
+                  </td>
+                </tr>
+              </thead>
               <tbody>
                 {order.order_items.map((item, index) => {
                   if (item.resource_type !== 'DeliveryTariff') {
@@ -123,8 +140,9 @@ export default class AdminOrdersShow extends Component {
                   }
                 })}
               </tbody>
-          </table>
-        </Card>
+            </table>
+          </Card>
+        }
       </div>
     );
   }
