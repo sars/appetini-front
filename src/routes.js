@@ -44,7 +44,7 @@ import {
 } from 'containers';
 
 export default (store, client) => {
-  const { userLoad, confirmEmail, requireLogin, checkCurrentCook } = hooks(store, client);
+  const { userLoad, confirmEmail, requireLogin, checkCurrentCook, loadEditOrder } = hooks(store, client);
 
   /**
    * Please keep routes in alphabetical order
@@ -87,6 +87,7 @@ export default (store, client) => {
         <Route path="courier/orders" component={CourierOrdersPage}/>
         <Route path="orders" component={OrdersIndex}/>
         <Route path="orders/:orderId" component={OrderShow}/>
+        <Route path="orders/:orderId/edit" onEnter={loadEditOrder}/>
 
       <Route path="admin" onEnter={requireLogin} component={AuthorizedApp} authCondition={user => user && user.role === 'admin'}>
         <IndexRoute component={AdminDashboard}/>
