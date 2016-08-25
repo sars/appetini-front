@@ -15,16 +15,11 @@ import {
     TeamOffers,
     TeamOfferShow,
     TeamOrderShow,
-    AdminDashboard,
-    AdminLunches,
     AdminLunchesNew,
     AdminLunchesEdit,
-    AdminLunchesExamples,
     AdminLunchesExamplesNew,
     AdminLunchesExamplesEdit,
     AdminLunchesExamplesClone,
-    AdminOrders,
-    AdminCooks,
     AdminCooksNew,
     AdminCooksEdit,
     AdminOrderItems,
@@ -90,17 +85,12 @@ export default (store, client) => {
         <Route path="orders/:orderId/edit" onEnter={loadEditOrder}/>
 
       <Route path="admin" onEnter={requireLogin} component={AuthorizedApp} authCondition={user => user && user.role === 'admin'}>
-        <IndexRoute component={AdminDashboard}/>
-        <Route path="orders" component={AdminOrders}/>
         <Route path="order_items" component={AdminOrderItems}/>
-        <Route path="lunches" component={AdminLunches}/>
         <Route path="lunches/:lunchId/edit" component={AdminLunchesEdit}/>
         <Route path="lunches/new" component={AdminLunchesNew}/>
-        <Route path="lunch_examples" component={AdminLunchesExamples}/>
         <Route path="lunch_examples/new" component={AdminLunchesExamplesNew}/>
         <Route path="lunch_examples/:lunchExampleId/edit" component={AdminLunchesExamplesEdit}/>
         <Route path="lunch_examples/:lunchExampleId/clone" component={AdminLunchesExamplesClone}/>
-        <Route path="cooks" component={AdminCooks}/>
         <Route path="cooks/:cookId/edit" component={AdminCooksEdit}/>
         <Route path="cooks/new" component={AdminCooksNew}/>
       </Route>

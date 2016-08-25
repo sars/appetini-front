@@ -19,7 +19,7 @@ export default class New extends Component {
   create(cook) {
     return submit(cook, this.props.createCook).then(response => {
       this.props.showToast('Кулинар успешно добавлен');
-      this.context.router.push('/admin/cooks');
+      this.context.router.push('/');
       return response;
     });
   }

@@ -46,7 +46,7 @@ export default class New extends Component {
     const { showToast } = this.props; // eslint-disable-line no-shadow
     return submit(lunch, createLunchExample(this.context.client)).then((response) => {
       showToast('Шаблон обеда успешно добавлен', 'accept', 'done');
-      this.context.router.push(`/admin/lunch_examples`);
+      this.context.router.push('/');
       return response;
     });
   };
