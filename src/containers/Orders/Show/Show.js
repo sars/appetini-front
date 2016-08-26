@@ -95,7 +95,6 @@ export default class AdminOrdersShow extends Component {
               <thead>
                 <tr>
                   <td>Обработано</td>
-                  <td>Ид Кулинара</td>
                   <td>Имя Кулинара</td>
                   <td>Доставка</td>
                   <td>Блюда</td>
@@ -112,7 +111,6 @@ export default class AdminOrdersShow extends Component {
                     return (
                       <tr key={index} onClick={() => {router.push(`/lunches/${item.resource_id}`);}}>
                         <td><Checkbox checked={Boolean(item.reviewed_order_item && item.reviewed_order_item.id)} disabled/></td>
-                        <td>{item.resource.cook_id}</td>
                         <td>{item.resource.cook.full_name_genitive}</td>
                         <td>
                           <div>{moment(item.resource.ready_by).format('DD MMMM HH:mm')}</div>
