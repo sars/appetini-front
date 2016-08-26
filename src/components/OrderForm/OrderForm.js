@@ -328,7 +328,7 @@ export default class OrderForm extends Component {
           <h3>Имя</h3>
           { user && (user.role === 'admin')
             ? <UsersAutocomplete direction="down" onUserSelect={::this.handleUserSelect}
-                                 value={{id: fields.user.id.value, name: fields.user.name.value}}/>
+                                 value={{id: fields.user.id.value, name: fields.user.name.value, email: fields.user.email.value}}/>
             : <Input disabled={Boolean(user)} placeholder="Введите имя" {...fields.user.name}/>
           }
         </div>

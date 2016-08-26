@@ -32,18 +32,27 @@ export default class UsersAutocomplete extends Component {
     this.props.onUserSelect(selectedUser);
   };
 
+  renderUser = (user) => {
+    return (
+      <span>
+        <p>{user.name}</p>
+        <p className={styles.userEmail}>{user.email}</p>
+      </span>
+    );
+  }
+
   render() {
     const { users } = this.state;
     const { value } = this.props;
 
-    const userNames = isEmpty(users) && !isEmpty(value) ? {[value.id]: value.name} : mapValues(users, 'name');
+    const usersData = isEmpty(users) && !isEmpty(value) ? {[value.id]: this.renderUser(value)} : mapValues(users, user => this.renderUser(user));
     const autocompleteStyles = require('components/autocomplete/autocomplete.scss');
 
     return (
       <div className={styles.userslist}>
         <Autocomplete {...this.props} className={autocompleteStyles.autocomplete} multiple={false}
                       onUpdateSuggestions={this.requestUsers} value={value.name}
-                      source={userNames} onChange={this.handleChange}/>
+                      source={usersData} onChange={this.handleChange}/>
       </div>
     );
   }
