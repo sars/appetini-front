@@ -163,9 +163,6 @@ export default class Purchase extends Component {
               <Link to={'/admin/lunches/' + lunch.id + '/edit'}>
                 <MenuItem caption="Редактировать"/>
               </Link>
-              <Link to={'/admin/lunches/' + lunch.id + '/clone'}>
-                <MenuItem caption="Клонировать"/>
-              </Link>
             </CardContent>
           </Card>
         }
