@@ -12,6 +12,8 @@ import { show as showToast } from 'redux/modules/toast';
 import { addTeamOrderToOwner } from 'redux/modules/teamOrderPreferences';
 import styles from './styles.scss';
 import BuyModal from 'components/BuyModal/BuyModal';
+import Helmet from 'react-helmet';
+import { origin } from 'config';
 
 const getLunchAmount = (lunch, teamOrder) => {
   const lunchInOrder = find(teamOrder.order_items_attributes, {resource_id: lunch.id});
@@ -124,6 +126,11 @@ export default class TeamOfferShow extends Component {
                           orderedAmount={teamOrderAmount}
                           disabled={disabled}
                           onBuy={::this.onBuyHandle}>
+        <Helmet meta={[
+          {property: 'og:title', content: 'Appetini - доставка обедов для корпоративных клиентов'},
+          {property: 'og:description', content: 'Комплексный обед за 33 грн'},
+          {property: 'og:image', content: `${origin}${offer.lunches[0].photos[0].thumb.url}`}
+        ]}/>
         <BuyModal onClose={this.handleModalClose} active={this.state.showModal} onClick={this.checkout}/>
         <div className={styles.lunchesWrapper}>
           {offer.lunches.map((lunch, idx) => {

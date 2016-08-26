@@ -16,6 +16,8 @@ import Button from 'components/Button/Button';
 import { link as stylesLink } from 'components/HeaderMenu/HeaderMenu.scss';
 import { Link } from 'react-router';
 import Card, { CardContent } from 'components/Card/Card';
+import Helmet from 'react-helmet';
+import { origin } from 'config';
 
 @asyncConnect([
   {key: 'lunch', promise: ({params, helpers, store}) => {
@@ -58,6 +60,11 @@ export default class LunchDetails extends Component {
 
     return (
       <ColumnLayout className={styles.root}>
+        <Helmet meta={[
+          {property: 'og:title', content: 'Appetini - доставка обедов в Сумах'},
+          {property: 'og:description', content: lunch.description || `Комплексный обед за ${Number(lunch.price)} грн`},
+          {property: 'og:image', content: `${origin}${lunch.photos[0].thumb.url}`}
+        ]}/>
         <div className={styles.middlePart}>
           <div className={styles.middlePartContent}>
             <div className={leftSidebarClasses}>
