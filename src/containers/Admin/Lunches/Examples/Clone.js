@@ -32,6 +32,10 @@ export default class Clone extends Component {
   componentDidMount() {
     const { lunchExample } = this.props;
     const { client } = this.context;
+    if ( !lunchExample ) {
+      this.props.showToast('Ошибка загрузки шаблона обеда', 'warning', 'error');
+      return;
+    }
     cloneLunch(lunchExample, client)
       .then(lunchExampleFields => {
         this.setState({lunchExampleFields});
