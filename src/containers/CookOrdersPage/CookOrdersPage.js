@@ -97,7 +97,7 @@ export default class CookOrdersPage extends Component {
     const { groupedOrders } = this.state;
     const ungroupedOrders = getOrderItems(orders);
     return (
-      <OrdersForCookCourier title="Страница кулинара" location={location}
+      <OrdersForCookCourier title={`Страница кулинара ${user.cook.full_name_genitive}`} location={location}
                             clearSortByOrderItem={::this.clearSortByOrderItem}
                             sorted={groupedOrders} sortByOrderItem={::this.sortByOrderItem}>
         <CookOrderPreview orders={groupedOrders || ungroupedOrders} user={user}
