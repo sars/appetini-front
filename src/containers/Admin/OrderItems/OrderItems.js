@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import OrdersForCookCourier from 'components/OrdersForCookCourier/OrdersForCookCourier';
 import styles from 'components/CookOrderPreview/styles.scss';
 import { Card } from 'react-toolbox/lib/card';
+import DishList from 'components/DishList/DishList';
 import Checkbox from 'react-toolbox/lib/checkbox';
 import Button from 'components/Button/Button';
 import { Link } from 'react-router';
@@ -107,12 +108,7 @@ export default class OrderItems extends Component {
                       <td>{item.order_id}</td>
                       <td>{item.resource.cook.full_name_genitive}</td>
                       <td>
-                        {item.resource.dishes.map((dish, index) => {
-                          return (
-                            <div key={index} className={styles.dish}>
-                              <span className={styles.dishName}>{dish.name}</span>
-                            </div>);
-                        })}
+                        <DishList dishes={item.resource.dishes}/>
                       </td>
                       <td className={styles.hiddenXs}>
                         <div className={styles.photoWrapper}>

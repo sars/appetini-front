@@ -1,0 +1,77 @@
+.rootMultiple {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 2.4rem;
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+
+  tr {
+    text-align: center;
+    td {
+      padding: 0.5rem;
+    }
+  }
+
+  thead tr {
+    color: #685c50;
+    font-weight: 500;
+    td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.lunchExampleInfo {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+
+  .lunchExampleCard {
+    margin-bottom: 1rem;
+    padding: 1rem;
+
+    .lunchExampleBlock {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .team {
+    margin-bottom: 0;
+  }
+
+  .photoWrapper {
+    width: 15rem;
+    margin: 0 auto;
+
+    img {
+      max-width: 80%;
+      border-radius: 8px;
+    }
+  }
+}
+
+.submitBtn {
+  display: block;
+  margin: 0 auto;
+}
+
+.error {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  margin-bottom: 1rem;
+  color: #de3226;
+}
+
+@media screen and (max-width: 767px) {
+  .hiddenXs {
+    display: none;
+  }
+}

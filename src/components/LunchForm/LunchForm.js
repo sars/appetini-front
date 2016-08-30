@@ -53,8 +53,8 @@ export default class LunchForm extends Component {
             <Input {...fields.available_count}/>
           </div>
         </div>
-        <div className={styles.acceptRules}>
-          <Button flat accent label={sendLabel} type="submit" disabled={submitting}/>
+        <div>
+          <Button className={styles.linkButton} flat accent label={sendLabel} type="submit" disabled={submitting}/>
           <Link className={styles.linkButton} to="/admin/lunches">
             <Button flat outlined label="К списку обедов"/>
           </Link>
