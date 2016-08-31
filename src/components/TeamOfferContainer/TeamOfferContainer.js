@@ -20,13 +20,13 @@ export default class TeamOfferContainer extends Component {
     offer: PropTypes.object.isRequired,
     user: PropTypes.object,
     onBuy: PropTypes.func,
-    onShare: PropTypes.func,
     children: PropTypes.any,
     hideExternalLinks: PropTypes.bool,
     orderedAmount: PropTypes.number,
     totalPrice: PropTypes.any,
     shareLink: PropTypes.string,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    owner: PropTypes.bool
   };
 
   state = {
@@ -34,7 +34,7 @@ export default class TeamOfferContainer extends Component {
   }
 
   render() {
-    const { offer, children, orderedAmount, shareLink, hideExternalLinks, onShare, user, onBuy, totalPrice, disabled } = this.props;
+    const { offer, children, orderedAmount, shareLink, hideExternalLinks, owner, user, onBuy, totalPrice, disabled } = this.props;
     const disabledByCount = sumBy(offer.lunches, 'available_count') < offer.min_lunches_amount;
     const disabledByTime = isLunchDisabled(offer).byTime;
     const disabledByCountOrTime = disabledByCount || disabledByTime;
@@ -60,28 +60,34 @@ export default class TeamOfferContainer extends Component {
                 <DeliveryPeriod time={offer.ready_by} className={styles.deliveryPeriod}/>
               </div>
             </div>
-            <ShareTeamOrder shareLink={shareLink} onShare={onShare}/>
-            <div className={styles.countAndPurchase}>
-              <Card className={classnames(styles.countCard, styles.card)}>
-                {disabledByCountOrTime
-                  ? <div>
-                      <div>{disabledByTime ? 'Время до заказа истекло' : 'Не достаточно доступных порций'}</div>
-                      <div className={styles.amountLabel}><Link to="/team_offers">Закажите доступный корпоративный обед</Link></div>
+            <ShareTeamOrder shareLink={shareLink}/>
+            {owner &&
+              <div className={styles.countAndPurchase}>
+                <Card className={classnames(styles.countCard, styles.card)}>
+                  {disabledByCountOrTime
+                    ? <div>
+                    <div>{disabledByTime ? 'Время до заказа истекло' : 'Недостаточно доступных порций'}</div>
+                    <div className={styles.amountLabel}><Link to="/team_offers">Закажите доступный корпоративный
+                      обед</Link></div>
+                  </div>
+                    : <div>
+                    <div className={styles.count}>Минимум порций для заказа: <strong>{offer.min_lunches_amount}</strong>
                     </div>
-                  : <div>
-                      <div className={styles.count}>Минимум порций для заказа: <strong>{offer.min_lunches_amount}</strong></div>
-                      <div className={classnames({[styles.orderCount]: orderAllowed})}>Заказано: <strong>{orderedAmount}</strong></div>
-                      <div><span className={styles.cost}>{Number(totalPrice)}</span> грн</div>
-                    </div>
-                }
-              </Card>
-              <Card className={classnames(styles.purchaseCard, styles.card)}>
-                <div>
-                  {isToday && !disabledByCountOrTime && <OrderTimeoutStyled item={offer}/>}
-                  <PurchaseLunch disabled={disabled || disabledByCountOrTime || orderAllowed} onBuy={onBuy} label="Заказать" hasDeliveries={hasDeliveries}/>
-                </div>
-              </Card>
-            </div>
+                    <div className={classnames({[styles.orderCount]: orderAllowed})}>Заказано:
+                      <strong>{orderedAmount}</strong></div>
+                    <div><span className={styles.cost}>{Number(totalPrice)}</span> грн</div>
+                  </div>
+                  }
+                </Card>
+                <Card className={classnames(styles.purchaseCard, styles.card)}>
+                  <div>
+                    {isToday && <OrderTimeoutStyled item={offer}/>}
+                    <PurchaseLunch disabled={disabled || disabledByCountOrTime || orderAllowed} onBuy={onBuy}
+                                   label="Заказать" hasDeliveries={hasDeliveries}/>
+                  </div>
+                </Card>
+              </div>
+            }
             {children}
           </div>
         </div>

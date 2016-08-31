@@ -86,6 +86,9 @@ export default class TeamOrderShow extends Component {
 
   componentDidMount() {
     const { user, teamOrder, teamOrderPreferences} = this.props;
+    if (!includes(teamOrderPreferences.ownerArray, teamOrder.id)) {
+      this.context.router.push(`/team_orders/${teamOrder.id}?share_token=${teamOrder.share_token}`);
+    }
     if (user && !teamOrderPreferences.user.token) {
       this.props.setTeamOrderUser({
         name: user.name,
@@ -183,6 +186,7 @@ export default class TeamOrderShow extends Component {
               </Link>
             </div>
           : <TeamOfferContainer offer={teamOrder.team_offer} disabled={disabled}
+                                owner={!disabled}
                                 totalPrice={teamOrder.price}
                                 user={user}
                                 shareLink={teamOrder.share_link}

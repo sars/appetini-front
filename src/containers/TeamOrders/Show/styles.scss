@@ -114,10 +114,6 @@
   }
 }
 
-.teamOrderWrapper {
-  margin-top: 2rem;
-}
-
 .userModal {
   display: flex;
   .userInput {
@@ -147,5 +143,21 @@
     display: inline-block;
     margin-top: 2rem;
     color: #685c50;
+  }
+}
+
+@media all and (max-width: 767px) {
+  .userModal {
+    display: block;
+    min-height: 0;
+    .userInput {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+
+    .userButton {
+      margin: 0 auto;
+      display: block;
+    }
   }
 }
