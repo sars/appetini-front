@@ -69,7 +69,7 @@ export default class Header extends Component {
         <FormattedPlural value={user.deliveries_available} one="доставка" few="доставки" many="доставок" other="доставок"/>
       </MenuItem>,
       user.role === 'admin' && <MenuItem key="admin" caption="Админка" onClick={::this.goToAdminPage}/>,
-      user.role === 'admin' && <MenuItem key="simpleAdmin" caption="Обычная админка" onClick={() => push('/admin')}/>,
+      user.role === 'admin' && <MenuItem key="ordersItems" caption="Позиции заказов" onClick={() => push('/admin/order_items')}/>,
       user.role === 'admin' && <MenuItem key="ordersIndex" caption="История заказов" onClick={() => push('/orders')}/>,
       <MenuDivider key="devider" />,
       <MenuItem key="settings" caption="Настройки" onClick={() => push('/settings')}/>,
