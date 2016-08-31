@@ -9,6 +9,7 @@ import DeliveryTimeDropdown from 'components/DeliveryTimeDropdown/DeliveryTimeDr
 import DatePicker from 'components/DatePicker/DatePicker';
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
+import classNames from 'classnames';
 
 @reduxForm(
   {
@@ -25,6 +26,26 @@ export default class LunchMultipleForm extends Component {
     error: PropTypes.string,
     submitting: PropTypes.bool
   };
+
+  state = {
+    allLunches: {}
+  }
+
+  setToAllLunches = (field, value) => {
+    this.setState({
+      allLunches: {
+        ...this.state.allLunches,
+        [field]: value
+      }
+    });
+    this.props.fields.lunchExamples.forEach(lunch => lunch.lunchItems.forEach(item => item[field].onChange(value)));
+  }
+
+  addLunchItems = (date) => {
+    this.props.fields.lunchExamples.forEach(lunch => {
+      lunch.lunchItems.addField({ready_by_date: date});
+    });
+  }
 
   lunchExampleInfo(lunchExampleId, lunchExamples) {
     const item = lunchExamples.find(example => example.id === lunchExampleId);
@@ -66,10 +87,10 @@ export default class LunchMultipleForm extends Component {
                 <Input {...lunch.available_count}/>
               </td>
               <td>
-                {!lunch.team.value && <DatePicker readonly={!!lunch.team.value} minDate={new Date()} {...lunch.ready_by_date}/>}
+                <DatePicker readonly={!!lunch.team.value} minDate={new Date()} {...lunch.ready_by_date}/>
               </td>
               <td>
-                {!lunch.team.value && <DeliveryTimeDropdown disabled={!!lunch.team.value} {...lunch.ready_by_time}/>}
+                <DeliveryTimeDropdown disabled={!!lunch.team.value} {...lunch.ready_by_time}/>
               </td>
               <td>
                 <Button type="button" icon="remove" floating accent mini onClick={() => lunches.removeField(index)}/>
@@ -86,6 +107,41 @@ export default class LunchMultipleForm extends Component {
     );
   }
 
+  allLunchesAttrsTable = () => {
+    const { allLunches } = this.state;
+    return (
+      <Card className={styles.lunchExampleCard}>
+        <h2 className={styles.allLunchesSetterTitle}>Множественное задание параметров</h2>
+        <table className={classNames(styles.table, styles.allLunchesTable)}>
+          <thead>
+          <tr>
+            <td>Корпоративный</td>
+            <td>Количество</td>
+            <td>Время</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>
+              <Checkbox className={styles.team} checked={allLunches.team} onChange={this.setToAllLunches.bind(this, 'team')}/>
+            </td>
+            <td>
+              <Input value={allLunches.available_count} onChange={this.setToAllLunches.bind(this, 'available_count')}/>
+            </td>
+            <td>
+              <DeliveryTimeDropdown disabled={!!allLunches.team} value={allLunches.ready_by_time} onChange={this.setToAllLunches.bind(this, 'ready_by_time')}/>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div className={styles.wrapperDatePickerButton}>
+          <DatePicker wrapperClassName={styles.datePickerButton} label="Добавить обед" minDate={new Date()}
+                      value={allLunches.ready_by_date} onChange={this.addLunchItems}/>
+        </div>
+      </Card>
+    );
+  }
+
   render() {
     const { fields, lunchExamples, handleSubmit, submitting, error } = this.props;
     return (
@@ -93,12 +149,15 @@ export default class LunchMultipleForm extends Component {
         <h1>Множественное добавление обедов</h1>
         <div className={styles.lunchExampleInfo}>
           {fields.lunchExamples.length > 0 ?
-            fields.lunchExamples.map((lunchExample, index) =>
-              <Card className={styles.lunchExampleCard} key={index}>
-                {this.lunchExampleInfo(lunchExample.id.value, lunchExamples)}
-                {this.lunchTable(lunchExample.lunchItems)}
-              </Card>
-            )
+            [
+              this.allLunchesAttrsTable(),
+              fields.lunchExamples.map((lunchExample, index) =>
+                <Card className={styles.lunchExampleCard} key={index}>
+                  {this.lunchExampleInfo(lunchExample.id.value, lunchExamples)}
+                  {this.lunchTable(lunchExample.lunchItems)}
+                </Card>
+              )
+            ]
             : <div>Нет выбраных шаблонов</div>}
         </div>
         {!!error && <div className={styles.error}>{error}</div>}
