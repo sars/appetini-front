@@ -47,7 +47,7 @@ export default class TeamOfferContainer extends Component {
           {this.state.cookOpened && <div key="overlay" className={styles.overlay}
                                          onClick={() => this.setState({cookOpened: false})}></div>}
         </ReactCSSTransitionGroup>
-        <div className={styles.teamOfferWrapper}>
+        <div className={classnames(styles.teamOfferWrapper, owner ? false : styles.withMargin)} >
           <div className={classnames(styles.cookContainer, this.state.cookOpened ? styles.showCookModal : '')}>
             <Cook cook={offer.cook} hideExternalLinks={hideExternalLinks}/>
           </div>

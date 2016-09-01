@@ -3,6 +3,10 @@
   flex-flow: row wrap;
   justify-content: space-around;
 
+  &.withMargin {
+   margin-top: 2rem;
+  }
+
   .cookContainer {
     flex: 1;
     margin-right: 1rem;
