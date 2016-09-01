@@ -23,7 +23,6 @@ const getOrderItems = (orders) => {
     key: 'orders', promise: ({helpers, params, location}) =>
     helpers.client.get(`/cooks/${params.cookId}/orders`,
       {params: getParams(location)})
-      .then(response => response.resources)
   }
 ])
 @connect(state => ({user: state.auth.user}), {loadSuccess})
@@ -31,7 +30,7 @@ export default class CookOrdersPage extends Component {
 
   static propTypes = {
     user: PropTypes.object,
-    orders: PropTypes.array,
+    orders: PropTypes.object,
     loadSuccess: PropTypes.func.isRequired,
     location: PropTypes.object
   };
@@ -62,7 +61,7 @@ export default class CookOrdersPage extends Component {
   }
 
   setOrderItems = (currentOrderItemId, reviewedOrderItem) => {
-    const newOrders = this.props.orders.map((order) => {
+    const newOrders = this.props.orders.resources.map((order) => {
       return {
         ...order,
         order_items: order.order_items.map((orderItem) => {
@@ -75,7 +74,7 @@ export default class CookOrdersPage extends Component {
   }
 
   sortByOrderItem() {
-    const groupedOrdersByResourceId = groupBy(getOrderItems(this.props.orders), orderItem => orderItem.resource.id);
+    const groupedOrdersByResourceId = groupBy(getOrderItems(this.props.orders.resources), orderItem => orderItem.resource.id);
     const groupedOrders = reduce(groupedOrdersByResourceId, (result, orders) => {
       return [...result, {...orders[0],
         amount: sumBy(orders, 'amount'),
@@ -95,9 +94,10 @@ export default class CookOrdersPage extends Component {
   render() {
     const { location, user, orders } = this.props;
     const { groupedOrders } = this.state;
-    const ungroupedOrders = getOrderItems(orders);
+    const ungroupedOrders = getOrderItems(orders.resources);
+
     return (
-      <OrdersForCookCourier title={`Страница кулинара ${user.cook.full_name_genitive}`} location={location}
+      <OrdersForCookCourier title={`Страница кулинара ${orders.meta.cook.full_name_genitive}`} location={location}
                             clearSortByOrderItem={::this.clearSortByOrderItem}
                             sorted={groupedOrders} sortByOrderItem={::this.sortByOrderItem}>
         <CookOrderPreview orders={groupedOrders || ungroupedOrders} user={user}
