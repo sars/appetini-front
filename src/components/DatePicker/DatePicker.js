@@ -6,12 +6,16 @@ export default class extends Component {
 
   static propTypes = {
     value: PropTypes.object,
-    wrapperClassName: PropTypes.object
+    wrapperClassName: PropTypes.object,
+    disabled: PropTypes.bool
   };
 
   render() {
     const styles = require('./styles.scss');
-    const datePickerClass = classNames(styles.wrapper, this.props.wrapperClassName, {[styles.hideLabel]: this.props.value});
+    const { wrapperClassName, value, disabled } = this.props;
+    const datePickerClass = classNames(styles.wrapper, wrapperClassName,
+      {[styles.hideLabel]: value, [styles.disabled]: disabled});
+
     return (
       <div className={datePickerClass}>
         <DatePicker {...this.props}/>

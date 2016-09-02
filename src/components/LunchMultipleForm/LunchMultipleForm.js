@@ -87,7 +87,7 @@ export default class LunchMultipleForm extends Component {
                 <Input {...lunch.available_count}/>
               </td>
               <td>
-                <DatePicker readonly={!!lunch.team.value} minDate={new Date()} {...lunch.ready_by_date}/>
+                <DatePicker disabled={!!lunch.team.value} minDate={new Date()} {...lunch.ready_by_date}/>
               </td>
               <td>
                 <DeliveryTimeDropdown disabled={!!lunch.team.value} {...lunch.ready_by_time}/>
