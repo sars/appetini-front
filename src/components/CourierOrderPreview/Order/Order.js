@@ -6,6 +6,7 @@ import styles from 'components/CookOrderPreview/styles.scss';
 import moment from 'moment';
 import { Link } from 'react-router';
 import classNames from 'classnames';
+import DishList from 'components/DishList/DishList';
 
 export default class Order extends Component {
   static propTypes = {
@@ -65,11 +66,7 @@ export default class Order extends Component {
                     <div>{moment(readyBy).format('DD MMMM HH:mm')}</div>
                   </td>}
                   <td>
-                    <div>
-                      {orderItem.resource.dishes.map((dish, idx) =>
-                          <span key={idx} className={styles.dishName}>{dish.name}</span>
-                      )}
-                    </div>
+                    <DishList dishes={orderItem.resource.dishes}/>
                   </td>
                   <td className={styles.borderRight}>
                     <div>{orderItem.amount}</div>

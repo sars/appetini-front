@@ -1,8 +1,7 @@
 import React, {PropTypes} from 'react';
-import styles from 'components/CookOrderPreview/styles.scss';
 import courierStyles from '../styles.scss';
-import classNames from 'classnames';
 import moment from 'moment';
+import DishList from 'components/DishList/DishList';
 
 const OrderItem = ({orderItem}) => {
   return (
@@ -13,13 +12,7 @@ const OrderItem = ({orderItem}) => {
       <div className={courierStyles.modalCookName}>
         <strong>Кулинар: {orderItem.resource.cook.first_name + ' ' + orderItem.resource.cook.last_name}</strong>
       </div>
-      <div>
-        {
-          orderItem.resource.dishes.map((dish, idx) =>
-            <span key={idx} className={classNames(styles.dishName, courierStyles.modalDish)}>{dish.name}</span>
-          )
-        }
-      </div>
+      <DishList dishes={orderItem.resource.dishes} className={courierStyles.modalDish}/>
     </div>
   );
 };
