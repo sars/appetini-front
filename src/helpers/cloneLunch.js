@@ -34,7 +34,8 @@ const cloneLunch = (lunch, client) => {
   }))
     .then((images) => {
       const newLunch = cloneDeep(lunch);
-      removeIds(newLunch);
+      removeIds(newLunch.dishes);
+      newLunch.id = undefined;
       newLunch.photos_temp_image_ids = images.map(img => img.id);
       newLunch.photos = images.map(img => img.image);
       return newLunch;

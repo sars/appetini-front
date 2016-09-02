@@ -13,7 +13,7 @@ import BaseLunchForm from './BaseLunchForm';
 @reduxForm(
   {
     form: 'lunchForm',
-    fields: ['id', 'cook_id', 'photos_temp_image_ids', 'initial_price', 'accept_rules', 'description',
+    fields: ['id', 'cook_id', 'cook', 'photos_temp_image_ids', 'initial_price', 'accept_rules', 'description',
       'dishes[].id', 'dishes[].name', 'dishes[].size', 'dishes[].dish_type', 'dishes[]._destroy',
       'removing_photos', 'food_preference_ids', 'dishes_count', 'photos', 'disable_minutes']
     // https://github.com/erikras/redux-form/issues/621
@@ -59,11 +59,18 @@ export default class LunchExampleForm extends BaseLunchForm {
   }
 
   getCooks() {
-    const { cooks } = this.props;
-    return cooks ? [
+    const { cooks, fields } = this.props;
+    const currentCook = fields.cook.value;
+    const allCooks = cooks ? [
       { label: 'Выберите кулинара' },
       ...cooks.map(cook => ({label: cook.first_name + ' ' + cook.last_name, value: cook.id.toString()}))
     ] : [{ label: 'Загрузка...' }];
+
+    if (currentCook && currentCook.disabled) {
+      allCooks.push({label: currentCook.first_name + ' ' + currentCook.last_name, value: currentCook.id.toString()});
+    }
+
+    return allCooks;
   }
 
   getPreferences() {
