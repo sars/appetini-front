@@ -22,3 +22,13 @@
     padding-right: 1.4rem;
   }
 }
+
+.disabled {
+  pointer-events: none;
+  input {
+    background-color: rgba(253, 250, 247, 0.8);
+    color: #a29c95;
+    border-color: rgba(228, 217, 207, 0.7);
+    font-weight: 400;
+  }
+}
