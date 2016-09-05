@@ -8,7 +8,10 @@ import flatten from 'lodash/flatten';
 import groupBy from 'lodash/groupBy';
 import reduce from 'lodash/reduce';
 import sumBy from 'lodash/sumBy';
+import isEmpty from 'lodash/isEmpty';
 import reviewOrderItem from 'helpers/reviewOrderItem';
+import Card, { CardContent } from 'components/Card/Card';
+import styles from 'containers/CourierOrdersPage/styles.scss';
 
 const getOrderItems = (orders) => {
   return flatten(orders.map((order) => {
@@ -100,8 +103,13 @@ export default class CookOrdersPage extends Component {
       <OrdersForCookCourier title={`Страница кулинара ${orders.meta.cook.full_name_genitive}`} location={location}
                             clearSortByOrderItem={::this.clearSortByOrderItem}
                             sorted={groupedOrders} sortByOrderItem={::this.sortByOrderItem}>
-        <CookOrderPreview orders={groupedOrders || ungroupedOrders} user={user}
-                          onItemReviewed={groupedOrders ? null : ::this.onItemReviewed}/>
+        <div>
+          {!isEmpty(user.cook) &&
+            <Card className={styles.info}><CardContent>Баланс: {user.cook.balance} грн</CardContent></Card>
+          }
+          <CookOrderPreview orders={groupedOrders || ungroupedOrders} user={user}
+                            onItemReviewed={groupedOrders ? null : ::this.onItemReviewed}/>
+        </div>
       </OrdersForCookCourier>
     );
   }
