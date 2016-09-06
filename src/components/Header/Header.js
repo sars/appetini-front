@@ -98,7 +98,7 @@ export default class Header extends Component {
         <HeaderMenu className={styles.desktopMenu} links={menuLinks} showActive />
         <Navigation className={cx('navigation', 'navigationRight')}>
           {(lunchesAmount > 0 || order) && <ShoppingButton countItems={lunchesAmount} className={styles.shopCart}/>}
-          {!user && <Button flat accent label="Войти" onClick={this.openLoginModal}/>}
+          {!user && <Button outlined accent label="Войти" onClick={this.openLoginModal}/>}
           {user &&
             <div className={styles.userMenu}>
               <a className={styles.logout} href="#" onClick={::this.openMenu}>
