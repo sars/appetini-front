@@ -67,7 +67,7 @@ export default class CourierOrdersPage extends Component {
         <OrdersForCookCourier title="Страница курьера" location={location}>
           <div>
             {user.courier && user.courier.id &&
-              <Card className={styles.courierInfo}><CardContent>Баланс: {user.courier.balance} грн</CardContent></Card>
+              <Card className={styles.info}><CardContent>Баланс: {user.courier.balance} грн</CardContent></Card>
             }
             <CourierOrderPreview orders={orders} user={user} updatePayed={::this.updatePayed}/>
           </div>
