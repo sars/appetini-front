@@ -73,7 +73,7 @@ export default class TeamOfferContainer extends Component {
                     : <div>
                     <div className={styles.count}>Минимум порций для заказа: <strong>{offer.min_lunches_amount}</strong>
                     </div>
-                    <div className={classnames({[styles.orderCount]: orderAllowed})}>Заказано:
+                    <div className={classnames({[styles.orderCount]: orderAllowed})}>Заказано:{' '}
                       <strong>{orderedAmount}</strong></div>
                     <div><span className={styles.cost}>{Number(totalPrice)}</span> грн</div>
                   </div>
