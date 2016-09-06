@@ -60,7 +60,7 @@ export default class TeamOfferShow extends Component {
     this.buy((response) => {
       const teamOrder = response.resource;
       this.props.addTeamOrderToOwner(teamOrder.id);
-      this.context.router.push(`/team_orders/owner/${teamOrder.id}?share_token=${teamOrder.share_token}`);
+      this.context.router.replace(`/team_orders/owner/${teamOrder.id}?share_token=${teamOrder.share_token}`);
     });
   }
 
