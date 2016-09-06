@@ -40,7 +40,7 @@ export default class Footer extends Component {
 
           {!user &&
             <Navigation className={styles.loginSignUp}>
-              <Button flat accent label="Войти" onClick={this.openLoginModal} />
+              <Button flat outlined label="Войти" onClick={this.openLoginModal} />
               <Button flat outlined label="Зарегистрироваться" onClick={() => this.context.router.push('/join')}/>
             </Navigation>
           }

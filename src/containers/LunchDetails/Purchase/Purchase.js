@@ -18,6 +18,7 @@ import OrderTimeoutStyled from 'components/OrderTimeout/OrderTimeoutStyled';
 import isLunchDisabled from 'helpers/isLunchDisabled';
 import { MenuItem } from 'react-toolbox/lib/menu';
 import find from 'lodash/find';
+import config from 'config';
 
 const checkAvailableCount = (lunch, orderItems) => {
   const lunchInCart = find(orderItems, {resource_id: lunch.id});
@@ -105,10 +106,6 @@ export default class Purchase extends Component {
         <Card className={styles.root}>
           <BuyModal onClose={::this.handleReviewsClose} active={this.state.activeModal} onClick={::this.checkout}/>
           <CardContent className={styles.cardContent}>
-            <div>
-              <p>Есть вопросы? Звони!</p>
-              <p><strong><a className={styles.link} href={'tel:' + config.app.phone}>{config.app.phone}</a></strong></p>
-            </div>
             {!disabled && <div className={styles.amountContainer}>
               <Button className={styles.amountButton} type="button" icon="remove" outlined mini flat
                       onClick={() => this.incrementAmount(-1)}/>
@@ -140,6 +137,11 @@ export default class Purchase extends Component {
             <div>
               {isToday && !disabled && <OrderTimeoutStyled item={lunch}/>}
               <PurchaseLunch disabled={disabled} onBuy={::this.buy} label="Заказать обед" hasDeliveries={hasDeliveries}/>
+            </div>
+
+            <div className={styles.phone}>
+              <p>Или закажи по телефону</p>
+              <p><strong><a className={styles.link} href={'tel:' + config.app.phone}>{config.app.phone}</a></strong></p>
             </div>
           </CardContent>
 
