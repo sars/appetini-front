@@ -79,15 +79,14 @@ export default class TeamOrderShow extends Component {
     router: PropTypes.object.isRequired
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+  state = {
+    showModal: false
+  };
 
   componentDidMount() {
-    const { user, teamOrder, teamOrderPreferences} = this.props;
-    if (!includes(teamOrderPreferences.ownerArray, teamOrder.id)) {
-      this.context.router.push(`/team_orders/${teamOrder.id}?share_token=${teamOrder.share_token}`);
+    const { user, teamOrder, teamOrderPreferences, location } = this.props;
+    if (isOwner(location) && !includes(teamOrderPreferences.ownerArray, teamOrder.id)) {
+      this.context.router.replace(`/team_orders/${teamOrder.id}?share_token=${teamOrder.share_token}`);
     }
     if (user && !teamOrderPreferences.user.token) {
       this.props.setTeamOrderUser({
@@ -121,18 +120,21 @@ export default class TeamOrderShow extends Component {
     this.props.addTeamOrder(this.props.teamOrder);
     this.props.showToast('Корпоративный обед успешно добавлен в корзину', 'accept', 'done');
     this.context.router.push('/checkout');
-  }
+  };
 
   setTeamOrderUser = (event) => {
     event.preventDefault();
     const { username } = this.state;
     if (username.length) {
+      const token = generateToken();
       this.props.setTeamOrderUser({
         name: username,
-        token: generateToken()
+        token
       });
+      this.handleChangeAmountWrapper(token, username);
+      this.handleModalClose();
     }
-  }
+  };
 
   updateOrderItemsWithoutBuyer = (user) => {
     const { teamOrder } = this.props;
@@ -153,7 +155,16 @@ export default class TeamOrderShow extends Component {
           this.props.loadSuccess('teamOrder', teamOrder);
         });
     }
-  }
+  };
+
+  checkTeamOrderUser = (...callbackArgs) => {
+    if ( this.props.teamOrderPreferences.user.token ) {
+      this.handleChangeAmount(...callbackArgs);
+    } else {
+      this.handleChangeAmountWrapper = this.handleChangeAmount.bind(this, ...callbackArgs);
+      this.setState({ showModal: true });
+    }
+  };
 
   handleChangeAmount = (lunch, amount, buyerId, buyerName) => {
     const { teamOrder } = this.props;
@@ -166,7 +177,14 @@ export default class TeamOrderShow extends Component {
     .then(response => {
       this.props.loadSuccess('teamOrder', {...response.resource, team_offer: teamOrder.team_offer});
     });
-  }
+  };
+
+  handleChangeAmountWrapper = () => {};
+
+  handleModalClose = () => {
+    this.setState({showModal: false});
+    this.handleChangeAmountWrapper = () => {};
+  };
 
   render() {
     const { teamOrder, location, user, teamOrderPreferences } = this.props;
@@ -199,15 +217,15 @@ export default class TeamOrderShow extends Component {
                 {property: 'og:image', content: `${origin}${teamOrder.team_offer.lunches[0].photos[0].thumb.url}`}
               ]}/>
               <div>
-                <Modal.Dialog active={!teamOrderPreferences.user.token} onClose={() => {}} title="Введите ваше имя">
+                <Modal.Dialog active={this.state.showModal} onClose={this.handleModalClose} title="Введите ваше имя">
                   <form className={styles.userModal} onSubmit={::this.setTeamOrderUser}>
                     <Input value={username} className={styles.userInput} onChange={(value) => this.setState({username: value})} debounce={300} placeholder="Ваше имя"/>
-                    <Button type="submit" className={styles.userButton} disabled={!username} flat onClick={::this.setTeamOrderUser} accent label="Продолжить"/>
+                    <Button type="submit" className={styles.userButton} disabled={!username} flat accent label="Продолжить"/>
                   </form>
                 </Modal.Dialog>
                 <div className={styles.lunchesWrapper}>
                   {prepareLunches(teamOrder).map((lunch, idx) => {
-                    return (<TeamLunch key={idx} lunch={lunch} onChangeAmount={::this.handleChangeAmount} isOwner={isOwner(location)}
+                    return (<TeamLunch key={idx} lunch={lunch} onChangeAmount={this.checkTeamOrderUser} isOwner={isOwner(location)}
                                        amount={getLunchAmount(lunch, teamOrderPreferences.user)}/>);
                   })}
                 </div>

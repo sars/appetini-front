@@ -28,15 +28,21 @@ export default class Cook extends Component {
   state = {
     showReviews: false,
     reviews: {}
-  }
+  };
 
   componentDidMount() {
+    this.setReviews = true;
+
     const { cook } = this.props;
     this.props.getReviews(cook.id).then(response => {
-      this.setState({
-        reviews: response
-      });
+      if (this.setReviews) {
+        this.setState({ reviews: response });
+      }
     });
+  }
+
+  componentWillUnmount() {
+    this.setReviews = false;
   }
 
   render() {
