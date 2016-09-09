@@ -50,7 +50,7 @@ class _ApiClient {
             const { dispatch } = this.store;
             dispatch(clearToken());
             dispatch(setUser());
-            dispatch(showToast('Время сессии истекло - необходимо войти снова', 'cancel', 'error'));
+            dispatch(showToast('session.expired', 'cancel', 'error'));
           }
           return err ? reject(body || err) : resolve(body);
         });

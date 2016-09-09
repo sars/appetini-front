@@ -8,6 +8,7 @@ import Checkbox from 'react-toolbox/lib/checkbox';
 import { Link } from 'react-router';
 import PasswordInput from 'components/PasswordInput/PasswordInput';
 import SocialButton from 'components/SocialButton/SocialButton';
+import i18next from 'i18next';
 
 @reduxForm({
   form: 'login',
@@ -43,18 +44,18 @@ export default class LoginForm extends Component {
     event.preventDefault();
     this.props.handleSubmit(user => {
       this.props.login(user).then(this.props.onSuccess)
-        .then(() => this.props.showToast('You are successfully logged in', 'accept', 'done'))
-        .catch((response) => this.props.showToast(response.error, 'warning', 'error'));
+        .then(() => this.props.showToast(i18next.t('auth.login'), 'accept', 'done'))
+        .catch((response) => this.props.showToast(i18next.t(response.error), 'warning', 'error'));
     })();
   };
 
   oauth(provider) {
     return () => {
       this.props.oauth(provider).then(this.props.onSuccess)
-        .then(() => this.props.showToast('You are successfully logged in', 'accept', 'done'))
+        .then(() => this.props.showToast(i18next.t('auth.login'), 'accept', 'done'))
         .catch((response) => {
           this.props.initRegistration(provider, response.data);
-          this.props.showToast(response.error || 'Заполните пустые поля', 'warning', 'error');
+          this.props.showToast(i18next.t(response.error || 'errors.form_default'), 'warning', 'error');
           this.context.router.push('/join');
         });
     };

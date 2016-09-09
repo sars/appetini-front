@@ -1,6 +1,7 @@
 import { setUser } from 'redux/modules/auth';
 import { updateOrder } from 'redux/modules/purchase';
 import { show as showToast, close as closeToast } from 'redux/modules/toast';
+import i18next from 'i18next';
 
 export default function hooks({dispatch, getState}, client) {
   return {
@@ -47,9 +48,9 @@ export default function hooks({dispatch, getState}, client) {
             confirmation_token: token
           }
         }).then(() => {
-          dispatch(showToast('Ваш email был успешно подтвержден', 'accept', 'done'));
-        }).catch(() => {
-          dispatch(showToast('Вероятно, неверный или устаревший токен', 'cancel', 'error'));
+          dispatch(showToast('confirmations.success', 'accept', 'done'));
+        }).catch(response => {
+          dispatch(showToast(i18next.t(response.errors.email[0] || 'confirmations.error'), 'cancel', 'error'));
         }).then(() => {
           // we need to close it manually , because toasts timeout works on component update only
           // In our case we render it on componentDidMount with active = true
@@ -72,7 +73,7 @@ export default function hooks({dispatch, getState}, client) {
         .then(response => {
           const order = response.resource;
           if (order.payed || order.status !== 'pending') {
-            dispatch(showToast('Редактирование этого заказа недоступно', 'warning', 'error'));
+            dispatch(showToast('order.edit.deny', 'warning', 'error'));
             setTimeout(() => dispatch(closeToast()), 2000);
             replaceState('/');
           } else {

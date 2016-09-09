@@ -17,6 +17,7 @@ import MobMenu from 'components/MobMenu/MobMenu';
 import ShoppingButton from 'components/ShoppingButton/ShoppingButton';
 import menuLinks from 'helpers/menuLinks';
 import config from 'config';
+import i18next from 'i18next';
 
 @connect(state => ({user: state.auth.user, lunchesAmount: state.purchase.lunchesAmount, order: state.purchase.order}), {logout, showToast, openModal})
 export default class Header extends Component {
@@ -38,7 +39,7 @@ export default class Header extends Component {
   };
   logout = () => {
     this.props.logout().then(() => {
-      this.props.showToast('You are successfully logged out', 'accept', 'done');
+      this.props.showToast(i18next.t('auth.logout'), 'accept', 'done');
       this.context.router.push('/');
     });
   };

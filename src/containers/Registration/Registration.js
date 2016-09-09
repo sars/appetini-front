@@ -11,6 +11,7 @@ import normalizeErrors from 'helpers/normalizeErrors';
 import styles from './styles.scss';
 import { setUser, setToken, oauth, initRegistration, resetRegistration } from 'redux/modules/auth';
 import SocialButton from 'components/SocialButton/SocialButton';
+import i18next from 'i18next';
 
 @connect(state => ({
   user: state.auth.user,
@@ -79,7 +80,7 @@ export default class Registration extends Component {
   submit(user) {
     return new Promise((resolve, reject) => {
       this.props.join(user).then(response => {
-        this.props.showToast('Письмо с подтверждением email отправлено на почту', 'accept', 'done');
+        this.props.showToast(i18next.t('confirmations.send_instructions'), 'accept', 'done');
 
         this.afterSuccess(response);
 
@@ -95,12 +96,12 @@ export default class Registration extends Component {
     return () => {
       this.props.oauth(provider)
         .then((response) => {
-          this.props.showToast('Вы успешно авторизированы', 'accept', 'done');
+          this.props.showToast(i18next.t('auth.login'), 'accept', 'done');
           this.afterSuccess(response);
         })
         .catch((response) => {
           this.props.initRegistration(provider, response.data);
-          this.props.showToast(response.error || 'Заполните пустые поля', 'warning', 'error');
+          this.props.showToast(i18next.t(response.error || 'errors.form_default'), 'warning', 'error');
         });
     };
   };

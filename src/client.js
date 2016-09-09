@@ -12,6 +12,7 @@ import rootComponent from 'helpers/rootComponent';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
 import { close as closeModal } from './redux/modules/modals';
 import intlPolyfill from 'helpers/intlPolyfill';
+import i18next from 'i18next';
 
 import getRoutes from './routes';
 
@@ -35,6 +36,25 @@ const component = (
     {getRoutes(store, client)}
   </Router>
 );
+
+const getTranslations = (lang = (navigator.language || navigator.userLanguage || '').split('-')[0]) => {
+  if ( lang === 'ru' || lang === 'uk' ) {
+    return {
+      lng: 'ru',
+      resources: require('locales/ru.json')
+    };
+  }
+  return {
+    lng: 'en',
+    resources: require('locales/en.json')
+  };
+};
+
+i18next.init({
+  ...getTranslations('ru'),
+  saveMissing: true,
+  missingKeyHandler: (lng, ns, key) => key
+});
 
 intlPolyfill(() => {
   ReactDOM.render(

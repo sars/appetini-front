@@ -1,0 +1,62 @@
+{
+  "en": {
+    "translation": {
+      "auth": {
+        "login": "You are successfully logged in",
+        "logout": "You are successfully logged out",
+        "access_deny": "You are not authorized to access this page"
+      },
+      "confirmations": {
+        "send_instructions": "Email with instructions for how to confirm your email address in a few minutes",
+        "error": "Probably an incorrect or outdated token",
+        "success": "Your email has been successfully verified"
+      },
+      "registrations": {
+        "updated": "Your account has been updated successfully",
+        "update_needs_confirmation": "Your account has been updated successfully. Please check your email and follow the confirm link to confirm your new email address"
+      },
+      "passwords": {
+        "updated": "Your password has been changed successfully"
+      },
+      "errors": {
+        "form_default": "Fill empty fields"
+      },
+      "user": {
+        "already_authenticated": "You are already signed in",
+        "inactive": "Your account is not activated yet",
+        "invalid": "Invalid %{authentication_keys} or password",
+        "locked": "Your account is locked",
+        "last_attempt": "You have one more attempt before your account is locked",
+        "not_found_in_database": "Invalid email or password",
+        "timeout": "Your session expired. Please sign in again to continue",
+        "unauthenticated": "You need to sign in or sign up before continuing",
+        "unconfirmed": "You have to confirm your email address before continuing",
+        "password": {
+          "confirmation": "You will receive an email with instructions on how to reset your password in a few minutes",
+          "success": "Your password has been changed successfully"
+        }
+      },
+      "order": {
+        "edit": {
+          "deny": "Editing of this order is not available"
+        }
+      },
+      "session": {
+        "expired": "Session expired - please, log in again"
+      },
+      "activerecord": {
+        "errors": {
+          "models": {
+            "user": {
+              "attributes": {
+                "email": {
+                  "already_confirmed": "Your email are already confirmed"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

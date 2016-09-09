@@ -37,7 +37,7 @@ export default class Password extends Component {
     const { params, recoveryPasswordChange, showToast, setUser, setToken } = this.props; // eslint-disable-line no-shadow
     return new Promise((resolve, reject) => {
       recoveryPasswordChange({...user, reset_password_token: params.token}).then(response => {
-        showToast('Пароль успешно изменен', 'accept', 'done');
+        showToast('user.password.success', 'accept', 'done');
         setUser(response.resource);
         setToken(response.auth_token);
         resolve(response);

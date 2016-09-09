@@ -9,6 +9,7 @@ import normalizeErrors from 'helpers/normalizeErrors';
 import styles from './styles.scss';
 import { setUser, setToken, updateCurrentUser, changePassword } from 'redux/modules/auth';
 import lodash from 'lodash';
+import i18next from 'i18next';
 
 @connect(state => ({ user: state.auth.user}),
   { showToast, setUser, setToken, updateCurrentUser, changePassword, reset })
@@ -65,8 +66,8 @@ export default class Settings extends Component {
       const userEmail = user.email;
       updateCurrentUser(user.id, data).then((response) => {
         const toastMsg = lodash.isEqual(data.email, userEmail)
-          ? 'Данные Вашего профиля были успешно сохранены'
-          : 'Данные Вашего профиля были успешно сохранены. Письмо с подтверждением нового email отправлено на почту';
+          ? i18next.t('registrations.updated')
+          : i18next.t('registrations.update_needs_confirmation');
         showToast(toastMsg, 'accept', 'done');
         resolve(response);
       }).catch(response => {
@@ -81,7 +82,7 @@ export default class Settings extends Component {
     return new Promise((resolve, reject) => {
       changePassword(user.id, password).then(response => {
         reset('change-password');
-        showToast('Пароль успешно изменен', 'accept', 'done');
+        showToast(i18next.t('passwords.updated'), 'accept', 'done');
         setUser(response.resource);
         setToken(response.auth_token);
         resolve(response);
