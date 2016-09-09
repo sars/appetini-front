@@ -6,7 +6,7 @@ export default class extends Component {
 
   static propTypes = {
     value: PropTypes.object,
-    wrapperClassName: PropTypes.object,
+    wrapperClassName: PropTypes.string,
     disabled: PropTypes.bool
   };
 

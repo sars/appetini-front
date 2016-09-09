@@ -10,7 +10,7 @@ import common from './common';
 import purchase from './purchase';
 import teamOrderPreferences from './teamOrderPreferences';
 import {reducer as reduxAsyncConnect} from 'redux-async-connect';
-import moment from 'moment';
+import {readyByDate, readyByTime} from 'helpers/readyByFields';
 
 export default combineReducers({
   routing: routeReducer,
@@ -18,8 +18,8 @@ export default combineReducers({
   form: form.normalize({
     lunchForm: {
       cook_id: value => value && value.toString(),
-      ready_by_date: value => value ? new Date(value) : undefined,
-      ready_by_time: value => value ? moment(value, ['HH:mmZ', moment.ISO_8601]).utc().format('HH:mm\\Z') : undefined,
+      ready_by_date: readyByDate,
+      ready_by_time: readyByTime,
       food_preference_ids: value => value && value.map(item => item.toString()),
       removing_photos: value => value || []
     }

@@ -29,7 +29,7 @@ export default class LunchMultipleForm extends Component {
 
   state = {
     allLunches: {}
-  }
+  };
 
   setToAllLunches = (field, value) => {
     this.setState({
@@ -39,13 +39,13 @@ export default class LunchMultipleForm extends Component {
       }
     });
     this.props.fields.lunchExamples.forEach(lunch => lunch.lunchItems.forEach(item => item[field].onChange(value)));
-  }
+  };
 
   addLunchItems = (date) => {
     this.props.fields.lunchExamples.forEach(lunch => {
       lunch.lunchItems.addField({ready_by_date: date});
     });
-  }
+  };
 
   lunchExampleInfo(lunchExampleId, lunchExamples) {
     const item = lunchExamples.find(example => example.id === lunchExampleId);
@@ -110,7 +110,7 @@ export default class LunchMultipleForm extends Component {
   allLunchesAttrsTable = () => {
     const { allLunches } = this.state;
     return (
-      <Card className={styles.lunchExampleCard}>
+      <Card key="card" className={styles.lunchExampleCard}>
         <h2 className={styles.allLunchesSetterTitle}>Множественное задание параметров</h2>
         <table className={classNames(styles.table, styles.allLunchesTable)}>
           <thead>
