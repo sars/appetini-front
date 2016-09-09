@@ -135,7 +135,7 @@ export default class LunchMultipleForm extends Component {
           </tbody>
         </table>
         <div className={styles.wrapperDatePickerButton}>
-          <DatePicker wrapperClassName={styles.datePickerButton} label="Добавить обед" minDate={new Date()}
+          <DatePicker wrapperClassName={styles.datePickerButton} label="Добавить обеды на дату" minDate={new Date()}
                       value={allLunches.ready_by_date} onChange={this.addLunchItems}/>
         </div>
       </Card>
