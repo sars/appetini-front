@@ -79,7 +79,7 @@ export default class Registration extends Component {
   submit(user) {
     return new Promise((resolve, reject) => {
       this.props.join(user).then(response => {
-        this.props.showToast('Письмо с подтверждением email отправлено на почту', 'accept', 'done');
+        this.props.showToast('confirmations.send_instructions', 'accept', 'done');
 
         this.afterSuccess(response);
 
@@ -95,12 +95,12 @@ export default class Registration extends Component {
     return () => {
       this.props.oauth(provider)
         .then((response) => {
-          this.props.showToast('Вы успешно авторизированы', 'accept', 'done');
+          this.props.showToast('auth.login', 'accept', 'done');
           this.afterSuccess(response);
         })
         .catch((response) => {
           this.props.initRegistration(provider, response.data);
-          this.props.showToast(response.error || 'Заполните пустые поля', 'warning', 'error');
+          this.props.showToast(response.error || 'errors.form_default', 'warning', 'error');
         });
     };
   };

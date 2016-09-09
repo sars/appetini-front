@@ -1,0 +1,50 @@
+[
+  {
+    "id": "auth.login",
+    "message": "You are successfully logged in"
+  },
+  {
+    "id": "auth.logout",
+    "message": "You are successfully logged out"
+  },
+  {
+    "id": "confirmations.send_instructions",
+    "message": "Email with instructions for how to confirm your email address in a few minutes"
+  },
+  {
+    "id": "confirmations.error",
+    "message": "Probably an incorrect or outdated token"
+  },
+  {
+    "id": "confirmations.success",
+    "message": "Your email has been successfully verified"
+  },
+  {
+    "id": "registrations.updated",
+    "message": "Your account has been updated successfully"
+  },
+  {
+    "id": "registrations.update_needs_confirmation",
+    "message": "Your account has been updated successfully. Please check your email and follow the confirm link to confirm your new email address"
+  },
+  {
+    "id": "errors.form_default",
+    "message": "Fill empty fields"
+  },
+  {
+    "id": "user.timeout",
+    "message": "Your session expired. Please sign in again to continue"
+  },
+  {
+    "id": "user.password.success",
+    "message": "Your password has been changed successfully"
+  },
+  {
+    "id": "user.password.confirmation",
+    "message": "You will receive an email with instructions on how to reset your password in a few minutes"
+  },
+  {
+    "id": "order.edit.deny",
+    "message": "Editing of this order is not available"
+  }
+]

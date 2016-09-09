@@ -38,7 +38,7 @@ export default class Header extends Component {
   };
   logout = () => {
     this.props.logout().then(() => {
-      this.props.showToast('You are successfully logged out', 'accept', 'done');
+      this.props.showToast('auth.logout', 'accept', 'done');
       this.context.router.push('/');
     });
   };

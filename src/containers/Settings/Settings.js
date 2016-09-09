@@ -65,8 +65,8 @@ export default class Settings extends Component {
       const userEmail = user.email;
       updateCurrentUser(user.id, data).then((response) => {
         const toastMsg = lodash.isEqual(data.email, userEmail)
-          ? 'Данные Вашего профиля были успешно сохранены'
-          : 'Данные Вашего профиля были успешно сохранены. Письмо с подтверждением нового email отправлено на почту';
+            ? 'registrations.updated'
+            : 'registrations.update_needs_confirmation';
         showToast(toastMsg, 'accept', 'done');
         resolve(response);
       }).catch(response => {
@@ -81,7 +81,7 @@ export default class Settings extends Component {
     return new Promise((resolve, reject) => {
       changePassword(user.id, password).then(response => {
         reset('change-password');
-        showToast('Пароль успешно изменен', 'accept', 'done');
+        showToast('user.password.success', 'accept', 'done');
         setUser(response.resource);
         setToken(response.auth_token);
         resolve(response);

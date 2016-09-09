@@ -43,7 +43,7 @@ export default class LoginForm extends Component {
     event.preventDefault();
     this.props.handleSubmit(user => {
       this.props.login(user).then(this.props.onSuccess)
-        .then(() => this.props.showToast('You are successfully logged in', 'accept', 'done'))
+        .then(() => this.props.showToast('auth.login', 'accept', 'done'))
         .catch((response) => this.props.showToast(response.error, 'warning', 'error'));
     })();
   };
@@ -51,10 +51,10 @@ export default class LoginForm extends Component {
   oauth(provider) {
     return () => {
       this.props.oauth(provider).then(this.props.onSuccess)
-        .then(() => this.props.showToast('You are successfully logged in', 'accept', 'done'))
+        .then(() => this.props.showToast('auth.login', 'accept', 'done'))
         .catch((response) => {
           this.props.initRegistration(provider, response.data);
-          this.props.showToast(response.error || 'Заполните пустые поля', 'warning', 'error');
+          this.props.showToast(response.error || 'errors.form_default', 'warning', 'error');
           this.context.router.push('/join');
         });
     };

@@ -37,8 +37,11 @@ class _ApiClient {
           }
         }
 
-        if (__SERVER__ && req.get('cookie')) {
-          request.set('cookie', req.get('cookie'));
+        if (__SERVER__) {
+          request.set('accept-language', req.get('accept-language'));
+          if (req.get('cookie')) {
+            request.set('cookie', req.get('cookie'));
+          }
         }
 
         if (data) {
@@ -50,7 +53,7 @@ class _ApiClient {
             const { dispatch } = this.store;
             dispatch(clearToken());
             dispatch(setUser());
-            dispatch(showToast('Время сессии истекло - необходимо войти снова', 'cancel', 'error'));
+            dispatch(showToast('user.timeout', 'cancel', 'error'));
           }
           return err ? reject(body || err) : resolve(body);
         });

@@ -1,14 +1,15 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { IntlProvider, addLocaleData } from 'react-intl';
-import ruLocaleData from 'react-intl/locale-data/ru';
+import { IntlProvider } from 'react-intl';
+import { translationMessages } from 'i18n';
 
-addLocaleData(ruLocaleData);
+export default function rootComponent(store, component, langFromReq) {
+  const userPreferLang = (__CLIENT__ ? (navigator.language || navigator.userLanguage) : langFromReq).match(/^[a-z]{2}/)[0];
+  const lang = ['ru', 'uk'].find(item => item === userPreferLang) ? 'ru' : 'en';
 
-export default function rootComponent(store, component) {
   return (
     <Provider store={store} key="provider">
-      <IntlProvider locale="ru">
+      <IntlProvider locale={lang} defaultLocale={lang} messages={translationMessages[lang]}>
         {component}
       </IntlProvider>
     </Provider>

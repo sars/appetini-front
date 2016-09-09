@@ -1,0 +1,50 @@
+[
+  {
+    "id": "auth.login",
+    "message": "Вы успешно авторизированы"
+  },
+  {
+    "id": "auth.logout",
+    "message": "Вы успешно вышли из системы"
+  },
+  {
+    "id": "confirmations.send_instructions",
+    "message": "Письмо с подтверждением отправлено на почту"
+  },
+  {
+    "id": "confirmations.error",
+    "message": "Вероятно, неверный или устаревший токен"
+  },
+  {
+    "id": "confirmations.success",
+    "message": "Ваш email был успешно подтвержден"
+  },
+  {
+    "id": "registrations.updated",
+    "message": "Данные Вашего профиля были успешно сохранены"
+  },
+  {
+    "id": "registrations.update_needs_confirmation",
+    "message": "Данные Вашего профиля были успешно сохранены. Письмо с подтверждением нового email отправлено на почту"
+  },
+  {
+    "id": "errors.form_default",
+    "message": "Заполните пустые поля"
+  },
+  {
+    "id": "user.timeout",
+    "message": "Ваша сессия исчерпана. Пожалуйста, авторизирутесь заново, чтобы продолжить"
+  },
+  {
+    "id": "user.password.success",
+    "message": "Пароль успешно изменен"
+  },
+  {
+    "id": "user.password.confirmation",
+    "message": "Письмо со ссылкой на восстановление пароля отправлено"
+  },
+  {
+    "id": "order.edit.deny",
+    "message": "Редактирование этого заказа недоступно"
+  }
+]

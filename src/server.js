@@ -88,7 +88,7 @@ app.use((req, res) => {
       hydrateOnClient();
     } else if (renderProps) {
       loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
-        const component = rootComponent(store, <ReduxAsyncConnect {...renderProps} />);
+        const component = rootComponent(store, <ReduxAsyncConnect {...renderProps} />, req.get('accept-language'));
         const status = getVal(renderProps, 'location.state.responseStatus', 200);
         res.status(status);
 

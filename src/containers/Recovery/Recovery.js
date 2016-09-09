@@ -36,7 +36,7 @@ export default class Recovery extends Component {
   recovery(user) {
     return new Promise((resolve, reject) => {
       this.props.sendRecovery(user).then(response => {
-        this.props.showToast('Письмо со ссылкой на восстановление пароля отправлено', 'accept', 'done');
+        this.props.showToast('user.password.confirmation', 'accept', 'done');
         resolve(response);
       }).catch(response => {
         const errors = normalizeErrors(response.errors);

@@ -30,7 +30,7 @@ export default class RecoveryForm extends Component {
   submit = () => {
     this.props.handleSubmit(user => {
       this.props.recovery(user).then(this.props.onSuccess)
-        .then(() => this.props.showToast('You are successfully logged in', 'accept', 'done'))
+        .then(() => this.props.showToast('auth.login', 'accept', 'done'))
         .catch(this.props.onError);
     })();
   };

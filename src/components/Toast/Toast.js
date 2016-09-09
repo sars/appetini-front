@@ -14,14 +14,20 @@ export default class Toast extends Component {
     active: PropTypes.bool.isRequired
   };
 
+  static contextTypes = {
+    intl: PropTypes.object.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     return this.props !== nextProps;
   }
 
   render() {
     const {icon, label, type, active} = this.props;
+    const { formatMessage } = this.context.intl;
+    const formattedMessage = label ? formatMessage({id: label, defaultMessage: label}) : label;
     return (
-      <Snackbar icon={icon} label={label} className={styles[type]} type={type} onTimeout={this.props.close}
+      <Snackbar icon={icon} label={formattedMessage} className={styles[type]} type={type} onTimeout={this.props.close}
                 timeout={2000} active={active}
       />
     );
