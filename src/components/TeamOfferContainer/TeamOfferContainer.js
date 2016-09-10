@@ -31,7 +31,7 @@ export default class TeamOfferContainer extends Component {
 
   state = {
     cookOpened: false
-  }
+  };
 
   render() {
     const { offer, children, orderedAmount, shareLink, hideExternalLinks, owner, user, onBuy, totalPrice, disabled } = this.props;

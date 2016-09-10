@@ -31,7 +31,7 @@ export default class TeamLunch extends Component {
     if (currentOrderItemAmount <= lunch.available_count && currentBuyerAmount >= 0) {
       onChangeAmount(lunch, currentBuyerAmount, buyerId, buyerName);
     }
-  }
+  };
 
   render() {
     const { lunch, amount, isOwner } = this.props;
