@@ -161,7 +161,7 @@ export default class TeamOrderShow extends Component {
     if ( this.props.teamOrderPreferences.user.token ) {
       this.handleChangeAmount(...callbackArgs);
     } else {
-      this.handleChangeAmountWrapper = this.handleChangeAmount.bind(this, ...callbackArgs);
+      this.handleChangeAmountWrapper = this.handleChangeAmount.bind(this, ...callbackArgs.slice(0, 2));
       this.setState({ showModal: true });
     }
   };
