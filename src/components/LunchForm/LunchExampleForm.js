@@ -115,7 +115,7 @@ export default class LunchExampleForm extends BaseLunchForm {
             <Link className={styles.linkButton} to={'/admin/lunch_examples/' + fields.id.value + '/clone'}>
               <Button flat outlined label="Клонировать"/>
             </Link>
-            <Link className={styles.linkButton} to={`/admin/lunches/new?lunchExampleId=${fields.id.value}`}>
+            <Link className={styles.linkButton} to={`/admin/lunches/new?lunchExampleIds=[${fields.id.value}]`}>
               <Button flat outlined label="Создать обед"/>
             </Link>
           </span>}
