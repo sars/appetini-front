@@ -5,8 +5,12 @@ export const getParsedDate = (date) => {
 };
 
 export const getParams = (location) => {
-  if (location.query.date) {
-    return {eq_date: location.query.date};
+  const dates = location.query;
+  if (dates.lt_date || dates.gt_date) {
+    return {
+      gt_date: dates.gt_date || moment().utc().format(),
+      lt_date: dates.lt_date
+    };
   }
-  return {gt_date: moment().utc().format()};
+  return {eq_date: dates.eq_date || moment().utc().format()};
 };
