@@ -11,7 +11,9 @@ import sumBy from 'lodash/sumBy';
 import reduce from 'lodash/reduce';
 import groupBy from 'lodash/groupBy';
 import some from 'lodash/some';
+import isEqual from 'lodash/isEqual';
 import includes from 'lodash/includes';
+import differenceWith from 'lodash/differenceWith';
 import { addTeamOrder } from 'redux/modules/purchase';
 import TeamOfferContainer from 'components/TeamOfferContainer/TeamOfferContainer';
 import { show as showToast } from 'redux/modules/toast';
@@ -20,6 +22,16 @@ import Helmet from 'react-helmet';
 import { origin } from 'config';
 let pusher;
 let channel;
+
+/**
+ * This method is a third arg to lodash/differenceWith
+ * used to decide, should orderItem fall into difference array, or not
+ * if returns true, orderItem not fall into difference array
+ */
+const compareOrderItems = (orderItem, otherItem) => {
+  return otherItem.resource_id === orderItem.resource_id && otherItem.buyer_id === orderItem.buyer_id &&
+    orderItem.amount <= otherItem.amount;
+};
 
 function isOwner(location) {
   return /\/owner/.test(location.pathname);
@@ -109,6 +121,11 @@ export default class TeamOrderShow extends Component {
     if (nextProps.teamOrderPreferences.user !== this.props.teamOrderPreferences.user) {
       this.updateOrderItemsWithoutBuyer(nextProps.teamOrderPreferences.user);
     }
+    const oldOrderItems = this.props.teamOrder.order_items_attributes;
+    const newOrderItems = nextProps.teamOrder.order_items_attributes;
+    if ( !isEqual(oldOrderItems, newOrderItems) ) {
+      this.toastChangesInOrderItems( oldOrderItems, newOrderItems );
+    }
   }
 
   componentWillUnmount() {
@@ -134,6 +151,27 @@ export default class TeamOrderShow extends Component {
       this.handleChangeAmountWrapper(token, username);
       this.handleModalClose();
     }
+  };
+
+  toastChangesInOrderItems = ( oldOrderItems, newOrderItems ) => {
+    const { token } = this.props.teamOrderPreferences.user;
+    const showOwnerTosts = isOwner(location);
+
+    differenceWith(newOrderItems, oldOrderItems, compareOrderItems).forEach(orderItem => {
+      if ( token === orderItem.buyer_id ) {
+        this.props.showToast('Обед добавлен в список корпоративного заказа', 'accept', 'done');
+      } else if ( showOwnerTosts ) {
+        this.props.showToast(`${orderItem.buyer_name} добавил(а) обед к заказу`, 'accept', 'done');
+      }
+    });
+
+    differenceWith(oldOrderItems, newOrderItems, compareOrderItems).forEach(orderItem => {
+      if ( token === orderItem.buyer_id ) {
+        this.props.showToast('Обед удален из списка корпоративного заказа', 'accept', 'done');
+      } else if ( showOwnerTosts ) {
+        this.props.showToast(`${orderItem.buyer_name} удалил(а) обед из заказа`, 'accept', 'done');
+      }
+    });
   };
 
   updateOrderItemsWithoutBuyer = (user) => {
