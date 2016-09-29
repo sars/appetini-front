@@ -1,6 +1,7 @@
 import isObject from 'lodash/isObject';
 import { tempImageRequest } from './tempImageRequest';
 import cloneDeep from 'lodash/cloneDeep';
+import 'whatwg-fetch';
 import mimeTypes from 'mime-types';
 
 const getFileFromUrl = (url) => {
