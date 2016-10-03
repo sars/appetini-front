@@ -134,7 +134,8 @@
     "url-loader": "^0.5.7",
     "warning": "^2.1.0",
     "webpack": "^1.12.9",
-    "webpack-isomorphic-tools": "^2.2.29"
+    "webpack-isomorphic-tools": "^2.2.29",
+    "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^4.1.3",
