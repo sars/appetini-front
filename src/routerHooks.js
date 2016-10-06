@@ -37,6 +37,13 @@ export default function hooks({dispatch, getState}, client) {
       }
     },
 
+    checkCurrentCourier: ({}, replaceState) => {
+      const { user } = getState().auth;
+      if (!user || !user.courier || user.role !== 'admin') {
+        replaceState('/');
+      }
+    },
+
     confirmEmail: ({params: { token }}, replaceState, cb) => {
       // We cannot leave this logic on server because server will send redirect to client and then client
       // will request new page and will know nothing about toasts, whether confirmation has been
