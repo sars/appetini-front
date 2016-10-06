@@ -12,8 +12,9 @@ import VKRetargeting from 'components/VKRetargeting/VKRetargeting';
 import classNames from 'classnames';
 import FacebookPixel from 'components/FacebookPixel/FacebookPixel';
 import styles from './styles.scss';
+import isEqual from 'lodash/isEqual';
 
-@connect(state => ({loaded: state.reduxAsyncConnect.loaded}),
+@connect(state => ({reduxAsyncConnect: state.reduxAsyncConnect}),
   {pushState: routeActions.push})
 export default class Root extends Component {
   static propTypes = {
@@ -21,7 +22,7 @@ export default class Root extends Component {
     pushState: PropTypes.func.isRequired,
     routerReducer: PropTypes.object,
     route: PropTypes.object.isRequired,
-    loaded: PropTypes.bool.isRequired
+    reduxAsyncConnect: PropTypes.object.isRequired
   };
 
   static childContextTypes = {
@@ -39,12 +40,15 @@ export default class Root extends Component {
   };
 
   render() {
+    const { reduxAsyncConnect } = this.props;
+    const loaded = isEqual(reduxAsyncConnect, {loaded: false}) ? true : reduxAsyncConnect.loaded;
+
     return (
       <div className={styles.app} data-react-toolbox="app">
         <Helmet {...config.app.head}/>
 
         <ProgressBar mode="indeterminate"
-                     className={classNames(styles.progress, {[styles.progressActive]: !this.props.loaded})} />
+                     className={classNames(styles.progress, {[styles.progressActive]: !loaded})} />
 
         <div>
           {this.props.children}
