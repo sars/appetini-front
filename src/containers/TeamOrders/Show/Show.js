@@ -20,6 +20,8 @@ import { show as showToast } from 'redux/modules/toast';
 import styles from './styles.scss';
 import Helmet from 'react-helmet';
 import { origin } from 'config';
+import { prepareMetaForReducer } from 'helpers/getMeta';
+import { updateMeta } from 'redux/modules/meta';
 let pusher;
 let channel;
 
@@ -72,7 +74,7 @@ const totalPrice = (teamOrder) => {
 @connect(state => ({
   user: state.auth.user,
   teamOrderPreferences: state.teamOrderPreferences
-}), { addTeamOrder, showToast, setTeamOrderUser, loadSuccess })
+}), { addTeamOrder, showToast, setTeamOrderUser, loadSuccess, updateMeta })
 export default class TeamOrderShow extends Component {
   static propTypes = {
     teamOrder: PropTypes.object.isRequired,
@@ -83,7 +85,8 @@ export default class TeamOrderShow extends Component {
     route: PropTypes.object.isRequired,
     showToast: PropTypes.func.isRequired,
     loadSuccess: PropTypes.func.isRequired,
-    setTeamOrderUser: PropTypes.func.isRequired
+    setTeamOrderUser: PropTypes.func.isRequired,
+    updateMeta: PropTypes.func.isRequired
   };
 
   static contextTypes = {
@@ -97,6 +100,8 @@ export default class TeamOrderShow extends Component {
 
   componentDidMount() {
     const { user, teamOrder, teamOrderPreferences, location } = this.props;
+    const meta = prepareMetaForReducer(teamOrder.team_offer);
+    this.props.updateMeta({...meta, url: window.location.href});
     if (isOwner(location) && !includes(teamOrderPreferences.ownerArray, teamOrder.id)) {
       this.context.router.replace(`/team_orders/${teamOrder.id}?share_token=${teamOrder.share_token}`);
     }

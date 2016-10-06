@@ -12,16 +12,30 @@ import VKRetargeting from 'components/VKRetargeting/VKRetargeting';
 import classNames from 'classnames';
 import FacebookPixel from 'components/FacebookPixel/FacebookPixel';
 import styles from './styles.scss';
+import { asyncConnect } from 'redux-async-connect';
+import getMeta from 'helpers/getMeta';
+import racKeyLoaded from 'helpers/racKeyLoaded';
 
-@connect(state => ({loaded: state.reduxAsyncConnect.loaded}),
-  {pushState: routeActions.push})
+@asyncConnect([
+  {key: 'metas', promise: ({helpers, store}) => {
+    if (!racKeyLoaded(store, 'metas')) {
+      return helpers.client.get('/metas')
+        .then(data => data.resources);
+    }
+  }},
+])
+@connect(state => ({
+  loaded: state.reduxAsyncConnect.loaded,
+  meta: state.meta
+}), {pushState: routeActions.push})
 export default class Root extends Component {
   static propTypes = {
     children: PropTypes.object,
     pushState: PropTypes.func.isRequired,
     routerReducer: PropTypes.object,
     route: PropTypes.object.isRequired,
-    loaded: PropTypes.bool.isRequired
+    loaded: PropTypes.bool.isRequired,
+    meta: PropTypes.object.isRequired
   };
 
   static childContextTypes = {
@@ -39,9 +53,10 @@ export default class Root extends Component {
   };
 
   render() {
+    const { meta } = this.props;
     return (
       <div className={styles.app} data-react-toolbox="app">
-        <Helmet {...config.app.head}/>
+        <Helmet {...config.app.head} meta={getMeta(meta)}/>
 
         <ProgressBar mode="indeterminate"
                      className={classNames(styles.progress, {[styles.progressActive]: !this.props.loaded})} />

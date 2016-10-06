@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import { asyncConnect } from 'redux-async-connect';
+import { connect } from 'react-redux';
 import DeliveryPeriod from 'components/DeliveryPeriod/DeliveryPeriod';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import Dishes from 'components/Dishes/Dishes';
@@ -16,18 +17,21 @@ import Button from 'components/Button/Button';
 import { link as stylesLink } from 'components/HeaderMenu/HeaderMenu.scss';
 import { Link } from 'react-router';
 import Card, { CardContent } from 'components/Card/Card';
-import Helmet from 'react-helmet';
 import { origin } from 'config';
+import { prepareMetaForReducer } from 'helpers/getMeta';
+import { updateMeta } from 'redux/modules/meta';
 
 @asyncConnect([
   {key: 'lunch', promise: ({params, helpers, store}) => {
     return getLunch()({params, helpers, store}).then(lunch => lunch);
   }}
 ])
+@connect(null, { updateMeta })
 export default class LunchDetails extends Component {
   static propTypes = {
     lunch: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired
+    location: PropTypes.object.isRequired,
+    updateMeta: PropTypes.func.isRequired
   };
 
   static contextTypes = {
@@ -39,6 +43,12 @@ export default class LunchDetails extends Component {
     cookOpened: false,
     purchaseOpened: false
   };
+
+  componentDidMount() {
+    const { lunch } = this.props;
+    const meta = prepareMetaForReducer(lunch);
+    this.props.updateMeta({...meta, url: window.location.href, image: `${origin}${lunch.photos[0].thumb.url}`});
+  }
 
   handleMobilePurchase = () => {
     this.setState({purchaseOpened: true});
@@ -60,11 +70,6 @@ export default class LunchDetails extends Component {
 
     return (
       <ColumnLayout className={styles.root}>
-        <Helmet meta={[
-          {property: 'og:title', content: 'Appetini - доставка обедов в Сумах'},
-          {property: 'og:description', content: lunch.description || `Комплексный обед за ${Number(lunch.price)} грн`},
-          {property: 'og:image', content: `${origin}${lunch.photos[0].thumb.url}`}
-        ]}/>
         <div className={styles.middlePart}>
           <div className={styles.middlePartContent}>
             <div className={leftSidebarClasses}>

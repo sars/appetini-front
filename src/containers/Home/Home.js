@@ -6,12 +6,13 @@ import Helmet from 'react-helmet';
 import { asyncConnect } from 'redux-async-connect';
 import TeamOffer from 'components/TeamOffer/TeamOffer';
 import Boxes from 'components/Boxes/Boxes';
+import racKeyLoaded from 'helpers/racKeyLoaded';
+import { prepareMetaForReducer } from 'helpers/getMeta';
+import { updateMeta } from 'redux/modules/meta';
+import { connect } from 'react-redux';
 
 import styles from './styles.scss';
 
-function racKeyLoaded(store, key) {
-  return Boolean(store.getState().reduxAsyncConnect[key]);
-}
 
 @asyncConnect([
   {key: 'offers', promise: ({helpers}) => {
@@ -25,10 +26,18 @@ function racKeyLoaded(store, key) {
     }}
   }
 ])
+@connect(state => ({metas: state.reduxAsyncConnect.metas}), { updateMeta })
 export default class Home extends Component {
   static propTypes = {
     offers: PropTypes.object.isRequired,
-    preferences: PropTypes.array.isRequired
+    preferences: PropTypes.array.isRequired,
+    metas: PropTypes.array.isRequired,
+    updateMeta: PropTypes.func.isRequired
+  }
+
+  componentDidMount() {
+    const meta = prepareMetaForReducer(this.props.metas, 'resource', 'home', true);
+    this.props.updateMeta({...meta, url: window.location.href});
   }
 
   render() {

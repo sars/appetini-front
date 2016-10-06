@@ -4,16 +4,20 @@ import { asyncConnect, loadSuccess } from 'redux-async-connect';
 import LunchesPage from 'components/LunchesPage/LunchesPage';
 import Button from 'components/Button/Button';
 import { connect } from 'react-redux';
+import { prepareMetaForReducer } from 'helpers/getMeta';
+import { updateMeta } from 'redux/modules/meta';
 import styles from './styles.scss';
 
 @asyncConnect([
   {key: 'offers', promise: ({helpers}) => helpers.client.get('/team_offers', {params: {page: 1, per_page: 20, disable_by_gt: new Date}})}
 ])
-@connect(null, { loadSuccess })
+@connect(state => ({metas: state.reduxAsyncConnect.metas}), { updateMeta, loadSuccess })
 export default class TeamOffers extends Component {
   static propTypes = {
     offers: PropTypes.object.isRequired,
-    loadSuccess: PropTypes.func.isRequired
+    loadSuccess: PropTypes.func.isRequired,
+    metas: PropTypes.array.isRequired,
+    updateMeta: PropTypes.func.isRequired
   };
 
   static contextTypes = {
@@ -23,6 +27,11 @@ export default class TeamOffers extends Component {
   state = {
     page: 1
   };
+
+  componentDidMount() {
+    const meta = prepareMetaForReducer(this.props.metas, 'resource', 'team_offers', true);
+    this.props.updateMeta({...meta, url: window.location.href});
+  }
 
   loadMoreHandle() {
     const { offers } = this.props;

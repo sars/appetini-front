@@ -10,9 +10,11 @@ import Dropdown from 'components/Dropdown/Dropdown';
 import CooksDropdown from 'components/CooksDropdown/CooksDropdown';
 import { request as requestLunches, filterNames } from 'helpers/lunches';
 import valueFromLocationQuery from 'helpers/valueFromLocationQuery';
+import { updateMeta } from 'redux/modules/meta';
 import find from 'lodash/find';
 import concat from 'lodash/concat';
 import isEqual from 'lodash/isEqual';
+import { prepareMetaForReducer, lunchesMeta } from 'helpers/getMeta';
 
 function currentStateName(name) {
   return 'current' + name.charAt(0).toUpperCase() + name.slice(1);
@@ -41,7 +43,7 @@ function racKeyLoaded(store, key) {
     return Promise.resolve(null);
   }}
 ])
-@connect(null, { loadSuccess })
+@connect(state => ({metas: state.reduxAsyncConnect.metas}), { loadSuccess, updateMeta })
 export default class Lunches extends Component {
   static propTypes = {
     lunches: PropTypes.object,
@@ -49,7 +51,9 @@ export default class Lunches extends Component {
     preferences: PropTypes.array.isRequired,
     location: PropTypes.object.isRequired,
     cooks: PropTypes.object.isRequired,
-    loadSuccess: PropTypes.func.isRequired
+    loadSuccess: PropTypes.func.isRequired,
+    metas: PropTypes.array.isRequired,
+    updateMeta: PropTypes.func.isRequired
   };
 
   static contextTypes = {
@@ -66,8 +70,15 @@ export default class Lunches extends Component {
     });
   }
 
+  componentDidMount() {
+    const meta = lunchesMeta(this.props) || prepareMetaForReducer(this.props.metas, 'resource', 'lunches', true);
+    this.props.updateMeta({...meta, url: window.location.href});
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.location !== nextProps.location) {
+      const meta = lunchesMeta(nextProps) || prepareMetaForReducer(this.props.metas, 'resource', 'lunches', true);
+      this.props.updateMeta(meta);
       const newState = filterNames.reduce((result, name) => {
         const stateName = currentStateName(name);
         const value = valueFromLocationQuery(nextProps, name);

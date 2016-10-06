@@ -8,16 +8,20 @@ import StarRating from 'react-star-rating';
 import Feedback from 'components/Feedback/Feedback';
 import ColumnLayout from 'components/ColumnLayout/ColumnLayout';
 import styles from './styles.scss';
+import { prepareMetaForReducer } from 'helpers/getMeta';
+import { updateMeta } from 'redux/modules/meta';
 
 const perPage = 12;
 @asyncConnect([
   {key: 'cooks', promise: ({helpers}) => helpers.client.get('/cooks', {params: {page: 1, per_page: perPage}})}
 ])
-@connect(null, { loadSuccess })
+@connect(state => ({metas: state.reduxAsyncConnect.metas}), { updateMeta, loadSuccess })
 export default class Cooks extends Component {
   static propTypes = {
     cooks: PropTypes.object.isRequired,
-    loadSuccess: PropTypes.func.isRequired
+    loadSuccess: PropTypes.func.isRequired,
+    metas: PropTypes.array.isRequired,
+    updateMeta: PropTypes.func.isRequired
   };
 
   static contextTypes = {
@@ -27,6 +31,11 @@ export default class Cooks extends Component {
   state = {
     page: 1
   };
+
+  componentDidMount() {
+    const meta = prepareMetaForReducer(this.props.metas, 'resource', 'cooks', true);
+    this.props.updateMeta({...meta, url: window.location.href});
+  }
 
   loadMoreHandle = () => {
     const { cooks } = this.props;

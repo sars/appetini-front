@@ -4,7 +4,9 @@ import styles from './styles.scss';
 import Tariff from './Tariff/Tariff';
 import { addOrderItem } from 'redux/modules/purchase';
 import { connect } from 'react-redux';
+import { updateMeta } from 'redux/modules/meta';
 import ga from 'components/GaEvent/ga';
+import { prepareMetaForReducer } from 'helpers/getMeta';
 
 @asyncConnect([
   {key: 'tariffs', promise: ({helpers, store}) => {
@@ -13,16 +15,23 @@ import ga from 'components/GaEvent/ga';
     }
   }}
 ])
-@connect(null, { addOrderItem })
+@connect((state) => ({metas: state.reduxAsyncConnect.metas}), { addOrderItem, updateMeta })
 export default class Tariffs extends Component {
   static propTypes = {
     tariffs: PropTypes.array.isRequired,
-    addOrderItem: PropTypes.func.isRequired
+    metas: PropTypes.array.isRequired,
+    addOrderItem: PropTypes.func.isRequired,
+    updateMeta: PropTypes.func.isRequired
   };
 
   static contextTypes = {
     router: PropTypes.object.isRequired
   };
+
+  componentDidMount() {
+    const meta = prepareMetaForReducer(this.props.metas, 'resource', 'tariffs', true);
+    this.props.updateMeta({...meta, url: window.location.href});
+  }
 
   purchase(tariff) {
     return () => {

@@ -7,6 +7,7 @@ import info from './info';
 import modals from './modals';
 import toast from './toast';
 import common from './common';
+import meta from './meta';
 import purchase from './purchase';
 import teamOrderPreferences from './teamOrderPreferences';
 import {reducer as reduxAsyncConnect} from 'redux-async-connect';
@@ -30,5 +31,6 @@ export default combineReducers({
   common,
   purchase,
   reduxAsyncConnect,
-  teamOrderPreferences
+  teamOrderPreferences,
+  meta
 });
