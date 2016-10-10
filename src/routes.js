@@ -39,7 +39,7 @@ import {
 } from 'containers';
 
 export default (store, client) => {
-  const { userLoad, confirmEmail, requireLogin, checkCurrentCook, loadEditOrder } = hooks(store, client);
+  const { userLoad, confirmEmail, requireLogin, checkCurrentCook, checkCurrentCourier, loadEditOrder } = hooks(store, client);
 
   /**
    * Please keep routes in alphabetical order
@@ -79,7 +79,7 @@ export default (store, client) => {
           <Route path="new" component={DraftLunchesNew}/>
           <Route path=":draftLunchId/edit" component={DraftLunchesEdit}/>
         </Route>
-        <Route path="courier/orders" component={CourierOrdersPage}/>
+        <Route path="courier/orders" component={CourierOrdersPage} onEnter={checkCurrentCourier}/>
         <Route path="orders" component={OrdersIndex}/>
         <Route path="orders/:orderId" component={OrderShow}/>
         <Route path="orders/:orderId/edit" onEnter={loadEditOrder}/>
