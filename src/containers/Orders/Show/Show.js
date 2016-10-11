@@ -7,6 +7,7 @@ import classnames from 'classnames';
 import { asyncConnect } from 'redux-async-connect';
 import tableStyles from 'components/CookOrderPreview/styles.scss';
 import styles from './styles.scss';
+import DishList from 'components/DishList/DishList';
 
 @asyncConnect([
   {key: 'order', promise: ({ helpers, params }) => helpers.client.get('/orders/' + params.orderId)
@@ -116,11 +117,7 @@ export default class AdminOrdersShow extends Component {
                           <div>{moment(item.resource.ready_by).format('DD MMMM HH:mm')}</div>
                         </td>
                         <td>
-                          {
-                            item.resource.dishes.map((dish, idx) => {
-                              return (<span key={idx} className={classnames(tableStyles.dishName, styles.dish)}>{dish.name}</span>);
-                            })
-                          }
+                          <DishList dishes={item.resource.dishes} className={styles.dish} />
                         </td>
                         <td className={tableStyles.hiddenXs}>
                           <div className={tableStyles.photoWrapper}>
