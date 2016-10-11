@@ -39,7 +39,7 @@ export default function hooks({dispatch, getState}, client) {
 
     checkCurrentCourier: ({}, replaceState) => {
       const { user } = getState().auth;
-      if (!user || !user.courier || user.role !== 'admin') {
+      if (!user || !(user.courier || user.role === 'admin')) {
         replaceState('/');
       }
     },
