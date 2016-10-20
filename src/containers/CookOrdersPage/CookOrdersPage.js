@@ -58,13 +58,14 @@ export default class CookOrdersPage extends Component {
   onItemReviewed = (orderItem, checked) => {
     reviewOrderItem(orderItem, checked, this.props.user, this.context.client)
       .then(response => {
-        const reviewedOrderItem = response ? response.resource : null;
+        const reviewedOrderItem = (response && checked) ? response.resource : null;
         this.setOrderItems(orderItem.id, reviewedOrderItem);
       });
   }
 
   setOrderItems = (currentOrderItemId, reviewedOrderItem) => {
-    const newOrders = this.props.orders.resources.map((order) => {
+    const { orders } = this.props;
+    const newOrders = orders.resources.map((order) => {
       return {
         ...order,
         order_items: order.order_items.map((orderItem) => {
@@ -73,7 +74,11 @@ export default class CookOrdersPage extends Component {
         })
       };
     });
-    this.props.loadSuccess('orders', newOrders);
+
+    this.props.loadSuccess('orders', {
+      ...orders,
+      resources: newOrders
+    });
   }
 
   sortByOrderItem() {
