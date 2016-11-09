@@ -1,11 +1,17 @@
 import React from 'react';
 import Dropdown from 'components/Dropdown/Dropdown';
+import moment from 'moment';
+
+const getTimeInUTC = (time) => {
+  const timezoneOffset = new Date().getTimezoneOffset()/60;
+  return moment.utc(`1994-01-26T${time}:00`).utcOffset(timezoneOffset).format('HH:mm')
+};
 
 const deliveryTimeOptions = [
   { label: 'Время' },
-  { value: '09:30Z', label: '12:30 - 13:00' }, // value in UTC
-  { value: '10:00Z', label: '13:00 - 13:30' },  // value in UTC
-  { value: '15:30Z', label: '18:30 - 19:00' }  // value in UTC
+  { value: `${getTimeInUTC('12:30')}Z`, label: '12:30 - 13:00' }, // value in UTC
+  { value: `${getTimeInUTC('13:00')}Z`, label: '13:00 - 13:30' },  // value in UTC
+  { value: `${getTimeInUTC('18:30')}Z`, label: '18:30 - 19:00' }  // value in UTC
 ];
 
 const DeliveryTimeDropdown = ({...other}) => {
