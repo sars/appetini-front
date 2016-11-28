@@ -3,8 +3,8 @@ import Dropdown from 'components/Dropdown/Dropdown';
 import moment from 'moment';
 
 const getTimeInUTC = (time) => {
-  const timezoneOffset = new Date().getTimezoneOffset()/60;
-  return moment.utc(`1994-01-26T${time}:00`).utcOffset(timezoneOffset).format('HH:mm')
+  const timezoneOffset = new Date().getTimezoneOffset() / 60;
+  return moment.utc(`1994-01-26T${time}:00`).utcOffset(timezoneOffset).format('HH:mm');
 };
 
 const deliveryTimeOptions = [

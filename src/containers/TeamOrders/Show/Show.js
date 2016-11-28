@@ -19,6 +19,7 @@ import TeamOfferContainer from 'components/TeamOfferContainer/TeamOfferContainer
 import { show as showToast } from 'redux/modules/toast';
 import styles from './styles.scss';
 import Helmet from 'react-helmet';
+import CloseMessage from 'components/closeMessage/closeMessage';
 import { origin } from 'config';
 let pusher;
 let channel;
@@ -230,9 +231,9 @@ export default class TeamOrderShow extends Component {
     const lunchesInTeamOrder = teamOrder.order_items_attributes;
     const teamOrderAmount = sumBy(lunchesInTeamOrder, (lunchInOrder) => lunchInOrder.amount);
     const disabled = !includes(teamOrderPreferences.ownerArray, teamOrder.id);
-
     return (
       <div className={styles.teamOrderWrapper}>
+        {!isOwner(location) && <CloseMessage/>}
         {teamOrder.order_id
           ? <div className={styles.placeholder}>
               <h2>Данный заказ уже обработан</h2>
